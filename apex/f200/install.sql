@@ -17,13 +17,16 @@ prompt --install
 @@application/shared_components/files/icons_app_icon_256_rounded_png.sql
 @@application/shared_components/files/icons_app_icon_32_png.sql
 @@application/shared_components/files/icons_app_icon_512_png.sql
+@@application/shared_components/security/authorizations/accessmoderw.sql
 @@application/shared_components/security/authorizations/administration_rights.sql
 @@application/shared_components/security/authorizations/contribution_rights.sql
+@@application/shared_components/security/authorizations/accessmodero.sql
 @@application/shared_components/security/authorizations/reader_rights.sql
 @@application/shared_components/security/app_access_control/administrator.sql
 @@application/shared_components/security/app_access_control/contributor.sql
 @@application/shared_components/security/app_access_control/reader.sql
 @@application/shared_components/navigation/navigation_bar.sql
+@@application/shared_components/logic/application_processes/setcontext.sql
 @@application/shared_components/logic/application_settings.sql
 @@application/shared_components/navigation/tabs/standard.sql
 @@application/shared_components/navigation/tabs/parent.sql

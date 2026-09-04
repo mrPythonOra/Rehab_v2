@@ -5,6 +5,8 @@ set serveroutput on
 @../database/structure/data_structure.sql
 @../database/source/create_stored.sql
 
+create context REHAB20_CONTEXT using REHAB_CONTEXT_PKG;
+
 --Compiling PL/SQL source code
 set pages 999
 set lines 200

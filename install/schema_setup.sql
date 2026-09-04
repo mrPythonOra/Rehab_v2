@@ -21,5 +21,8 @@ alter user &appschemaname. quota unlimited on &tblspc_name.;
 grant RESOURCE to &appschemaname.;
 grant CONNECT to &appschemaname.;
 
+grant CREATE ASSERTION to &appschemaname.;
+grant CREATE ANY CONTEXT to &appschemaname.;
+
 grant select on v$mystat to &appschemaname.;
 grant select on v$instance to &appschemaname.;

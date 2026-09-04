@@ -33,12 +33,12 @@ prompt APPLICATION 200 - Rehabilitation V2.0
 -- Application Export:
 --   Application:     200
 --   Name:            Rehabilitation V2.0
---   Date and Time:   12:05 Friday September 4, 2026
+--   Date and Time:   15:14 Friday September 4, 2026
 --   Exported By:     REHAB_V2
 --   Flashback:       0
 --   Export Type:     Application Export
 --     Pages:                     25
---       Items:                   39
+--       Items:                   40
 --       Validations:              2
 --       Processes:               19
 --       Regions:                 60
@@ -46,6 +46,7 @@ prompt APPLICATION 200 - Rehabilitation V2.0
 --       Dynamic Actions:          8
 --     Shared Components:
 --       Logic:
+--         Processes:              1
 --         App Settings:           2
 --         Build Options:          8
 --       Navigation:
@@ -54,7 +55,7 @@ prompt APPLICATION 200 - Rehabilitation V2.0
 --           Entries:              2
 --       Security:
 --         Authentication:         1
---         Authorization:          3
+--         Authorization:          5
 --         ACL Roles:              3
 --       User Interface:
 --         Themes:                 1
@@ -116,7 +117,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'Rehabilitation V2.0'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>2461288113614
-,p_version_scn=>'50421348944631'
+,p_version_scn=>'50421374563194'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -6346,6 +6347,21 @@ wwv_flow_imp_shared.create_app_static_file(
 );
 end;
 /
+prompt --application/shared_components/security/authorizations/accessmoderw
+begin
+wwv_flow_imp_shared.create_security_scheme(
+ p_id=>wwv_flow_imp.id(17092171236131578)
+,p_name=>'AccessModeRW'
+,p_static_id=>'accessmoderw'
+,p_scheme_type=>'NATIVE_FUNCTION_BODY'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'plsql_function_body', 'return REHAB_CONTEXT_PKG.AccessLevelRW;')).to_clob
+,p_error_message=>'Current user do not have RW access level to the data of the selected user.'
+,p_version_scn=>'SH256:pkmpLf7bwSWGek75R3BaXRNOVNW9L_zEbxarxW7yn6M'
+,p_caching=>'BY_USER_BY_PAGE_VIEW'
+);
+end;
+/
 prompt --application/shared_components/security/authorizations/administration_rights
 begin
 wwv_flow_imp_shared.create_security_scheme(
@@ -6374,6 +6390,21 @@ wwv_flow_imp_shared.create_security_scheme(
   'type', 'A')).to_clob
 ,p_error_message=>'Insufficient privileges, user is not a Contributor'
 ,p_version_scn=>'SH256:ciFz4rcxddalYIUr3Jinzh7tWbPXCTrEEDvj0GvJb6Y'
+,p_caching=>'BY_USER_BY_PAGE_VIEW'
+);
+end;
+/
+prompt --application/shared_components/security/authorizations/accessmodero
+begin
+wwv_flow_imp_shared.create_security_scheme(
+ p_id=>wwv_flow_imp.id(17092736246142129)
+,p_name=>'AccessModeRO'
+,p_static_id=>'copy-of-accessmoderw'
+,p_scheme_type=>'NATIVE_FUNCTION_BODY'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'plsql_function_body', 'return REHAB_CONTEXT_PKG.AccessLevelRO;')).to_clob
+,p_error_message=>'Current user do not have RO access level to the data of the selected user.'
+,p_version_scn=>'SH256:tA3qT_BhhtVQr0SIZGVdVom64d9-oxiGmNYfq-pXfl0'
 ,p_caching=>'BY_USER_BY_PAGE_VIEW'
 );
 end;
@@ -6439,6 +6470,39 @@ end;
 prompt --application/shared_components/navigation/navigation_bar
 begin
 null;
+end;
+/
+prompt --application/shared_components/logic/application_processes/setcontext
+begin
+wwv_flow_imp_shared.create_flow_process(
+ p_id=>wwv_flow_imp.id(17093429362163980)
+,p_process_sequence=>1
+,p_process_point=>'BEFORE_HEADER'
+,p_process_name=>'SetContext'
+,p_static_id=>'setcontext'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'begin',
+'    REHAB_CONTEXT_PKG.set_specific_context(v(''APP_USER''));',
+'    if REHAB_CONTEXT_PKG.getPATIENT is null then',
+'        :P0_CONTEXT :=   ''Login: '' || v(''APP_USER'') ||',
+'           ''; Working: '' || nvl(REHAB_CONTEXT_PKG.getAPEX_USER, ''N/A'') ||',
+'           ''; Tenant: ''  || nvl(REHAB_CONTEXT_PKG.getTENANT||'''', ''N/A'') ||',
+'           ''; Patient: '' || nvl(REHAB_CONTEXT_PKG.getPATIENT||'''', ''N/A'') ||',
+'           ''; Access: ''  || nvl(REHAB_CONTEXT_PKG.getMODE, ''N/A'') ||''.'';',
+'    else',
+'        select',
+'           ''Login: '' || v(''APP_USER'') ||',
+'           ''; Working: '' || REHAB_CONTEXT_PKG.getAPEX_USER ||',
+'           ''; Tenant: ''  || TE_NAME ||',
+'           ''; Patient: '' || PAT_NAME||',
+'           ''; Access: ''  || REHAB_CONTEXT_PKG.getMODE  ||''.''',
+'        into :P0_CONTEXT',
+'        from REHAB_TENANTS t, REHAB_PATIENTS p where t.TE_ID = p.PAT_TE_ID and p.PAT_ID = REHAB_CONTEXT_PKG.getPATIENT;',
+'    end if;',
+'end;'))
+,p_process_clob_language=>'PLSQL'
+,p_version_scn=>'SH256:csnrBoyRpJSs-11nbS8zYHj7YrpAQadwKXXAKLEt538'
+);
 end;
 /
 prompt --application/shared_components/logic/application_settings
@@ -6894,6 +6958,22 @@ wwv_flow_imp_page.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_protection_level=>'D'
 ,p_page_component_map=>'14'
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(15479770729527605)
+,p_name=>'P0_CONTEXT'
+,p_item_sequence=>10
+,p_item_display_point=>'AFTER_LOGO'
+,p_prompt=>'Context'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_DISPLAY_ONLY'
+,p_field_template=>2042262243893469891
+,p_item_template_options=>'#DEFAULT#'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'based_on', 'VALUE',
+  'format', 'PLAIN',
+  'send_on_page_submit', 'Y',
+  'show_line_breaks', 'Y')).to_clob
 );
 end;
 /

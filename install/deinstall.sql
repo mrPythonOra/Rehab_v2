@@ -13,6 +13,7 @@ conn &adminconn.
 pause You are about to drop &appschemaname. schema. All data will be lost. Press Ctrl-C to interrupt or any key to continue...
 set echo on
 drop user &appschemaname. cascade;
-  
+drop context REHAB20_CONTEXT;
+
 spool off
 set echo off

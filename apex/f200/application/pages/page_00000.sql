@@ -20,6 +20,22 @@ wwv_flow_imp_page.create_page(
 ,p_protection_level=>'D'
 ,p_page_component_map=>'14'
 );
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(15479770729527605)
+,p_name=>'P0_CONTEXT'
+,p_item_sequence=>10
+,p_item_display_point=>'AFTER_LOGO'
+,p_prompt=>'Context'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_DISPLAY_ONLY'
+,p_field_template=>2042262243893469891
+,p_item_template_options=>'#DEFAULT#'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'based_on', 'VALUE',
+  'format', 'PLAIN',
+  'send_on_page_submit', 'Y',
+  'show_line_breaks', 'Y')).to_clob
+);
 wwv_flow_imp.component_end;
 end;
 /

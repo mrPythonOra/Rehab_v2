@@ -51,7 +51,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'Rehabilitation V2.0'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>2461288113614
-,p_version_scn=>'50421348944631'
+,p_version_scn=>'50421374563194'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
