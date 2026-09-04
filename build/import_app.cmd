@@ -1,0 +1,1 @@
+sqlplus /nolog @import_app
