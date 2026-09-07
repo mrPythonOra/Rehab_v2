@@ -32,33 +32,32 @@ SELECT
        replace(replace(replace(DBMS_METADATA.get_ddl ('TABLE', table_name, user)
        ,'4000 CHUNK 8192'),'8000 CHUNK 8192'),'TRANSPORTABLE') txt
 FROM   user_tables 
---where (table_name like 'OPAS%' or table_name like 'PLAN_TABLE_EXT%')
+where (table_name like 'REHAB%' or table_name like 'APEX%')
 order by table_name;
 
 --constraints
 SELECT DBMS_METADATA.get_ddl ('REF_CONSTRAINT', constraint_name, user) txt
 FROM   user_constraints 
 where constraint_type='R'
-  --and (table_name like 'OPAS%' or table_name like 'PLAN_TABLE_EXT%')
+  and (table_name like 'REHAB%' or table_name like 'APEX%')
 order by table_name;
 
 SELECT DBMS_METADATA.get_ddl ('INDEX', index_name, user) txt  
 FROM   user_indexes 
-where --(table_name like 'OPAS%' or table_name like 'PLAN_TABLE_EXT%')
-  --and 
-index_type not in ('LOB','IOT - TOP') and CONSTRAINT_INDEX = 'NO'
+where (table_name like 'REHAB%' or table_name like 'APEX%')
+  and index_type not in ('LOB','IOT - TOP') and CONSTRAINT_INDEX = 'NO'
 order by table_name,index_name;
 
 --views
 SELECT DBMS_METADATA.get_ddl ('VIEW', view_name, user) txt
 FROM   user_views
-where view_name like '%'
+where view_name like 'V$REHAB%'
 order by view_name;
 
 --sequence
 SELECT DBMS_METADATA.get_ddl ('SEQUENCE', sequence_name, user)||chr(10)||'alter sequence '||sequence_name||' restart;' txt
 FROM   user_sequences
-where sequence_name not like 'ISEQ$$%'
+where sequence_name like 'SQ_REHAB%'
 order by sequence_name;
 
 spool off
@@ -67,13 +66,13 @@ spool data_structure_mv.sql
 --mat views
 SELECT replace(DBMS_METADATA.get_ddl ('MATERIALIZED_VIEW', mview_name, user),'USING ENFORCED CONSTRAINTS','--USING ENFORCED CONSTRAINTS') txt
 FROM   user_mviews 
-where mview_name like 'MV%'
-order by decode(mview_name,'SDA_MV_ALL_TAB_STRUCTS',0,1), mview_name;
+where mview_name like 'MV_REHAB%'
+order by mview_name;
 
 SELECT DBMS_METADATA.get_ddl ('INDEX', index_name, user) txt 
 from user_indexes where table_name in (select container_name
 FROM   user_mviews 
-where mview_name like 'MV%'
+where mview_name like 'MV_REHAB%'
   and index_type not in ('LOB'))
 order by table_name, index_name;
 

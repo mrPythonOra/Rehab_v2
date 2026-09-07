@@ -1,0 +1,5 @@
+1. Remains for all drugs in a storage as of some date
+2. working substance as a separate entity
+3. prescription refers to working substance
+4. prescription details refers to a particular drug
+5. drug_accountings refer prescription and drug

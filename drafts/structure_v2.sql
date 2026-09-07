@@ -20,6 +20,7 @@ drop table REHAB_PRESCRIPTORS purge;
 drop table REHAB_TRAININGS purge;
 drop table REHAB_WATCH_LOGS purge;
 drop table REHAB_DRUGS purge;
+drop TABLE REHAB_WORKING_SUBSTANCE purge;
 drop TABLE REHAB_CONSUME_TIME_RANGES purge;
 drop TABLE REHAB_CONSUME_PATTERNS purge;
 drop TABLE REHAB_PATIENTS2P_ACCESS purge;
@@ -42,6 +43,7 @@ drop sequence SQ_REHAB_CONSUME_PATTERNS;
 drop sequence SQ_REHAB_CONSUME_TIME_RANGES;
 drop sequence SQ_REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES;
 drop sequence SQ_REHAB_PRESCRIPTIONS_DETAILS;
+drop sequence SQ_REHAB_WORKING_SUBSTANCE;
 select * from user_objects;
 --******************************************************************************
 CREATE TABLE APEX_STORED_STATES
@@ -164,14 +166,40 @@ ALTER TABLE REHAB_CONFIGS ADD CONSTRAINT FK_REHAB_CONFIGS_TE FOREIGN KEY (PAR_TE
 ALTER TABLE REHAB_CONFIGS ADD CONSTRAINT FK_REHAB_CONFIGS_PAT FOREIGN KEY (PAR_PAT_ID)
 	  REFERENCES REHAB_PATIENTS (PAT_ID) ENABLE;
       
---******************************************************************************  
+--******************************************************************************
+CREATE TABLE REHAB_WORKING_SUBSTANCE (
+  WS_ID NUMBER NOT NULL ENABLE,
+  WS_TE_ID NUMBER,
+  WS_NAME VARCHAR2(512),
+  WS_DESCR VARCHAR2(4000)
+);
+
+ALTER TABLE REHAB_WORKING_SUBSTANCE ADD CONSTRAINT PK_REHAB_WORKING_SUBSTANCE PRIMARY KEY (WS_ID)
+  USING INDEX  INITRANS 20 MAXTRANS 255 COMPUTE STATISTICS  ENABLE;
+
+ALTER TABLE REHAB_WORKING_SUBSTANCE ADD CONSTRAINT FK_REHAB_WORKING_SUBSTANCE_TE FOREIGN KEY (WS_TE_ID)
+	  REFERENCES REHAB_TENANTS (TE_ID) ENABLE;
+      
+CREATE SEQUENCE SQ_REHAB_WORKING_SUBSTANCE;
+--//////////////////////////////////////////////////////////////////////////////
+INSERT INTO REHAB_WORKING_SUBSTANCE 
+   (ws_id, WS_TE_ID, WS_NAME, WS_DESCR) 
+select SQ_REHAB_WORKING_SUBSTANCE.nextval, x.*
+from (
+SELECT
+    unique 1, dr_working_subst, null    
+FROM
+    reabilitation.drugs) x;
+commit;
+--******************************************************************************
+--++TBD externalize working substance
 CREATE TABLE REHAB_DRUGS
    (DR_ID NUMBER NOT NULL ENABLE,
     DR_TE_ID NUMBER,
 	DR_NAME VARCHAR2(128),
-	DR_TYPE VARCHAR2(512),
+	--DR_TYPE VARCHAR2(512),
 	DR_TYPE_SHORT VARCHAR2(128),
-    DR_WORKING_SUBST VARCHAR2(1024),
+    DR_WS_ID NUMBER NOT NULL ENABLE,
 	DR_USE_CASE VARCHAR2(4000),
     DR_WHEN2CONSUME VARCHAR2(512),
 	DR_INSTRUCTION CLOB,
@@ -199,17 +227,21 @@ ALTER TABLE REHAB_DRUGS ADD CONSTRAINT PK_REHAB_DRUGS PRIMARY KEY (DR_ID)
 
 ALTER TABLE REHAB_DRUGS ADD CONSTRAINT FK_REHAB_DRUGS_TE FOREIGN KEY (DR_TE_ID)
 	  REFERENCES REHAB_TENANTS (TE_ID) ENABLE;
+
+ALTER TABLE REHAB_DRUGS ADD CONSTRAINT FK_REHAB_DRUGS_WS FOREIGN KEY (DR_WS_ID)
+	  REFERENCES REHAB_WORKING_SUBSTANCE (WS_ID) ENABLE;
       
 CREATE SEQUENCE  SQ_REHAB_DRUGS;
 --//////////////////////////////////////////////////////////////////////////////
 INSERT INTO rehab_drugs 
-   (dr_id,dr_te_id,dr_name,dr_type,dr_type_short,dr_working_subst,dr_use_case,dr_when2consume,
+   (dr_id,dr_te_id,dr_name,/*dr_type,*/dr_type_short,DR_WS_ID,dr_use_case,dr_when2consume,
     dr_instruction,dr_instr_src_url,dr_item_image1,dr_item_image2,dr_pack_image1,dr_pack_image2) 
 SELECT
-    dr_id,1,       dr_name,dr_type,type_short,   dr_working_subst,use_case,   when2consume,
+    dr_id,1,       dr_name,/*dr_type*/type_short,   WS_ID /*dr_working_subst*/ ,use_case,   when2consume,
     dr_instruction,dr_nstr_src_url,dr_item_image1,dr_item_image2,dr_pack_image1,dr_pack_image2    
 FROM
-    reabilitation.drugs;
+    reabilitation.drugs d, REHAB_WORKING_SUBSTANCE w
+where d.dr_working_subst = w.WS_NAME;
 declare
   l_id_max number;
 begin
@@ -272,7 +304,7 @@ end;
 --******************************************************************************
 CREATE TABLE REHAB_PRESCRIPTOR2DRUG_FLTS
    (PRRF_PRR_ID NUMBER NOT NULL ENABLE,
-	PRRF_DR_ID NUMBER NOT NULL ENABLE
+	PRRF_WS_ID NUMBER NOT NULL ENABLE
    ) SEGMENT CREATION IMMEDIATE
    PCTUSED 40 INITRANS 10 MAXTRANS 255
  NOCOMPRESS  LOGGING;
@@ -280,19 +312,19 @@ CREATE TABLE REHAB_PRESCRIPTOR2DRUG_FLTS
 ALTER TABLE REHAB_PRESCRIPTOR2DRUG_FLTS ADD CONSTRAINT FK_REHAB_PRRFLT_PRR FOREIGN KEY (PRRF_PRR_ID)
 	  REFERENCES REHAB_PRESCRIPTORS (PRR_ID) ENABLE;
 
-ALTER TABLE REHAB_PRESCRIPTOR2DRUG_FLTS ADD CONSTRAINT FK_REHAB_PRRFLT_DRUG FOREIGN KEY (PRRF_DR_ID)
-	  REFERENCES REHAB_DRUGS (DR_ID) ENABLE;
-
+ALTER TABLE REHAB_PRESCRIPTOR2DRUG_FLTS ADD CONSTRAINT FK_REHAB_PRRFLT_WS FOREIGN KEY (PRRF_WS_ID)
+	  REFERENCES REHAB_WORKING_SUBSTANCE (WS_ID) ENABLE;
 --//////////////////////////////////////////////////////////////////////////////
 INSERT INTO rehab_prescriptor2drug_flts (
     prrf_prr_id,
-    prrf_dr_id
+    PRRF_WS_ID
 )
 SELECT
     prr_id,
-    dr_id
+    DR_WS_ID
 FROM
-    reabilitation.prescriptor2drug_flt;
+    reabilitation.prescriptor2drug_flt f, REHAB_DRUGS d
+    where f.dr_id = d.dr_id;
 commit;
 --******************************************************************************
 CREATE TABLE REHAB_CONSUME_PATTERNS
@@ -514,7 +546,8 @@ ALTER SEQUENCE SQ_REHAB_CONSUME_PATTERNS RESTART START WITH 24;
 --******************************************************************************
 CREATE TABLE REHAB_PRESCRIPTIONS
    (PR_ID NUMBER NOT NULL ENABLE,
-	PR_DR_ID NUMBER NOT NULL ENABLE,
+	PR_WS_ID NUMBER NOT NULL ENABLE,-->++ to details, instead to add ref to working susbatce
+    PR_DR_ID NUMBER NOT NULL ENABLE,
 	PR_PAT_ID NUMBER NOT NULL ENABLE,
 	PR_PRR_ID NUMBER NOT NULL ENABLE,
 	PR_PLANNED_START TIMESTAMP (6) WITH TIME ZONE,
@@ -527,6 +560,9 @@ CREATE TABLE REHAB_PRESCRIPTIONS
 ALTER TABLE REHAB_PRESCRIPTIONS ADD CONSTRAINT PK_REHAB_PRESCRIPTIONS PRIMARY KEY (PR_ID)
   USING INDEX  INITRANS 20 MAXTRANS 255 COMPUTE STATISTICS  ENABLE;
 
+ALTER TABLE REHAB_PRESCRIPTIONS ADD CONSTRAINT FK_REHAB_PRESCRIPTIONS_WS FOREIGN KEY (PR_WS_ID)
+	  REFERENCES REHAB_WORKING_SUBSTANCE (WS_ID) ENABLE;
+      
 ALTER TABLE REHAB_PRESCRIPTIONS ADD CONSTRAINT FK_REHAB_PRESCRIPTION_DR FOREIGN KEY (PR_DR_ID)
 	  REFERENCES REHAB_DRUGS (DR_ID) ENABLE;
 
@@ -562,11 +598,12 @@ create assertion rehub_check_pr_prr_pat check(
 CREATE SEQUENCE  SQ_REHAB_PRESCRIPTIONS;
 --//////////////////////////////////////////////////////////////////////////////
 INSERT INTO rehab_prescriptions 
-   (pr_id,pr_dr_id,pr_pat_id,pr_prr_id,pr_planned_start,pr_planned_end,pr_notes) 
+   (pr_id,pr_dr_id,pr_pat_id,pr_prr_id,pr_planned_start,pr_planned_end,pr_notes, PR_WS_ID) 
 SELECT
-    pr_id,   dr_id,   pat_id,   prr_id,   planned_start,   planned_end,   notes
+    pr_id,   p.dr_id,   pat_id,   prr_id,   planned_start,   planned_end,   notes,    DR_WS_ID
 FROM
-    reabilitation.prescription;
+    reabilitation.prescription p, REHAB_DRUGS d
+    where p.dr_id=d.dr_id and nvl(notes,'~')<>'--no_copy_data--';
 declare
   l_id_max number;
 begin
@@ -643,7 +680,7 @@ SELECT
     end planned_end,   
     decode(SUSPENDED,'Y','Suspended')
 FROM
-    reabilitation.prescription p; --order by 1,2;
+    reabilitation.prescription p where nvl(notes,'~')<>'--no_copy_data--'; --order by 1,2;
 commit;
 --select * from REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES order by 2;
 --select * from REHAB_CONSUME_PATTERNS p, v$rehab_consume_time_ranges r
@@ -653,6 +690,7 @@ CREATE TABLE REHAB_PRESCRIPTIONS_DETAILS (
     PRD_ID NUMBER NOT NULL ENABLE,
     PRD_PRATR_ID NUMBER NOT NULL ENABLE,
     PRD_CPTR_ID NUMBER NOT NULL ENABLE,
+    PRD_DR_ID NUMBER NOT NULL ENABLE,
     PRD_DOSAGE NUMBER NOT NULL ENABLE,
     PRD_SORT_ORDER number default 0,
     PRD_NOTES VARCHAR2(512)
@@ -666,6 +704,9 @@ ALTER TABLE REHAB_PRESCRIPTIONS_DETAILS ADD CONSTRAINT FK_REHAB_PRESCRIPTIONS_DE
       
 ALTER TABLE REHAB_PRESCRIPTIONS_DETAILS ADD CONSTRAINT FK_REHAB_PRESCRIPTIONS_DETAILS_CPTR FOREIGN KEY (PRD_CPTR_ID)
 	  REFERENCES REHAB_CONSUME_TIME_RANGES (CPTR_ID) ENABLE;
+
+ALTER TABLE REHAB_PRESCRIPTIONS_DETAILS ADD CONSTRAINT FK_REHAB_PRESCRIPTIONS_DETAILS_DR FOREIGN KEY (PRD_DR_ID)
+	  REFERENCES REHAB_DRUGS (DR_ID) ENABLE;
       
 create sequence SQ_REHAB_PRESCRIPTIONS_DETAILS;
 --//////////////////////////////////////////////////////////////////////////////
@@ -698,7 +739,7 @@ INSERT INTO REHAB_PRESCRIPTIONS_DETAILS
    (prd_id, 
    PRD_PRATR_ID, 
    PRD_CPTR_ID, 
-   PRD_DOSAGE, PRD_SORT_ORDER, PRD_NOTES) 
+   PRD_DR_ID, PRD_DOSAGE, PRD_SORT_ORDER, PRD_NOTES) 
 SELECT
     SQ_REHAB_PRESCRIPTIONS_DETAILS.nextval,
     pratr_id,   
@@ -718,11 +759,11 @@ SELECT
              when PRATR_CP_ID = 25 then 12+l.l
         else null end      
     else null end cptr_id,  
-    DOSAGE,     PR_SORT_ORDER,   null
+    p0.DR_ID, DOSAGE,     PR_SORT_ORDER,   null
 FROM
     reabilitation.prescription p0, REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES p1,
     (select level l from dual connect by level <=3) l
-where p0.PR_ID = p1.PRATR_PR_ID and l.l <= TIMES_PER_DAY;
+where p0.PR_ID = p1.PRATR_PR_ID and l.l <= TIMES_PER_DAY and nvl(p0.notes,'~')<>'--no_copy_data--';
 commit;
 declare
   l_id_max number;
@@ -734,9 +775,12 @@ end;
 --******************************************************************************
 CREATE TABLE REHAB_DRUG_USES
    (DRU_ID NUMBER,
+    DRU_PRD_ID NUMBER, -- NOT NULL ENABLE,
     DRU_PR_ID NUMBER NOT NULL ENABLE,
 	DRU_PAT_ID NUMBER NOT NULL ENABLE,
     DRU_CPTR_ID NUMBER NOT NULL ENABLE,
+    DRU_DR_ID NUMBER , --NOT NULL ENABLE,
+    DRU_WS_ID NUMBER NOT NULL ENABLE,
 	DRU_CONSUMED TIMESTAMP (6) WITH TIME ZONE,
 	DRU_ACTUAL_DOSAGE NUMBER	
    ) SEGMENT CREATION IMMEDIATE
@@ -746,6 +790,12 @@ CREATE TABLE REHAB_DRUG_USES
 ALTER TABLE REHAB_DRUG_USES ADD CONSTRAINT PK_REHAB_DRUG_USES PRIMARY KEY (DRU_ID)
   USING INDEX  INITRANS 20 MAXTRANS 255 COMPUTE STATISTICS  ENABLE;
 
+ALTER TABLE REHAB_DRUG_USES ADD CONSTRAINT FK_REHAB_DRUG_USES_WS FOREIGN KEY (DRU_WS_ID)
+	  REFERENCES REHAB_WORKING_SUBSTANCE (WS_ID) ENABLE;
+      
+ALTER TABLE REHAB_DRUG_USES ADD CONSTRAINT FK_REHAB_DRUG_USE_PR_DETAILS FOREIGN KEY (DRU_PRD_ID)
+	  REFERENCES REHAB_PRESCRIPTIONS_DETAILS (PRD_ID) ENABLE;
+      
 ALTER TABLE REHAB_DRUG_USES ADD CONSTRAINT FK_REHAB_DRUG_USE_PATIENT FOREIGN KEY (DRU_PAT_ID)
 	  REFERENCES REHAB_PATIENTS (PAT_ID) ENABLE;
 
@@ -754,6 +804,9 @@ ALTER TABLE REHAB_DRUG_USES ADD CONSTRAINT FK_REHAB_DRUG_USE_PRESCRIPTION FOREIG
 
 ALTER TABLE REHAB_DRUG_USES ADD CONSTRAINT FK_REHAB_DRUG_USES_CPTR FOREIGN KEY (DRU_CPTR_ID)
 	  REFERENCES REHAB_CONSUME_TIME_RANGES (CPTR_ID) ENABLE;
+
+ALTER TABLE REHAB_DRUG_USES ADD CONSTRAINT FK_REHAB_DRUG_USES_DR FOREIGN KEY (DRU_DR_ID)
+	  REFERENCES REHAB_DRUGS (DR_ID) ENABLE;
       
 CREATE INDEX IDX_REHAB_DRUG_USES_PAT ON REHAB_DRUG_USES (DRU_PAT_ID)
   PCTFREE 10 INITRANS 20 MAXTRANS 255 COMPUTE STATISTICS ;
@@ -780,9 +833,10 @@ create assertion rehub_check_dru_pr_pat check(
 
 CREATE SEQUENCE  SQ_REHAB_DRUG_USES;
 --//////////////////////////////////////////////////////////////////////////////
+--select * from REHAB_DRUG_USES;
 insert into REHAB_DRUG_USES 
-      (dru_id, DRU_PR_ID, DRU_PAT_ID, DRU_CPTR_ID, DRU_CONSUMED, DRU_ACTUAL_DOSAGE)
-select DRU_ID, pr_id,     PAT_ID,                  
+      (dru_id, DRU_PRD_ID, DRU_PR_ID, DRU_PAT_ID, DRU_CPTR_ID, DRU_DR_ID, DRU_WS_ID, DRU_CONSUMED, DRU_ACTUAL_DOSAGE)
+select DRU_ID, null /*PRD_ID*/,     u.pr_id,     PAT_ID,                  
        --to_date(to_char(CONSUMED,'HH24:MI'),'HH24:MI') 
        (select CPTR_ID from 
        (select CPTR_ID --||' (1) '||CPTR_START_TIME_STR ||'-'||CPTR_END_TIME_STR 
@@ -806,10 +860,20 @@ select DRU_ID, pr_id,     PAT_ID,
         order by to_date(CPTR_START_TIME_STR,'HH24:MI')
         )        
         ) where rownum=1) a,
-       CONSUMED,     ACTUAL_DOSAGE--,
+       null/*PRD_DR_ID*/, PR_WS_ID, CONSUMED,     ACTUAL_DOSAGE--,
        --to_date(to_char(CONSUMED,'HH24:MI'),'HH24:MI') cc, PRATR_CP_ID
-from reabilitation.DRUG_USE d, REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES r
-where d.PR_ID=r.PRATR_PR_ID order by a nulls first, 3,1;
+from reabilitation.DRUG_USE u, REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES r, --REHAB_PRESCRIPTIONS_DETAILS d, 
+     REHAB_PRESCRIPTIONS p
+where u.PR_ID=r.PRATR_PR_ID --and r.pratr_id=d.PRD_PRATR_ID 
+  and p.PR_ID = u.PR_ID
+order by 1;
+commit;
+update REHAB_DRUG_USES u
+set DRU_PRD_ID = (select PRD_ID from REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES a, REHAB_PRESCRIPTIONS_DETAILS d where a.PRATR_ID = d.PRD_PRATR_ID and d.PRD_CPTR_ID=u.DRU_CPTR_ID and u.DRU_PR_ID=a.PRATR_PR_ID);
+commit;
+
+update REHAB_DRUG_USES u
+set DRU_DR_ID = (select PRD_DR_ID from REHAB_PRESCRIPTIONS_DETAILS d where d.PRD_ID = u.DRU_PRD_ID);
 commit;
 declare
   l_id_max number;
@@ -818,6 +882,9 @@ begin
   execute immediate 'ALTER SEQUENCE SQ_REHAB_DRUG_USES RESTART START WITH '||l_id_max;
 end;
 / 
+
+alter TABLE REHAB_DRUG_USES modify DRU_PRD_ID NUMBER NOT NULL ENABLE;
+alter TABLE REHAB_DRUG_USES modify DRU_DR_ID NUMBER NOT NULL ENABLE;
 --******************************************************************************
 CREATE TABLE REHAB_DRUG_STORAGES
    (DS_ID NUMBER,
@@ -873,11 +940,15 @@ select p2s_ds_id, P2S_PAT_ID, P2S_IS_OWNER
 from reabilitation.patient2storage;
 commit;
 --******************************************************************************
+--TBD link to timerange and working substance to track future usage
 CREATE TABLE REHAB_DRUG_ACCOUNTINGS
    (DA_ID NUMBER,
-	DA_DS_ID NUMBER,
-	DA_DR_ID NUMBER,
-    DA_PRR_ID NUMBER,
+	DA_DS_ID NUMBER NOT NULL ENABLE,
+	DA_DR_ID NUMBER NOT NULL ENABLE,
+    DA_PRR_ID NUMBER NOT NULL ENABLE,
+    DA_PR_ID NUMBER NOT NULL ENABLE,
+    DA_WS_ID NUMBER NOT NULL ENABLE,
+    DA_PRATR_ID NUMBER,
 	DA_ORDER_TYPE VARCHAR2(128) NOT NULL ENABLE,
 	DA_QUANTITY NUMBER NOT NULL ENABLE,
 	DA_ENTIRY_WEIGHT NUMBER NOT NULL ENABLE,
@@ -892,15 +963,24 @@ CREATE TABLE REHAB_DRUG_ACCOUNTINGS
 ALTER TABLE REHAB_DRUG_ACCOUNTINGS ADD CONSTRAINT PK_REHAB_DRUG_ACCOUNTINGS PRIMARY KEY (DA_ID)
   USING INDEX  INITRANS 20 MAXTRANS 255 COMPUTE STATISTICS  ENABLE;
 
-ALTER TABLE REHAB_DRUG_ACCOUNTINGS ADD CONSTRAINT FK_REHAB_DRUG_ACCS_STORAGE FOREIGN KEY (DA_DS_ID)
+ALTER TABLE REHAB_DRUG_ACCOUNTINGS ADD CONSTRAINT FK_REHAB_DRUG_ACCOUNTINGS_WS FOREIGN KEY (DA_WS_ID)
+	  REFERENCES REHAB_WORKING_SUBSTANCE (WS_ID) ENABLE;
+      
+ALTER TABLE REHAB_DRUG_ACCOUNTINGS ADD CONSTRAINT FK_REHAB_DRUG_ACCS_DS FOREIGN KEY (DA_DS_ID)
 	  REFERENCES REHAB_DRUG_STORAGES (DS_ID) ENABLE;
 
-ALTER TABLE REHAB_DRUG_ACCOUNTINGS ADD CONSTRAINT FK_REHAB_DRUG_ACCS_PRESCRIPTOR FOREIGN KEY (DA_PRR_ID)
+ALTER TABLE REHAB_DRUG_ACCOUNTINGS ADD CONSTRAINT FK_REHAB_DRUG_ACCS_PRR FOREIGN KEY (DA_PRR_ID)
 	  REFERENCES REHAB_PRESCRIPTORS (PRR_ID) ENABLE;
 
-ALTER TABLE REHAB_DRUG_ACCOUNTINGS ADD CONSTRAINT FK_REHAB_DRUG_ACCS_DRUG FOREIGN KEY (DA_DR_ID)
+ALTER TABLE REHAB_DRUG_ACCOUNTINGS ADD CONSTRAINT FK_REHAB_DRUG_ACCS_PR FOREIGN KEY (DA_PR_ID)
+	  REFERENCES REHAB_PRESCRIPTIONS (PR_ID) ENABLE;
+      
+ALTER TABLE REHAB_DRUG_ACCOUNTINGS ADD CONSTRAINT FK_REHAB_DRUG_ACCS_DR FOREIGN KEY (DA_DR_ID)
 	  REFERENCES REHAB_DRUGS (DR_ID) ENABLE;
-   
+
+ALTER TABLE REHAB_DRUG_ACCOUNTINGS ADD CONSTRAINT FK_REHAB_DRUG_ACCOUNTINGS_PRATR FOREIGN KEY (DA_PRATR_ID)
+	  REFERENCES REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES (PRATR_ID) ENABLE;
+      
 CREATE INDEX IDX_REHAB_DRUG_ACCOUNTINGS_DRUG ON REHAB_DRUG_ACCOUNTINGS (DA_DR_ID)
   PCTFREE 10 INITRANS 20 MAXTRANS 255 COMPUTE STATISTICS ;
 
@@ -912,11 +992,14 @@ CREATE INDEX IDX_REHAB_DRUG_ACCOUNTINGS_PRR ON REHAB_DRUG_ACCOUNTINGS (DA_PRR_ID
 
 CREATE SEQUENCE  SQ_REHAB_DRUG_ACCOUNTINGS;
 --//////////////////////////////////////////////////////////////////////////////
+--select * from reabilitation.drug_accounting order by 1;
+--select * from REHAB_DRUG_ACCOUNTINGS order by 1;
 insert into REHAB_DRUG_ACCOUNTINGS 
- (da_id, DA_DS_ID, DA_DR_ID,   DA_ORDER_TYPE, DA_QUANTITY, DA_ENTIRY_WEIGHT, DA_COST, DA_PURCHASED, DA_CHECK_POINT_DT, DA_PRR_ID, DA_BEST_BEFORE)
+ (da_id, DA_DS_ID, DA_DR_ID,   DA_ORDER_TYPE, DA_QUANTITY, DA_ENTIRY_WEIGHT, DA_COST, DA_PURCHASED, DA_CHECK_POINT_DT, DA_PRR_ID, DA_PR_ID, DA_PRATR_ID, DA_WS_ID, DA_BEST_BEFORE)
 select
-  da_id, DA_DS_ID, DA_DRUG_ID, DA_ORDER_TYPE, DA_QUANTITY, DA_ENTIRY_WEIGHT, DA_COST, DA_PURCHASED, CHECK_POINT_DT,    DA_PRR_ID, DA_BEST_BEFORE
-from reabilitation.drug_accounting;
+  da_id, DA_DS_ID, DA_DRUG_ID, DA_ORDER_TYPE, DA_QUANTITY, DA_ENTIRY_WEIGHT, DA_COST, DA_PURCHASED, CHECK_POINT_DT,    DA_PRR_ID,    PR_ID,    PRATR_ID, PR_WS_ID, DA_BEST_BEFORE
+from reabilitation.drug_accounting a, REHAB_PRESCRIPTIONS p, REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES r
+where a.DA_PRR_ID = p.PR_PRR_ID and a.DA_DRUG_ID=p.PR_DR_ID and p.PR_ID=r.PRATR_PR_ID order by 1;
 commit;
 declare
   l_id_max number;
@@ -1048,9 +1131,17 @@ end;
 / 
 --******************************************************************************
 
-
-
-
+select (select count(1) from reabilitation.drug_accounting) drug_accounting,(select count(1) from REHAB_DRUG_ACCOUNTINGS) RB_DRUG_ACCOUNTINGS from dual;
+select (select count(1) from REABILITATION.DRUG_STORAGE) DRUG_STORAGE,(select count(1) from REHAB_DRUG_STORAGES) RB_DRUG_STORAGES from dual;
+select (select count(1) from REABILITATION.DRUG_USE) DRUG_USE,(select count(1) from REHAB_DRUG_USES) RB_DRUG_USES from dual;
+select (select count(1) from REABILITATION.DRUGS) DRUGS,(select count(1) from REHAB_DRUGS) RB_DRUGS from dual;
+select (select count(1) from REABILITATION.MEASUREMENT) MEASUREMENT,(select count(1) from REHAB_MEASUREMENTS) RB_MEASUREMENTS from dual;
+select (select count(1) from REABILITATION.PATIENTS) PATIENTS,(select count(1) from REHAB_PATIENTS) RB_PATIENTS from dual;
+select (select count(1) from REABILITATION.PRESCRIPTION where nvl(notes,'~')<>'--no_copy_data--') PRESCRIPTION,(select count(1) from REHAB_PRESCRIPTIONS) RB_PRESCRIPTIONS,(select count(1) from REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES)RB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES,(select count(1) from REHAB_PRESCRIPTIONS_DETAILS) RB_PRESCRIPTIONS_DETAILS from dual;
+select (select count(1) from REABILITATION.PRESCRIPTOR) PRESCRIPTOR,(select count(1) from REHAB_PRESCRIPTORS) RB_PRESCRIPTORS from dual;
+select (select count(1) from REABILITATION.PRESCRIPTOR2DRUG_FLT) PRESCRIPTOR2DRUG_FLT,(select count(1) from REHAB_PRESCRIPTOR2DRUG_FLTS) RB_PRESCRIPTOR2DRUG_FLTS from dual;
+select (select count(1) from REABILITATION.TRAININGS) TRAININGS,(select count(1) from REHAB_TRAININGS) RB_TRAININGS from dual;
+select (select count(1) from REABILITATION.WATCH_LOG) WATCH_LOG,(select count(1) from REHAB_WATCH_LOGS) RB_WATCH_LOGS from dual;
 
 
 
