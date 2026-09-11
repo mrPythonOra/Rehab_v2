@@ -14,7 +14,7 @@ wwv_flow_imp.component_begin (
 wwv_imp_workspace.create_flow(
  p_id=>wwv_flow.g_flow_id
 ,p_owner=>nvl(wwv_flow_application_install.get_schema,'REHAB_V2')
-,p_name=>nvl(wwv_flow_application_install.get_application_name,'Rehabilitation V2.0')
+,p_name=>nvl(wwv_flow_application_install.get_application_name,'Rehabilitation 2.0')
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'REHAB-V2-0')
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
@@ -34,7 +34,7 @@ wwv_imp_workspace.create_flow(
 ,p_authentication_id=>wwv_flow_imp.id(16869964045504243)
 ,p_application_tab_set=>1
 ,p_logo_type=>'T'
-,p_logo_text=>'Rehabilitation V2.0'
+,p_logo_text=>'&GLOBAL_DATE_CAPT.'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
 ,p_flow_version=>'Release 2.0'
@@ -42,16 +42,24 @@ wwv_imp_workspace.create_flow(
 ,p_browser_cache=>'N'
 ,p_browser_frame=>'D'
 ,p_deep_linking=>'Y'
+,p_vpd=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'begin',
+'    REHAB_CONTEXT_PKG.set_specific_context(:P0_SUDO);',
+'end;'))
+,p_vpd_teardown_code=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'begin',
+'    REHAB_CONTEXT_PKG.reset_context;',
+'end;'))
 ,p_runtime_api_usage=>'T'
 ,p_security_scheme=>wwv_flow_imp.id(16876760388504387)
 ,p_authorize_batch_job=>'N'
 ,p_rejoin_existing_sessions=>'N'
 ,p_csv_encoding=>'Y'
 ,p_substitution_string_01=>'APP_NAME'
-,p_substitution_value_01=>'Rehabilitation V2.0'
+,p_substitution_value_01=>'Rehab V2.0'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>2461288113614
-,p_version_scn=>'50421374563194'
+,p_version_scn=>'50422611427775'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'

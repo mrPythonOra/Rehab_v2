@@ -19,26 +19,10 @@ wwv_flow_imp_shared.create_flow_process(
 ,p_static_id=>'setcontext'
 ,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'begin',
-'    REHAB_CONTEXT_PKG.set_specific_context(v(''APP_USER''));',
-'    if REHAB_CONTEXT_PKG.getPATIENT is null then',
-'        :P0_CONTEXT :=   ''Login: '' || v(''APP_USER'') ||',
-'           ''; Working: '' || nvl(REHAB_CONTEXT_PKG.getAPEX_USER, ''N/A'') ||',
-'           ''; Tenant: ''  || nvl(REHAB_CONTEXT_PKG.getTENANT||'''', ''N/A'') ||',
-'           ''; Patient: '' || nvl(REHAB_CONTEXT_PKG.getPATIENT||'''', ''N/A'') ||',
-'           ''; Access: ''  || nvl(REHAB_CONTEXT_PKG.getMODE, ''N/A'') ||''.'';',
-'    else',
-'        select',
-'           ''Login: '' || v(''APP_USER'') ||',
-'           ''; Working: '' || REHAB_CONTEXT_PKG.getAPEX_USER ||',
-'           ''; Tenant: ''  || TE_NAME ||',
-'           ''; Patient: '' || PAT_NAME||',
-'           ''; Access: ''  || REHAB_CONTEXT_PKG.getMODE  ||''.''',
-'        into :P0_CONTEXT',
-'        from REHAB_TENANTS t, REHAB_PATIENTS p where t.TE_ID = p.PAT_TE_ID and p.PAT_ID = REHAB_CONTEXT_PKG.getPATIENT;',
-'    end if;',
+'    null; --REHAB_CONTEXT_PKG.set_specific_context(:P0_SUDO); --nvl(:P0_SUDO, v(''APP_USER''))',
 'end;'))
 ,p_process_clob_language=>'PLSQL'
-,p_version_scn=>'SH256:csnrBoyRpJSs-11nbS8zYHj7YrpAQadwKXXAKLEt538'
+,p_version_scn=>'SH256:Cv45D1Xkc3Hc3qtt7FKYCHgURsSiU3SRstBoAcrqYj0'
 );
 wwv_flow_imp.component_end;
 end;

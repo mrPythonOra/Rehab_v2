@@ -28,31 +28,33 @@ wwv_flow_imp.import_begin (
 end;
 /
  
-prompt APPLICATION 200 - Rehabilitation V2.0
+prompt APPLICATION 200 - Rehabilitation 2.0
 --
 -- Application Export:
 --   Application:     200
---   Name:            Rehabilitation V2.0
---   Date and Time:   15:08 Monday September 7, 2026
+--   Name:            Rehabilitation 2.0
+--   Date and Time:   15:13 Friday September 11, 2026
 --   Exported By:     REHAB_V2
 --   Flashback:       0
 --   Export Type:     Application Export
---     Pages:                     25
---       Items:                   40
+--     Pages:                     29
+--       Items:                   43
 --       Validations:              2
 --       Processes:               19
---       Regions:                 60
---       Buttons:                 35
+--       Regions:                 66
+--       Buttons:                 37
 --       Dynamic Actions:          8
 --     Shared Components:
 --       Logic:
+--         Items:                  1
 --         Processes:              1
+--         Computations:           3
 --         App Settings:           2
 --         Build Options:          8
 --       Navigation:
 --         Lists:                  7
 --         Breadcrumbs:            1
---           Entries:              2
+--           Entries:              6
 --       Security:
 --         Authentication:         1
 --         Authorization:          5
@@ -80,7 +82,7 @@ begin
 wwv_imp_workspace.create_flow(
  p_id=>wwv_flow.g_flow_id
 ,p_owner=>nvl(wwv_flow_application_install.get_schema,'REHAB_V2')
-,p_name=>nvl(wwv_flow_application_install.get_application_name,'Rehabilitation V2.0')
+,p_name=>nvl(wwv_flow_application_install.get_application_name,'Rehabilitation 2.0')
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'REHAB-V2-0')
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
@@ -100,7 +102,7 @@ wwv_imp_workspace.create_flow(
 ,p_authentication_id=>wwv_flow_imp.id(16869964045504243)
 ,p_application_tab_set=>1
 ,p_logo_type=>'T'
-,p_logo_text=>'Rehabilitation V2.0'
+,p_logo_text=>'&GLOBAL_DATE_CAPT.'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
 ,p_flow_version=>'Release 2.0'
@@ -108,16 +110,24 @@ wwv_imp_workspace.create_flow(
 ,p_browser_cache=>'N'
 ,p_browser_frame=>'D'
 ,p_deep_linking=>'Y'
+,p_vpd=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'begin',
+'    REHAB_CONTEXT_PKG.set_specific_context(:P0_SUDO);',
+'end;'))
+,p_vpd_teardown_code=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'begin',
+'    REHAB_CONTEXT_PKG.reset_context;',
+'end;'))
 ,p_runtime_api_usage=>'T'
 ,p_security_scheme=>wwv_flow_imp.id(16876760388504387)
 ,p_authorize_batch_job=>'N'
 ,p_rejoin_existing_sessions=>'N'
 ,p_csv_encoding=>'Y'
 ,p_substitution_string_01=>'APP_NAME'
-,p_substitution_value_01=>'Rehabilitation V2.0'
+,p_substitution_value_01=>'Rehab V2.0'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>2461288113614
-,p_version_scn=>'50421374563194'
+,p_version_scn=>'50422611427775'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -550,7 +560,7 @@ wwv_flow_imp_shared.create_list(
  p_id=>wwv_flow_imp.id(16870838765504258)
 ,p_name=>'Navigation Menu'
 ,p_static_id=>'navigation-menu'
-,p_version_scn=>'SH256:y5l0-UqDjFC6wqnlCbiSMY1bzQer7biac0Fr4TjaXKU'
+,p_version_scn=>'SH256:a6jUA570dNz9WJWveFI6qXcKBQuEUvI-oRfKfnRKQm8'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(17056773995505539)
@@ -565,11 +575,51 @@ wwv_flow_imp_shared.create_list_item(
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(16885212315504474)
 ,p_list_item_display_sequence=>10
-,p_list_item_link_text=>'Home'
+,p_list_item_link_text=>unistr('\0414\043E\043C\0456\0432\043A\0430')
 ,p_static_id=>'home'
-,p_list_item_link_target=>'f?p=&APP_ID.:1:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_link_target=>'f?p=&APP_ID.:1:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-home'
 ,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(29456772809221898)
+,p_list_item_display_sequence=>20
+,p_list_item_link_text=>unistr('\041F\0440\0438\0439\043E\043C \0442\0430\0431\043B\0435\0442\043E\043A')
+,p_static_id=>'inputpills'
+,p_list_item_link_target=>'f?p=&APP_ID.:101:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-medication-pill'
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'101'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(29458681733248121)
+,p_list_item_display_sequence=>30
+,p_list_item_link_text=>unistr('\0412\0438\043C\0456\0440\044E\0432\0430\043D\043D\044F')
+,p_static_id=>'measurements'
+,p_list_item_link_target=>'f?p=&APP_ID.:201:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-ruler-combination'
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'201'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(29851988464571853)
+,p_list_item_display_sequence=>40
+,p_list_item_link_text=>'Trainings'
+,p_static_id=>'trainings'
+,p_list_item_link_target=>'f?p=&APP_ID.:211:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_icon=>'fa-file-o'
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'211'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(29853308176574533)
+,p_list_item_display_sequence=>50
+,p_list_item_link_text=>'WatchLogs'
+,p_static_id=>'watchlogs'
+,p_list_item_link_target=>'f?p=&APP_ID.:221:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_icon=>'fa-file-o'
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'221'
 );
 end;
 /
@@ -6482,26 +6532,96 @@ wwv_flow_imp_shared.create_flow_process(
 ,p_static_id=>'setcontext'
 ,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'begin',
-'    REHAB_CONTEXT_PKG.set_specific_context(v(''APP_USER''));',
-'    if REHAB_CONTEXT_PKG.getPATIENT is null then',
-'        :P0_CONTEXT :=   ''Login: '' || v(''APP_USER'') ||',
-'           ''; Working: '' || nvl(REHAB_CONTEXT_PKG.getAPEX_USER, ''N/A'') ||',
-'           ''; Tenant: ''  || nvl(REHAB_CONTEXT_PKG.getTENANT||'''', ''N/A'') ||',
-'           ''; Patient: '' || nvl(REHAB_CONTEXT_PKG.getPATIENT||'''', ''N/A'') ||',
-'           ''; Access: ''  || nvl(REHAB_CONTEXT_PKG.getMODE, ''N/A'') ||''.'';',
-'    else',
-'        select',
-'           ''Login: '' || v(''APP_USER'') ||',
-'           ''; Working: '' || REHAB_CONTEXT_PKG.getAPEX_USER ||',
-'           ''; Tenant: ''  || TE_NAME ||',
-'           ''; Patient: '' || PAT_NAME||',
-'           ''; Access: ''  || REHAB_CONTEXT_PKG.getMODE  ||''.''',
-'        into :P0_CONTEXT',
-'        from REHAB_TENANTS t, REHAB_PATIENTS p where t.TE_ID = p.PAT_TE_ID and p.PAT_ID = REHAB_CONTEXT_PKG.getPATIENT;',
-'    end if;',
+'    null; --REHAB_CONTEXT_PKG.set_specific_context(:P0_SUDO); --nvl(:P0_SUDO, v(''APP_USER''))',
 'end;'))
 ,p_process_clob_language=>'PLSQL'
-,p_version_scn=>'SH256:csnrBoyRpJSs-11nbS8zYHj7YrpAQadwKXXAKLEt538'
+,p_version_scn=>'SH256:Cv45D1Xkc3Hc3qtt7FKYCHgURsSiU3SRstBoAcrqYj0'
+);
+end;
+/
+prompt --application/shared_components/logic/application_items/global_date_capt
+begin
+wwv_flow_imp_shared.create_flow_item(
+ p_id=>wwv_flow_imp.id(29656273476062032)
+,p_name=>'GLOBAL_DATE_CAPT'
+,p_protection_level=>'I'
+,p_version_scn=>'SH256:4NlHpwz8F1LHFhpEQBAz0yHEeKXSjJJz-XXxHHWQngE'
+);
+end;
+/
+prompt --application/shared_components/logic/application_computations/global_context
+begin
+wwv_flow_imp_shared.create_flow_computation(
+ p_id=>wwv_flow_imp.id(28508830845439467)
+,p_computation_sequence=>10
+,p_computation_item=>'GLOBAL_CONTEXT'
+,p_static_id=>'global-context'
+,p_computation_point=>'AFTER_HEADER'
+,p_computation_type=>'FUNCTION_BODY'
+,p_computation_language=>'PLSQL'
+,p_computation_processed=>'REPLACE_EXISTING'
+,p_computation=>wwv_flow_string.join(wwv_flow_t_varchar2(
+' declare',
+'   l_out varchar2(32765);',
+' begin',
+'   if REHAB_CONTEXT_PKG.getPATIENT is null then',
+'        l_out := ''<font size="1">  C: '' || v(''APP_USER'') ||',
+'           ''; W: '' || nvl(REHAB_CONTEXT_PKG.getAPEX_USER, ''N/A'') ||',
+'           ''; T: ''  || nvl(REHAB_CONTEXT_PKG.getTENANT||'''', ''N/A'') ||',
+'           ''; P: '' || nvl(REHAB_CONTEXT_PKG.getPATIENT||'''', ''N/A'') ||',
+'           ''; A: ''  || nvl(REHAB_CONTEXT_PKG.getMODE, ''N/A'') ||''.</font>'';',
+'    else',
+'        select',
+'           ''<font size="1">  C: '' || v(''APP_USER'') ||',
+'           ''; W: '' || REHAB_CONTEXT_PKG.getAPEX_USER ||',
+'           ''; T: ''  || TE_NAME ||',
+'           ''; P: '' || PAT_NAME||',
+'           ''; A: ''  || REHAB_CONTEXT_PKG.getMODE  ||''.</font>''',
+'        into l_out',
+'        from REHAB_TENANTS t, REHAB_PATIENTS p where t.TE_ID = p.PAT_TE_ID and p.PAT_ID = REHAB_CONTEXT_PKG.getPATIENT;',
+'    end if;',
+'    return l_out;',
+'end;'))
+,p_version_scn=>'SH256:rPWINfNs2oQE2OnAN0JmtaTgSgsb3LsCCGmDF1YOhPE'
+);
+end;
+/
+prompt --application/shared_components/logic/application_computations/global_date
+begin
+wwv_flow_imp_shared.create_flow_computation(
+ p_id=>wwv_flow_imp.id(28560949055985056)
+,p_computation_sequence=>10
+,p_computation_item=>'GLOBAL_DATE'
+,p_static_id=>'global-date'
+,p_computation_point=>'ON_NEW_INSTANCE'
+,p_computation_type=>'FUNCTION_BODY'
+,p_computation_language=>'PLSQL'
+,p_computation_processed=>'REPLACE_EXISTING'
+,p_computation=>'return to_char(systimestamp at time zone SESSIONTIMEZONE, ''YYYY-MM-DD'')'
+,p_version_scn=>'SH256:tOLP4xRUHEuZKKkLVhSOo_Bys4G_htdWEwS3MHy1nuk'
+);
+end;
+/
+prompt --application/shared_components/logic/application_computations/global_date_capt
+begin
+wwv_flow_imp_shared.create_flow_computation(
+ p_id=>wwv_flow_imp.id(29656413614078018)
+,p_computation_sequence=>30
+,p_computation_item=>'GLOBAL_DATE_CAPT'
+,p_static_id=>'global-date-capt'
+,p_computation_point=>'BEFORE_HEADER'
+,p_computation_type=>'FUNCTION_BODY'
+,p_computation_language=>'PLSQL'
+,p_computation_processed=>'REPLACE_EXISTING'
+,p_computation=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'begin',
+'  if REHAB_CONTEXT_PKG.getGLOBAL_DATE = trunc(sysdate) then',
+unistr('    return v(''GLOBAL_DATE'') || ''(\0441\044C\043E\0433\043E\0434\043D\0456)'';'),
+'  else',
+'    return v(''GLOBAL_DATE'');',
+'  end if;',
+'end;'))
+,p_version_scn=>'SH256:0mLfhd41fDayTedeW4JM6sk6-CyKJOTnoCYsj_yUOUk'
 );
 end;
 /
@@ -6756,10 +6876,42 @@ wwv_flow_imp_shared.create_menu_option(
 );
 wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(16870554490504254)
-,p_short_name=>'Home'
+,p_short_name=>unistr('\0414\043E\043C\0456\0432\043A\0430')
 ,p_static_id=>'home'
-,p_link=>'f?p=&APP_ID.:1:&APP_SESSION.::&DEBUG.:::'
+,p_link=>'f?p=&APP_ID.:1:&SESSION.::&DEBUG.:::'
 ,p_page_id=>1
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(29457611096221950)
+,p_parent_id=>wwv_flow_imp.id(16870554490504254)
+,p_short_name=>'InputPills'
+,p_static_id=>'inputpills'
+,p_link=>'f?p=&APP_ID.:101:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>101
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(29459699401248128)
+,p_parent_id=>wwv_flow_imp.id(16870554490504254)
+,p_short_name=>'Measurements'
+,p_static_id=>'measurements'
+,p_link=>'f?p=&APP_ID.:201:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>201
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(29852904301571877)
+,p_parent_id=>wwv_flow_imp.id(16870554490504254)
+,p_short_name=>'Trainings'
+,p_static_id=>'trainings'
+,p_link=>'f?p=&APP_ID.:211:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>211
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(29854371822574539)
+,p_parent_id=>wwv_flow_imp.id(16870554490504254)
+,p_short_name=>'WatchLogs'
+,p_static_id=>'watchlogs'
+,p_link=>'f?p=&APP_ID.:221:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>221
 );
 end;
 /
@@ -6959,21 +7111,111 @@ wwv_flow_imp_page.create_page(
 ,p_protection_level=>'D'
 ,p_page_component_map=>'14'
 );
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(15483692011527644)
+,p_button_sequence=>20
+,p_button_name=>'New'
+,p_static_id=>'new'
+,p_show_as_disabled=>false
+,p_button_action=>'SUBMIT'
+,p_button_template_options=>'#DEFAULT#:t-Button--small:t-Button--stretch:t-Button--padTop'
+,p_button_template_id=>2350584059425431644
+,p_button_is_hot=>'Y'
+,p_button_image_alt=>'New'
+,p_button_position=>'REGION_POSITION_05'
+,p_icon_css_classes=>'fa-arrow-right-alt'
+,p_grid_new_row=>'N'
+,p_grid_new_column=>'Y'
+,p_grid_column_span=>1
+);
 wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(15479770729527605)
-,p_name=>'P0_CONTEXT'
-,p_item_sequence=>10
-,p_item_display_point=>'AFTER_LOGO'
+ p_id=>wwv_flow_imp.id(28458947400190935)
+,p_name=>'GLOBAL_CONTEXT'
+,p_item_sequence=>50
+,p_item_display_point=>'REGION_POSITION_05'
 ,p_prompt=>'Context'
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
+,p_begin_on_new_line=>'N'
+,p_grid_label_column_span=>0
+,p_display_when=>':GLOBAL_SHOWCONTEXT=''Y'''
+,p_display_when2=>'PLSQL'
+,p_display_when_type=>'EXPRESSION'
+,p_field_template=>2042262243893469891
+,p_item_template_options=>'#DEFAULT#:margin-top-none'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'format', 'HTML',
+  'send_on_page_submit', 'Y')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(15483539658527643)
+,p_name=>'GLOBAL_DATE'
+,p_item_sequence=>10
+,p_item_display_point=>'REGION_POSITION_05'
+,p_format_mask=>'YYYY-MM-DD'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_DATE_PICKER_APEX'
+,p_cSize=>30
+,p_colspan=>1
+,p_grid_label_column_span=>0
 ,p_field_template=>2042262243893469891
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'based_on', 'VALUE',
-  'format', 'PLAIN',
-  'send_on_page_submit', 'Y',
-  'show_line_breaks', 'Y')).to_clob
+  'display_as', 'NATIVE',
+  'max_date', 'NONE',
+  'min_date', 'NONE',
+  'show_time', 'N')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(28459581258204104)
+,p_name=>'GLOBAL_SHOWCONTEXT'
+,p_item_sequence=>40
+,p_item_display_point=>'REGION_POSITION_05'
+,p_item_default=>'N'
+,p_prompt=>'Show'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_SELECT_LIST'
+,p_lov=>'STATIC:Show;Y,Hide;N'
+,p_cHeight=>1
+,p_begin_on_new_line=>'N'
+,p_colspan=>1
+,p_grid_label_column_span=>0
+,p_field_template=>2042262243893469891
+,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs:margin-top-none'
+,p_lov_display_extra=>'NO'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'execute_validations', 'N',
+  'page_action_on_selection', 'SUBMIT')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(15479897477527606)
+,p_name=>'P0_SUDO'
+,p_item_sequence=>30
+,p_item_display_point=>'REGION_POSITION_05'
+,p_item_default=>'REHAB_CONTEXT_PKG.getCURR_APEX_USER'
+,p_item_default_type=>'EXPRESSION'
+,p_item_default_language=>'PLSQL'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_SELECT_LIST'
+,p_lov=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select PAT_NAME d, PAT_APEX_USER r from REHAB_PATIENTS where (select PAT_IS_SUPERUSER from REHAB_PATIENTS where PAT_APEX_USER=REHAB_CONTEXT_PKG.getCURR_APEX_USER)',
+'union ',
+'select PAT_NAME d, PAT_APEX_USER r from REHAB_PATIENTS where PAT_TE_ID in (select PAT_TE_ID from REHAB_PATIENTS where PAT_APEX_USER=REHAB_CONTEXT_PKG.getCURR_APEX_USER and PAT_IS_TENANTADM)',
+'union ',
+'select PAT_NAME d, PAT_APEX_USER r from REHAB_PATIENTS where PAT_ID in (select P2PA_TRG_PAT_ID from REHAB_PATIENTS2P_ACCESS where P2PA_SUBJ_PAT_ID=REHAB_CONTEXT_PKG.getCURR_PATIENT)',
+'union ',
+'select PAT_NAME d, PAT_APEX_USER r from REHAB_PATIENTS where PAT_APEX_USER=REHAB_CONTEXT_PKG.getCURR_APEX_USER',
+'order by d;'))
+,p_cHeight=>1
+,p_begin_on_new_line=>'N'
+,p_colspan=>1
+,p_grid_label_column_span=>0
+,p_field_template=>2042262243893469891
+,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs'
+,p_lov_display_extra=>'NO'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'execute_validations', 'N',
+  'page_action_on_selection', 'SUBMIT')).to_clob
 );
 end;
 /
@@ -6983,7 +7225,7 @@ wwv_flow_imp_page.create_page(
  p_id=>1
 ,p_name=>'Home'
 ,p_alias=>'HOME'
-,p_step_title=>'Rehabilitation V2.0'
+,p_step_title=>unistr('\0420\0435\0430\0431\0456\043B\0456\0442\0430\0446\0456\044F 2.0')
 ,p_autocomplete_on_off=>'OFF'
 ,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
@@ -6991,8 +7233,127 @@ wwv_flow_imp_page.create_page(
 ,p_page_component_map=>'13'
 );
 wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(15480456892527612)
+,p_plug_name=>'Charts'
+,p_static_id=>'donepct'
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>10
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source_type=>'NATIVE_JET_CHART'
+);
+wwv_flow_imp_page.create_jet_chart(
+ p_id=>wwv_flow_imp.id(15480525861527613)
+,p_region_id=>wwv_flow_imp.id(15480456892527612)
+,p_chart_type=>'dial'
+,p_width=>'300'
+,p_height=>'100'
+,p_animation_on_display=>'auto'
+,p_animation_on_data_change=>'auto'
+,p_value_text_type=>'percent'
+,p_value_format_type=>'percent'
+,p_value_decimal_places=>0
+,p_value_format_scaling=>'auto'
+,p_tooltip_rendered=>'Y'
+,p_gauge_orientation=>'circular'
+,p_gauge_indicator_size=>1
+,p_gauge_inner_radius=>.7
+,p_gauge_plot_area=>'on'
+,p_gauge_start_angle=>180
+,p_gauge_angle_extent=>180
+,p_show_gauge_value=>true
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(15480655782527614)
+,p_chart_id=>wwv_flow_imp.id(15480525861527613)
+,p_static_id=>'new_1'
+,p_seq=>10
+,p_name=>'Serie1'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select count(*) max_value, ',
+'       count(DRU_CONSUMED) value,',
+unistr('       count(DRU_CONSUMED) || '' \0437 ''|| count(*) ||'' \0434\043E\0431\043E\0432\0438\0445 \043C\0435\0434\0456\043A\0430\043C\0435\043D\0442\0456\0432 \0441\043F\043E\0436\0438\0442\043E'' tip1,'),
+unistr('       ''\0421\043F\043E\0436\0438\0442\043E \0442\0430\0431\043B\0435\0442\043E\043A'' label'),
+'from REHAB_PRESCRIPTIONS_DETAILS d, ',
+'     REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES as of period for REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES_period sysdate tr,',
+'     REHAB_PRESCRIPTIONS p,',
+'     REHAB_DRUG_USES du',
+'where d.PRD_PRATR_ID = tr.PRATR_ID and tr.PRATR_PR_ID = p.PR_ID',
+'  and PR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
+'  and du.DRU_PR_ID(+) = p.PR_ID and DRU_PAT_ID(+) = REHAB_CONTEXT_PKG.getPATIENT()',
+'  and trunc(DRU_CONSUMED(+)) = REHAB_CONTEXT_PKG.getGLOBAL_DATE()'))
+,p_items_value_column_name=>'VALUE'
+,p_items_max_value=>'MAX_VALUE'
+,p_items_label_column_name=>'LABEL'
+,p_items_short_desc_column_name=>'TIP1'
+,p_color=>'#008cff'
+,p_items_label_rendered=>true
+,p_items_label_position=>'start'
+,p_items_label_font_size=>'12'
+,p_items_label_font_color=>'#008cff'
+,p_threshold_display=>'onIndicator'
+,p_reference_line_values=>'1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(15482726476527635)
+,p_plug_name=>'New'
+,p_static_id=>'new'
+,p_region_template_options=>'#DEFAULT#:t-CardsRegion--hideHeader js-addHiddenHeadingRoleDesc'
+,p_plug_template=>2074200852440250129
+,p_plug_display_sequence=>20
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+unistr('-- select ''\0412\0438\043C\0456\0440\044E\0432\0430\043D\043D\044F'' label, '),
+unistr('--         ''\0422\0438\0441\043A: ''||round(avg(MT_PRESSURE_SYS))||''/''||round(avg(MT_PRESSURE_DIA))||''; \041F\0443\043B\044C\0441: ''||round(avg(MT_PULSE))||''; \0412\0430\0433\0430: ''||round(avg(MT_WEIGHT),1) data,'),
+'--         201 app_page',
+'--   from REHAB_MEASUREMENTS ',
+'--  where MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() and trunc(MT_TAKEN) = REHAB_CONTEXT_PKG.getGLOBAL_DATE()',
+'-- union all',
+unistr('-- select ''\0422\0440\0435\043D\0443\0432\0430\043D\043D\044F'' label, '),
+'--         count(1)||'''' data,',
+'--         0 app_page ',
+'--  from REHAB_TRAININGS where TR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() and trunc(TR_START) = REHAB_CONTEXT_PKG.getGLOBAL_DATE()',
+'-- union all',
+unistr('-- select ''\0422\0440\0435\043A\0435\0440\0438'' label, '),
+'--          count(1)||'''' data,',
+'--         0 app_page',
+'--   from REHAB_WATCH_LOGS where WL_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() and trunc(WL_TAKEN) = REHAB_CONTEXT_PKG.getGLOBAL_DATE()',
+'',
+'select * from table(REHAB_UI_REPORTS_PKG.dashboard_ref)'))
+,p_lazy_loading=>false
+,p_plug_source_type=>'NATIVE_CARDS'
+,p_plug_query_num_rows_type=>'SCROLL'
+,p_show_total_row_count=>false
+);
+wwv_flow_imp_page.create_card(
+ p_id=>wwv_flow_imp.id(15483421714527642)
+,p_region_id=>wwv_flow_imp.id(15482726476527635)
+,p_layout_type=>'GRID'
+,p_title_adv_formatting=>false
+,p_title_column_name=>'LABEL'
+,p_sub_title_adv_formatting=>false
+,p_body_adv_formatting=>false
+,p_body_column_name=>'DATA'
+,p_second_body_adv_formatting=>false
+,p_media_adv_formatting=>false
+,p_pk1_column_name=>'LABEL'
+);
+wwv_flow_imp_page.create_card_action(
+ p_id=>wwv_flow_imp.id(15483862596527646)
+,p_card_id=>wwv_flow_imp.id(15483421714527642)
+,p_action_type=>'FULL_CARD'
+,p_display_sequence=>10
+,p_static_id=>'action'
+,p_link_target_type=>'REDIRECT_PAGE'
+,p_link_target=>'f?p=&APP_ID.:&APP_PAGE.:&SESSION.::&DEBUG.:::'
+);
+wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(16886194857504485)
-,p_plug_name=>'Rehabilitation V2.0'
+,p_plug_name=>unistr('\0420\0435\0430\0431\0456\043B\0456\0442\0430\0446\0456\044F')
 ,p_static_id=>'rehab-v2-0'
 ,p_region_template_options=>'#DEFAULT#'
 ,p_plug_template=>2675494171183407654
@@ -7005,6 +7366,137 @@ wwv_flow_imp_page.create_page_plug(
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(15483757190527645)
+,p_button_sequence=>10
+,p_button_plug_id=>wwv_flow_imp.id(15480456892527612)
+,p_button_name=>'GotoPills'
+,p_static_id=>'new'
+,p_show_as_disabled=>false
+,p_button_action=>'REDIRECT_PAGE'
+,p_button_template_options=>'#DEFAULT#'
+,p_button_template_id=>2350584059425431644
+,p_button_image_alt=>unistr('\0412\043D\0435\0441\0442\0438')
+,p_button_redirect_url=>'f?p=&APP_ID.:101:&SESSION.::&DEBUG.:::'
+,p_warn_on_unsaved_changes=>null
+,p_icon_css_classes=>'fa-medication-pill'
+,p_grid_new_row=>'Y'
+);
+end;
+/
+prompt --application/pages/page_00101
+begin
+wwv_flow_imp_page.create_page(
+ p_id=>101
+,p_name=>'InputPills'
+,p_alias=>'INPUTPILLS'
+,p_step_title=>unistr('\041F\0440\0438\0439\043E\043C \0442\0430\0431\043B\0435\0442\043E\043A')
+,p_autocomplete_on_off=>'OFF'
+,p_step_template=>4073832297226169690
+,p_page_template_options=>'#DEFAULT#'
+,p_protection_level=>'C'
+,p_page_component_map=>'11'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(29457094276221941)
+,p_plug_name=>'Breadcrumb'
+,p_static_id=>'breadcrumb'
+,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>2532939663579242476
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_menu_id=>wwv_flow_imp.id(16870387633504251)
+,p_plug_source_type=>'NATIVE_BREADCRUMB'
+,p_menu_template_id=>4073839682315169711
+);
+end;
+/
+prompt --application/pages/page_00201
+begin
+wwv_flow_imp_page.create_page(
+ p_id=>201
+,p_name=>'Measurements'
+,p_alias=>'MEASUREMENTS'
+,p_step_title=>unistr('\0412\0438\043C\0456\0440\044E\0432\0430\043D\043D\044F')
+,p_autocomplete_on_off=>'OFF'
+,p_step_template=>4073832297226169690
+,p_page_template_options=>'#DEFAULT#'
+,p_protection_level=>'C'
+,p_page_component_map=>'11'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(29459036441248125)
+,p_plug_name=>'Breadcrumb'
+,p_static_id=>'breadcrumb'
+,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>2532939663579242476
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_menu_id=>wwv_flow_imp.id(16870387633504251)
+,p_plug_source_type=>'NATIVE_BREADCRUMB'
+,p_menu_template_id=>4073839682315169711
+);
+end;
+/
+prompt --application/pages/page_00211
+begin
+wwv_flow_imp_page.create_page(
+ p_id=>211
+,p_name=>'Trainings'
+,p_alias=>'TRAININGS'
+,p_step_title=>'Trainings'
+,p_autocomplete_on_off=>'OFF'
+,p_step_template=>4073832297226169690
+,p_page_template_options=>'#DEFAULT#'
+,p_protection_level=>'C'
+,p_page_component_map=>'11'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(29852324921571869)
+,p_plug_name=>'Breadcrumb'
+,p_static_id=>'breadcrumb'
+,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>2532939663579242476
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_menu_id=>wwv_flow_imp.id(16870387633504251)
+,p_plug_source_type=>'NATIVE_BREADCRUMB'
+,p_menu_template_id=>4073839682315169711
+);
+end;
+/
+prompt --application/pages/page_00221
+begin
+wwv_flow_imp_page.create_page(
+ p_id=>221
+,p_name=>'WatchLogs'
+,p_alias=>'WATCHLOGS'
+,p_step_title=>'WatchLogs'
+,p_autocomplete_on_off=>'OFF'
+,p_step_template=>4073832297226169690
+,p_page_template_options=>'#DEFAULT#'
+,p_protection_level=>'C'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(29853746349574537)
+,p_plug_name=>'Breadcrumb'
+,p_static_id=>'breadcrumb'
+,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>2532939663579242476
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_menu_id=>wwv_flow_imp.id(16870387633504251)
+,p_plug_source_type=>'NATIVE_BREADCRUMB'
+,p_menu_template_id=>4073839682315169711
 );
 end;
 /

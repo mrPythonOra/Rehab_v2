@@ -15,7 +15,7 @@ wwv_flow_imp_shared.create_list(
  p_id=>wwv_flow_imp.id(16870838765504258)
 ,p_name=>'Navigation Menu'
 ,p_static_id=>'navigation-menu'
-,p_version_scn=>'SH256:y5l0-UqDjFC6wqnlCbiSMY1bzQer7biac0Fr4TjaXKU'
+,p_version_scn=>'SH256:a6jUA570dNz9WJWveFI6qXcKBQuEUvI-oRfKfnRKQm8'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(17056773995505539)
@@ -30,11 +30,51 @@ wwv_flow_imp_shared.create_list_item(
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(16885212315504474)
 ,p_list_item_display_sequence=>10
-,p_list_item_link_text=>'Home'
+,p_list_item_link_text=>unistr('\0414\043E\043C\0456\0432\043A\0430')
 ,p_static_id=>'home'
-,p_list_item_link_target=>'f?p=&APP_ID.:1:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_link_target=>'f?p=&APP_ID.:1:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-home'
 ,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(29456772809221898)
+,p_list_item_display_sequence=>20
+,p_list_item_link_text=>unistr('\041F\0440\0438\0439\043E\043C \0442\0430\0431\043B\0435\0442\043E\043A')
+,p_static_id=>'inputpills'
+,p_list_item_link_target=>'f?p=&APP_ID.:101:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-medication-pill'
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'101'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(29458681733248121)
+,p_list_item_display_sequence=>30
+,p_list_item_link_text=>unistr('\0412\0438\043C\0456\0440\044E\0432\0430\043D\043D\044F')
+,p_static_id=>'measurements'
+,p_list_item_link_target=>'f?p=&APP_ID.:201:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-ruler-combination'
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'201'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(29851988464571853)
+,p_list_item_display_sequence=>40
+,p_list_item_link_text=>'Trainings'
+,p_static_id=>'trainings'
+,p_list_item_link_target=>'f?p=&APP_ID.:211:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_icon=>'fa-file-o'
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'211'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(29853308176574533)
+,p_list_item_display_sequence=>50
+,p_list_item_link_text=>'WatchLogs'
+,p_static_id=>'watchlogs'
+,p_list_item_link_target=>'f?p=&APP_ID.:221:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_icon=>'fa-file-o'
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'221'
 );
 wwv_flow_imp.component_end;
 end;

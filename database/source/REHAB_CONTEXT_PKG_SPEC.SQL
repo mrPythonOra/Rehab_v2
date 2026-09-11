@@ -5,11 +5,16 @@
 
   procedure set_default_context;
   procedure set_specific_context(p_apex_user varchar2);
+  procedure reset_context;
+
+  function getCURR_APEX_USER return varchar2;
+  function getCURR_PATIENT   return number;
 
   function getAPEX_USER return varchar2;
   function getTENANT    return number;
   function getPATIENT   return number;
   function getMODE      return varchar2;
+  function getGLOBAL_DATE return date;
 
   function AccessLevelRW     return boolean;
   function AccessLevelRO     return boolean;

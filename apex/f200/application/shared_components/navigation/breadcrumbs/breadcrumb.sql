@@ -25,10 +25,42 @@ wwv_flow_imp_shared.create_menu_option(
 );
 wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(16870554490504254)
-,p_short_name=>'Home'
+,p_short_name=>unistr('\0414\043E\043C\0456\0432\043A\0430')
 ,p_static_id=>'home'
-,p_link=>'f?p=&APP_ID.:1:&APP_SESSION.::&DEBUG.:::'
+,p_link=>'f?p=&APP_ID.:1:&SESSION.::&DEBUG.:::'
 ,p_page_id=>1
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(29457611096221950)
+,p_parent_id=>wwv_flow_imp.id(16870554490504254)
+,p_short_name=>'InputPills'
+,p_static_id=>'inputpills'
+,p_link=>'f?p=&APP_ID.:101:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>101
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(29459699401248128)
+,p_parent_id=>wwv_flow_imp.id(16870554490504254)
+,p_short_name=>'Measurements'
+,p_static_id=>'measurements'
+,p_link=>'f?p=&APP_ID.:201:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>201
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(29852904301571877)
+,p_parent_id=>wwv_flow_imp.id(16870554490504254)
+,p_short_name=>'Trainings'
+,p_static_id=>'trainings'
+,p_link=>'f?p=&APP_ID.:211:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>211
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(29854371822574539)
+,p_parent_id=>wwv_flow_imp.id(16870554490504254)
+,p_short_name=>'WatchLogs'
+,p_static_id=>'watchlogs'
+,p_link=>'f?p=&APP_ID.:221:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>221
 );
 wwv_flow_imp.component_end;
 end;

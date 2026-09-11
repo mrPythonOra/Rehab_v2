@@ -1,0 +1,12 @@
+
+
+
+  CREATE OR REPLACE EDITIONABLE TYPE "DASHBOARD_REC"
+  OID '5B3605144292B9E9E0632462000AA6CD' AS OBJECT (
+    label        VARCHAR2(512),
+    data         VARCHAR2(4000),
+    app_page     number
+);
+/
+
+

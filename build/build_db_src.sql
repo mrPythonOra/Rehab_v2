@@ -35,7 +35,7 @@ replace(replace(q'[SELECT DBMS_METADATA.get_ddl ('<TYPE>', '<NAME>', user) txt F
 'prompt '||chr(10)||
 'spool off'
 from user_objects 
-where (object_type in ('PACKAGE'))
+where (object_type in ('PACKAGE','TYPE'))
 --or object_type in ('TYPE')
 order by object_type, object_name;
 
@@ -57,7 +57,7 @@ replace(replace(q'[SELECT DBMS_METADATA.get_ddl ('<TYPE>', '<NAME>', user) txt F
 'prompt '||chr(10)||
 'spool off'
 from user_objects 
-where (object_type in ('PACKAGE BODY'))
+where (object_type in ('PACKAGE BODY','TYPE BODY'))
 --or object_type in ('TYPE BODY')
 order by object_type, object_name;
 
@@ -79,7 +79,7 @@ replace(replace(q'[SELECT DBMS_METADATA.get_ddl ('<TYPE>', '<NAME>', user) txt F
 'prompt'||chr(10)||
 'spool off'
 from user_objects 
-where object_type in ( 'FUNCTION', 'PROCEDURE','TRIGGER','TYPE') 
+where object_type in ( 'FUNCTION', 'PROCEDURE','TRIGGER') 
 --and object_name not like 'ST0000%' and object_name not like 'GATHER_BT%' and object_name not like 'GET_BT%'
 order by object_type, object_name;
 
@@ -91,23 +91,23 @@ spool &COREMODPATH.\create_stored.sql
 
 prompt set define off
 
-select 
-'@@'||replace(object_name,'$','_')||'_'||replace(object_type,' ','_')||'.SQL'||chr(10)||'show errors'||chr(10)
-from user_objects 
-where object_type in ( 'TYPE') --and object_name not like 'ST0000%'
-order by object_type, object_name;
+--select 
+--'@@'||replace(object_name,'$','_')||'_'||replace(object_type,' ','_')||'.SQL'||chr(10)||'show errors'||chr(10)
+--from user_objects 
+--where object_type in ( 'TYPE') --and object_name not like 'ST0000%'
+--order by object_type, object_name;
 
 select 
 '@@'||object_name||'_SPEC.SQL'||chr(10)||'show errors'||chr(10)
 from user_objects 
-where (object_type in ('PACKAGE'))
+where (object_type in ('PACKAGE','TYPE'))
 --or object_type in ('TYPE')
-order by object_name;
+order by decode(object_type,'TYPE',0,1), object_name;
 
 select 
 '@@'||object_name||'_BODY.SQL'||chr(10)||'show errors'||chr(10)
 from user_objects 
-where  (object_type in ('PACKAGE BODY'))
+where  (object_type in ('PACKAGE BODY','TYPE BODY'))
 --or object_type in ('TYPE BODY')
 order by object_name;
 

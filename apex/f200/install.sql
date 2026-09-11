@@ -27,6 +27,10 @@ prompt --install
 @@application/shared_components/security/app_access_control/reader.sql
 @@application/shared_components/navigation/navigation_bar.sql
 @@application/shared_components/logic/application_processes/setcontext.sql
+@@application/shared_components/logic/application_items/global_date_capt.sql
+@@application/shared_components/logic/application_computations/global_context.sql
+@@application/shared_components/logic/application_computations/global_date.sql
+@@application/shared_components/logic/application_computations/global_date_capt.sql
 @@application/shared_components/logic/application_settings.sql
 @@application/shared_components/navigation/tabs/standard.sql
 @@application/shared_components/navigation/tabs/parent.sql
@@ -53,6 +57,10 @@ prompt --install
 @@application/user_interfaces/combined_files.sql
 @@application/pages/page_00000.sql
 @@application/pages/page_00001.sql
+@@application/pages/page_00101.sql
+@@application/pages/page_00201.sql
+@@application/pages/page_00211.sql
+@@application/pages/page_00221.sql
 @@application/pages/page_09999.sql
 @@application/pages/page_10000.sql
 @@application/pages/page_10010.sql
