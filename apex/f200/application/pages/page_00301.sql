@@ -1,7 +1,7 @@
-prompt --application/pages/page_00221
+prompt --application/pages/page_00301
 begin
 --   Manifest
---     PAGE: 00221
+--     PAGE: 00301
 --   Manifest End
 wwv_flow_imp.component_begin (
  p_version_yyyy_mm_dd=>'2026.03.30'
@@ -12,10 +12,10 @@ wwv_flow_imp.component_begin (
 ,p_default_owner=>'REHAB_V2'
 );
 wwv_flow_imp_page.create_page(
- p_id=>221
-,p_name=>'WatchLogs'
-,p_alias=>'WATCHLOGS'
-,p_step_title=>unistr('\0422\0440\0435\043A\0435\0440\0438')
+ p_id=>301
+,p_name=>'Inventory'
+,p_alias=>'INVENTORY'
+,p_step_title=>unistr('\0417\0430\043F\0430\0441\0438')
 ,p_autocomplete_on_off=>'OFF'
 ,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
@@ -23,7 +23,7 @@ wwv_flow_imp_page.create_page(
 ,p_page_component_map=>'11'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(29853746349574537)
+ p_id=>wwv_flow_imp.id(29857675832894293)
 ,p_plug_name=>'Breadcrumb'
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'

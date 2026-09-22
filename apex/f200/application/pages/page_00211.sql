@@ -15,7 +15,7 @@ wwv_flow_imp_page.create_page(
  p_id=>211
 ,p_name=>'Trainings'
 ,p_alias=>'TRAININGS'
-,p_step_title=>'Trainings'
+,p_step_title=>unistr('\0422\0440\0435\043D\0443\0432\0430\043D\043D\044F')
 ,p_autocomplete_on_off=>'OFF'
 ,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'

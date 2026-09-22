@@ -23,7 +23,7 @@ wwv_imp_workspace.create_flow(
 ,p_max_session_length_sec=>7200
 ,p_max_session_idle_sec=>7200
 ,p_compatibility_mode=>'26.1'
-,p_flow_language=>'en'
+,p_flow_language=>'uk'
 ,p_flow_language_derived_from=>'FLOW_PRIMARY_LANGUAGE'
 ,p_allow_feedback_yn=>'Y'
 ,p_date_format=>'YYYY-MON-DD'
@@ -59,7 +59,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'Rehab V2.0'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>2461288113614
-,p_version_scn=>'50422611427775'
+,p_version_scn=>'50424717631465'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -82,6 +82,7 @@ wwv_imp_workspace.create_flow(
 ,p_nav_bar_list_id=>wwv_flow_imp.id(16871619007504324)
 ,p_nav_bar_list_template_id=>2849019392706229583
 ,p_nav_bar_template_options=>'#DEFAULT#'
+,p_translation_method=>'TEXT_MESSAGES'
 );
 wwv_flow_imp.component_end;
 end;

@@ -61,6 +61,7 @@ prompt --install
 @@application/pages/page_00201.sql
 @@application/pages/page_00211.sql
 @@application/pages/page_00221.sql
+@@application/pages/page_00301.sql
 @@application/pages/page_09999.sql
 @@application/pages/page_10000.sql
 @@application/pages/page_10010.sql

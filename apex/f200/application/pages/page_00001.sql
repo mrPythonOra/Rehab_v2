@@ -96,24 +96,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-unistr('-- select ''\0412\0438\043C\0456\0440\044E\0432\0430\043D\043D\044F'' label, '),
-unistr('--         ''\0422\0438\0441\043A: ''||round(avg(MT_PRESSURE_SYS))||''/''||round(avg(MT_PRESSURE_DIA))||''; \041F\0443\043B\044C\0441: ''||round(avg(MT_PULSE))||''; \0412\0430\0433\0430: ''||round(avg(MT_WEIGHT),1) data,'),
-'--         201 app_page',
-'--   from REHAB_MEASUREMENTS ',
-'--  where MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() and trunc(MT_TAKEN) = REHAB_CONTEXT_PKG.getGLOBAL_DATE()',
-'-- union all',
-unistr('-- select ''\0422\0440\0435\043D\0443\0432\0430\043D\043D\044F'' label, '),
-'--         count(1)||'''' data,',
-'--         0 app_page ',
-'--  from REHAB_TRAININGS where TR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() and trunc(TR_START) = REHAB_CONTEXT_PKG.getGLOBAL_DATE()',
-'-- union all',
-unistr('-- select ''\0422\0440\0435\043A\0435\0440\0438'' label, '),
-'--          count(1)||'''' data,',
-'--         0 app_page',
-'--   from REHAB_WATCH_LOGS where WL_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() and trunc(WL_TAKEN) = REHAB_CONTEXT_PKG.getGLOBAL_DATE()',
-'',
-'select * from table(REHAB_UI_REPORTS_PKG.dashboard_ref)'))
+,p_plug_source=>'select * from table(REHAB_UI_REPORTS_PKG.dashboard_ref)'
 ,p_lazy_loading=>false
 ,p_plug_source_type=>'NATIVE_CARDS'
 ,p_plug_query_num_rows_type=>'SCROLL'
@@ -126,9 +109,10 @@ wwv_flow_imp_page.create_card(
 ,p_title_adv_formatting=>false
 ,p_title_column_name=>'LABEL'
 ,p_sub_title_adv_formatting=>false
-,p_body_adv_formatting=>false
-,p_body_column_name=>'DATA'
-,p_second_body_adv_formatting=>false
+,p_body_adv_formatting=>true
+,p_body_html_expr=>'<h1 class="a-CardView-subTitle ">&DATA!RAW.</h1>'
+,p_second_body_adv_formatting=>true
+,p_second_body_html_expr=>'<h4 class="a-CardView-subTitle ">&DATA2!RAW.</h4>'
 ,p_media_adv_formatting=>false
 ,p_pk1_column_name=>'LABEL'
 );

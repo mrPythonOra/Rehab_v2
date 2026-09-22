@@ -29,10 +29,12 @@ wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(16878706863504426)
 ,p_plug_name=>'Rehab V2.0'
 ,p_static_id=>'rehab-v2-0'
+,p_title=>unistr('\0420\0435\0430\0431\0456\043B\0456\0442\0430\0446\0456\044F V2.0')
 ,p_region_template_options=>'#DEFAULT#'
 ,p_plug_template=>2675634334296186762
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
 ,p_region_image=>'#APP_FILES#icons/app-icon-512.png'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
