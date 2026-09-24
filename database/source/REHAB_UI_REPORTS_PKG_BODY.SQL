@@ -77,7 +77,7 @@
                                     when nvl(i.p_pulse,i.c_pulse) > i.c_pulse then UNISTR('\2193')
                                else null end
                           else '-'
-                          end;
+                          end || case when i.p_pulse is not null then '('||i.p_pulse||')' else null end;
       end if;
       if REHAB_CONFIG_PKG.get_config_par('DBMEA_WEIGHT') = REHAB_CONFIG_PKG.cnstY and i.c_wei is not null then
         l_msg := l_msg || case when l_msg is not null then '<br>' else null end ||

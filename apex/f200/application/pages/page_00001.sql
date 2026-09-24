@@ -157,6 +157,37 @@ wwv_flow_imp_page.create_page_button(
 ,p_icon_css_classes=>'fa-medication-pill'
 ,p_grid_new_row=>'Y'
 );
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(44051886786422902)
+,p_button_sequence=>20
+,p_button_plug_id=>wwv_flow_imp.id(15480456892527612)
+,p_button_name=>'RefreshData'
+,p_static_id=>'refreshdata'
+,p_show_as_disabled=>false
+,p_button_action=>'SUBMIT'
+,p_button_template_options=>'#DEFAULT#'
+,p_button_template_id=>2350584059425431644
+,p_button_image_alt=>unistr('\041E\043D\043E\0432\0438\0442\0438 \0434\0430\043D\0456')
+,p_button_execute_validations=>'N'
+,p_icon_css_classes=>'fa-refresh'
+,p_grid_new_row=>'Y'
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(44051712164422901)
+,p_process_sequence=>10
+,p_process_point=>'AFTER_SUBMIT'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'RefrehData'
+,p_static_id=>'refrehdata'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'begin',
+'  REHAB_MIGRATE_PKG.refresh_data();',
+'end;'))
+,p_process_clob_language=>'PLSQL'
+,p_error_display_location=>'INLINE_IN_NOTIFICATION'
+,p_process_when_button_id=>wwv_flow_imp.id(44051886786422902)
+,p_internal_uid=>44051712164422901
+);
 wwv_flow_imp.component_end;
 end;
 /

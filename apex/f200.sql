@@ -33,16 +33,16 @@ prompt APPLICATION 200 - Rehabilitation 2.0
 -- Application Export:
 --   Application:     200
 --   Name:            Rehabilitation 2.0
---   Date and Time:   16:03 Tuesday September 22, 2026
+--   Date and Time:   16:05 Thursday September 24, 2026
 --   Exported By:     REHAB_V2
 --   Flashback:       0
 --   Export Type:     Application Export
 --     Pages:                     30
 --       Items:                   43
 --       Validations:              2
---       Processes:               19
+--       Processes:               20
 --       Regions:                 67
---       Buttons:                 38
+--       Buttons:                 39
 --       Dynamic Actions:          8
 --     Shared Components:
 --       Logic:
@@ -127,7 +127,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'Rehab V2.0'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>2461288113614
-,p_version_scn=>'50424717631465'
+,p_version_scn=>'50425103264003'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -7442,6 +7442,37 @@ wwv_flow_imp_page.create_page_button(
 ,p_warn_on_unsaved_changes=>null
 ,p_icon_css_classes=>'fa-medication-pill'
 ,p_grid_new_row=>'Y'
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(44051886786422902)
+,p_button_sequence=>20
+,p_button_plug_id=>wwv_flow_imp.id(15480456892527612)
+,p_button_name=>'RefreshData'
+,p_static_id=>'refreshdata'
+,p_show_as_disabled=>false
+,p_button_action=>'SUBMIT'
+,p_button_template_options=>'#DEFAULT#'
+,p_button_template_id=>2350584059425431644
+,p_button_image_alt=>unistr('\041E\043D\043E\0432\0438\0442\0438 \0434\0430\043D\0456')
+,p_button_execute_validations=>'N'
+,p_icon_css_classes=>'fa-refresh'
+,p_grid_new_row=>'Y'
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(44051712164422901)
+,p_process_sequence=>10
+,p_process_point=>'AFTER_SUBMIT'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'RefrehData'
+,p_static_id=>'refrehdata'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'begin',
+'  REHAB_MIGRATE_PKG.refresh_data();',
+'end;'))
+,p_process_clob_language=>'PLSQL'
+,p_error_display_location=>'INLINE_IN_NOTIFICATION'
+,p_process_when_button_id=>wwv_flow_imp.id(44051886786422902)
+,p_internal_uid=>44051712164422901
 );
 end;
 /
