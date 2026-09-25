@@ -46,6 +46,13 @@
         Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBMEA_TEMPR','Температура','Дашборд Виміри',null,null,'Y',null);
         Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBMEA_WEIGHT','Вага','Дашборд Виміри',null,null,'Y',null);
         Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBREM_DAYS2ALERT','Залишок днів','Дашборд Залишки',null,null,'14',null);
+        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_ALLSTEPS','Всі денні кроки','Дашборд Мета',null,null,'10000',null);
+        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_PDIA','Тиск DIA','Дашборд Мета',null,null,'80',null);
+        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_PSYS','Тиск SYS','Дашборд Мета',null,null,'120',null);
+        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_PULSE','Пульс','Дашборд Мета',null,null,'60',null);
+        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_TRAINDIST','Тренуальна дистанція','Дашборд Мета',null,null,'5',null);
+        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_TRAINSTEPS','Тренувальні кроки','Дашборд Мета',null,null,'8000',null);
+        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_WEIGHT','Вага','Дашборд Мета',null,null,'70',null);
         Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBWAT_PULSE','Пульс','Дашборд Трекери',null,null,'Y',null);
         Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBWAT_STEPS','Кроки','Дашборд Трекери',null,null,'Y',null);
         Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRA_DISTANCE','Дистанція','Дашборд Тренування',null,null,'Y',null);

@@ -33,7 +33,7 @@ prompt APPLICATION 200 - Rehabilitation 2.0
 -- Application Export:
 --   Application:     200
 --   Name:            Rehabilitation 2.0
---   Date and Time:   16:05 Thursday September 24, 2026
+--   Date and Time:   14:34 Friday September 25, 2026
 --   Exported By:     REHAB_V2
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -127,7 +127,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'Rehab V2.0'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>2461288113614
-,p_version_scn=>'50425103264003'
+,p_version_scn=>'50425275317233'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -7393,14 +7393,15 @@ wwv_flow_imp_page.create_card(
 ,p_region_id=>wwv_flow_imp.id(15482726476527635)
 ,p_layout_type=>'GRID'
 ,p_title_adv_formatting=>false
-,p_title_column_name=>'LABEL'
-,p_sub_title_adv_formatting=>false
+,p_title_column_name=>'MAINLABEL'
+,p_sub_title_adv_formatting=>true
+,p_sub_title_html_expr=>'<h4 class="a-CardView-subTitle ">&SUBLABEL!RAW.</h4>'
 ,p_body_adv_formatting=>true
-,p_body_html_expr=>'<h1 class="a-CardView-subTitle ">&DATA!RAW.</h1>'
+,p_body_html_expr=>'<div class="a-CardView-mainContent ">&DATA1!RAW.</div>'
 ,p_second_body_adv_formatting=>true
 ,p_second_body_html_expr=>'<h4 class="a-CardView-subTitle ">&DATA2!RAW.</h4>'
 ,p_media_adv_formatting=>false
-,p_pk1_column_name=>'LABEL'
+,p_pk1_column_name=>'MAINLABEL'
 );
 wwv_flow_imp_page.create_card_action(
  p_id=>wwv_flow_imp.id(15483862596527646)
@@ -7456,7 +7457,8 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_image_alt=>unistr('\041E\043D\043E\0432\0438\0442\0438 \0434\0430\043D\0456')
 ,p_button_execute_validations=>'N'
 ,p_icon_css_classes=>'fa-refresh'
-,p_grid_new_row=>'Y'
+,p_grid_new_row=>'N'
+,p_grid_new_column=>'Y'
 );
 wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(44051712164422901)
