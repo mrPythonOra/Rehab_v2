@@ -19,7 +19,7 @@ whenever sqlerror exit sql.sqlcode rollback
 begin
 wwv_flow_imp.import_begin (
  p_version_yyyy_mm_dd=>'2026.03.30'
-,p_release=>'26.1.4'
+,p_release=>'26.1.5'
 ,p_default_workspace_id=>166651606440306663
 ,p_default_application_id=>200
 ,p_default_id_offset=>0
@@ -33,7 +33,7 @@ prompt APPLICATION 200 - Rehabilitation 2.0
 -- Application Export:
 --   Application:     200
 --   Name:            Rehabilitation 2.0
---   Date and Time:   14:34 Friday September 25, 2026
+--   Date and Time:   15:53 Sunday September 27, 2026
 --   Exported By:     REHAB_V2
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -41,7 +41,7 @@ prompt APPLICATION 200 - Rehabilitation 2.0
 --       Items:                   43
 --       Validations:              2
 --       Processes:               20
---       Regions:                 67
+--       Regions:                 68
 --       Buttons:                 39
 --       Dynamic Actions:          8
 --     Shared Components:
@@ -68,7 +68,7 @@ prompt APPLICATION 200 - Rehabilitation 2.0
 --       Reports:
 --       E-Mail:
 --     Supporting Objects:  Included
---   Version:         26.1.4
+--   Version:         26.1.5
 --   Instance ID:     7705223948678342
 --
 
@@ -127,7 +127,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'Rehab V2.0'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>2461288113614
-,p_version_scn=>'50425275317233'
+,p_version_scn=>'50425662767184'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -7299,8 +7299,8 @@ prompt --application/pages/page_00001
 begin
 wwv_flow_imp_page.create_page(
  p_id=>1
-,p_name=>'Home'
-,p_alias=>'HOME'
+,p_name=>'Dashboard'
+,p_alias=>'DASHBRD'
 ,p_step_title=>unistr('\0420\0435\0430\0431\0456\043B\0456\0442\0430\0446\0456\044F 2.0')
 ,p_autocomplete_on_off=>'OFF'
 ,p_step_template=>4073832297226169690
@@ -7375,14 +7375,14 @@ unistr('       ''\0421\043F\043E\0436\0438\0442\043E \0442\0430\0431\043B\0435\0
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(15482726476527635)
-,p_plug_name=>'New'
+,p_plug_name=>'Dashboard'
 ,p_static_id=>'new'
 ,p_region_template_options=>'#DEFAULT#:t-CardsRegion--hideHeader js-addHiddenHeadingRoleDesc'
 ,p_plug_template=>2074200852440250129
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
-,p_plug_source=>'select * from table(REHAB_UI_REPORTS_PKG.dashboard_ref)'
+,p_plug_source=>'select d.* from table(REHAB_UI_REPORTS_PKG.dashboard_ref) d'
 ,p_lazy_loading=>false
 ,p_plug_source_type=>'NATIVE_CARDS'
 ,p_plug_query_num_rows_type=>'SCROLL'
@@ -7400,8 +7400,14 @@ wwv_flow_imp_page.create_card(
 ,p_body_html_expr=>'<div class="a-CardView-mainContent ">&DATA1!RAW.</div>'
 ,p_second_body_adv_formatting=>true
 ,p_second_body_html_expr=>'<h4 class="a-CardView-subTitle ">&DATA2!RAW.</h4>'
+,p_icon_source_type=>'DYNAMIC_CLASS'
+,p_icon_class_column_name=>'ICONFILE'
+,p_icon_css_classes=>'fa'
+,p_icon_position=>'START'
+,p_badge_column_name=>'BAGECOL'
+,p_badge_label=>'&BAGELABEL.: '
 ,p_media_adv_formatting=>false
-,p_pk1_column_name=>'MAINLABEL'
+,p_pk1_column_name=>'ID'
 );
 wwv_flow_imp_page.create_card_action(
  p_id=>wwv_flow_imp.id(15483862596527646)
@@ -7457,8 +7463,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_image_alt=>unistr('\041E\043D\043E\0432\0438\0442\0438 \0434\0430\043D\0456')
 ,p_button_execute_validations=>'N'
 ,p_icon_css_classes=>'fa-refresh'
-,p_grid_new_row=>'N'
-,p_grid_new_column=>'Y'
+,p_grid_new_row=>'Y'
 );
 wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(44051712164422901)
@@ -7482,15 +7487,15 @@ prompt --application/pages/page_00101
 begin
 wwv_flow_imp_page.create_page(
  p_id=>101
-,p_name=>'InputPills'
-,p_alias=>'INPUTPILLS'
+,p_name=>'ConsumeMedications'
+,p_alias=>'CONSMED'
 ,p_step_title=>unistr('\041F\0440\0438\0439\043E\043C \0442\0430\0431\043B\0435\0442\043E\043A')
 ,p_autocomplete_on_off=>'OFF'
 ,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(17092736246142129)
 ,p_protection_level=>'C'
-,p_page_component_map=>'11'
+,p_page_component_map=>'23'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(29457094276221941)
@@ -7505,6 +7510,43 @@ wwv_flow_imp_page.create_page_plug(
 ,p_menu_id=>wwv_flow_imp.id(16870387633504251)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
 ,p_menu_template_id=>4073839682315169711
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(44051944887422903)
+,p_plug_name=>'ConsumeDrugs'
+,p_static_id=>'new'
+,p_region_template_options=>'#DEFAULT#:t-CardsRegion--hideHeader js-addHiddenHeadingRoleDesc'
+,p_plug_template=>2074200852440250129
+,p_plug_display_sequence=>10
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'--select da.*, dr.DR_ITEM_IMAGE1 from table(REHAB_DRUGUSE_PKG.druguse_dashboard_ref) da, REHAB_DRUGS dr where da.dr_id = dr.dr_id',
+'select da.* from table(REHAB_DRUGUSE_PKG.druguse_dashboard_ref) da'))
+,p_lazy_loading=>false
+,p_plug_source_type=>'NATIVE_CARDS'
+,p_plug_query_num_rows_type=>'SCROLL'
+,p_show_total_row_count=>false
+);
+wwv_flow_imp_page.create_card(
+ p_id=>wwv_flow_imp.id(44052063181422904)
+,p_region_id=>wwv_flow_imp.id(44051944887422903)
+,p_layout_type=>'GRID'
+,p_title_adv_formatting=>false
+,p_title_column_name=>'MAINLABEL'
+,p_sub_title_adv_formatting=>true
+,p_sub_title_html_expr=>'<h4 class="a-CardView-subTitle ">&SUBLABEL!RAW.</h4>'
+,p_body_adv_formatting=>true
+,p_body_html_expr=>'<div class="a-CardView-mainContent ">&DATA1!RAW.</div>'
+,p_second_body_adv_formatting=>true
+,p_second_body_html_expr=>'<h4 class="a-CardView-subTitle ">&DATA2!RAW.</h4>'
+,p_icon_source_type=>'BLOB'
+,p_icon_blob_column_name=>'DRUG_IMG'
+,p_icon_position=>'START'
+,p_badge_column_name=>'BAGECOL'
+,p_badge_label=>'&BAGELABEL.'
+,p_media_adv_formatting=>false
+,p_pk1_column_name=>'ID'
 );
 end;
 /

@@ -5,7 +5,7 @@ begin
 --   Manifest End
 wwv_flow_imp.component_begin (
  p_version_yyyy_mm_dd=>'2026.03.30'
-,p_release=>'26.1.4'
+,p_release=>'26.1.5'
 ,p_default_workspace_id=>166651606440306663
 ,p_default_application_id=>200
 ,p_default_id_offset=>0
@@ -13,8 +13,8 @@ wwv_flow_imp.component_begin (
 );
 wwv_flow_imp_page.create_page(
  p_id=>1
-,p_name=>'Home'
-,p_alias=>'HOME'
+,p_name=>'Dashboard'
+,p_alias=>'DASHBRD'
 ,p_step_title=>unistr('\0420\0435\0430\0431\0456\043B\0456\0442\0430\0446\0456\044F 2.0')
 ,p_autocomplete_on_off=>'OFF'
 ,p_step_template=>4073832297226169690
@@ -89,14 +89,14 @@ unistr('       ''\0421\043F\043E\0436\0438\0442\043E \0442\0430\0431\043B\0435\0
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(15482726476527635)
-,p_plug_name=>'New'
+,p_plug_name=>'Dashboard'
 ,p_static_id=>'new'
 ,p_region_template_options=>'#DEFAULT#:t-CardsRegion--hideHeader js-addHiddenHeadingRoleDesc'
 ,p_plug_template=>2074200852440250129
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
-,p_plug_source=>'select * from table(REHAB_UI_REPORTS_PKG.dashboard_ref)'
+,p_plug_source=>'select d.* from table(REHAB_UI_REPORTS_PKG.dashboard_ref) d'
 ,p_lazy_loading=>false
 ,p_plug_source_type=>'NATIVE_CARDS'
 ,p_plug_query_num_rows_type=>'SCROLL'
@@ -114,8 +114,14 @@ wwv_flow_imp_page.create_card(
 ,p_body_html_expr=>'<div class="a-CardView-mainContent ">&DATA1!RAW.</div>'
 ,p_second_body_adv_formatting=>true
 ,p_second_body_html_expr=>'<h4 class="a-CardView-subTitle ">&DATA2!RAW.</h4>'
+,p_icon_source_type=>'DYNAMIC_CLASS'
+,p_icon_class_column_name=>'ICONFILE'
+,p_icon_css_classes=>'fa'
+,p_icon_position=>'START'
+,p_badge_column_name=>'BAGECOL'
+,p_badge_label=>'&BAGELABEL.: '
 ,p_media_adv_formatting=>false
-,p_pk1_column_name=>'MAINLABEL'
+,p_pk1_column_name=>'ID'
 );
 wwv_flow_imp_page.create_card_action(
  p_id=>wwv_flow_imp.id(15483862596527646)
@@ -171,8 +177,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_image_alt=>unistr('\041E\043D\043E\0432\0438\0442\0438 \0434\0430\043D\0456')
 ,p_button_execute_validations=>'N'
 ,p_icon_css_classes=>'fa-refresh'
-,p_grid_new_row=>'N'
-,p_grid_new_column=>'Y'
+,p_grid_new_row=>'Y'
 );
 wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(44051712164422901)

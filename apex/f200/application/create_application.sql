@@ -5,7 +5,7 @@ begin
 --   Manifest End
 wwv_flow_imp.component_begin (
  p_version_yyyy_mm_dd=>'2026.03.30'
-,p_release=>'26.1.4'
+,p_release=>'26.1.5'
 ,p_default_workspace_id=>166651606440306663
 ,p_default_application_id=>200
 ,p_default_id_offset=>0
@@ -59,7 +59,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'Rehab V2.0'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>2461288113614
-,p_version_scn=>'50425275317233'
+,p_version_scn=>'50425662767184'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'

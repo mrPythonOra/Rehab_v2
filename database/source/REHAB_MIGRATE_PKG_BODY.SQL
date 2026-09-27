@@ -36,23 +36,34 @@
         --load data---------------------------------------------------------------------
         --******************************************************************************
         --prompt rehab_configs
-        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBAGG_MEAS','Вимірювання','Дашборд Агрегація',null,null,'2',null);
-        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBAGG_TRAI','Тренування','Дашборд Агрегація',null,null,'7',null);
-        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBAGG_TRAK','Трекери','Дашборд Агрегація',null,null,'7',null);
+        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBAGG_MEAS','Вимірювання, днів','Дашборд Агрегація',null,null,'2',null);
+        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBAGG_TRAI','Тренування, днів','Дашборд Агрегація',null,null,'7',null);
+        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBAGG_TRAK','Трекери, днів','Дашборд Агрегація',null,null,'7',null);
         Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBMEA_OXY','Кисень','Дашборд Виміри',null,null,'Y',null);
         Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBMEA_PRESSURE','Кров''яний тиск','Дашборд Виміри',null,null,'Y',null);
         Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBMEA_PULSE','Пульс','Дашборд Виміри',null,null,'Y',null);
         Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBMEA_SUGAR','Цукор','Дашборд Виміри',null,null,'Y',null);
         Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBMEA_TEMPR','Температура','Дашборд Виміри',null,null,'Y',null);
         Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBMEA_WEIGHT','Вага','Дашборд Виміри',null,null,'Y',null);
-        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBREM_DAYS2ALERT','Залишок днів','Дашборд Залишки',null,null,'14',null);
+        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBREM_DAYS2ALERT','Залишок, днів','Дашборд Залишки',null,null,'14',null);
         Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_ALLSTEPS','Всі денні кроки','Дашборд Мета',null,null,'10000',null);
-        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_PDIA','Тиск DIA','Дашборд Мета',null,null,'80',null);
-        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_PSYS','Тиск SYS','Дашборд Мета',null,null,'120',null);
-        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_PULSE','Пульс','Дашборд Мета',null,null,'60',null);
+        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_OXI_MAX','Кисень max','Дашборд Мета',null,null,'100',null);
+        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_OXI_MIN','Кисень min','Дашборд Мета',null,null,'94',null);
+        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_PDIA_MAX','Тиск DIA max','Дашборд Мета',null,null,'85',null);
+        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_PDIA_MIN','Тиск DIA min','Дашборд Мета',null,null,'70',null);
+        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_PSYS_MAX','Тиск SYS max','Дашборд Мета',null,null,'125',null);
+        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_PSYS_MIN','Тиск SYS min','Дашборд Мета',null,null,'115',null);
+        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_PULSE_MAX','Пульс max','Дашборд Мета',null,null,'65',null);
+        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_PULSE_MIN','Пульс min','Дашборд Мета',null,null,'55',null);
+        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_SHOW','Показувати мету','Дашборд Мета',null,null,'Y',null);
+        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_SUGAR_MAX','Цукор max','Дашборд Мета',null,null,'5',null);
+        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_SUGAR_MIN','Цукор min','Дашборд Мета',null,null,'3.5',null);
+        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_TEMPR_MAX','Температура max','Дашборд Мета',null,null,'37',null);
+        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_TEMPR_MIN','Температура min','Дашборд Мета',null,null,'36',null);
         Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_TRAINDIST','Тренуальна дистанція','Дашборд Мета',null,null,'5',null);
         Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_TRAINSTEPS','Тренувальні кроки','Дашборд Мета',null,null,'8000',null);
-        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_WEIGHT','Вага','Дашборд Мета',null,null,'70',null);
+        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_WEIGHT_MAX','Вага max','Дашборд Мета',null,null,'73',null);
+        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRG_WEIGHT_MIN','Вага min','Дашборд Мета',null,null,'70',null);
         Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBWAT_PULSE','Пульс','Дашборд Трекери',null,null,'Y',null);
         Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBWAT_STEPS','Кроки','Дашборд Трекери',null,null,'Y',null);
         Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBTRA_DISTANCE','Дистанція','Дашборд Тренування',null,null,'Y',null);
@@ -503,9 +514,9 @@
         --******************************************************************************
         --prompt rehab_watch_logs
         insert into REHAB_WATCH_LOGS
-         (wl_id, WL_PAT_ID, WL_TAKEN, WL_STEPS, WL_NIGHT_MIN_PULSE, WL_NIGHT_MAX_PULSE, WL_NIGHT_AVG_PULSE)
+         (wl_id, WL_PAT_ID, WL_TAKEN, WL_STEPS, WL_NIGHT_MIN_PULSE, WL_NIGHT_MAX_PULSE, WL_NIGHT_AVG_PULSE, WL_CALM_AVG_PULSE, WL_TOTAL_AVG_PULSE, WL_TOTAL_MIN_PULSE, WL_TOTAL_MAX_PULSE)
         select
-          wl_id,    PAT_ID,    TAKEN,    STEPS,    NIGHT_MIN_PULSE,    NIGHT_MAX_PULSE, WL_NIGHT_AVG_PULSE
+          wl_id,    PAT_ID,    TAKEN,    STEPS,    NIGHT_MIN_PULSE,    NIGHT_MAX_PULSE, WL_NIGHT_AVG_PULSE, WL_CALM_AVG_PULSE, WL_TOTAL_AVG_PULSE, WL_TOTAL_MIN_PULSE, WL_TOTAL_MAX_PULSE
         from reabilitation.watch_log;
         commit;
         declare

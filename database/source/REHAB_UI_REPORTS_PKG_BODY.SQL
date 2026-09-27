@@ -3,25 +3,110 @@
 
   CREATE OR REPLACE EDITIONABLE PACKAGE BODY "REHAB_UI_REPORTS_PKG" AS
 
-  function dashboard_ref return dashboard_tab pipelined AS
+  function dashboard_ref return rehab_dashboard_tab pipelined AS
     l_msg varchar2(4000);
     l_msg2 varchar2(4000);
---    l_pr_sys number;
---    l_pr_dia number;
---    l_pulse number;
---    l_wei number;
---    l_temp number;
---    l_sug number;
---    l_oxi number;
---    l_dist number;
---    l_steps number;
---    l_p_avg number;
---    l_p_min number;
---    l_p_max number;
+    l_target_char varchar2(100):= '<span style="color: cyan;">'||UNISTR('\29BF')||'</span>';
+    l_badge varchar2(100);
+    --**************************************************************************
+    procedure get_stat_msg3(p_msg in out nocopy varchar2, p_name varchar2, p_val1_curr number, p_val2_curr number, p_val3_curr number, p_val1_prev number, p_val2_prev number, p_val3_prev number)
+    is
+    begin
+        p_msg := p_msg || case when p_msg is not null then '<br>' else null end || --UNISTR('\2764')||
+                         '<b>' || p_name || ':</b> (awg/min/max): '||
+                          case when p_val1_curr is not null then p_val1_curr||
+                               case when nvl(p_val1_prev,p_val1_curr) < p_val1_curr then UNISTR('\2191')
+                                    when nvl(p_val1_prev,p_val1_curr) > p_val1_curr then UNISTR('\2193')
+                               else null end
+                          else '-'
+                          end || case when p_val1_prev is not null then '('||p_val1_prev||') / ' else '- / ' end ||
+                          case when p_val2_curr is not null then p_val2_curr||
+                               case when nvl(p_val2_prev,p_val2_curr) < p_val2_curr then UNISTR('\2191')
+                                    when nvl(p_val2_prev,p_val2_curr) > p_val2_curr then UNISTR('\2193')
+                               else null end
+                          else '-'
+                          end || case when p_val2_prev is not null then '('||p_val2_prev||') / ' else '- / ' end ||
+                          case when p_val3_curr is not null then p_val3_curr||
+                               case when nvl(p_val3_prev,p_val3_curr) < p_val3_curr then UNISTR('\2191')
+                                    when nvl(p_val3_prev,p_val3_curr) > p_val3_curr then UNISTR('\2193')
+                               else null end
+                          else '-'
+                          end || case when p_val3_prev is not null then '('||p_val3_prev||')' else '-' end;
+    end;
+    --**************************************************************************
+    procedure get_stat_msg2(p_msg in out nocopy varchar2, p_name varchar2, p_val1_curr number, p_val2_curr number, p_val1_prev number, p_val2_prev number)
+    is
+    begin
+        p_msg :=p_msg || nvl2(p_msg,'<br>',null) || '<b>'||
+                p_name||':</b> '||case when p_val1_curr is not null then p_val1_curr ||
+                                       case when nvl(p_val1_prev,p_val1_curr) < p_val1_curr then UNISTR('\2191')
+                                            when nvl(p_val1_prev,p_val1_curr) > p_val1_curr then UNISTR('\2193')
+                                       else null end
+                                  else '-'
+                                  end || case when p_val1_prev is not null then '('||p_val1_prev||')' else null end
+                                  ||' / '||
+                                  case when p_val2_curr is not null then p_val2_curr ||
+                                       case when nvl(p_val2_prev,p_val2_curr) < p_val2_curr then UNISTR('\2191')
+                                            when nvl(p_val2_prev,p_val2_curr) > p_val2_curr then UNISTR('\2193')
+                                       else null end
+                                  else '-'
+                                  end || case when p_val2_prev is not null then '('||p_val2_prev||')' else null end;
+    end;
+    --**************************************************************************
+    procedure get_stat_msg(p_msg in out nocopy varchar2, p_name varchar2, p_val_curr number, p_val_prev number, p_delim varchar2 default ' ')
+    is
+    begin
+        p_msg := p_msg || nvl2(p_msg,p_delim,null) ||
+                         '<b>'||p_name||':</b> '||
+                          case when p_val_curr is not null then p_val_curr ||
+                               case when nvl(p_val_prev,p_val_curr) < p_val_curr then UNISTR('\2191')
+                                    when nvl(p_val_prev,p_val_curr) > p_val_curr then UNISTR('\2193')
+                               else null end
+                          else '-'
+                          end || case when p_val_prev is not null then '('||p_val_prev||')' else null end;
+    end;
+    --**************************************************************************
+    procedure get_target_msg2(p_msg in out nocopy varchar2, p_name varchar2, p_val1 number, p_val2 number, p_par_min1 varchar2, p_par_max1 varchar2, p_par_min2 varchar2, p_par_max2 varchar2)
+    is
+    begin
+        if REHAB_CONFIG_PKG.get_config_par('DBTRG_SHOW') = REHAB_CONFIG_PKG.cnstY
+        then
+          p_msg := p_msg || nvl2(p_msg,' ',null) || p_name||': '||
+                                    REHAB_CONFIG_PKG.get_config_par(p_par_min1)||'/'||REHAB_CONFIG_PKG.get_config_par(p_par_min2) || UNISTR('\00F7') ||
+                                    REHAB_CONFIG_PKG.get_config_par(p_par_max1)||'/'||REHAB_CONFIG_PKG.get_config_par(p_par_max2)
+                                    ||' '
+                           || case when p_val1 between REHAB_CONFIG_PKG.get_config_par(p_par_min1) and REHAB_CONFIG_PKG.get_config_par(p_par_max1)
+                                    and p_val2 between REHAB_CONFIG_PKG.get_config_par(p_par_min2) and REHAB_CONFIG_PKG.get_config_par(p_par_max2)
+                                   then '<span style="color: lime;">'||UNISTR('\2714')||'</span>' else '<span style="color: yellow;">'||UNISTR('\2718')||'</span>' end;
+        end if;
+    end;
+    --**************************************************************************
+    procedure get_target_msg(p_msg in out nocopy varchar2, p_name varchar2, p_val number, p_par_min varchar2, p_par_max varchar2)
+    is
+    begin
+        if REHAB_CONFIG_PKG.get_config_par('DBTRG_SHOW') = REHAB_CONFIG_PKG.cnstY then
+          p_msg := p_msg || nvl2(p_msg,' ',null) || p_name||': '||REHAB_CONFIG_PKG.get_config_par(p_par_min)||UNISTR('\00F7')|| REHAB_CONFIG_PKG.get_config_par(p_par_max) || ' ' ||
+                              case when p_val between REHAB_CONFIG_PKG.get_config_par(p_par_min) and REHAB_CONFIG_PKG.get_config_par(p_par_max)
+                              then '<span style="color: lime;">'||UNISTR('\2714')||'</span>' else '<span style="color: yellow;">'||UNISTR('\2718')||'</span>' end;
+        end if;
+    end;
+    --**************************************************************************
+    procedure get_target_msg0(p_msg in out nocopy varchar2, p_name varchar2, p_val number, p_par_trg varchar2, p_measure varchar2)
+    is
+    begin
+        if REHAB_CONFIG_PKG.get_config_par('DBTRG_SHOW') = REHAB_CONFIG_PKG.cnstY
+        then
+          p_msg := p_msg || nvl2(p_msg,' ',null) ||REHAB_CONFIG_PKG.get_config_par(p_par_trg)||' ' || p_measure || ' '||
+                    case when p_val >= REHAB_CONFIG_PKG.get_config_par(p_par_trg)
+                         then '<span style="color: lime;">'||UNISTR('\2714')||'</span>' else '<span style="color: yellow;">'||UNISTR('\2718')||'</span>' end;
+        end if;
+    end;
   BEGIN
-    l_msg := null;
+    l_msg := null; l_msg2 := l_target_char; l_badge := null;
     for i in (
-    select  round(avg(c_pr_sys)) c_pr_sys,
+    select
+            round(max(c_cnt)) c_cnt,
+            round(avg(c_pr_sys)) c_pr_sys,
             round(avg(c_pr_dia)) c_pr_dia,
             round(avg(c_pulse)) c_pulse,
             round(avg(c_wei),2) c_wei,
@@ -36,7 +121,9 @@
             round(avg(p_sug),2) p_sug,
             round(avg(p_oxi),2) p_oxi
     from (
-        select avg(MT_PRESSURE_SYS) FILTER (WHERE MT_PRESSURE_SYS is not null and trunc(MT_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_pr_sys,
+        select
+               count(*) FILTER (WHERE trunc(MT_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_cnt,
+               avg(MT_PRESSURE_SYS) FILTER (WHERE MT_PRESSURE_SYS is not null and trunc(MT_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_pr_sys,
                avg(MT_PRESSURE_DIA) FILTER (WHERE MT_PRESSURE_DIA is not null and trunc(MT_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_pr_dia,
                avg(MT_PULSE)        FILTER (WHERE MT_PULSE is not null        and trunc(MT_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_pulse,
                avg(MT_WEIGHT)       FILTER (WHERE MT_WEIGHT is not null       and trunc(MT_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_wei,
@@ -56,90 +143,47 @@
          group by trunc(MT_TAKEN))
     ) loop
       if REHAB_CONFIG_PKG.get_config_par('DBMEA_PRESSURE') = REHAB_CONFIG_PKG.cnstY and (i.c_pr_sys is not null or i.c_pr_dia is not null) then
-        l_msg :='<b>Тиск:</b> '||case when i.c_pr_sys is not null then i.c_pr_sys ||
-                               case when nvl(i.p_pr_sys,i.c_pr_sys) < i.c_pr_sys then UNISTR('\2191')
-                                    when nvl(i.p_pr_sys,i.c_pr_sys) > i.c_pr_sys then UNISTR('\2193')
-                               else null end
-                          else '-'
-                          end || case when i.p_pr_sys is not null then '('||i.p_pr_sys||')' else null end
-                          ||' / '||
-                          case when i.c_pr_dia is not null then i.c_pr_dia ||
-                               case when nvl(i.p_pr_dia,i.c_pr_dia) < i.c_pr_dia then UNISTR('\2191')
-                                    when nvl(i.p_pr_dia,i.c_pr_dia) > i.c_pr_dia then UNISTR('\2193')
-                               else null end
-                          else '-'
-                          end || case when i.p_pr_dia is not null then '('||i.p_pr_dia||')' else null end;
-        if REHAB_CONFIG_PKG.get_config_par('DBTRG_PSYS') is not null or REHAB_CONFIG_PKG.get_config_par('DBTRG_PDIA') is not null then
-          l_msg2 := l_msg2 || nvl2(l_msg2,'<br>',null) || 'Мета <b>'||REHAB_CONFIG_PKG.get_config_par('DBTRG_PSYS')||'/'||REHAB_CONFIG_PKG.get_config_par('DBTRG_PDIA')||'</b> mm '
-                           || case when i.c_pr_sys <= REHAB_CONFIG_PKG.get_config_par('DBTRG_PSYS') and i.c_pr_dia <= REHAB_CONFIG_PKG.get_config_par('DBTRG_PDIA')
-                                   then '<b>досягнута</b>.' else ' не досягнута.' end;
-        end if;
+        get_stat_msg2(p_msg => l_msg, p_name => 'Тиск', p_val1_curr => i.c_pr_sys, p_val2_curr => i.c_pr_dia, p_val1_prev => i.p_pr_sys, p_val2_prev => i.p_pr_dia);
+        get_target_msg2(p_msg => l_msg2, p_name => 'Тиск', p_val1 => i.c_pr_sys, p_val2 => i.c_pr_dia, p_par_min1 => 'DBTRG_PSYS_MIN', p_par_max1 => 'DBTRG_PSYS_MAX', p_par_min2 => 'DBTRG_PDIA_MIN', p_par_max2 => 'DBTRG_PDIA_MAX');
       end if;
       if REHAB_CONFIG_PKG.get_config_par('DBMEA_PULSE') = REHAB_CONFIG_PKG.cnstY and i.c_pulse is not null then
-        l_msg := l_msg || case when l_msg is not null then ', ' else null end ||
-                         '<b>Пульс:</b> '||
-                          case when i.c_pulse is not null then i.c_pulse ||
-                               case when nvl(i.p_pulse,i.c_pulse) < i.c_pulse then UNISTR('\2191')
-                                    when nvl(i.p_pulse,i.c_pulse) > i.c_pulse then UNISTR('\2193')
-                               else null end
-                          else '-'
-                          end || case when i.p_pulse is not null then '('||i.p_pulse||')' else null end;
-        if REHAB_CONFIG_PKG.get_config_par('DBTRG_PULSE') is not null then
-          l_msg2 := l_msg2 || nvl2(l_msg2,'<br>',null) || 'Мета <b>'||REHAB_CONFIG_PKG.get_config_par('DBTRG_PULSE')||'</b> bpm '|| case when i.c_pulse <= REHAB_CONFIG_PKG.get_config_par('DBTRG_PULSE') then '<b>досягнута</b>.' else ' не досягнута.' end;
-        end if;
+        get_stat_msg(p_msg => l_msg, p_name => 'Пульс', p_val_curr => i.c_pulse, p_val_prev => i.p_pulse);
+        get_target_msg(p_msg => l_msg2, p_name => 'Пульс', p_val => i.c_pulse, p_par_min => 'DBTRG_PULSE_MIN', p_par_max => 'DBTRG_PULSE_MAX');
       end if;
       if REHAB_CONFIG_PKG.get_config_par('DBMEA_WEIGHT') = REHAB_CONFIG_PKG.cnstY and i.c_wei is not null then
-        l_msg := l_msg || case when l_msg is not null then '<br>' else null end ||
-                         '<b>Вага:</b> '||
-                          case when i.c_wei is not null then i.c_wei ||
-                               case when nvl(i.p_wei,i.c_wei) < i.c_wei then UNISTR('\2191')
-                                    when nvl(i.p_wei,i.c_wei) > i.c_wei then UNISTR('\2193')
-                               else null end
-                          else '-'
-                          end || case when i.p_wei is not null then '('||i.p_wei||')' else null end;
-        if REHAB_CONFIG_PKG.get_config_par('DBTRG_WEIGHT') is not null then
-          l_msg2 := l_msg2 || nvl2(l_msg2,'<br>',null) || 'Мета <b>'||REHAB_CONFIG_PKG.get_config_par('DBTRG_WEIGHT')||'</b> кг '|| case when i.c_wei <= REHAB_CONFIG_PKG.get_config_par('DBTRG_WEIGHT') then '<b>досягнута</b>.' else ' не досягнута.' end;
-        end if;
+        get_stat_msg(p_msg => l_msg, p_name => 'Вага', p_val_curr => i.c_wei, p_val_prev => i.p_wei, p_delim => '<br>');
+        get_target_msg(p_msg => l_msg2, p_name => 'Вага', p_val => i.c_wei, p_par_min => 'DBTRG_WEIGHT_MIN', p_par_max => 'DBTRG_WEIGHT_MAX');
       end if;
       if REHAB_CONFIG_PKG.get_config_par('DBMEA_TEMPR') = REHAB_CONFIG_PKG.cnstY and i.c_temp is not null then
-        l_msg := l_msg || case when l_msg is not null then '<br>' else null end ||
-                          '<b>Температура:</b> '||
-                          case when i.c_temp is not null then i.c_temp ||
-                               case when nvl(i.p_temp,i.c_temp) < i.c_temp then UNISTR('\2191')
-                                    when nvl(i.p_temp,i.c_temp) > i.c_temp then UNISTR('\2193')
-                               else null end
-                          else '-'
-                          end || case when i.p_temp is not null then '('||i.p_temp||')' else null end;
+        get_stat_msg(p_msg => l_msg, p_name => 'Температура', p_val_curr => i.c_temp, p_val_prev => i.p_temp, p_delim => '<br>');
+        get_target_msg(p_msg => l_msg2, p_name => 'Температура', p_val => i.c_temp, p_par_min => 'DBTRG_TEMPR_MIN', p_par_max => 'DBTRG_TEMPR_MAX');
       end if;
       if REHAB_CONFIG_PKG.get_config_par('DBMEA_SUGAR') = REHAB_CONFIG_PKG.cnstY and i.c_sug is not null then
-        l_msg := l_msg || case when l_msg is not null then ' ' else null end || 'Цукор: '||
-                          case when i.c_sug is not null then i.c_sug ||
-                               case when nvl(i.p_sug,i.c_sug) < i.c_sug then UNISTR('\2191')
-                                    when nvl(i.p_sug,i.c_sug) > i.c_sug then UNISTR('\2193')
-                               else null end
-                          else '-'
-                          end || case when i.p_sug is not null then '('||i.p_sug||')' else null end;
+        get_stat_msg(p_msg => l_msg, p_name => 'Цукор', p_val_curr => i.c_sug, p_val_prev => i.p_sug, p_delim => ' ');
+        get_target_msg(p_msg => l_msg2, p_name => 'Цукор', p_val => i.c_sug, p_par_min => 'DBTRG_SUGAR_MIN', p_par_max => 'DBTRG_SUGAR_MAX');
       end if;
       if REHAB_CONFIG_PKG.get_config_par('DBMEA_OXY') = REHAB_CONFIG_PKG.cnstY and i.c_oxi is not null then
-        l_msg := l_msg || case when l_msg is not null then ' ' else null end ||
-                          '<b>Кисень:</b> '||
-                          case when i.c_oxi is not null then i.c_oxi ||
-                               case when nvl(i.p_oxi,i.c_oxi) < i.c_oxi then UNISTR('\2191')
-                                    when nvl(i.p_oxi,i.c_oxi) > i.c_oxi then UNISTR('\2193')
-                               else null end
-                          else '-'
-                          end || case when i.p_oxi is not null then '('||i.p_oxi||')' else null end;
+        get_stat_msg(p_msg => l_msg, p_name => 'Кисень', p_val_curr => i.c_oxi, p_val_prev => i.p_oxi, p_delim => ' ');
+        get_target_msg(p_msg => l_msg2, p_name => 'Кисень', p_val => i.c_oxi, p_par_min => 'DBTRG_OXI_MIN', p_par_max => 'DBTRG_OXI_MAX');
       end if;
+      l_badge := nvl(i.c_cnt||'',l_badge);
     end loop;
-    pipe row (dashboard_rec('Вимірювання',
-                            l_msg2,
-                            nvl(l_msg, 'Немає даних'),
-                            'Попередній період: '||to_char(REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par('DBAGG_MEAS') - 1,'YYYY-MON-DD')||' -- '||to_char(REHAB_CONTEXT_PKG.getGLOBAL_DATE()-1,'YYYY-MON-DD'),
-                            201));
+    pipe row (rehab_dashboard_rec
+                           (id        => 1,
+                            mainlabel => 'Вимірювання',
+                            sublabel  => l_msg2,
+                            data1     => nvl(l_msg, 'Немає даних'),
+                            data2     => 'Попередній період: '||to_char(REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par('DBAGG_MEAS') - 1,'YYYY-MON-DD')||' -- '||to_char(REHAB_CONTEXT_PKG.getGLOBAL_DATE()-1,'YYYY-MON-DD'),
+                            iconfile  => 'fa-ruler-combination',
+                            bagecol   => l_badge,
+                            bagelabel => null,
+                            app_page  => 201));
     --**************************************************************************
-    l_msg := null; l_msg2 := null;
+    l_msg := null; l_msg2 := l_target_char; l_badge := null;
     for i in (
-    select  round(avg(c_dist),3) c_dist,
+    select
+            round(max(c_cnt)) c_cnt,
+            round(avg(c_dist),3) c_dist,
             round(avg(c_steps)) c_steps,
             round(avg(c_min)) c_min,
             round(avg(c_max)) c_max,
@@ -150,7 +194,9 @@
             round(avg(p_max)) p_max,
             round(avg(p_avg)) p_avg
     from (
-    select sum(TR_DISTANCE_LENGTH) FILTER (WHERE TR_DISTANCE_LENGTH is not null and trunc(TR_START)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_dist,
+    select
+           count(*) FILTER (WHERE trunc(TR_START)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_cnt,
+           sum(TR_DISTANCE_LENGTH) FILTER (WHERE TR_DISTANCE_LENGTH is not null and trunc(TR_START)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_dist,
            sum(TR_STEPS)           FILTER (WHERE TR_STEPS is not null           and trunc(TR_START)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_steps,
            avg(TR_PULSE_AVG)       FILTER (WHERE TR_PULSE_AVG is not null       and trunc(TR_START)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_avg,
            avg(TR_PULSE_MIN)       FILTER (WHERE TR_PULSE_MIN is not null       and trunc(TR_START)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_min,
@@ -167,62 +213,33 @@
     ) loop
       if REHAB_CONFIG_PKG.get_config_par('DBTRA_DISTANCE') = REHAB_CONFIG_PKG.cnstY --and i.c_dist is not null
       then
-        l_msg :='<b>Дистанція:</b> '||
-                          case when i.c_dist is not null then i.c_dist ||
-                               case when nvl(i.p_dist,i.c_dist) < i.c_dist then UNISTR('\2191')
-                                    when nvl(i.p_dist,i.c_dist) > i.c_dist then UNISTR('\2193')
-                               else null end
-                          else '-'
-                          end || case when i.p_dist is not null then '('||i.p_dist||')' else null end;
-        if REHAB_CONFIG_PKG.get_config_par('DBTRG_TRAINDIST') is not null then
-          l_msg2 := l_msg2 || 'Мета <b>'||REHAB_CONFIG_PKG.get_config_par('DBTRG_TRAINDIST')||'</b> км '|| case when i.c_dist >= REHAB_CONFIG_PKG.get_config_par('DBTRG_TRAINDIST') then '<b>досягнута</b>.' else ' не досягнута.' end;
-        end if;
+        get_stat_msg(p_msg => l_msg, p_name => 'Дистанція', p_val_curr => i.c_dist, p_val_prev => i.p_dist, p_delim => ' ');
+        get_target_msg0(p_msg => l_msg2, p_name => null, p_val => i.c_dist, p_par_trg => 'DBTRG_TRAINDIST', p_measure => 'км');
       end if;
       if REHAB_CONFIG_PKG.get_config_par('DBTRA_STEPS') = REHAB_CONFIG_PKG.cnstY --and i.c_steps is not null
       then
-        l_msg := l_msg || case when l_msg is not null then '<br>' else null end ||
-                          '<b>Кроки:</b> '||
-                          case when i.c_steps is not null then i.c_steps ||
-                               case when nvl(i.p_steps,i.c_steps) < i.c_steps then UNISTR('\2191')
-                                    when nvl(i.p_steps,i.c_steps) > i.c_steps then UNISTR('\2193')
-                               else null end
-                          else '-'
-                          end || case when i.p_steps is not null then '('||i.p_steps||')' else null end;
-        if REHAB_CONFIG_PKG.get_config_par('DBTRG_TRAINSTEPS') is not null then
-          l_msg2 := l_msg2 || nvl2(l_msg2,'<br>',null) || 'Мета <b>'||REHAB_CONFIG_PKG.get_config_par('DBTRG_TRAINSTEPS')||'</b> кроків '|| case when i.c_steps >= REHAB_CONFIG_PKG.get_config_par('DBTRG_TRAINSTEPS') then '<b>досягнута</b>.' else ' не досягнута.' end;
-        end if;
+        get_stat_msg(p_msg => l_msg, p_name => 'Кроки', p_val_curr => i.c_steps, p_val_prev => i.p_steps, p_delim => ' ');
+        get_target_msg0(p_msg => l_msg2, p_name => null, p_val => i.c_steps, p_par_trg => 'DBTRG_TRAINSTEPS', p_measure => 'кроків');
       end if;
       if REHAB_CONFIG_PKG.get_config_par('DBTRA_PULSE') = REHAB_CONFIG_PKG.cnstY and (i.c_avg is not null or i.c_min is not null or i.c_max is not null) then
-        l_msg := l_msg || case when l_msg is not null then '<br>' else null end ||
-                          '<b>Пульс</b> (awg/min/max): '||
-                          case when i.p_avg is not null then i.p_avg||
-                               case when nvl(i.p_avg,i.c_avg) < i.c_avg then UNISTR('\2191')
-                                    when nvl(i.p_avg,i.c_avg) > i.c_avg then UNISTR('\2193')
-                               else null end
-                          else '-'
-                          end ||'('||i.p_avg||') / '||
-                          case when i.c_min is not null then i.c_min||
-                               case when nvl(i.p_min,i.c_min) < i.c_min then UNISTR('\2191')
-                                    when nvl(i.p_min,i.c_min) > i.c_min then UNISTR('\2193')
-                               else null end
-                          else '-'
-                          end ||'('||i.p_min||') / '||
-                          case when i.c_max is not null then i.c_max||
-                               case when nvl(i.p_max,i.c_max) < i.c_max then UNISTR('\2191')
-                                    when nvl(i.p_max,i.c_max) > i.c_max then UNISTR('\2193')
-                               else null end
-                          else '-'
-                          end ||'('||i.p_max||')';
+        get_stat_msg3(p_msg => l_msg, p_name => 'Пульс', p_val1_curr => i.c_avg, p_val2_curr => i.c_min, p_val3_curr => i.c_max,
+                                                         p_val1_prev => i.p_avg, p_val2_prev => i.p_min, p_val3_prev => i.p_max);
       end if;
+      l_badge := nvl(i.c_cnt||'',l_badge);
     end loop;
     --**************************************************************************
-    pipe row (dashboard_rec('Тренування',
-                            l_msg2,
-                             nvl(l_msg, 'Немає даних'),
-                             'Попередній період: '||to_char(REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par('DBAGG_TRAI') - 1,'YYYY-MON-DD')||' -- '||to_char(REHAB_CONTEXT_PKG.getGLOBAL_DATE()-1,'YYYY-MON-DD'),
-                             211));
+    pipe row (rehab_dashboard_rec
+                           (id        => 2,
+                            mainlabel => 'Тренування',
+                            sublabel  => l_msg2,
+                            data1     => nvl(l_msg, 'Немає даних'),
+                            data2     => 'Попередній період: '||to_char(REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par('DBAGG_TRAI') - 1,'YYYY-MON-DD')||' -- '||to_char(REHAB_CONTEXT_PKG.getGLOBAL_DATE()-1,'YYYY-MON-DD'),
+                            iconfile  => 'fa-person-running-fast',
+                            bagecol   => l_badge,
+                            bagelabel => '',
+                            app_page  => 211));
     --**************************************************************************
-    l_msg := null; l_msg2 := null;
+    l_msg := null; l_msg2 := l_target_char; l_badge := null;
     for i in (
      select round(avg(c_steps)) c_steps,
             round(avg(c_min)) c_min,
@@ -233,63 +250,42 @@
             round(avg(p_max)) p_max,
             round(avg(p_avg)) p_avg
       from (
-        select sum(WL_STEPS)           FILTER (WHERE WL_STEPS is not null           and trunc(WL_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE() - 1) c_steps,
-               avg(WL_NIGHT_MIN_PULSE) FILTER (WHERE WL_NIGHT_MIN_PULSE is not null and trunc(WL_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE() - 1) c_min,
-               avg(WL_NIGHT_MAX_PULSE) FILTER (WHERE WL_NIGHT_MAX_PULSE is not null and trunc(WL_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE() - 1) c_max,
-               avg(WL_NIGHT_AVG_PULSE) FILTER (WHERE WL_NIGHT_AVG_PULSE is not null and trunc(WL_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE() - 1) c_avg,
-               sum(WL_STEPS)           FILTER (WHERE WL_STEPS is not null           and trunc(WL_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE() - 1) p_steps,
-               avg(WL_NIGHT_MIN_PULSE) FILTER (WHERE WL_NIGHT_MIN_PULSE is not null and trunc(WL_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE() - 1) p_min,
-               avg(WL_NIGHT_MAX_PULSE) FILTER (WHERE WL_NIGHT_MAX_PULSE is not null and trunc(WL_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE() - 1) p_max,
-               avg(WL_NIGHT_AVG_PULSE) FILTER (WHERE WL_NIGHT_AVG_PULSE is not null and trunc(WL_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE() - 1) p_avg
+        select sum(WL_STEPS)           FILTER (WHERE WL_STEPS is not null           and trunc(WL_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_steps,
+               avg(WL_NIGHT_MIN_PULSE) FILTER (WHERE WL_NIGHT_MIN_PULSE is not null and trunc(WL_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_min,
+               avg(WL_NIGHT_MAX_PULSE) FILTER (WHERE WL_NIGHT_MAX_PULSE is not null and trunc(WL_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_max,
+               avg(WL_NIGHT_AVG_PULSE) FILTER (WHERE WL_NIGHT_AVG_PULSE is not null and trunc(WL_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_avg,
+               sum(WL_STEPS)           FILTER (WHERE WL_STEPS is not null           and trunc(WL_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE()) p_steps,
+               avg(WL_NIGHT_MIN_PULSE) FILTER (WHERE WL_NIGHT_MIN_PULSE is not null and trunc(WL_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE()) p_min,
+               avg(WL_NIGHT_MAX_PULSE) FILTER (WHERE WL_NIGHT_MAX_PULSE is not null and trunc(WL_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE()) p_max,
+               avg(WL_NIGHT_AVG_PULSE) FILTER (WHERE WL_NIGHT_AVG_PULSE is not null and trunc(WL_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE()) p_avg
           from REHAB_WATCH_LOGS
      where WL_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()
-       and trunc(WL_TAKEN) between REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par('DBAGG_TRAK') - 2 and REHAB_CONTEXT_PKG.getGLOBAL_DATE() - 1
+       and trunc(WL_TAKEN) between REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par('DBAGG_TRAK') - 1 and REHAB_CONTEXT_PKG.getGLOBAL_DATE()
        group by trunc(WL_TAKEN))
     ) loop
       if REHAB_CONFIG_PKG.get_config_par('DBWAT_STEPS') = REHAB_CONFIG_PKG.cnstY and not(i.c_steps is null and i.p_steps is null) then
-        l_msg := l_msg || '<b>Кроки:</b> '||
-                          case when i.c_steps is not null then i.c_steps ||
-                               case when nvl(i.p_steps,i.c_steps) < i.c_steps then UNISTR('\2191')
-                                    when nvl(i.p_steps,i.c_steps) > i.c_steps then UNISTR('\2193')
-                               else null end
-                          else '-'
-                          end || case when i.p_steps is not null then '('||i.p_steps||')' else '-' end;
-        if REHAB_CONFIG_PKG.get_config_par('DBTRG_ALLSTEPS') is not null then
-          l_msg2 := l_msg2 || 'Мета <b>'||REHAB_CONFIG_PKG.get_config_par('DBTRG_ALLSTEPS')||'</b> кроків  '|| case when i.c_steps >= REHAB_CONFIG_PKG.get_config_par('DBTRG_ALLSTEPS') then '<b>досягнута</b>.' else ' не досягнута.' end;
-        end if;
+        get_stat_msg(p_msg => l_msg, p_name => 'Кроки', p_val_curr => i.c_steps, p_val_prev => i.p_steps, p_delim => ' ');
+        get_target_msg0(p_msg => l_msg2, p_name => null, p_val => i.c_steps, p_par_trg => 'DBTRG_ALLSTEPS', p_measure => 'кроків');
       end if;
       if REHAB_CONFIG_PKG.get_config_par('DBWAT_PULSE') = REHAB_CONFIG_PKG.cnstY and (i.c_avg is not null or i.c_min is not null or i.c_max is not null) then
-        l_msg := l_msg || case when l_msg is not null then '<br>' else null end || --UNISTR('\2764')||
-                         '<b>Пульс</b> (awg/min/max): '||
-                          case when i.c_avg is not null then i.c_avg||
-                               case when nvl(i.p_avg,i.c_avg) < i.c_avg then UNISTR('\2191')
-                                    when nvl(i.p_avg,i.c_avg) > i.c_avg then UNISTR('\2193')
-                               else null end
-                          else '-'
-                          end || case when i.p_steps is not null then '('||i.p_avg||') / ' else '- / ' end ||
-                          case when i.c_min is not null then i.c_min||
-                               case when nvl(i.p_min,i.c_min) < i.c_min then UNISTR('\2191')
-                                    when nvl(i.p_min,i.c_min) > i.c_min then UNISTR('\2193')
-                               else null end
-                          else '-'
-                          end || case when i.p_steps is not null then '('||i.p_min||') / ' else '- / ' end ||
-                          case when i.c_max is not null then i.c_max||
-                               case when nvl(i.p_max,i.c_max) < i.c_max then UNISTR('\2191')
-                                    when nvl(i.p_max,i.c_max) > i.c_max then UNISTR('\2193')
-                               else null end
-                          else '-'
-                          end || case when i.p_steps is not null then '('||i.p_max||')' else '-' end;
+        get_stat_msg3(p_msg => l_msg, p_name => 'Пульс', p_val1_curr => i.c_avg, p_val2_curr => i.c_min, p_val3_curr => i.c_max,
+                                                         p_val1_prev => i.p_avg, p_val2_prev => i.p_min, p_val3_prev => i.p_max);
       end if;
     end loop;
     --**************************************************************************
-    pipe row (dashboard_rec('Трекери',
-                            l_msg2,
-                             nvl(l_msg, 'Немає даних'),
-                             'За: ' || to_char(REHAB_CONTEXT_PKG.getGLOBAL_DATE()-1)||
-                             '. Попередній: '||to_char(REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par('DBAGG_TRAK') - 2,'YYYY-MON-DD')||' -- '||to_char(REHAB_CONTEXT_PKG.getGLOBAL_DATE()-2,'YYYY-MON-DD'),
-                             221));
+    pipe row (rehab_dashboard_rec
+                           (id        => 3,
+                            mainlabel => 'Трекери',
+                            sublabel  => l_msg2,
+                            data1     => nvl(l_msg, 'Немає даних'),
+                            --'За: ' || to_char(REHAB_CONTEXT_PKG.getGLOBAL_DATE()-1)||
+                            data2     => 'Попередній період: '||to_char(REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par('DBAGG_TRAK') - 1,'YYYY-MON-DD')||' -- '||to_char(REHAB_CONTEXT_PKG.getGLOBAL_DATE()-1,'YYYY-MON-DD'),
+                            iconfile  => 'fa-calendar-heart',
+                            bagecol   => '',
+                            bagelabel => '''',
+                            app_page  => 221));
     --**************************************************************************
-    l_msg := null;
+    l_msg := null; l_badge := null;
     for i in (
         select
           stor.PAT_ID, stor.DR_ID,
@@ -342,12 +338,19 @@
     loop
       l_msg := l_msg || '<b>' || i.DR_NAME || '</b> запасів на ' || i.days_remain || ' дні(в)<br>';
     end loop;
+    --**************************************************************************
     l_msg := rtrim(l_msg,'<br>');
-    pipe row (dashboard_rec('Залишки',
-                            '',
-                             nvl(l_msg, 'Всі лікі в достатній кількості'),
-                            'На період ' ||REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT')|| ' дні(в)',
-                             301));
+    pipe row (rehab_dashboard_rec
+                           (id        => 4,
+                            mainlabel => 'Залишки',
+                            sublabel  => '',
+                            data1     => nvl(l_msg, 'Всі ліки в достатній кількості'),
+                            data2     => 'На період ' ||REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT')|| ' дні(в)',
+                            iconfile  => 'fa-medication-pill-bottle',
+                            bagecol   => '',
+                            bagelabel => '',
+                            app_page  => 301));
+    --**************************************************************************
     RETURN;
   END dashboard_ref;
 
