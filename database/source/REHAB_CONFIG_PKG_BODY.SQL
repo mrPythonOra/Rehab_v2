@@ -1,6 +1,5 @@
 
 
-
   CREATE OR REPLACE EDITIONABLE PACKAGE BODY "REHAB_CONFIG_PKG" AS
 
   function get_config_par(p_par_name varchar2) return varchar2 result_cache AS
@@ -24,5 +23,4 @@
 
 END REHAB_CONFIG_PKG;
 /
-
 

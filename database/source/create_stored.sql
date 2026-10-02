@@ -1,5 +1,4 @@
 set define off
-
 @@REHAB_DASHBOARD_REC_SPEC.SQL
 show errors
 @@REHAB_DASHBOARD_TAB_SPEC.SQL
@@ -18,7 +17,6 @@ show errors
 show errors
 @@REHAB_UI_REPORTS_PKG_SPEC.SQL
 show errors
-
 @@REHAB_CONFIG_PKG_BODY.SQL
 show errors
 @@REHAB_CONTEXT_PKG_BODY.SQL

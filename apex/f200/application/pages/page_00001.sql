@@ -63,18 +63,23 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_name=>'Serie1'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'-- select count(*) max_value, ',
+'--        count(DRU_CONSUMED) value,',
+unistr('--        count(DRU_CONSUMED) || '' \0437 ''|| count(*) ||'' \0434\043E\0431\043E\0432\0438\0445 \043C\0435\0434\0456\043A\0430\043C\0435\043D\0442\0456\0432 \0441\043F\043E\0436\0438\0442\043E'' tip1,'),
+unistr('--        ''\0421\043F\043E\0436\0438\0442\043E \0442\0430\0431\043B\0435\0442\043E\043A'' label'),
+'-- from REHAB_PRESCRIPTIONS_DETAILS d, ',
+'--      REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES as of period for REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES_period REHAB_CONTEXT_PKG.getGLOBAL_DATE() tr,',
+'--      REHAB_PRESCRIPTIONS p,',
+'--      REHAB_DRUG_USES du',
+'-- where d.PRD_PRATR_ID = tr.PRATR_ID and tr.PRATR_PR_ID = p.PR_ID',
+'--   and PR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
+'--   and du.DRU_PR_ID(+) = p.PR_ID and du.DRU_CPTR_ID(+) = d.PRD_CPTR_ID and DRU_PAT_ID(+) = REHAB_CONTEXT_PKG.getPATIENT()',
+'--   and trunc(DRU_CONSUMED(+)) = REHAB_CONTEXT_PKG.getGLOBAL_DATE()',
 'select count(*) max_value, ',
 '       count(DRU_CONSUMED) value,',
 unistr('       count(DRU_CONSUMED) || '' \0437 ''|| count(*) ||'' \0434\043E\0431\043E\0432\0438\0445 \043C\0435\0434\0456\043A\0430\043C\0435\043D\0442\0456\0432 \0441\043F\043E\0436\0438\0442\043E'' tip1,'),
 unistr('       ''\0421\043F\043E\0436\0438\0442\043E \0442\0430\0431\043B\0435\0442\043E\043A'' label'),
-'from REHAB_PRESCRIPTIONS_DETAILS d, ',
-'     REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES as of period for REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES_period sysdate tr,',
-'     REHAB_PRESCRIPTIONS p,',
-'     REHAB_DRUG_USES du',
-'where d.PRD_PRATR_ID = tr.PRATR_ID and tr.PRATR_PR_ID = p.PR_ID',
-'  and PR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'  and du.DRU_PR_ID(+) = p.PR_ID and DRU_PAT_ID(+) = REHAB_CONTEXT_PKG.getPATIENT()',
-'  and trunc(DRU_CONSUMED(+)) = REHAB_CONTEXT_PKG.getGLOBAL_DATE()'))
+'from V$REHAB_CONSUME_DATA'))
 ,p_items_value_column_name=>'VALUE'
 ,p_items_max_value=>'MAX_VALUE'
 ,p_items_label_column_name=>'LABEL'
@@ -156,7 +161,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'new'
 ,p_show_as_disabled=>false
 ,p_button_action=>'REDIRECT_PAGE'
-,p_button_template_options=>'#DEFAULT#'
+,p_button_template_options=>'#DEFAULT#:t-Button--stretch'
 ,p_button_template_id=>2350584059425431644
 ,p_button_image_alt=>unistr('\0412\043D\0435\0441\0442\0438')
 ,p_button_redirect_url=>'f?p=&APP_ID.:101:&SESSION.::&DEBUG.:::'

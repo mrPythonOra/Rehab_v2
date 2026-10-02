@@ -39,6 +39,8 @@ prompt --install
 @@application/shared_components/user_interface/lovs/email_username_format.sql
 @@application/shared_components/user_interface/lovs/feedback_rating.sql
 @@application/shared_components/user_interface/lovs/feedback_status.sql
+@@application/shared_components/user_interface/lovs/gd_consuming_time_periods.sql
+@@application/shared_components/user_interface/lovs/gd_time_ranges_available.sql
 @@application/shared_components/user_interface/lovs/timeframe_4_weeks.sql
 @@application/shared_components/user_interface/lovs/view_as_report_chart.sql
 @@application/pages/page_groups.sql
@@ -58,6 +60,7 @@ prompt --install
 @@application/pages/page_00000.sql
 @@application/pages/page_00001.sql
 @@application/pages/page_00101.sql
+@@application/pages/page_00102.sql
 @@application/pages/page_00201.sql
 @@application/pages/page_00211.sql
 @@application/pages/page_00221.sql

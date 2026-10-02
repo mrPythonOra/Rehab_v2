@@ -1,6 +1,5 @@
 
 
-
   CREATE OR REPLACE EDITIONABLE PACKAGE BODY "REHAB_CONTEXT_PKG" AS
 
   gNameSpace constant varchar2(128) := 'REHAB20_CONTEXT';
@@ -152,7 +151,7 @@
 
   function getCURR_APEX_USER return varchar2 is begin return vCurrentApexUser; end;
   function getCURR_PATIENT   return number   is begin return SYS_CONTEXT(gNameSpace, gCURR_PATIENT); end;
-  function getGLOBAL_DATE    return date     is begin return to_date(v('GLOBAL_DATE'),'YYYY-MM-DD'); end;
+  function getGLOBAL_DATE    return date     is begin return to_date(nvl(v('GLOBAL_DATE'),to_char(sysdate,'YYYY-MM-DD')),'YYYY-MM-DD'); end;
 
   function getAPEX_USER return varchar2 is begin return SYS_CONTEXT(gNameSpace, gAPEX_USER); end;
   function getTENANT    return number is begin return SYS_CONTEXT(gNameSpace, gTENANT); end;
@@ -167,5 +166,4 @@ begin
    set_current_user(v('APP_USER'));
 END REHAB_CONTEXT_PKG;
 /
-
 

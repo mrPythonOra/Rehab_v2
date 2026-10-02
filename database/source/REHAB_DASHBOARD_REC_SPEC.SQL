@@ -1,6 +1,5 @@
 
 
-
   CREATE OR REPLACE EDITIONABLE TYPE "REHAB_DASHBOARD_REC"
   OID '5C784590E0079AADE0632462000A1EE4' AS OBJECT (
     id           number,
@@ -14,5 +13,4 @@
     app_page     number
 );
 /
-
 

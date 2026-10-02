@@ -33,16 +33,16 @@ prompt APPLICATION 200 - Rehabilitation 2.0
 -- Application Export:
 --   Application:     200
 --   Name:            Rehabilitation 2.0
---   Date and Time:   15:53 Sunday September 27, 2026
+--   Date and Time:   15:54 Friday October 2, 2026
 --   Exported By:     REHAB_V2
 --   Flashback:       0
 --   Export Type:     Application Export
---     Pages:                     30
---       Items:                   43
+--     Pages:                     31
+--       Items:                   51
 --       Validations:              2
---       Processes:               20
---       Regions:                 68
---       Buttons:                 39
+--       Processes:               25
+--       Regions:                 70
+--       Buttons:                 43
 --       Dynamic Actions:          8
 --     Shared Components:
 --       Logic:
@@ -62,7 +62,7 @@ prompt APPLICATION 200 - Rehabilitation 2.0
 --       User Interface:
 --         Themes:                 1
 --         Templates:
---         LOVs:                   7
+--         LOVs:                   9
 --       PWA:
 --       Globalization:
 --       Reports:
@@ -123,11 +123,14 @@ wwv_imp_workspace.create_flow(
 ,p_authorize_batch_job=>'N'
 ,p_rejoin_existing_sessions=>'N'
 ,p_csv_encoding=>'Y'
+,p_auto_time_zone=>'Y'
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Rehab V2.0'
+,p_substitution_string_02=>'APP_DTFMT_SHORT_T'
+,p_substitution_value_02=>'YYYY-MM-DD HH24:MI'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>2461288113614
-,p_version_scn=>'50425662767184'
+,p_version_scn=>'50675820075695'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -6814,6 +6817,47 @@ wwv_flow_imp_shared.create_static_lov_data(
 );
 end;
 /
+prompt --application/shared_components/user_interface/lovs/gd_consuming_time_periods
+begin
+wwv_flow_imp_shared.create_list_of_values(
+ p_id=>wwv_flow_imp.id(48663273667173003)
+,p_lov_name=>'GD_CONSUMING_TIME_PERIODS'
+,p_static_id=>'gd-consuming-time-periods'
+,p_lov_query=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select * from V$REHAB_TIME_PERIODS_AVAILABLE order by TP_START_TIME_DT_GDT',
+'-- select pa.* from V$REHAB_TIME_PERIODS_AVAILABLE pa',
+'-- where exists (select 1 from V$REHAB_CONSUME_DATA d where ',
+'--                   CPTR_START_TIME_DT_GDT > TP_START_TIME_DT_GDT and CPTR_START_TIME_DT_GDT <= TP_END_TIME_DT_GDT or ',
+'--                   CPTR_END_TIME_DT_GDT   > TP_START_TIME_DT_GDT and CPTR_END_TIME_DT_GDT   <= TP_END_TIME_DT_GDT);'))
+,p_source_type=>'SQL'
+,p_location=>'LOCAL'
+,p_query_owner=>'REABILITATION'
+,p_return_column_name=>'TP_ID'
+,p_display_column_name=>'TP_NAME'
+,p_version_scn=>'SH256:iXvYcyOCMcOHWEslmP-86zAgHCtHrav07bjgkS1JYcM'
+);
+end;
+/
+prompt --application/shared_components/user_interface/lovs/gd_time_ranges_available
+begin
+wwv_flow_imp_shared.create_list_of_values(
+ p_id=>wwv_flow_imp.id(50431022744787525)
+,p_lov_name=>'GD_TIME_RANGES_AVAILABLE'
+,p_static_id=>'gd-time-ranges-available'
+,p_lov_query=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select CPTR_ID r,',
+'       CPTR_NAME ||'' (''||CPTR_START_TIME_STR||''-''||CPTR_END_TIME_STR||'')'' d',
+'  from V$REHAB_CONSUME_TIME_RANGES_AVAILABLE',
+' order by CPTR_START_TIME_STR, CPTR_ID'))
+,p_source_type=>'SQL'
+,p_location=>'LOCAL'
+,p_query_owner=>'REABILITATION'
+,p_return_column_name=>'R'
+,p_display_column_name=>'D'
+,p_version_scn=>'SH256:bmj9WjaNrj7V_2eYYm3N9fJV9kcl0zq8YjS7D-Ovb1Y'
+);
+end;
+/
 prompt --application/shared_components/user_interface/lovs/timeframe_4_weeks
 begin
 wwv_flow_imp_shared.create_list_of_values(
@@ -7235,12 +7279,15 @@ wwv_flow_imp_page.create_page_item(
 ,p_field_template=>2042262243893469891
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'appearance_and_behavior', 'MONTH-PICKER:YEAR-PICKER:TODAY-BUTTON',
+  'days_outside_month', 'SELECTABLE',
   'display_as', 'POPUP',
   'max_date', 'NONE',
   'min_date', 'NONE',
   'multiple_months', 'N',
+  'show_on', 'FOCUS',
   'show_time', 'N',
-  'use_defaults', 'Y')).to_clob
+  'use_defaults', 'N')).to_clob
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(28459581258204104)
@@ -7349,18 +7396,23 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_name=>'Serie1'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'-- select count(*) max_value, ',
+'--        count(DRU_CONSUMED) value,',
+unistr('--        count(DRU_CONSUMED) || '' \0437 ''|| count(*) ||'' \0434\043E\0431\043E\0432\0438\0445 \043C\0435\0434\0456\043A\0430\043C\0435\043D\0442\0456\0432 \0441\043F\043E\0436\0438\0442\043E'' tip1,'),
+unistr('--        ''\0421\043F\043E\0436\0438\0442\043E \0442\0430\0431\043B\0435\0442\043E\043A'' label'),
+'-- from REHAB_PRESCRIPTIONS_DETAILS d, ',
+'--      REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES as of period for REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES_period REHAB_CONTEXT_PKG.getGLOBAL_DATE() tr,',
+'--      REHAB_PRESCRIPTIONS p,',
+'--      REHAB_DRUG_USES du',
+'-- where d.PRD_PRATR_ID = tr.PRATR_ID and tr.PRATR_PR_ID = p.PR_ID',
+'--   and PR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
+'--   and du.DRU_PR_ID(+) = p.PR_ID and du.DRU_CPTR_ID(+) = d.PRD_CPTR_ID and DRU_PAT_ID(+) = REHAB_CONTEXT_PKG.getPATIENT()',
+'--   and trunc(DRU_CONSUMED(+)) = REHAB_CONTEXT_PKG.getGLOBAL_DATE()',
 'select count(*) max_value, ',
 '       count(DRU_CONSUMED) value,',
 unistr('       count(DRU_CONSUMED) || '' \0437 ''|| count(*) ||'' \0434\043E\0431\043E\0432\0438\0445 \043C\0435\0434\0456\043A\0430\043C\0435\043D\0442\0456\0432 \0441\043F\043E\0436\0438\0442\043E'' tip1,'),
 unistr('       ''\0421\043F\043E\0436\0438\0442\043E \0442\0430\0431\043B\0435\0442\043E\043A'' label'),
-'from REHAB_PRESCRIPTIONS_DETAILS d, ',
-'     REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES as of period for REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES_period sysdate tr,',
-'     REHAB_PRESCRIPTIONS p,',
-'     REHAB_DRUG_USES du',
-'where d.PRD_PRATR_ID = tr.PRATR_ID and tr.PRATR_PR_ID = p.PR_ID',
-'  and PR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'  and du.DRU_PR_ID(+) = p.PR_ID and DRU_PAT_ID(+) = REHAB_CONTEXT_PKG.getPATIENT()',
-'  and trunc(DRU_CONSUMED(+)) = REHAB_CONTEXT_PKG.getGLOBAL_DATE()'))
+'from V$REHAB_CONSUME_DATA'))
 ,p_items_value_column_name=>'VALUE'
 ,p_items_max_value=>'MAX_VALUE'
 ,p_items_label_column_name=>'LABEL'
@@ -7442,7 +7494,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'new'
 ,p_show_as_disabled=>false
 ,p_button_action=>'REDIRECT_PAGE'
-,p_button_template_options=>'#DEFAULT#'
+,p_button_template_options=>'#DEFAULT#:t-Button--stretch'
 ,p_button_template_id=>2350584059425431644
 ,p_button_image_alt=>unistr('\0412\043D\0435\0441\0442\0438')
 ,p_button_redirect_url=>'f?p=&APP_ID.:101:&SESSION.::&DEBUG.:::'
@@ -7512,20 +7564,35 @@ wwv_flow_imp_page.create_page_plug(
 ,p_menu_template_id=>4073839682315169711
 );
 wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(44053518107422919)
+,p_plug_name=>'Container'
+,p_static_id=>'container'
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--noBorder:t-Region--scrollBody'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>20
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(44051944887422903)
 ,p_plug_name=>'ConsumeDrugs'
 ,p_static_id=>'new'
+,p_parent_plug_id=>wwv_flow_imp.id(44053518107422919)
 ,p_region_template_options=>'#DEFAULT#:t-CardsRegion--hideHeader js-addHiddenHeadingRoleDesc'
 ,p_plug_template=>2074200852440250129
-,p_plug_display_sequence=>10
+,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '--select da.*, dr.DR_ITEM_IMAGE1 from table(REHAB_DRUGUSE_PKG.druguse_dashboard_ref) da, REHAB_DRUGS dr where da.dr_id = dr.dr_id',
-'select da.* from table(REHAB_DRUGUSE_PKG.druguse_dashboard_ref) da'))
+'select da.* from table(REHAB_DRUGUSE_PKG.druguse_dashboard_ref(:P101_TIME_PERIOD_ID)) da'))
 ,p_lazy_loading=>false
 ,p_plug_source_type=>'NATIVE_CARDS'
 ,p_plug_query_num_rows_type=>'SCROLL'
+,p_plug_query_no_data_found=>unistr('\041D\0435\043C\0430\0454 \043B\0456\043A\0456\0432 \0434\043B\044F \043F\0440\0438\0439\043E\043C\0443')
 ,p_show_total_row_count=>false
 );
 wwv_flow_imp_page.create_card(
@@ -7547,6 +7614,393 @@ wwv_flow_imp_page.create_card(
 ,p_badge_label=>'&BAGELABEL.'
 ,p_media_adv_formatting=>false
 ,p_pk1_column_name=>'ID'
+);
+wwv_flow_imp_page.create_card_action(
+ p_id=>wwv_flow_imp.id(44053723422422921)
+,p_card_id=>wwv_flow_imp.id(44052063181422904)
+,p_action_type=>'BUTTON'
+,p_position=>'PRIMARY'
+,p_display_sequence=>10
+,p_label=>'Consume'
+,p_static_id=>'action'
+,p_link_target_type=>'REDIRECT_PAGE'
+,p_link_target=>'f?p=&APP_ID.:102:&SESSION.::&DEBUG.::P102_DRU_PRD_ID,P102_DRU_PR_ID,P102_DRU_CPTR_ID,P102_DRU_DR_ID,P102_DRU_ID:&PRD_ID.,&PR_ID.,&CPTR_ID.,&DR_ID.,&DRU_ID.'
+,p_button_display_type=>'ICON'
+,p_icon_css_classes=>'fa-plus-square-o'
+,p_is_hot=>false
+,p_condition_type=>'EXPRESSION'
+,p_condition_expr1=>'''&DRU_ID.'' is null'
+,p_condition_expr2=>'PLSQL'
+,p_exec_cond_for_each_row=>true
+,p_authorization_scheme=>wwv_flow_imp.id(17092171236131578)
+);
+wwv_flow_imp_page.create_card_action(
+ p_id=>wwv_flow_imp.id(44054912955422933)
+,p_card_id=>wwv_flow_imp.id(44052063181422904)
+,p_action_type=>'BUTTON'
+,p_position=>'PRIMARY'
+,p_display_sequence=>20
+,p_label=>'Modify'
+,p_static_id=>'action_modify'
+,p_link_target_type=>'REDIRECT_PAGE'
+,p_link_target=>'f?p=&APP_ID.:102:&SESSION.::&DEBUG.::P102_DRU_PRD_ID,P102_DRU_PR_ID,P102_DRU_CPTR_ID,P102_DRU_DR_ID,P102_DRU_ID:&PRD_ID.,&PR_ID.,&CPTR_ID.,&DR_ID.,&DRU_ID.'
+,p_button_display_type=>'ICON'
+,p_icon_css_classes=>'fa-file-edit'
+,p_is_hot=>false
+,p_condition_type=>'EXPRESSION'
+,p_condition_expr1=>'''&DRU_ID.'' is not null'
+,p_condition_expr2=>'PLSQL'
+,p_exec_cond_for_each_row=>true
+,p_authorization_scheme=>wwv_flow_imp.id(17092171236131578)
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(44053638287422920)
+,p_name=>'P101_TIME_PERIOD_ID'
+,p_item_sequence=>10
+,p_item_plug_id=>wwv_flow_imp.id(44053518107422919)
+,p_item_default=>'select min(TP_ID) from V$REHAB_TIME_PERIODS_AVAILABLE where systimestamp between TP_START_TIME_DT_CURR and TP_END_TIME_DT_CURR'
+,p_item_default_type=>'SQL_QUERY'
+,p_prompt=>'Time Period Id'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_RADIOGROUP'
+,p_named_lov=>'GD_CONSUMING_TIME_PERIODS'
+,p_field_template=>2042262243893469891
+,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--radioButtonGroup'
+,p_lov_display_extra=>'NO'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'execute_validations', 'Y',
+  'number_of_columns', '10',
+  'page_action_on_selection', 'SUBMIT')).to_clob
+);
+end;
+/
+prompt --application/pages/page_00102
+begin
+wwv_flow_imp_page.create_page(
+ p_id=>102
+,p_name=>'ConsumeMed'
+,p_alias=>'CONSUMEMED'
+,p_page_mode=>'MODAL'
+,p_step_title=>unistr('\0421\043F\043E\0436\0438\0432\0430\043D\043D\044F \043B\0456\043A\0456\0432')
+,p_autocomplete_on_off=>'OFF'
+,p_step_template=>2101883943284197310
+,p_page_template_options=>'#DEFAULT#'
+,p_dialog_resizable=>'Y'
+,p_protection_level=>'C'
+,p_page_component_map=>'16'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(44054742797422931)
+,p_plug_name=>'Parameters'
+,p_static_id=>'parameters'
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>10
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(44055059040422934)
+,p_button_sequence=>20
+,p_button_name=>'Consume'
+,p_static_id=>'add'
+,p_show_as_disabled=>false
+,p_button_action=>'SUBMIT'
+,p_button_template_options=>'#DEFAULT#:t-Button--iconLeft'
+,p_button_template_id=>2084305881903810008
+,p_button_image_alt=>unistr('\0421\043F\043E\0436\0438\0442\0438')
+,p_button_condition=>'P102_DRU_ID'
+,p_button_condition_type=>'ITEM_IS_NULL'
+,p_icon_css_classes=>'fa-plus-square-o'
+,p_grid_new_row=>'N'
+,p_grid_new_column=>'N'
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(44056024922422944)
+,p_button_sequence=>30
+,p_button_name=>'ConsumeNow'
+,p_static_id=>'consumenow'
+,p_show_as_disabled=>false
+,p_button_action=>'SUBMIT'
+,p_button_template_options=>'#DEFAULT#:t-Button--iconLeft'
+,p_button_template_id=>2084305881903810008
+,p_button_image_alt=>unistr('\0421\043F\043E\0436\0438\0442\0438 \0437\0430\0440\0430\0437')
+,p_button_condition=>'P102_DRU_ID'
+,p_button_condition_type=>'ITEM_IS_NULL'
+,p_icon_css_classes=>'fa-plus-square-o'
+,p_grid_new_row=>'N'
+,p_grid_new_column=>'N'
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(44055274546422936)
+,p_button_sequence=>10
+,p_button_plug_id=>wwv_flow_imp.id(44054742797422931)
+,p_button_name=>'Remove'
+,p_static_id=>'remove'
+,p_show_as_disabled=>false
+,p_button_action=>'SUBMIT'
+,p_button_template_options=>'#DEFAULT#:t-Button--iconLeft'
+,p_button_template_id=>2084305881903810008
+,p_button_image_alt=>unistr('\0412\0438\0434\0430\043B\0438\0442\0438')
+,p_button_position=>'DELETE'
+,p_confirm_message=>unistr('\0406\043D\0444\043E\0440\043C\0430\0446\0456\044F \043F\0440\043E \0441\043F\043E\0436\0438\0432\0430\043D\043D\044F \0431\0443\0434\0435 \0432\0438\0434\0430\043B\0435\043D\0430')
+,p_confirm_style=>'warning'
+,p_button_condition=>'P102_DRU_ID'
+,p_button_condition_type=>'ITEM_IS_NOT_NULL'
+,p_icon_css_classes=>'fa-remove'
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(44055175690422935)
+,p_button_sequence=>10
+,p_button_plug_id=>wwv_flow_imp.id(44054742797422931)
+,p_button_name=>'Modify'
+,p_static_id=>'save'
+,p_show_as_disabled=>false
+,p_button_action=>'SUBMIT'
+,p_button_template_options=>'#DEFAULT#:t-Button--iconLeft'
+,p_button_template_id=>2084305881903810008
+,p_button_image_alt=>unistr('\0417\043C\0456\043D\0438\0442\0438')
+,p_button_position=>'CHANGE'
+,p_button_condition=>'P102_DRU_ID'
+,p_button_condition_type=>'ITEM_IS_NOT_NULL'
+,p_icon_css_classes=>'fa-file-edit'
+);
+wwv_flow_imp_page.create_page_branch(
+ p_id=>wwv_flow_imp.id(44055951787422943)
+,p_branch_name=>'BackToDrugUseDashb'
+,p_branch_action=>'f?p=&APP_ID.:101:&SESSION.::&DEBUG.:::&success_msg=#SUCCESS_MSG#'
+,p_branch_point=>'AFTER_PROCESSING'
+,p_branch_type=>'REDIRECT_URL'
+,p_branch_sequence=>10
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(44055593674422939)
+,p_name=>'P102_CONSUMED_DOSE'
+,p_item_sequence=>70
+,p_item_plug_id=>wwv_flow_imp.id(44054742797422931)
+,p_prompt=>unistr('\0414\043E\0437\0430, \043C\0433')
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_NUMBER_FIELD'
+,p_cSize=>30
+,p_field_template=>1610598304472262251
+,p_item_template_options=>'#DEFAULT#'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'max_value', '10000',
+  'min_value', '0',
+  'number_alignment', 'left',
+  'virtual_keyboard', 'decimal')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(44055414307422938)
+,p_name=>'P102_CONSUMED_DT'
+,p_item_sequence=>60
+,p_item_plug_id=>wwv_flow_imp.id(44054742797422931)
+,p_prompt=>unistr('\0421\043F\043E\0436\0438\0442\043E')
+,p_format_mask=>'&APP_DTFMT_SHORT_T.'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_DATE_PICKER_APEX'
+,p_cSize=>30
+,p_field_template=>1610598304472262251
+,p_item_template_options=>'#DEFAULT#'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'appearance_and_behavior', 'MONTH-PICKER:YEAR-PICKER:TODAY-BUTTON',
+  'days_outside_month', 'SELECTABLE',
+  'display_as', 'POPUP',
+  'max_date', 'NONE',
+  'min_date', 'NONE',
+  'multiple_months', 'N',
+  'show_on', 'FOCUS',
+  'show_time', 'Y',
+  'time_increment', '1',
+  'use_defaults', 'N')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(50418893992367239)
+,p_name=>'P102_DRU_CPTR_ID'
+,p_item_sequence=>40
+,p_item_plug_id=>wwv_flow_imp.id(44054742797422931)
+,p_prompt=>unistr('\0412\0456\043A\043D\043E \0441\043F\043E\0436\0438\0432\0430\043D\043D\044F')
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_SELECT_LIST'
+,p_named_lov=>'GD_TIME_RANGES_AVAILABLE'
+,p_lov_display_null=>'YES'
+,p_cHeight=>1
+,p_read_only_when_type=>'ALWAYS'
+,p_field_template=>1610598304472262251
+,p_item_template_options=>'#DEFAULT#'
+,p_lov_display_extra=>'YES'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'page_action_on_selection', 'NONE')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(50419158072370076)
+,p_name=>'P102_DRU_DR_ID'
+,p_item_sequence=>50
+,p_item_plug_id=>wwv_flow_imp.id(44054742797422931)
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(44054869056422932)
+,p_name=>'P102_DRU_ID'
+,p_item_sequence=>10
+,p_item_plug_id=>wwv_flow_imp.id(44054742797422931)
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(50418281745363154)
+,p_name=>'P102_DRU_PRD_ID'
+,p_item_sequence=>20
+,p_item_plug_id=>wwv_flow_imp.id(44054742797422931)
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(50418597571365542)
+,p_name=>'P102_DRU_PR_ID'
+,p_item_sequence=>30
+,p_item_plug_id=>wwv_flow_imp.id(44054742797422931)
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(50426655767451531)
+,p_process_sequence=>10
+,p_process_point=>'AFTER_SUBMIT'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'Consume'
+,p_static_id=>'consumenow'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'begin',
+'  if :P102_DRU_ID is null then',
+'      REHAB_DRUGUSE_PKG.consume_drug (  ',
+'            P_DRU_PRD_ID => :P102_DRU_PRD_ID,',
+'            P_DRU_PR_ID => :P102_DRU_PR_ID,',
+'            P_DRU_CPTR_ID => :P102_DRU_CPTR_ID,',
+'            P_DRU_DR_ID => :P102_DRU_DR_ID,',
+'            P_DRU_CONSUMED => to_date(:P102_CONSUMED_DT,:APP_DTFMT_SHORT_T),',
+'            P_DRU_ACTUAL_DOSAGE => :P102_CONSUMED_DOSE) ; ',
+'  end if;',
+'end;'))
+,p_process_clob_language=>'PLSQL'
+,p_error_display_location=>'INLINE_IN_NOTIFICATION'
+,p_process_when_button_id=>wwv_flow_imp.id(44055059040422934)
+,p_process_when=>'P102_DRU_ID'
+,p_process_when_type=>'ITEM_IS_NULL'
+,p_process_success_message=>unistr('\0406\043D\0444\043E\0440\043C\0430\0446\0456\044E \0437\0431\0435\0440\0435\0436\0435\043D\043E')
+,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
+,p_internal_uid=>50426655767451531
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(44056187697422945)
+,p_process_sequence=>20
+,p_process_point=>'AFTER_SUBMIT'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'ConsumeNow'
+,p_static_id=>'consumenow_2'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'begin',
+'  if :P102_DRU_ID is null then',
+'      :P102_CONSUMED_DT := to_char(systimestamp at time zone SESSIONTIMEZONE,:APP_DTFMT_SHORT_T);',
+'      REHAB_DRUGUSE_PKG.consume_drug (  ',
+'            P_DRU_PRD_ID => :P102_DRU_PRD_ID,',
+'            P_DRU_PR_ID => :P102_DRU_PR_ID,',
+'            P_DRU_CPTR_ID => :P102_DRU_CPTR_ID,',
+'            P_DRU_DR_ID => :P102_DRU_DR_ID,',
+'            P_DRU_CONSUMED => to_date(:P102_CONSUMED_DT,:APP_DTFMT_SHORT_T),',
+'            P_DRU_ACTUAL_DOSAGE => :P102_CONSUMED_DOSE) ; ',
+'  end if;',
+'end;'))
+,p_process_clob_language=>'PLSQL'
+,p_error_display_location=>'INLINE_IN_NOTIFICATION'
+,p_process_when_button_id=>wwv_flow_imp.id(44056024922422944)
+,p_process_when=>'P102_DRU_ID'
+,p_process_when_type=>'ITEM_IS_NULL'
+,p_process_success_message=>unistr('\0406\043D\0444\043E\0440\043C\0430\0446\0456\044E \0437\0431\0435\0440\0435\0436\0435\043D\043E')
+,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
+,p_internal_uid=>44056187697422945
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(44055611552422940)
+,p_process_sequence=>10
+,p_process_point=>'BEFORE_HEADER'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'Init'
+,p_static_id=>'init'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'begin',
+'  if :P102_DRU_ID is null then',
+'    select PRD_DOSAGE into :P102_CONSUMED_DOSE',
+'    from REHAB_PRESCRIPTIONS_DETAILS where PRD_ID = :P102_DRU_PRD_ID;',
+'    :P102_CONSUMED_DT := nvl2(:P102_CONSUMED_DT, :P102_CONSUMED_DT, to_char(systimestamp at time zone SESSIONTIMEZONE,''&APP_DTFMT_SHORT_T.''));',
+'  else',
+'    select DRU_ACTUAL_DOSAGE, to_char(DRU_CONSUMED at time zone SESSIONTIMEZONE,''&APP_DTFMT_SHORT_T.'') into :P102_CONSUMED_DOSE, :P102_CONSUMED_DT',
+'    from REHAB_DRUG_USES where DRU_ID = :P102_DRU_ID;',
+'  end if;',
+'end;'))
+,p_process_clob_language=>'PLSQL'
+,p_internal_uid=>44055611552422940
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(44055733566422941)
+,p_process_sequence=>30
+,p_process_point=>'AFTER_SUBMIT'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'Modify'
+,p_static_id=>'modify'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'begin',
+'  if :P102_DRU_ID is not null then',
+'      REHAB_DRUGUSE_PKG.modify_drug_use (  ',
+'            P_DRU_ID => :P102_DRU_ID,',
+'            P_DRU_CONSUMED => to_date(:P102_CONSUMED_DT,:APP_DTFMT_SHORT_T),',
+'            P_DRU_ACTUAL_DOSAGE => :P102_CONSUMED_DOSE) ; ',
+'  end if;',
+'end;'))
+,p_process_clob_language=>'PLSQL'
+,p_error_display_location=>'INLINE_IN_NOTIFICATION'
+,p_process_when_button_id=>wwv_flow_imp.id(44055175690422935)
+,p_process_when=>'P102_DRU_ID'
+,p_process_when_type=>'ITEM_IS_NOT_NULL'
+,p_process_success_message=>unistr('\0417\043C\0456\043D\0443 \0456\043D\0444\043E\0440\043C\0430\0446\0456\0457 \0437\0431\0435\0440\0435\0436\0435\043D\043E')
+,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
+,p_internal_uid=>44055733566422941
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(44055866863422942)
+,p_process_sequence=>40
+,p_process_point=>'AFTER_SUBMIT'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'Remove'
+,p_static_id=>'remove'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'begin',
+'  if :P102_DRU_ID is not null then',
+'      REHAB_DRUGUSE_PKG.remove_drug_use (  ',
+'            P_DRU_ID => :P102_DRU_ID) ; ',
+'    :P102_CONSUMED_DT := null;',
+'  end if;',
+'end;'))
+,p_process_clob_language=>'PLSQL'
+,p_error_display_location=>'INLINE_IN_NOTIFICATION'
+,p_process_when_button_id=>wwv_flow_imp.id(44055274546422936)
+,p_process_when=>'P102_DRU_ID'
+,p_process_when_type=>'ITEM_IS_NOT_NULL'
+,p_process_success_message=>unistr('\0406\043D\0444\043E\0440\043C\0430\0446\0456\044E \0432\0438\0434\0430\043B\0435\043D\043E')
+,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
+,p_internal_uid=>44055866863422942
 );
 end;
 /

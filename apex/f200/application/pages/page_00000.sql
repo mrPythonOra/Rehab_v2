@@ -121,12 +121,15 @@ wwv_flow_imp_page.create_page_item(
 ,p_field_template=>2042262243893469891
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'appearance_and_behavior', 'MONTH-PICKER:YEAR-PICKER:TODAY-BUTTON',
+  'days_outside_month', 'SELECTABLE',
   'display_as', 'POPUP',
   'max_date', 'NONE',
   'min_date', 'NONE',
   'multiple_months', 'N',
+  'show_on', 'FOCUS',
   'show_time', 'N',
-  'use_defaults', 'Y')).to_clob
+  'use_defaults', 'N')).to_clob
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(28459581258204104)

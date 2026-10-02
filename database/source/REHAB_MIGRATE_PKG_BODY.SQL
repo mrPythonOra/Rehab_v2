@@ -1,6 +1,5 @@
 
 
-
   CREATE OR REPLACE EDITIONABLE PACKAGE BODY "REHAB_MIGRATE_PKG" AS
 
   procedure refresh_data AS
@@ -28,6 +27,7 @@
         delete from REHAB_PATIENTS2P_ACCESS;commit;
         delete from REHAB_PATIENTS;commit;
         delete from REHAB_TENANTS;commit;
+        delete from REHAB_TIME_PERIODS;commit;
         --delete from apex_stored_states;commit;
         delete from REHAB_CONFIGS;commit;
         commit;
@@ -158,6 +158,19 @@
             where f.dr_id = d.dr_id;
         commit;
         --******************************************************************************
+        INSERT INTO REHAB_TIME_PERIODS (TP_ID, TP_TE_ID, TP_PAT_ID, TP_NAME, TP_DESCR, TP_START_TIME_STR, TP_END_TIME_STR)
+            VALUES (1,null,null,'Ніч-ранок','ПеріодРанній ранок','00:00','06:00');
+        INSERT INTO REHAB_TIME_PERIODS (TP_ID, TP_TE_ID, TP_PAT_ID, TP_NAME, TP_DESCR, TP_START_TIME_STR, TP_END_TIME_STR)
+            VALUES (2,null,null,'Ранок','Ранковий період','06:00','12:00');
+        INSERT INTO REHAB_TIME_PERIODS (TP_ID, TP_TE_ID, TP_PAT_ID, TP_NAME, TP_DESCR, TP_START_TIME_STR, TP_END_TIME_STR)
+            VALUES (3,null,null,'День','Денний період','12:00','17:00');
+        INSERT INTO REHAB_TIME_PERIODS (TP_ID, TP_TE_ID, TP_PAT_ID, TP_NAME, TP_DESCR, TP_START_TIME_STR, TP_END_TIME_STR)
+            VALUES (4,null,null,'Вечір','Вечірній період','17:00','22:00');
+        INSERT INTO REHAB_TIME_PERIODS (TP_ID, TP_TE_ID, TP_PAT_ID, TP_NAME, TP_DESCR, TP_START_TIME_STR, TP_END_TIME_STR)
+            VALUES (5,null,null,'Вечір-ніч','Період пізнього вечора','22:00','23:59');
+        commit;
+        execute immediate 'ALTER SEQUENCE SQ_REHAB_CONSUME_PATTERNS RESTART START WITH 6';
+        --******************************************************************************
         --prompt rehab_consume_patterns
         INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,cp_name,cp_descr) VALUES (1,null,null,null,'One Time Morning','Common "One Time in the Morning"');
         INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,cp_name,cp_descr) VALUES (2,null,null,null,'One Time Noon','Common "One Time in the Noon"');
@@ -181,23 +194,23 @@
         --******************************************************************************
         INSERT ALL
           INTO rehab_consume_time_ranges (cptr_id,cptr_cp_id,cptr_name,        cptr_start_time_str,cptr_end_time_str)
-                                  VALUES (1,      1,         'Morning 1 time', START_TIM_1T1,      END_TIM_1T1 )
+                                  VALUES (1,      1,         '1 р/д зранку', START_TIM_1T1,      END_TIM_1T1 )
           INTO rehab_consume_time_ranges (cptr_id,cptr_cp_id,cptr_name,        cptr_start_time_str,cptr_end_time_str)
-                                  VALUES (2,      2,         'Noon 1 time',    START_TIM_1T2,      END_TIM_1T2 )
+                                  VALUES (2,      2,         '1 р/д вдень',    START_TIM_1T2,      END_TIM_1T2 )
           INTO rehab_consume_time_ranges (cptr_id,cptr_cp_id,cptr_name,        cptr_start_time_str,cptr_end_time_str)
-                                  VALUES (3,      3,         'Evening 1 time', START_TIM_1T3,      END_TIM_1T3 )
+                                  VALUES (3,      3,         '1 р/д увечорі', START_TIM_1T3,      END_TIM_1T3 )
         --
           INTO rehab_consume_time_ranges (cptr_id,cptr_cp_id,cptr_name,         cptr_start_time_str,cptr_end_time_str)
-                                  VALUES (4,      4,         'Morning 2 times', START_TIM_2T1,      END_TIM_2T1 )
+                                  VALUES (4,      4,         '2 р/д вранці', START_TIM_2T1,      END_TIM_2T1 )
           INTO rehab_consume_time_ranges (cptr_id,cptr_cp_id,cptr_name,         cptr_start_time_str,cptr_end_time_str)
-                                  VALUES (5,      4,         'Evening 2 times', START_TIM_2T2,      END_TIM_2T2 )
+                                  VALUES (5,      4,         '2 р/д увечорі', START_TIM_2T2,      END_TIM_2T2 )
         --
           INTO rehab_consume_time_ranges (cptr_id,cptr_cp_id,cptr_name,         cptr_start_time_str,cptr_end_time_str)
-                                  VALUES (6,      5,         'Morning 3 times', START_TIM_3T1,      END_TIM_3T1 )
+                                  VALUES (6,      5,         '3 р/д вранці', START_TIM_3T1,      END_TIM_3T1 )
           INTO rehab_consume_time_ranges (cptr_id,cptr_cp_id,cptr_name,         cptr_start_time_str,cptr_end_time_str)
-                                  VALUES (7,      5,         'Noon 3 times',    START_TIM_3T2,      END_TIM_3T2 )
+                                  VALUES (7,      5,         '3 р/д вдень',    START_TIM_3T2,      END_TIM_3T2 )
           INTO rehab_consume_time_ranges (cptr_id,cptr_cp_id,cptr_name,         cptr_start_time_str,cptr_end_time_str)
-                                  VALUES (8,      5,         'Evening 3 times', START_TIM_3T3,      END_TIM_3T3 )
+                                  VALUES (8,      5,         '3 р/д увечорі', START_TIM_3T3,      END_TIM_3T3 )
         select * from (
         select
           OWNER,
@@ -222,23 +235,23 @@
 
         INSERT ALL
           INTO rehab_consume_time_ranges (cptr_id,cptr_cp_id,cptr_name,        cptr_start_time_str,cptr_end_time_str)
-                                  VALUES (9,      21,         'Morning 1 time', START_TIM_1T1,      END_TIM_1T1 )
+                                  VALUES (9,      21,         '1 р/д зранку', START_TIM_1T1,      END_TIM_1T1 )
         --  INTO rehab_consume_time_ranges (cptr_id,cptr_cp_id,cptr_name,        cptr_start_time_str,cptr_end_time_str)
-        --                          VALUES (2,      22,         'Noon 1 time',    START_TIM_1T2,      END_TIM_1T2 )
+        --                          VALUES (2,      22,         '1 р/д вдень',    START_TIM_1T2,      END_TIM_1T2 )
           INTO rehab_consume_time_ranges (cptr_id,cptr_cp_id,cptr_name,        cptr_start_time_str,cptr_end_time_str)
-                                  VALUES (10,      23,         'Evening 1 time', START_TIM_1T3,      END_TIM_1T3 )
+                                  VALUES (10,      23,         '1 р/д увечорі', START_TIM_1T3,      END_TIM_1T3 )
         --
           INTO rehab_consume_time_ranges (cptr_id,cptr_cp_id,cptr_name,         cptr_start_time_str,cptr_end_time_str)
-                                  VALUES (11,      24,         'Morning 2 times', START_TIM_2T1,      END_TIM_2T1 )
+                                  VALUES (11,      24,         '2 р/д вранці', START_TIM_2T1,      END_TIM_2T1 )
           INTO rehab_consume_time_ranges (cptr_id,cptr_cp_id,cptr_name,         cptr_start_time_str,cptr_end_time_str)
-                                  VALUES (12,      24,         'Evening 2 times', START_TIM_2T2,      END_TIM_2T2 )
+                                  VALUES (12,      24,         '2 р/д увечорі', START_TIM_2T2,      END_TIM_2T2 )
         --
           INTO rehab_consume_time_ranges (cptr_id,cptr_cp_id,cptr_name,         cptr_start_time_str,cptr_end_time_str)
-                                  VALUES (13,      25,         'Morning 3 times', START_TIM_3T1,      END_TIM_3T1 )
+                                  VALUES (13,      25,         '3 р/д вранці', START_TIM_3T1,      END_TIM_3T1 )
           INTO rehab_consume_time_ranges (cptr_id,cptr_cp_id,cptr_name,         cptr_start_time_str,cptr_end_time_str)
-                                  VALUES (14,      25,         'Noon 3 times',    START_TIM_3T2,      END_TIM_3T2 )
+                                  VALUES (14,      25,         '3 р/д вдень',    START_TIM_3T2,      END_TIM_3T2 )
           INTO rehab_consume_time_ranges (cptr_id,cptr_cp_id,cptr_name,         cptr_start_time_str,cptr_end_time_str)
-                                  VALUES (15,      25,         'Evening 3 times', START_TIM_3T3,      END_TIM_3T3 )
+                                  VALUES (15,      25,         '3 р/д увечорі', START_TIM_3T3,      END_TIM_3T3 )
         select * from (
         select
           OWNER,
@@ -263,23 +276,23 @@
 
         INSERT ALL
           INTO rehab_consume_time_ranges (cptr_id,cptr_cp_id,cptr_name,        cptr_start_time_str,cptr_end_time_str)
-                                  VALUES (16,      41,         'Morning 1 time', START_TIM_1T1,      END_TIM_1T1 )
+                                  VALUES (16,      41,         '1 р/д зранку', START_TIM_1T1,      END_TIM_1T1 )
           INTO rehab_consume_time_ranges (cptr_id,cptr_cp_id,cptr_name,        cptr_start_time_str,cptr_end_time_str)
-                                  VALUES (17,      42,         'Noon 1 time',    START_TIM_1T2,      END_TIM_1T2 )
+                                  VALUES (17,      42,         '1 р/д вдень',    START_TIM_1T2,      END_TIM_1T2 )
           INTO rehab_consume_time_ranges (cptr_id,cptr_cp_id,cptr_name,        cptr_start_time_str,cptr_end_time_str)
-                                  VALUES (18,      43,         'Evening 1 time', START_TIM_1T3,      END_TIM_1T3 )
+                                  VALUES (18,      43,         '1 р/д увечорі', START_TIM_1T3,      END_TIM_1T3 )
         --
           INTO rehab_consume_time_ranges (cptr_id,cptr_cp_id,cptr_name,         cptr_start_time_str,cptr_end_time_str)
-                                  VALUES (19,      44,         'Morning 2 times', START_TIM_2T1,      END_TIM_2T1 )
+                                  VALUES (19,      44,         '2 р/д вранці', START_TIM_2T1,      END_TIM_2T1 )
           INTO rehab_consume_time_ranges (cptr_id,cptr_cp_id,cptr_name,         cptr_start_time_str,cptr_end_time_str)
-                                  VALUES (20,      44,         'Evening 2 times', START_TIM_2T2,      END_TIM_2T2 )
+                                  VALUES (20,      44,         '2 р/д увечорі', START_TIM_2T2,      END_TIM_2T2 )
         --
           INTO rehab_consume_time_ranges (cptr_id,cptr_cp_id,cptr_name,         cptr_start_time_str,cptr_end_time_str)
-                                  VALUES (21,      45,         'Morning 3 times', START_TIM_3T1,      END_TIM_3T1 )
+                                  VALUES (21,      45,         '3 р/д вранці', START_TIM_3T1,      END_TIM_3T1 )
           INTO rehab_consume_time_ranges (cptr_id,cptr_cp_id,cptr_name,         cptr_start_time_str,cptr_end_time_str)
-                                  VALUES (22,      45,         'Noon 3 times',    START_TIM_3T2,      END_TIM_3T2 )
+                                  VALUES (22,      45,         '3 р/д вдень',    START_TIM_3T2,      END_TIM_3T2 )
           INTO rehab_consume_time_ranges (cptr_id,cptr_cp_id,cptr_name,         cptr_start_time_str,cptr_end_time_str)
-                                  VALUES (23,      45,         'Evening 3 times', START_TIM_3T3,      END_TIM_3T3 )
+                                  VALUES (23,      45,         '3 р/д увечорі', START_TIM_3T3,      END_TIM_3T3 )
         select * from (
         select
           OWNER,
@@ -307,7 +320,7 @@
         INSERT INTO rehab_prescriptions
            (pr_id,pr_dr_id,pr_pat_id,pr_prr_id,pr_planned_start,pr_planned_end,pr_notes, PR_WS_ID)
         SELECT
-            pr_id,   p.dr_id,   pat_id,   prr_id,   planned_start,   planned_end,   notes,    DR_WS_ID
+            pr_id,   p.dr_id,   pat_id,   prr_id,   planned_start,   planned_end,   case when notes like '%http%' then notes else null end,    DR_WS_ID
         FROM
             reabilitation.prescription p, REHAB_DRUGS d
             where p.dr_id=d.dr_id and nvl(notes,'~')<>'--no_copy_data--';
@@ -341,8 +354,8 @@
                 else null end
             else null end cp_id,
             planned_start,
-            case when planned_end is not null and trunc(planned_end,'dd') <= trunc(systimestamp,'dd') then planned_end
-                 when planned_end is not null and trunc(planned_end,'dd') > trunc(systimestamp,'dd') and SUSPENDED = 'N' then planned_end
+            case when planned_end is not null and trunc(planned_end,'dd') <= trunc(systimestamp,'dd') then planned_end + 1 - 1/24/60/60
+                 when planned_end is not null and trunc(planned_end,'dd') > trunc(systimestamp,'dd') and SUSPENDED = 'N' then planned_end + 1 - 1/24/60/60
                  when SUSPENDED = 'Y' and (planned_end is not null and trunc(planned_end,'dd') > trunc(systimestamp,'dd') or planned_end is null) then
                    nvl((select trunc(max(CONSUMED),'DD') from reabilitation.DRUG_USE u where u.pr_id=p.pr_id and u.PAT_ID=p.PAT_ID),planned_start+0.1)
             end planned_end,
@@ -376,7 +389,7 @@
                      when PRATR_CP_ID = 25 then 12+l.l
                 else null end
             else null end cptr_id,
-            p0.DR_ID, DOSAGE,     PR_SORT_ORDER,   null
+            p0.DR_ID, DOSAGE,     PR_SORT_ORDER,   case when notes not like '%http%' then notes else null end
         FROM
             reabilitation.prescription p0, REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES p1,
             (select level l from dual connect by level <=3) l
@@ -402,7 +415,7 @@
                (select CPTR_ID --||' (1) '||CPTR_START_TIME_STR ||'-'||CPTR_END_TIME_STR
                        CPTR_ID from REHAB_CONSUME_TIME_RANGES
                  where CPTR_CP_ID=PRATR_CP_ID
-                   and to_date(to_char(CONSUMED,'HH24:MI'),'HH24:MI') between to_date(CPTR_START_TIME_STR,'HH24:MI') and to_date(CPTR_END_TIME_STR,'HH24:MI')
+                   and to_date(to_char(CONSUMED,'HH24:MI'),'HH24:MI') between to_date(CPTR_START_TIME_STR,'HH24:MI') and to_date(CPTR_END_TIME_STR,'HH24:MI')+1/24
                 union all
                 select CPTR_ID from (
                 select CPTR_ID--||' (2) '||CPTR_START_TIME_STR ||'-'||CPTR_END_TIME_STR CPTR_ID
@@ -499,9 +512,9 @@
         --******************************************************************************
         --prompt rehab_trainings
         insert into REHAB_TRAININGS
-         (tr_id, TR_TYPE, TR_PAT_ID, TR_START, TR_END, TR_DISTANCE_LENGTH, TR_STEPS, TR_PULSE_AVG, TR_PULSE_MIN, TR_PULSE_MAX)
+         (tr_id, TR_TYPE, TR_PAT_ID, TR_START, TR_END, TR_DISTANCE_LENGTH, TR_STEPS, TR_PULSE_AVG, TR_PULSE_MIN, TR_PULSE_MAX, TR_DESCR, TR_IMG1, TR_IMG2)
         select
-          tr_id, TR_TYPE,    PAT_ID, TR_START, TR_END,    DISTANCE_LENGTH,    STEPS,    PULSE_AVG,    PULSE_MIN,    PULSE_MAX
+          tr_id, TR_TYPE,    PAT_ID, TR_START, TR_END,    DISTANCE_LENGTH,    STEPS,    PULSE_AVG,    PULSE_MIN,    PULSE_MAX, TR_DESCR, TR_IMG1, TR_IMG2
         from reabilitation.trainings;
         commit;
         declare
@@ -556,5 +569,4 @@
 
 END REHAB_MIGRATE_PKG;
 /
-
 

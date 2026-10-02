@@ -1,6 +1,5 @@
 
 
-
   CREATE OR REPLACE EDITIONABLE PACKAGE "REHAB_CONFIG_PKG" AS
 
   cnstY    constant varchar2(1) := 'Y';
@@ -10,5 +9,4 @@
 
 END REHAB_CONFIG_PKG;
 /
-
 

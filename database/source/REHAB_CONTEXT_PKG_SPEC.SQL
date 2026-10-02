@@ -1,6 +1,5 @@
 
 
-
   CREATE OR REPLACE EDITIONABLE PACKAGE "REHAB_CONTEXT_PKG" AS
 
   procedure set_default_context;
@@ -24,5 +23,4 @@
 
 END REHAB_CONTEXT_PKG;
 /
-
 
