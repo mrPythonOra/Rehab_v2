@@ -2,6 +2,12 @@
 
   CREATE OR REPLACE EDITIONABLE PACKAGE BODY "REHAB_DRUGUSE_PKG" AS
 
+  function clr(p_color varchar2, p_txt varchar2) return varchar2
+  is
+  begin
+    return '<span style="color: '|| p_color || ';">'||p_txt||'</span>';
+  end;
+
   function druguse_dashboard_ref(p_tp_id REHAB_TIME_PERIODS.TP_ID%type) return rehab_druguse_dashboard_tab pipelined AS
     l_img blob;
     l_img2 blob;
@@ -42,12 +48,12 @@
 --       l_img        -- drug_img     blob
 --    ));
 
-    for i in (select d.*, r.BALANCE, r.DAYS_PLANNED, r.DAYS_REMAIN
+    for i in (select d.*, r.BALANCE, r.DAYS_PLANNED, r.DAYS_REMAIN, r.DA_STORED_AMOUNT, r.end_date
                 from V$REHAB_CONSUME_DATA d, V$REHAB_TIME_PERIODS tp, V$REHAB_REMAINS r
                where tp.TP_ID = p_tp_id
                  and (CPTR_START_TIME_DT_GDT >= TP_START_TIME_DT_GDT and CPTR_START_TIME_DT_GDT < TP_END_TIME_DT_GDT or
                       CPTR_END_TIME_DT_GDT   >= TP_START_TIME_DT_GDT and CPTR_END_TIME_DT_GDT   < TP_END_TIME_DT_GDT)
-                 and d.PRD_DR_ID = r.DR_ID
+                 and d.PRD_DR_ID = r.DR_ID(+)
                order by decode(d.DRU_CONSUMED,null,-1e6,PRD_SORT_ORDER))
     loop
         pipe row (rehab_druguse_dashboard_rec(
@@ -55,16 +61,32 @@
            mainlabel => i.DR_NAME,      --     mainlabel    VARCHAR2(4000),
            sublabel  => '<b>'||UNISTR('\2710')||'</b> '||i.PRD_DOSAGE|| ' мг ' ||i.CPTR_START_TIME_STR||'-'||i.CPTR_END_TIME_STR||' '||i.DR_WHEN2CONSUME||
                         --'<br>'||round(i.DAYS_PLANNED,1)||'; '||i.DAYS_REMAIN||'; '||REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT')||'; '||
-                        '<br>Залишок: '||case when i.DAYS_PLANNED = -1
-                                     then '<span style="color: '||case when i.DAYS_REMAIN >= to_number(REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT')) then 'lime' else 'yellow' end||';"> '
-                                     else '<span style="color: '||case when i.DAYS_REMAIN >= i.DAYS_PLANNED then 'lime' else 'yellow' end||';"> '
-                                     end ||i.DAYS_REMAIN||' днів</span>. Заплановано: '||case when i.DAYS_PLANNED = -1 then 'без обмеження дати' else round(i.DAYS_PLANNED)||' днів, завершення: ' || to_char(i.PR_PLANNED_END, 'YYYY-Mon-DD') end ||
+--                        case when i.DA_STORED_AMOUNT is not null then
+--                        '<br>Залишок на: '||case when i.DAYS_PLANNED is null
+--                                     then '<span style="color: '||case when i.DAYS_REMAIN >= to_number(REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT')) then 'lime' else 'yellow' end||';"> '
+--                                     else '<span style="color: '||case when i.DAYS_REMAIN >= i.DAYS_PLANNED then 'lime' else 'yellow' end||';"> '
+--                                     end ||i.DAYS_REMAIN||' дні(в)</span> до '||to_char(i.end_date, 'YYYY-Mon-DD')||'. Заплановано'||case when i.DAYS_PLANNED is null then ': без обмеження дати' else ' до: ' || to_char(i.PR_PLANNED_END, 'YYYY-Mon-DD') --||
+--                                     --'<br>В наявності до '||to_char(i.end_date, 'YYYY-Mon-DD')
+--                                     end
+--                        else '<br>Інформація по залишкам відсутня' end ||
                         nvl2(i.PRD_NOTES,'<br>'||i.PRD_NOTES,null),  --     sublabel     varchar2(4000),
            data1     => nvl2(i.DRU_CONSUMED,'<span style="color: lime;">'||UNISTR('\D83C\DF23')||/*Прийнято*/'</span> '||to_char(i.DRU_CONSUMED at time zone SESSIONTIMEZONE,'YYYY-Mon-DD HH24:MI')||
                                             '<span style="color: '||case when i.DRU_ACTUAL_DOSAGE = i.PRD_DOSAGE then 'lime' else 'yellow' end||';"> '||i.DRU_ACTUAL_DOSAGE||' мг</span>',--||
                                             --UNISTR('\D83D\DDD2')||' "'||i.CPTR_NAME||'; '||i.CPTR_START_TIME_STR||'-'||i.CPTR_END_TIME_STR||'"',
                                             '<span style="color: yellow;">'||UNISTR('\D83C\DF27')||' Не прийнято</span>'),     --     data1        VARCHAR2(4000),
-           data2     => nvl(i.DR_USE_CASE,i.DR_TYPE_SHORT)||nvl2(i.PR_NOTES,'<br>'||i.PR_NOTES,null)||nvl2(i.PRATR_NOTES,'<br>'||i.PRATR_NOTES,null),     --     data2        VARCHAR2(4000),
+           data2     => clr('lime',UNISTR('\2762'))||' '||
+                         nvl(i.DR_USE_CASE,i.DR_TYPE_SHORT)||
+                         nvl2(i.PR_NOTES,'<br>'||clr('lime',UNISTR('\D83D\DD8E'))||' '||i.PR_NOTES,null)||
+                         nvl2(i.PRATR_NOTES,'<br>'||clr('lime',UNISTR('\D83D\DDB9'))||' '||i.PRATR_NOTES,null)||
+                        case when i.DA_STORED_AMOUNT is not null then
+                        '<br>'||clr('lime',UNISTR('\D83D\DDC4'))||' Залишок на: '||case when i.DAYS_PLANNED is null
+                                     then '<span style="color: '||case when i.DAYS_REMAIN >= to_number(REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT')) then 'lime' else 'yellow' end||';"> '
+                                     else '<span style="color: '||case when i.DAYS_REMAIN >= i.DAYS_PLANNED then 'lime' else 'yellow' end||';"> '
+                                     end ||i.DAYS_REMAIN||' дні(в)</span> до '||to_char(i.end_date, 'YYYY-Mon-DD')||'. Заплановано'||case when i.DAYS_PLANNED is null then ': без обмеження дати' else ' до: ' || to_char(i.PR_PLANNED_END, 'YYYY-Mon-DD') --||
+                                     --'<br>В наявності до '||to_char(i.end_date, 'YYYY-Mon-DD')
+                                     end
+                        else '<br>Інформація по залишкам відсутня' end
+           ,     --     data2        VARCHAR2(4000),
            bagecol   => '',   --bagecol      VARCHAR2(4000),
            bagelabel => '', --bagelabel    VARCHAR2(4000),
            app_page  => null,           -- app_page     number,

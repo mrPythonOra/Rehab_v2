@@ -24,6 +24,22 @@ wwv_flow_imp_shared.create_menu_option(
 ,p_page_id=>10000
 );
 wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(54762914743912837)
+,p_parent_id=>wwv_flow_imp.id(29459699401248128)
+,p_short_name=>'&P202_TITLE.'
+,p_static_id=>'editmeasurement'
+,p_link=>'f?p=&APP_ID.:202:&SESSION.::&DEBUG.:::'
+,p_page_id=>202
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(54821844811590916)
+,p_parent_id=>wwv_flow_imp.id(29852904301571877)
+,p_short_name=>'&P212_TITLE.'
+,p_static_id=>'edittraining'
+,p_link=>'f?p=&APP_ID.:212:&SESSION.::&DEBUG.:::'
+,p_page_id=>212
+);
+wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(16870554490504254)
 ,p_short_name=>unistr('\0414\043E\043C\0456\0432\043A\0430')
 ,p_static_id=>'home'

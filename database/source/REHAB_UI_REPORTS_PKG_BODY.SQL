@@ -136,21 +136,21 @@
             round(avg(p_oxi),2) p_oxi
     from (
         select
-               count(*) FILTER (WHERE trunc(MT_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_cnt,
-               avg(MT_PRESSURE_SYS) FILTER (WHERE MT_PRESSURE_SYS is not null and trunc(MT_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_pr_sys,
-               avg(MT_PRESSURE_DIA) FILTER (WHERE MT_PRESSURE_DIA is not null and trunc(MT_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_pr_dia,
-               avg(MT_PULSE)        FILTER (WHERE MT_PULSE is not null        and trunc(MT_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_pulse,
-               avg(MT_WEIGHT)       FILTER (WHERE MT_WEIGHT is not null       and trunc(MT_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_wei,
-               avg(MT_TEMPERATURE)  FILTER (WHERE MT_TEMPERATURE is not null  and trunc(MT_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_temp,
-               avg(MT_SUGAR)        FILTER (WHERE MT_SUGAR is not null        and trunc(MT_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_sug,
-               avg(MT_OXIGENATION)  FILTER (WHERE MT_OXIGENATION is not null  and trunc(MT_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_oxi,
-               avg(MT_PRESSURE_SYS) FILTER (WHERE MT_PRESSURE_SYS is not null and trunc(MT_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE()) p_pr_sys,
-               avg(MT_PRESSURE_DIA) FILTER (WHERE MT_PRESSURE_DIA is not null and trunc(MT_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE()) p_pr_dia,
-               avg(MT_PULSE)        FILTER (WHERE MT_PULSE is not null        and trunc(MT_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE()) p_pulse,
-               avg(MT_WEIGHT)       FILTER (WHERE MT_WEIGHT is not null       and trunc(MT_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE()) p_wei,
-               avg(MT_TEMPERATURE)  FILTER (WHERE MT_TEMPERATURE is not null  and trunc(MT_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE()) p_temp,
-               avg(MT_SUGAR)        FILTER (WHERE MT_SUGAR is not null        and trunc(MT_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE()) p_sug,
-               avg(MT_OXIGENATION)  FILTER (WHERE MT_OXIGENATION is not null  and trunc(MT_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE()) p_oxi
+               count(*) FILTER (WHERE trunc(MT_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_cnt,
+               avg(MT_PRESSURE_SYS) FILTER (WHERE MT_PRESSURE_SYS is not null and trunc(MT_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_pr_sys,
+               avg(MT_PRESSURE_DIA) FILTER (WHERE MT_PRESSURE_DIA is not null and trunc(MT_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_pr_dia,
+               avg(MT_PULSE)        FILTER (WHERE MT_PULSE is not null        and trunc(MT_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_pulse,
+               avg(MT_WEIGHT)       FILTER (WHERE MT_WEIGHT is not null       and trunc(MT_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_wei,
+               avg(MT_TEMPERATURE)  FILTER (WHERE MT_TEMPERATURE is not null  and trunc(MT_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_temp,
+               avg(MT_SUGAR)        FILTER (WHERE MT_SUGAR is not null        and trunc(MT_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_sug,
+               avg(MT_OXIGENATION)  FILTER (WHERE MT_OXIGENATION is not null  and trunc(MT_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_oxi,
+               avg(MT_PRESSURE_SYS) FILTER (WHERE MT_PRESSURE_SYS is not null and trunc(MT_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) p_pr_sys,
+               avg(MT_PRESSURE_DIA) FILTER (WHERE MT_PRESSURE_DIA is not null and trunc(MT_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) p_pr_dia,
+               avg(MT_PULSE)        FILTER (WHERE MT_PULSE is not null        and trunc(MT_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) p_pulse,
+               avg(MT_WEIGHT)       FILTER (WHERE MT_WEIGHT is not null       and trunc(MT_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) p_wei,
+               avg(MT_TEMPERATURE)  FILTER (WHERE MT_TEMPERATURE is not null  and trunc(MT_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) p_temp,
+               avg(MT_SUGAR)        FILTER (WHERE MT_SUGAR is not null        and trunc(MT_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) p_sug,
+               avg(MT_OXIGENATION)  FILTER (WHERE MT_OXIGENATION is not null  and trunc(MT_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) p_oxi
           from REHAB_MEASUREMENTS
          where MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()
            and trunc(MT_TAKEN) between REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par('DBAGG_MEAS') - 1 and REHAB_CONTEXT_PKG.getGLOBAL_DATE()
@@ -209,17 +209,17 @@
             round(avg(p_avg)) p_avg
     from (
     select
-           count(*) FILTER (WHERE trunc(TR_START)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_cnt,
-           sum(TR_DISTANCE_LENGTH) FILTER (WHERE TR_DISTANCE_LENGTH is not null and trunc(TR_START)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_dist,
-           sum(TR_STEPS)           FILTER (WHERE TR_STEPS is not null           and trunc(TR_START)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_steps,
-           avg(TR_PULSE_AVG)       FILTER (WHERE TR_PULSE_AVG is not null       and trunc(TR_START)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_avg,
-           avg(TR_PULSE_MIN)       FILTER (WHERE TR_PULSE_MIN is not null       and trunc(TR_START)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_min,
-           avg(TR_PULSE_MAX)       FILTER (WHERE TR_PULSE_MAX is not null       and trunc(TR_START)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_max,
-           sum(TR_DISTANCE_LENGTH) FILTER (WHERE TR_DISTANCE_LENGTH is not null and trunc(TR_START)<REHAB_CONTEXT_PKG.getGLOBAL_DATE()) p_dist,
-           sum(TR_STEPS)           FILTER (WHERE TR_STEPS is not null           and trunc(TR_START)<REHAB_CONTEXT_PKG.getGLOBAL_DATE()) p_steps,
-           avg(TR_PULSE_AVG)       FILTER (WHERE TR_PULSE_AVG is not null       and trunc(TR_START)<REHAB_CONTEXT_PKG.getGLOBAL_DATE()) p_avg,
-           avg(TR_PULSE_MIN)       FILTER (WHERE TR_PULSE_MIN is not null       and trunc(TR_START)<REHAB_CONTEXT_PKG.getGLOBAL_DATE()) p_min,
-           avg(TR_PULSE_MAX)       FILTER (WHERE TR_PULSE_MAX is not null       and trunc(TR_START)<REHAB_CONTEXT_PKG.getGLOBAL_DATE()) p_max
+           count(*) FILTER (WHERE trunc(TR_START)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_cnt,
+           sum(TR_DISTANCE_LENGTH) FILTER (WHERE TR_DISTANCE_LENGTH is not null and trunc(TR_START)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_dist,
+           sum(TR_STEPS)           FILTER (WHERE TR_STEPS is not null           and trunc(TR_START)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_steps,
+           avg(TR_PULSE_AVG)       FILTER (WHERE TR_PULSE_AVG is not null       and trunc(TR_START)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_avg,
+           avg(TR_PULSE_MIN)       FILTER (WHERE TR_PULSE_MIN is not null       and trunc(TR_START)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_min,
+           avg(TR_PULSE_MAX)       FILTER (WHERE TR_PULSE_MAX is not null       and trunc(TR_START)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_max,
+           sum(TR_DISTANCE_LENGTH) FILTER (WHERE TR_DISTANCE_LENGTH is not null and trunc(TR_START)<REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) p_dist,
+           sum(TR_STEPS)           FILTER (WHERE TR_STEPS is not null           and trunc(TR_START)<REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) p_steps,
+           avg(TR_PULSE_AVG)       FILTER (WHERE TR_PULSE_AVG is not null       and trunc(TR_START)<REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) p_avg,
+           avg(TR_PULSE_MIN)       FILTER (WHERE TR_PULSE_MIN is not null       and trunc(TR_START)<REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) p_min,
+           avg(TR_PULSE_MAX)       FILTER (WHERE TR_PULSE_MAX is not null       and trunc(TR_START)<REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) p_max
           from REHAB_TRAININGS
      where TR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()
        and trunc(TR_START) between REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par('DBAGG_TRAI') - 1 and REHAB_CONTEXT_PKG.getGLOBAL_DATE()
@@ -273,23 +273,23 @@
             round(avg(p_tot_min)) p_tot_min,
             round(avg(p_tot_max)) p_tot_max
       from (
-        select sum(WL_STEPS)           FILTER (WHERE WL_STEPS is not null           and trunc(WL_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_steps,
-               avg(WL_NIGHT_MIN_PULSE) FILTER (WHERE WL_NIGHT_MIN_PULSE is not null and trunc(WL_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_min,
-               avg(WL_NIGHT_MAX_PULSE) FILTER (WHERE WL_NIGHT_MAX_PULSE is not null and trunc(WL_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_max,
-               avg(WL_NIGHT_AVG_PULSE) FILTER (WHERE WL_NIGHT_AVG_PULSE is not null and trunc(WL_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_avg,
-               sum(WL_STEPS)           FILTER (WHERE WL_STEPS is not null           and trunc(WL_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE()) p_steps,
-               avg(WL_NIGHT_MIN_PULSE) FILTER (WHERE WL_NIGHT_MIN_PULSE is not null and trunc(WL_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE()) p_min,
-               avg(WL_NIGHT_MAX_PULSE) FILTER (WHERE WL_NIGHT_MAX_PULSE is not null and trunc(WL_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE()) p_max,
-               avg(WL_NIGHT_AVG_PULSE) FILTER (WHERE WL_NIGHT_AVG_PULSE is not null and trunc(WL_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE()) p_avg,
+        select sum(WL_STEPS)           FILTER (WHERE WL_STEPS is not null           and trunc(WL_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_steps,
+               avg(WL_NIGHT_MIN_PULSE) FILTER (WHERE WL_NIGHT_MIN_PULSE is not null and trunc(WL_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_min,
+               avg(WL_NIGHT_MAX_PULSE) FILTER (WHERE WL_NIGHT_MAX_PULSE is not null and trunc(WL_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_max,
+               avg(WL_NIGHT_AVG_PULSE) FILTER (WHERE WL_NIGHT_AVG_PULSE is not null and trunc(WL_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_avg,
+               sum(WL_STEPS)           FILTER (WHERE WL_STEPS is not null           and trunc(WL_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) p_steps,
+               avg(WL_NIGHT_MIN_PULSE) FILTER (WHERE WL_NIGHT_MIN_PULSE is not null and trunc(WL_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) p_min,
+               avg(WL_NIGHT_MAX_PULSE) FILTER (WHERE WL_NIGHT_MAX_PULSE is not null and trunc(WL_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) p_max,
+               avg(WL_NIGHT_AVG_PULSE) FILTER (WHERE WL_NIGHT_AVG_PULSE is not null and trunc(WL_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) p_avg,
                --
-               avg(WL_CALM_AVG_PULSE)  FILTER (WHERE WL_CALM_AVG_PULSE  is not null and trunc(WL_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_tot_calm,
-               avg(WL_TOTAL_AVG_PULSE) FILTER (WHERE WL_TOTAL_AVG_PULSE is not null and trunc(WL_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_tot_avg,
-               avg(WL_TOTAL_MIN_PULSE) FILTER (WHERE WL_TOTAL_MIN_PULSE is not null and trunc(WL_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_tot_min,
-               avg(WL_TOTAL_MAX_PULSE) FILTER (WHERE WL_TOTAL_MAX_PULSE is not null and trunc(WL_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE()) c_tot_max,
-               avg(WL_CALM_AVG_PULSE)  FILTER (WHERE WL_CALM_AVG_PULSE  is not null and trunc(WL_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE()) p_tot_calm,
-               avg(WL_TOTAL_AVG_PULSE) FILTER (WHERE WL_TOTAL_AVG_PULSE is not null and trunc(WL_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE()) p_tot_avg,
-               avg(WL_TOTAL_MIN_PULSE) FILTER (WHERE WL_TOTAL_MIN_PULSE is not null and trunc(WL_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE()) p_tot_min,
-               avg(WL_TOTAL_MAX_PULSE) FILTER (WHERE WL_TOTAL_MAX_PULSE is not null and trunc(WL_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE()) p_tot_max
+               avg(WL_CALM_AVG_PULSE)  FILTER (WHERE WL_CALM_AVG_PULSE  is not null and trunc(WL_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_tot_calm,
+               avg(WL_TOTAL_AVG_PULSE) FILTER (WHERE WL_TOTAL_AVG_PULSE is not null and trunc(WL_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_tot_avg,
+               avg(WL_TOTAL_MIN_PULSE) FILTER (WHERE WL_TOTAL_MIN_PULSE is not null and trunc(WL_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_tot_min,
+               avg(WL_TOTAL_MAX_PULSE) FILTER (WHERE WL_TOTAL_MAX_PULSE is not null and trunc(WL_TAKEN)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_tot_max,
+               avg(WL_CALM_AVG_PULSE)  FILTER (WHERE WL_CALM_AVG_PULSE  is not null and trunc(WL_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) p_tot_calm,
+               avg(WL_TOTAL_AVG_PULSE) FILTER (WHERE WL_TOTAL_AVG_PULSE is not null and trunc(WL_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) p_tot_avg,
+               avg(WL_TOTAL_MIN_PULSE) FILTER (WHERE WL_TOTAL_MIN_PULSE is not null and trunc(WL_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) p_tot_min,
+               avg(WL_TOTAL_MAX_PULSE) FILTER (WHERE WL_TOTAL_MAX_PULSE is not null and trunc(WL_TAKEN)<REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) p_tot_max
           from REHAB_WATCH_LOGS
      where WL_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()
        and trunc(WL_TAKEN) between REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par('DBAGG_TRAK') - 1 and REHAB_CONTEXT_PKG.getGLOBAL_DATE()
@@ -304,7 +304,7 @@
                                                          p_val1_curr => i.c_avg, p_val2_curr => i.c_min, p_val3_curr => i.c_max, p_val4_curr => null,
                                                          p_val1_prev => i.p_avg, p_val2_prev => i.p_min, p_val3_prev => i.p_max, p_val4_prev => null);
       end if;
-      if REHAB_CONFIG_PKG.get_config_par('DBWAT_PULSE') = REHAB_CONFIG_PKG.cnstY and (i.c_avg is not null or i.c_min is not null or i.c_max is not null) then
+      if REHAB_CONFIG_PKG.get_config_par('DBWAT_PULSE') = REHAB_CONFIG_PKG.cnstY and (i.c_tot_calm is not null or i.c_tot_avg is not null or i.c_tot_min is not null or i.c_tot_max is not null) then
         get_stat_msg4(p_msg => l_msg, p_name => 'Добовий', p_capt => '(спокій/awg/min/max)',
                                                          p_val1_curr => i.c_tot_calm, p_val2_curr => i.c_tot_avg, p_val3_curr => i.c_tot_min, p_val4_curr => i.c_tot_max,
                                                          p_val1_prev => i.p_tot_calm, p_val2_prev => i.p_tot_avg, p_val3_prev => i.p_tot_min, p_val4_prev => i.p_tot_max);
@@ -316,7 +316,6 @@
                             mainlabel => 'Трекери',
                             sublabel  => nvl2(l_msg2, l_target_char||' '||l_msg2, null),
                             data1     => nvl(l_msg, 'Немає даних'),
-                            --'За: ' || to_char(REHAB_CONTEXT_PKG.getGLOBAL_DATE()-1)||
                             data2     => 'Попередній період: '||to_char(REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par('DBAGG_TRAK') - 1,'YYYY-Mon-DD')||' -- '||to_char(REHAB_CONTEXT_PKG.getGLOBAL_DATE()-1,'YYYY-Mon-DD'),
                             iconfile  => 'fa-calendar-heart',
                             bagecol   => '',
@@ -325,54 +324,9 @@
     --**************************************************************************
     l_msg := null; l_badge := null;
     for i in (
---        select
---          stor.PAT_ID, stor.DR_ID,
---          DA_STORED_AMOUNT, DRU_CONSUMED,
---          DA_STORED_AMOUNT - DRU_CONSUMED BALANCE,
---          days_planned,PRD_DOSAGE_PLANNED,
---          daily_dose,
---          round((DA_STORED_AMOUNT - DRU_CONSUMED)/daily_dose,1) days_remain,
---          DR_NAME
---        from
---            (select P2S_PAT_ID PAT_ID, DA_DR_ID DR_ID,sum(DA_QUANTITY*DA_ENTIRY_WEIGHT) DA_STORED_AMOUNT, min(DA_CHECK_POINT_DT) DA_CHECK_POINT_DT
---               from REHAB_DRUG_ACCOUNTINGS A, REHAB_PATIENT2STORAGES P2S
---              where A.DA_DS_ID = P2S.P2S_DS_ID and P2S.P2S_IS_OWNER
---                and DA_CHECK_POINT_DT <= REHAB_CONTEXT_PKG.getGLOBAL_DATE()
---                and P2S_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()
---              group by P2S_PAT_ID, DA_DR_ID) stor,
---            lateral
---            (select DRU_PAT_ID PAT_ID, DRU_DR_ID DR_ID, sum(DRU_ACTUAL_DOSAGE) FILTER (WHERE DRU_CONSUMED > stor.DA_CHECK_POINT_DT) DRU_CONSUMED
---               from REHAB_DRUG_USES c
---              where stor.PAT_ID=c.DRU_PAT_ID and stor.DR_ID=c.DRU_DR_ID
---                and DRU_CONSUMED <= REHAB_CONTEXT_PKG.getGLOBAL_DATE()
---                and DRU_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()
---              group by DRU_PAT_ID, DRU_DR_ID) cons,
---             (select PR_PAT_ID PAT_ID, PR_DR_ID DR_ID, sum(days_planned) days_planned,
---                       sum(PRD_DOSAGE * days_planned ) PRD_DOSAGE_PLANNED,
---                       sum(PRD_DOSAGE) daily_dose
---                from (select * from REHAB_PRESCRIPTIONS
---                       where (PR_PLANNED_START <= REHAB_CONTEXT_PKG.getGLOBAL_DATE() and nvl(PR_PLANNED_END,REHAB_CONTEXT_PKG.getGLOBAL_DATE())>=REHAB_CONTEXT_PKG.getGLOBAL_DATE()
---                          or PR_PLANNED_START >  REHAB_CONTEXT_PKG.getGLOBAL_DATE())
---                         and PR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()) PR,
---                     (select A.*,
---                             case when PRATR_ACTUAL_END is null then 30
---                                  else case when PRATR_ACTUAL_START <= REHAB_CONTEXT_PKG.getGLOBAL_DATE() then (PRATR_ACTUAL_END+0) - REHAB_CONTEXT_PKG.getGLOBAL_DATE() + 1
---                                            else (PRATR_ACTUAL_END+0) - (PRATR_ACTUAL_START+0) + 1
---                                       end
---                             end days_planned
---                        from REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES A
---                       where PRATR_ACTUAL_START <= REHAB_CONTEXT_PKG.getGLOBAL_DATE() and nvl(PRATR_ACTUAL_END,REHAB_CONTEXT_PKG.getGLOBAL_DATE()) >= REHAB_CONTEXT_PKG.getGLOBAL_DATE()
---                          or PRATR_ACTUAL_START >  REHAB_CONTEXT_PKG.getGLOBAL_DATE())
---                        PRATR,
---                     REHAB_PRESCRIPTIONS_DETAILS PRD
---                where PR.PR_ID=PRATR_PR_ID and PRATR.PRATR_ID=PRD.PRD_PRATR_ID
---                group by PR_PAT_ID, PR_DR_ID) planned,
---             REHAB_DRUGS d
---        where stor.PAT_ID=cons.PAT_ID and stor.DR_ID=cons.DR_ID and stor.DR_ID=d.DR_ID
---          and stor.PAT_ID=planned.PAT_ID and stor.DR_ID=planned.DR_ID
           select * from V$REHAB_REMAINS
           where DAYS_REMAIN < to_number(REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT'))
-                and (DAYS_PLANNED = -1 or DAYS_REMAIN < DAYS_PLANNED)
+                and (DAYS_PLANNED is null or DAYS_REMAIN < DAYS_PLANNED)
         order by days_remain desc
     )
     loop

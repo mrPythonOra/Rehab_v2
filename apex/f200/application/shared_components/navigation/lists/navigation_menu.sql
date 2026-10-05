@@ -15,7 +15,7 @@ wwv_flow_imp_shared.create_list(
  p_id=>wwv_flow_imp.id(16870838765504258)
 ,p_name=>'Navigation Menu'
 ,p_static_id=>'navigation-menu'
-,p_version_scn=>'SH256:5YmqcFkLMr8HWhSmZ221tpApbXh0yyx5yfxsWfdC8OE'
+,p_version_scn=>'SH256:wqOch83CXAJLbYM3vU6LE7iTQdJawkmjsgY_21z9tTM'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(17056773995505539)
@@ -66,7 +66,7 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_icon=>'fa-ruler-combination'
 ,p_parent_list_item_id=>wwv_flow_imp.id(16885212315504474)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'201'
+,p_list_item_current_for_pages=>'201,202'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(29851988464571853)
@@ -77,7 +77,7 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_icon=>'fa-person-running-fast'
 ,p_parent_list_item_id=>wwv_flow_imp.id(16885212315504474)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'211'
+,p_list_item_current_for_pages=>'211,212'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(29853308176574533)

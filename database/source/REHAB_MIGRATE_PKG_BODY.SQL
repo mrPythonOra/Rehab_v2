@@ -36,7 +36,7 @@
         --load data---------------------------------------------------------------------
         --******************************************************************************
         --prompt rehab_configs
-        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBAGG_MEAS','Вимірювання, днів','Дашборд Агрегація',null,null,'2',null);
+        Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBAGG_MEAS','Вимірювання, днів','Дашборд Агрегація',null,null,'7',null);
         Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBAGG_TRAI','Тренування, днів','Дашборд Агрегація',null,null,'7',null);
         Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBAGG_TRAK','Трекери, днів','Дашборд Агрегація',null,null,'7',null);
         Insert into REHAB_CONFIGS (PAR_NAME,PAR_HUMAN_NAME,PAR_CATEGOTY,PAR_TE_ID,PAR_PAT_ID,PAR_VALUE,PAR_DESCRIPTION) values ('DBMEA_OXY','Кисень','Дашборд Виміри',null,null,'Y',null);
@@ -320,7 +320,7 @@
         INSERT INTO rehab_prescriptions
            (pr_id,pr_dr_id,pr_pat_id,pr_prr_id,pr_planned_start,pr_planned_end,pr_notes, PR_WS_ID)
         SELECT
-            pr_id,   p.dr_id,   pat_id,   prr_id,   planned_start,   planned_end,   case when notes like '%http%' then notes else null end,    DR_WS_ID
+            pr_id,   p.dr_id,   pat_id,   prr_id,   planned_start,   planned_end + 1 - 1/24/60/60,   case when notes like '%http%' then notes else null end,    DR_WS_ID
         FROM
             reabilitation.prescription p, REHAB_DRUGS d
             where p.dr_id=d.dr_id and nvl(notes,'~')<>'--no_copy_data--';
@@ -421,7 +421,7 @@
                 select CPTR_ID--||' (2) '||CPTR_START_TIME_STR ||'-'||CPTR_END_TIME_STR CPTR_ID
                   from REHAB_CONSUME_TIME_RANGES
                  where CPTR_CP_ID=PRATR_CP_ID
-                   and to_date(to_char(CONSUMED,'HH24:MI'),'HH24:MI') < to_date(CPTR_END_TIME_STR,'HH24:MI')
+                   and to_date(to_char(CONSUMED,'HH24:MI'),'HH24:MI') < to_date(CPTR_END_TIME_STR,'HH24:MI')+2/24
                 order by to_date(CPTR_START_TIME_STR,'HH24:MI')
                 )
                 union all
@@ -512,9 +512,11 @@
         --******************************************************************************
         --prompt rehab_trainings
         insert into REHAB_TRAININGS
-         (tr_id, TR_TYPE, TR_PAT_ID, TR_START, TR_END, TR_DISTANCE_LENGTH, TR_STEPS, TR_PULSE_AVG, TR_PULSE_MIN, TR_PULSE_MAX, TR_DESCR, TR_IMG1, TR_IMG2)
+         (tr_id, TR_TYPE, TR_PAT_ID, TR_START, TR_END, TR_DISTANCE_LENGTH, TR_STEPS, TR_PULSE_AVG, TR_PULSE_MIN, TR_PULSE_MAX, TR_DESCR, TR_IMG1, TR_IMG2,
+          real_distance, real_step_length, real_speed)
         select
-          tr_id, TR_TYPE,    PAT_ID, TR_START, TR_END,    DISTANCE_LENGTH,    STEPS,    PULSE_AVG,    PULSE_MIN,    PULSE_MAX, TR_DESCR, TR_IMG1, TR_IMG2
+          tr_id, TR_TYPE,    PAT_ID, TR_START, TR_END,    DISTANCE_LENGTH,    STEPS,    PULSE_AVG,    PULSE_MIN,    PULSE_MAX, TR_DESCR, TR_IMG1, TR_IMG2,
+          real_distance, real_step_length, real_speed
         from reabilitation.trainings;
         commit;
         declare

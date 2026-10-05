@@ -151,8 +151,13 @@
 
   function getCURR_APEX_USER return varchar2 is begin return vCurrentApexUser; end;
   function getCURR_PATIENT   return number   is begin return SYS_CONTEXT(gNameSpace, gCURR_PATIENT); end;
-  function getGLOBAL_DATE    return date     is begin return to_date(nvl(v('GLOBAL_DATE'),to_char(sysdate,'YYYY-MM-DD')),'YYYY-MM-DD'); end;
-
+  function getGLOBAL_DATE    return date     is begin return to_date(nvl(v('GLOBAL_DATE'),to_char(sysdate,'YYYY-MM-DD'))||'235959','YYYY-MM-DDHH24MISS'); end;
+  function getGLOBAL_DATE_TRUNC return date  is begin return trunc(getGLOBAL_DATE); end;
+  function getGLOBAL_DATE_TSTZ return timestamp with time zone is
+  begin
+    return to_timestamp_tz(nvl(v('GLOBAL_DATE'),to_char(systimestamp at time zone SESSIONTIMEZONE,'YYYY-MM-DD'))||'235959 '||sessiontimezone,'YYYYMMDDHH24:MI TZR');
+  end;
+--  to_timestamp_tz(to_char(systimestamp at time zone SESSIONTIMEZONE,'YYYYMMDD')||CPTR_START_TIME_STR||' '||sessiontimezone,'YYYYMMDDHH24:MI TZR')
   function getAPEX_USER return varchar2 is begin return SYS_CONTEXT(gNameSpace, gAPEX_USER); end;
   function getTENANT    return number is begin return SYS_CONTEXT(gNameSpace, gTENANT); end;
   function getPATIENT   return number is begin return SYS_CONTEXT(gNameSpace, gPATIENT); end;

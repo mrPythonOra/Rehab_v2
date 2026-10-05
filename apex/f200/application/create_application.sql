@@ -26,10 +26,10 @@ wwv_imp_workspace.create_flow(
 ,p_flow_language=>'uk'
 ,p_flow_language_derived_from=>'FLOW_PRIMARY_LANGUAGE'
 ,p_allow_feedback_yn=>'Y'
-,p_date_format=>'YYYY-MON-DD'
-,p_date_time_format=>'YYYY-MON-DD HH24:MI'
-,p_timestamp_format=>'YYYY-MON-DD HH24:MI'
-,p_timestamp_tz_format=>'YYYY-MON-DD HH24:MI TZR'
+,p_date_format=>'YYYY-Mon-DD'
+,p_date_time_format=>'YYYY-Mon-DD HH24:MI'
+,p_timestamp_format=>'YYYY-Mon-DD HH24:MI'
+,p_timestamp_tz_format=>'YYYY-Mon-DD HH24:MI TZR'
 ,p_flow_image_prefix=>nvl(wwv_flow_application_install.get_image_prefix,'')
 ,p_authentication_id=>wwv_flow_imp.id(16869964045504243)
 ,p_application_tab_set=>1
@@ -60,9 +60,11 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'Rehab V2.0'
 ,p_substitution_string_02=>'APP_DTFMT_SHORT_T'
 ,p_substitution_value_02=>'YYYY-MM-DD HH24:MI'
+,p_substitution_string_03=>'APP_DTFMT_DATE'
+,p_substitution_value_03=>'YYYY-Mon-DD '
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>2461288113614
-,p_version_scn=>'50675820075695'
+,p_version_scn=>'50676464661459'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'

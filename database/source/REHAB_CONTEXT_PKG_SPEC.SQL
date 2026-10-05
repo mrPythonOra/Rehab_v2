@@ -14,6 +14,8 @@
   function getPATIENT   return number;
   function getMODE      return varchar2;
   function getGLOBAL_DATE return date;
+  function getGLOBAL_DATE_TRUNC return date;
+  function getGLOBAL_DATE_TSTZ return timestamp with time zone;
 
   function AccessLevelRW     return boolean;
   function AccessLevelRO     return boolean;

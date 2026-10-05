@@ -1,0 +1,3 @@
+1. +remains which considers today's consumation
+2. +renohealth disapeared from consuming drugs
+3. probably prev/next to deal with a few records with the same date time
