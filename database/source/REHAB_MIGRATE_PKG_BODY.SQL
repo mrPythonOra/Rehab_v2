@@ -99,26 +99,46 @@
         commit;
         --******************************************************************************
         --prompt rehab_working_substance
+--        INSERT INTO REHAB_WORKING_SUBSTANCE
+--           (ws_id, WS_TE_ID, WS_NAME, WS_DESCR)
+--        select SQ_REHAB_WORKING_SUBSTANCE.nextval, x.*
+--        from (
+--        SELECT
+--            unique 1, INITCAP(dr_working_subst), null
+--        FROM
+--            reabilitation.drugs) x;
         INSERT INTO REHAB_WORKING_SUBSTANCE
            (ws_id, WS_TE_ID, WS_NAME, WS_DESCR)
-        select SQ_REHAB_WORKING_SUBSTANCE.nextval, x.*
-        from (
-        SELECT
-            unique 1, INITCAP(dr_working_subst), null
-        FROM
-            reabilitation.drugs) x;
+        values
+           (1,1,'Бісопролол','Бісопролол – високоселективний ß1-адреноблокатор.');
+        INSERT INTO REHAB_WORKING_SUBSTANCE
+           (ws_id, WS_TE_ID, WS_NAME, WS_DESCR)
+        values
+           (2,1,'Розувастатин','Розувастатин − це селективний та конкурентний інгібітор ГМГ-КоА-редуктази, ферменту, що визначає швидкість реакції та перетворює 3-гідрокси-3-метилглутарил кофермент А у мевалонат, попередник холестерину. Основним місцем дії розувастатину є печінка: орган-мішень для зменшення рівня холестерину.');
         commit;
+        declare
+          l_id_max number;
+        begin
+          select max(ws_id)+1 into l_id_max from REHAB_WORKING_SUBSTANCE;
+          execute immediate 'ALTER SEQUENCE SQ_REHAB_WORKING_SUBSTANCE RESTART START WITH '||l_id_max;
+        end;
         --******************************************************************************
         --prompt rehab_drugs
         INSERT INTO rehab_drugs
            (dr_id,dr_te_id,dr_name,/*dr_type,*/dr_type_short,DR_WS_ID,dr_use_case,dr_when2consume,
             dr_instruction,dr_instr_src_url,dr_item_image1,dr_item_image2,dr_pack_image1,dr_pack_image2)
         SELECT
-            dr_id,1,       dr_name,/*dr_type*/type_short,   WS_ID /*dr_working_subst*/ ,use_case,   when2consume,
+            dr_id,1,       dr_name,/*dr_type*/type_short,   null /*dr_working_subst*/ ,use_case,   when2consume,
             dr_instruction,dr_nstr_src_url,dr_item_image1,dr_item_image2,dr_pack_image1,dr_pack_image2
         FROM
-            reabilitation.drugs d, REHAB_WORKING_SUBSTANCE w
-        where initcap(d.dr_working_subst) = w.WS_NAME;
+            reabilitation.drugs d;
+--            , REHAB_WORKING_SUBSTANCE w
+--        where initcap(d.dr_working_subst) = w.WS_NAME;
+        update rehab_drugs
+        set DR_WS_ID = 1 where dr_id in (25, 61, 161);
+        update rehab_drugs
+        set DR_WS_ID = 2 where dr_id in (24, 62, 84);
+        commit;
         declare
           l_id_max number;
         begin

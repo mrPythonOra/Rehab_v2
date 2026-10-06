@@ -19,6 +19,7 @@ wwv_flow_imp_page.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
+,p_required_role=>wwv_flow_imp.id(17092736246142129)
 ,p_protection_level=>'C'
 ,p_page_component_map=>'18'
 );
@@ -776,6 +777,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_redirect_url=>'f?p=&APP_ID.:212:&SESSION.::&DEBUG.::P212_TR_ID:'
 ,p_warn_on_unsaved_changes=>null
 ,p_icon_css_classes=>'fa-clipboard-new'
+,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
 );
 wwv_flow_imp.component_end;
 end;

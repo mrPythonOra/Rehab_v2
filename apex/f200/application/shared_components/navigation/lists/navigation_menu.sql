@@ -15,7 +15,7 @@ wwv_flow_imp_shared.create_list(
  p_id=>wwv_flow_imp.id(16870838765504258)
 ,p_name=>'Navigation Menu'
 ,p_static_id=>'navigation-menu'
-,p_version_scn=>'SH256:wqOch83CXAJLbYM3vU6LE7iTQdJawkmjsgY_21z9tTM'
+,p_version_scn=>'SH256:eQEsuijmDeurck959BMbSmmxcdSu0Zkomfa7K5L9fOo'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(17056773995505539)
@@ -69,6 +69,16 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_current_for_pages=>'201,202'
 );
 wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(56455649121460212)
+,p_list_item_display_sequence=>70
+,p_list_item_link_text=>unistr('\041F\0440\0438\0437\043D\0430\0447\0435\043D\043D\044F')
+,p_static_id=>'prescriptor'
+,p_list_item_link_target=>'f?p=&APP_ID.:401:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-user-md'
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'401'
+);
+wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(29851988464571853)
 ,p_list_item_display_sequence=>40
 ,p_list_item_link_text=>unistr('\0422\0440\0435\043D\0443\0432\0430\043D\043D\044F')
@@ -88,7 +98,7 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_icon=>'fa-calendar-heart'
 ,p_parent_list_item_id=>wwv_flow_imp.id(16885212315504474)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'221'
+,p_list_item_current_for_pages=>'221,222'
 );
 wwv_flow_imp.component_end;
 end;

@@ -19,6 +19,7 @@ wwv_flow_imp_page.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
+,p_required_role=>wwv_flow_imp.id(17092736246142129)
 ,p_protection_level=>'C'
 ,p_page_component_map=>'18'
 );
@@ -215,6 +216,8 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_display_order=>30
 ,p_column_identifier=>'C'
 ,p_column_label=>unistr('\0412\0438\043C\0456\0440\044F\043D\043E')
+,p_column_link=>'f?p=&APP_ID.:222:&SESSION.::&DEBUG.::P222_WL_ID:#WL_ID#'
+,p_column_linktext=>'#WL_TAKEN#'
 ,p_column_type=>'DATE'
 ,p_heading_alignment=>'LEFT'
 ,p_format_mask=>'&APP_DTFMT_DATE.'
@@ -382,7 +385,7 @@ wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(109419473816117780)
 ,p_plug_name=>'SmallChart2'
 ,p_static_id=>'smallchart2'
-,p_title=>unistr('\041F\0443\043B\044C\0441\0442 \043D\0456\0447\043D\0438\0439')
+,p_title=>unistr('\041F\0443\043B\044C\0441 \043D\0456\0447\043D\0438\0439')
 ,p_parent_plug_id=>wwv_flow_imp.id(109419350141117779)
 ,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
@@ -789,6 +792,23 @@ wwv_flow_imp_page.create_jet_chart_axis(
 ,p_major_tick_rendered=>'on'
 ,p_minor_tick_rendered=>'auto'
 ,p_tick_label_rendered=>'on'
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(56077431510298534)
+,p_button_sequence=>10
+,p_button_plug_id=>wwv_flow_imp.id(54688089723388130)
+,p_button_name=>'CreateNew'
+,p_static_id=>'createnew'
+,p_show_as_disabled=>false
+,p_button_action=>'REDIRECT_PAGE'
+,p_button_template_options=>'#DEFAULT#'
+,p_button_template_id=>2350584059425431644
+,p_button_image_alt=>unistr('\0421\0442\0432\043E\0440\0438\0442\0438 \043D\043E\0432\0438\0439 \0437\0430\043F\0438\0441')
+,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
+,p_button_redirect_url=>'f?p=&APP_ID.:222:&SESSION.::&DEBUG.::P222_WL_ID:'
+,p_warn_on_unsaved_changes=>null
+,p_icon_css_classes=>'fa-clipboard-new'
+,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
 );
 wwv_flow_imp.component_end;
 end;

@@ -495,7 +495,7 @@ wwv_flow_imp_page.create_page_process(
 ,p_static_id=>'gettitle'
 ,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'begin',
-unistr('  if :P202_MT_ID is null then :P202_TITLE := ''\0421\0442\0432\043E\0440\0438\0442\0438''; else :P202_TITLE := ''\0420\0435\0434\0430\0433\0443\0432\0430\0442\0438''; end if;'),
+unistr('  if :P202_MT_ID is null then :P202_TITLE := ''\0421\0442\0432\043E\0440\0438\0442\0438 \0432\0438\043C\0456\0440''; else :P202_TITLE := ''\0420\0435\0434\0430\0433\0443\0432\0430\0442\0438 \0432\0438\043C\0456\0440''; end if;'),
 'end;'))
 ,p_process_clob_language=>'PLSQL'
 ,p_internal_uid=>54689919341388149

@@ -40,6 +40,14 @@ wwv_flow_imp_shared.create_menu_option(
 ,p_page_id=>212
 );
 wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(56062418749263526)
+,p_parent_id=>wwv_flow_imp.id(29854371822574539)
+,p_short_name=>'&P222_TITLE.'
+,p_static_id=>'editwatchlog'
+,p_link=>'f?p=&APP_ID.:222:&SESSION.::&DEBUG.:::'
+,p_page_id=>222
+);
+wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(16870554490504254)
 ,p_short_name=>unistr('\0414\043E\043C\0456\0432\043A\0430')
 ,p_static_id=>'home'
@@ -69,6 +77,22 @@ wwv_flow_imp_shared.create_menu_option(
 ,p_static_id=>'measurements'
 ,p_link=>'f?p=&APP_ID.:201:&SESSION.::&DEBUG.:::'
 ,p_page_id=>201
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(56456664123460247)
+,p_parent_id=>wwv_flow_imp.id(16870554490504254)
+,p_short_name=>unistr('\041F\0440\0438\0437\043D\0430\0447\0435\043D\043D\044F')
+,p_static_id=>'prescriptor'
+,p_link=>'f?p=&APP_ID.:401:&SESSION.::&DEBUG.:::'
+,p_page_id=>401
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(56494228905899690)
+,p_parent_id=>wwv_flow_imp.id(56456664123460247)
+,p_short_name=>'&P402_TITLE.'
+,p_static_id=>'prescriptor-2'
+,p_link=>'f?p=&APP_ID.:402:&SESSION.::&DEBUG.:::'
+,p_page_id=>402
 );
 wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(29852904301571877)

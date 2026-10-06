@@ -574,6 +574,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_redirect_url=>'f?p=&APP_ID.:202:&SESSION.::&DEBUG.::P202_MT_ID:'
 ,p_warn_on_unsaved_changes=>null
 ,p_icon_css_classes=>'fa-clipboard-new'
+,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
 );
 wwv_flow_imp.component_end;
 end;

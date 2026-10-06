@@ -251,8 +251,8 @@ as
                          and PR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()) PR,
                      (select A.*,
                              case when PRATR_ACTUAL_END is null then null 
-                                  else case when PRATR_ACTUAL_START <= REHAB_CONTEXT_PKG.getGLOBAL_DATE() and PRATR_ACTUAL_END > REHAB_CONTEXT_PKG.getGLOBAL_DATE() 
-                                            then (PRATR_ACTUAL_END+0) - REHAB_CONTEXT_PKG.getGLOBAL_DATE() --+ 1
+                                  else case when PRATR_ACTUAL_START <= REHAB_CONTEXT_PKG.getGLOBAL_DATE() and PRATR_ACTUAL_END >= REHAB_CONTEXT_PKG.getGLOBAL_DATE() 
+                                            then (PRATR_ACTUAL_END+0) - REHAB_CONTEXT_PKG.getGLOBAL_DATE()--+ 1
                                             else (PRATR_ACTUAL_END+0) - (PRATR_ACTUAL_START+0)--+ 1
                                        end
                              end days_planned

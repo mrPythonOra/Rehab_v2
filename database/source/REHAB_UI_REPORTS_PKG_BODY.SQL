@@ -2,10 +2,16 @@
 
   CREATE OR REPLACE EDITIONABLE PACKAGE BODY "REHAB_UI_REPORTS_PKG" AS
 
+  function clr(p_color varchar2, p_txt varchar2) return varchar2
+  is
+  begin
+    return '<span style="color: '|| p_color || ';">'||p_txt||'</span>';
+  end;
+
   function dashboard_ref return rehab_dashboard_tab pipelined AS
     l_msg varchar2(4000);
     l_msg2 varchar2(4000);
-    l_target_char varchar2(100):= '<span style="color: cyan;">'||UNISTR('\29BF')||'</span>';
+    l_target_char varchar2(100):= clr('cyan', UNISTR('\29BF')); --'<span style="color: cyan;">'||UNISTR('\29BF')||'</span>';
     l_badge varchar2(100);
     --**************************************************************************
     procedure get_stat_msg4(p_msg in out nocopy varchar2, p_name varchar2, p_capt varchar2, p_val1_curr number, p_val2_curr number, p_val3_curr number, p_val4_curr number,
@@ -91,7 +97,7 @@
                                     ||' '
                            || case when p_val1 between REHAB_CONFIG_PKG.get_config_par(p_par_min1) and REHAB_CONFIG_PKG.get_config_par(p_par_max1)
                                     and p_val2 between REHAB_CONFIG_PKG.get_config_par(p_par_min2) and REHAB_CONFIG_PKG.get_config_par(p_par_max2)
-                                   then '<span style="color: lime;">'||UNISTR('\2714')||'</span>' else '<span style="color: yellow;">'||UNISTR('\2718')||'</span>' end;
+                                   then clr('lime', UNISTR('\2714')) else clr('yellow', UNISTR('\2718')) end;
         end if;
     end;
     --**************************************************************************
@@ -101,7 +107,7 @@
         if REHAB_CONFIG_PKG.get_config_par('DBTRG_SHOW') = REHAB_CONFIG_PKG.cnstY then
           p_msg := p_msg || nvl2(p_msg,' ',null) || p_name||': '||REHAB_CONFIG_PKG.get_config_par(p_par_min)||UNISTR('\00F7')|| REHAB_CONFIG_PKG.get_config_par(p_par_max) || ' ' ||
                               case when p_val between REHAB_CONFIG_PKG.get_config_par(p_par_min) and REHAB_CONFIG_PKG.get_config_par(p_par_max)
-                              then '<span style="color: lime;">'||UNISTR('\2714')||'</span>' else '<span style="color: yellow;">'||UNISTR('\2718')||'</span>' end;
+                              then clr('lime', UNISTR('\2714')) else clr('yellow', UNISTR('\2718')) end;
         end if;
     end;
     --**************************************************************************
@@ -112,7 +118,7 @@
         then
           p_msg := p_msg || nvl2(p_msg,' ',null) ||REHAB_CONFIG_PKG.get_config_par(p_par_trg)||' ' || p_measure || ' '||
                     case when p_val >= REHAB_CONFIG_PKG.get_config_par(p_par_trg)
-                         then '<span style="color: lime;">'||UNISTR('\2714')||'</span>' else '<span style="color: yellow;">'||UNISTR('\2718')||'</span>' end;
+                         then clr('lime', UNISTR('\2714')) else clr('yellow', UNISTR('\2718')) end;
         end if;
     end;
   BEGIN

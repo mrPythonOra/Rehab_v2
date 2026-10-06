@@ -20,6 +20,7 @@ wwv_flow_imp_page.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_step_template=>2101883943284197310
 ,p_page_template_options=>'#DEFAULT#'
+,p_required_role=>wwv_flow_imp.id(17092736246142129)
 ,p_dialog_resizable=>'Y'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'16'
@@ -52,6 +53,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_icon_css_classes=>'fa-plus-square-o'
 ,p_grid_new_row=>'N'
 ,p_grid_new_column=>'N'
+,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
 );
 wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(44056024922422944)
@@ -68,6 +70,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_icon_css_classes=>'fa-plus-square-o'
 ,p_grid_new_row=>'N'
 ,p_grid_new_column=>'N'
+,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
 );
 wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(44055274546422936)
@@ -86,6 +89,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_condition=>'P102_DRU_ID'
 ,p_button_condition_type=>'ITEM_IS_NOT_NULL'
 ,p_icon_css_classes=>'fa-remove'
+,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
 );
 wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(44055175690422935)
@@ -102,6 +106,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_condition=>'P102_DRU_ID'
 ,p_button_condition_type=>'ITEM_IS_NOT_NULL'
 ,p_icon_css_classes=>'fa-file-edit'
+,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
 );
 wwv_flow_imp_page.create_page_branch(
  p_id=>wwv_flow_imp.id(44055951787422943)

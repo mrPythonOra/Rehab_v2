@@ -2,12 +2,6 @@
 
   CREATE OR REPLACE EDITIONABLE PACKAGE BODY "REHAB_DRUGUSE_PKG" AS
 
-  function clr(p_color varchar2, p_txt varchar2) return varchar2
-  is
-  begin
-    return '<span style="color: '|| p_color || ';">'||p_txt||'</span>';
-  end;
-
   function druguse_dashboard_ref(p_tp_id REHAB_TIME_PERIODS.TP_ID%type) return rehab_druguse_dashboard_tab pipelined AS
     l_img blob;
     l_img2 blob;
@@ -74,12 +68,12 @@
                                             '<span style="color: '||case when i.DRU_ACTUAL_DOSAGE = i.PRD_DOSAGE then 'lime' else 'yellow' end||';"> '||i.DRU_ACTUAL_DOSAGE||' мг</span>',--||
                                             --UNISTR('\D83D\DDD2')||' "'||i.CPTR_NAME||'; '||i.CPTR_START_TIME_STR||'-'||i.CPTR_END_TIME_STR||'"',
                                             '<span style="color: yellow;">'||UNISTR('\D83C\DF27')||' Не прийнято</span>'),     --     data1        VARCHAR2(4000),
-           data2     => clr('lime',UNISTR('\2762'))||' '||
+           data2     => REHAB_UI_REPORTS_PKG.clr('lime',UNISTR('\2762'))||' '||
                          nvl(i.DR_USE_CASE,i.DR_TYPE_SHORT)||
-                         nvl2(i.PR_NOTES,'<br>'||clr('lime',UNISTR('\D83D\DD8E'))||' '||i.PR_NOTES,null)||
-                         nvl2(i.PRATR_NOTES,'<br>'||clr('lime',UNISTR('\D83D\DDB9'))||' '||i.PRATR_NOTES,null)||
+                         nvl2(i.PR_NOTES,'<br>'||REHAB_UI_REPORTS_PKG.clr('lime',UNISTR('\D83D\DD8E'))||' '||i.PR_NOTES,null)||
+                         nvl2(i.PRATR_NOTES,'<br>'||REHAB_UI_REPORTS_PKG.clr('lime',UNISTR('\D83D\DDB9'))||' '||i.PRATR_NOTES,null)||
                         case when i.DA_STORED_AMOUNT is not null then
-                        '<br>'||clr('lime',UNISTR('\D83D\DDC4'))||' Залишок на: '||case when i.DAYS_PLANNED is null
+                        '<br>'||REHAB_UI_REPORTS_PKG.clr('lime',UNISTR('\D83D\DDC4'))||' Залишок на: '||case when i.DAYS_PLANNED is null
                                      then '<span style="color: '||case when i.DAYS_REMAIN >= to_number(REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT')) then 'lime' else 'yellow' end||';"> '
                                      else '<span style="color: '||case when i.DAYS_REMAIN >= i.DAYS_PLANNED then 'lime' else 'yellow' end||';"> '
                                      end ||i.DAYS_REMAIN||' дні(в)</span> до '||to_char(i.end_date, 'YYYY-Mon-DD')||'. Заплановано'||case when i.DAYS_PLANNED is null then ': без обмеження дати' else ' до: ' || to_char(i.PR_PLANNED_END, 'YYYY-Mon-DD') --||

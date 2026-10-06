@@ -21,6 +21,7 @@ wwv_flow_imp_page.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(17092736246142129)
 ,p_protection_level=>'C'
+,p_page_component_map=>'02'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(54821352687590901)
@@ -40,7 +41,7 @@ wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(54822092958591088)
 ,p_plug_name=>'EditTraining'
 ,p_static_id=>'edittraining'
-,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
 ,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
@@ -136,6 +137,44 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_condition=>'P212_TR_ID_PREV'
 ,p_button_condition_type=>'ITEM_IS_NOT_NULL'
 ,p_icon_css_classes=>'fa-angle-left'
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(54793387971080123)
+,p_button_sequence=>200
+,p_button_plug_id=>wwv_flow_imp.id(54822092958591088)
+,p_button_name=>'Preview1'
+,p_static_id=>'preview1'
+,p_show_as_disabled=>false
+,p_button_action=>'REDIRECT_PAGE'
+,p_button_template_options=>'#DEFAULT#:t-Button--large:t-Button--link:t-Button--noLeft'
+,p_button_template_id=>4073839297780169708
+,p_button_image_alt=>unistr('\0414\0438\0432\0438\0442\0438\0441\044F \0437\043E\0431\0440\0430\0436\0435\043D\043D\044F 1')
+,p_button_redirect_url=>'f?p=&APP_ID.:81:&SESSION.::&DEBUG.::P81_TABLE_NAME,P81_COL_NAME,P81_PK_COL,P81_PK_VAL:REHAB_TRAININGS,TR_IMG1,TR_ID,&P212_TR_ID.'
+,p_warn_on_unsaved_changes=>null
+,p_button_condition=>'select 1 from REHAB_TRAININGS where TR_IMG1 is not null and TR_ID = :P212_TR_ID'
+,p_button_condition_type=>'EXISTS'
+,p_icon_css_classes=>'fa-cloud-download'
+,p_grid_new_row=>'Y'
+,p_grid_column_span=>2
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(54793446103080124)
+,p_button_sequence=>210
+,p_button_plug_id=>wwv_flow_imp.id(54822092958591088)
+,p_button_name=>'Preview2'
+,p_static_id=>'preview2'
+,p_show_as_disabled=>false
+,p_button_action=>'REDIRECT_PAGE'
+,p_button_template_options=>'#DEFAULT#:t-Button--large:t-Button--link:t-Button--noLeft'
+,p_button_template_id=>4073839297780169708
+,p_button_image_alt=>unistr('\0414\0438\0432\0438\0442\0438\0441\044F \0437\043E\0431\0440\0430\0436\0435\043D\043D\044F 2')
+,p_button_redirect_url=>'f?p=&APP_ID.:81:&SESSION.::&DEBUG.::P81_TABLE_NAME,P81_COL_NAME,P81_PK_COL,P81_PK_VAL:REHAB_TRAININGS,TR_IMG2,TR_ID,&P212_TR_ID.'
+,p_warn_on_unsaved_changes=>null
+,p_button_condition=>'select 1 from REHAB_TRAININGS where TR_IMG2 is not null and TR_ID = :P212_TR_ID'
+,p_button_condition_type=>'EXISTS'
+,p_icon_css_classes=>'fa-cloud-download'
+,p_grid_new_row=>'N'
+,p_grid_new_column=>'Y'
 );
 wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(54835166499591150)
@@ -242,7 +281,7 @@ wwv_flow_imp_page.create_page_item(
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(54792419924080114)
 ,p_name=>'P212_TITLE'
-,p_item_sequence=>200
+,p_item_sequence=>220
 ,p_item_plug_id=>wwv_flow_imp.id(54822092958591088)
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_HIDDEN'
@@ -382,7 +421,7 @@ wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(54827868558591122)
 ,p_name=>'P212_TR_IMG2'
 ,p_source_data_type=>'BLOB'
-,p_item_sequence=>180
+,p_item_sequence=>190
 ,p_item_plug_id=>wwv_flow_imp.id(54822092958591088)
 ,p_item_source_plug_id=>wwv_flow_imp.id(54822092958591088)
 ,p_prompt=>unistr('\0417\043E\0431\0440\0430\0436\0435\043D\043D\044F 2')
@@ -595,7 +634,7 @@ wwv_flow_imp_page.create_page_process(
 ,p_static_id=>'gettitle'
 ,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'begin',
-unistr('  if :P212_TR_ID is null then :P212_TITLE := ''\0421\0442\0432\043E\0440\0438\0442\0438''; else :P212_TITLE := ''\0420\0435\0434\0430\0433\0443\0432\0430\0442\0438''; end if;'),
+unistr('  if :P212_TR_ID is null then :P212_TITLE := ''\0421\0442\0432\043E\0440\0438\0442\0438 \0442\0440\0435\043D\0443\0432\0430\043D\043D\044F''; else :P212_TITLE := ''\0420\0435\0434\0430\0433\0443\0432\0430\0442\0438 \0442\0440\0435\043D\0443\0432\0430\043D\043D\044F''; end if;'),
 'end;'))
 ,p_process_clob_language=>'PLSQL'
 ,p_internal_uid=>54837190887594293
@@ -643,7 +682,7 @@ wwv_flow_imp_page.create_page_process(
 '      select /*+ noparallel index(a IDX_REHAB_TRAININGS_PAT_START)*/ TR_ID ',
 '        from REHAB_TRAININGS a',
 '       where TR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() and TR_START <= to_timestamp_tz(:P212_TR_START||'' ''||sessiontimezone,:APP_DTFMT_SHORT_T||'' TZR'') and TR_ID <> :P212_TR_ID',
-'       order by TR_START desc, TR_ID desc;',
+'       order by TR_START desc;',
 '    fetch l_crcs into :P212_TR_ID_PREV;',
 '    if l_crcs%notfound then :P212_TR_ID_PREV := null; end if;',
 '    close l_crcs;',
@@ -652,7 +691,7 @@ wwv_flow_imp_page.create_page_process(
 '      select /*+ noparallel index(a IDX_REHAB_TRAININGS_PAT_START)*/ TR_ID ',
 '        from REHAB_TRAININGS a',
 '       where TR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() and TR_START >= to_timestamp_tz(:P212_TR_START||'' ''||sessiontimezone,:APP_DTFMT_SHORT_T||'' TZR'') and TR_ID <> :P212_TR_ID',
-'       order by TR_START asc, TR_ID asc;',
+'       order by TR_START asc;',
 '    fetch l_crcs into :P212_TR_ID_NEXT;',
 '    if l_crcs%notfound then :P212_TR_ID_NEXT := null; end if;',
 '    close l_crcs;',
