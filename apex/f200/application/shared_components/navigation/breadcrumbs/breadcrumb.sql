@@ -79,6 +79,22 @@ wwv_flow_imp_shared.create_menu_option(
 ,p_page_id=>201
 );
 wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(57663269823262580)
+,p_parent_id=>wwv_flow_imp.id(16870554490504254)
+,p_short_name=>'P1'
+,p_static_id=>'p1'
+,p_link=>'f?p=&APP_ID.:411:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>411
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(57653356544144769)
+,p_parent_id=>wwv_flow_imp.id(56456664123460247)
+,p_short_name=>unistr('\041F\0440\0438\0437\043D\0430\0447\0435\043D\043D\044F \043C\0435\0434\0456\043A\0430\043C\0435\043D\0442\0443')
+,p_static_id=>'prescription'
+,p_link=>'f?p=&APP_ID.:403:&SESSION.::&DEBUG.:::'
+,p_page_id=>403
+);
+wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(56456664123460247)
 ,p_parent_id=>wwv_flow_imp.id(16870554490504254)
 ,p_short_name=>unistr('\041F\0440\0438\0437\043D\0430\0447\0435\043D\043D\044F')

@@ -64,7 +64,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
 ,p_button_template_id=>4073839297780169708
-,p_button_image_alt=>'Cancel'
+,p_button_image_alt=>unistr('\0417\0430\043A\0440\0438\0442\0438')
 ,p_button_position=>'CLOSE'
 ,p_button_redirect_url=>'f?p=&APP_ID.:221:&APP_SESSION.::&DEBUG.:::'
 );
@@ -79,7 +79,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_template_options=>'#DEFAULT#'
 ,p_button_template_id=>4073839297780169708
 ,p_button_is_hot=>'Y'
-,p_button_image_alt=>'Create'
+,p_button_image_alt=>unistr('\0421\0442\0432\043E\0440\0438\0442\0438')
 ,p_button_position=>'CREATE'
 ,p_button_condition=>'P222_WL_ID'
 ,p_button_condition_type=>'ITEM_IS_NULL'
@@ -96,7 +96,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
 ,p_button_template_id=>4073839297780169708
-,p_button_image_alt=>'Delete'
+,p_button_image_alt=>unistr('\0412\0438\0434\0430\043B\0438\0442\0438')
 ,p_button_position=>'DELETE'
 ,p_button_execute_validations=>'N'
 ,p_confirm_message=>unistr('\041F\0456\0434\0432\0442\0435\0440\0434\0456\0442\044C \0432\0438\0434\0430\043B\0435\043D\043D\044F \0437\0430\043F\0438\0441\0443 \0442\0440\0435\043A\0435\0440\0430')
@@ -150,7 +150,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_template_options=>'#DEFAULT#'
 ,p_button_template_id=>4073839297780169708
 ,p_button_is_hot=>'Y'
-,p_button_image_alt=>'Apply Changes'
+,p_button_image_alt=>unistr('\0417\0431\0435\0440\0456\0433\0442\0438')
 ,p_button_position=>'CHANGE'
 ,p_button_condition=>'P222_WL_ID'
 ,p_button_condition_type=>'ITEM_IS_NOT_NULL'
@@ -171,6 +171,7 @@ wwv_flow_imp_page.create_page_branch(
 ,p_branch_action=>'f?p=&APP_ID.:221:&APP_SESSION.::&DEBUG.:::&success_msg=#SUCCESS_MSG#'
 ,p_branch_point=>'AFTER_PROCESSING'
 ,p_branch_type=>'REDIRECT_URL'
+,p_branch_when_button_id=>wwv_flow_imp.id(56071409608263705)
 ,p_branch_sequence=>30
 );
 wwv_flow_imp_page.create_page_branch(
@@ -540,7 +541,7 @@ wwv_flow_imp_page.create_page_process(
 ,p_process_point=>'AFTER_SUBMIT'
 ,p_region_id=>wwv_flow_imp.id(56062620222263661)
 ,p_process_type=>'NATIVE_FORM_DML'
-,p_process_name=>'Process form EditWatchLog'
+,p_process_name=>'Process form EditWatchLogCreate'
 ,p_static_id=>'process-form-editwatchlog'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'lock_row', 'Y',
@@ -558,7 +559,7 @@ wwv_flow_imp_page.create_page_process(
 ,p_process_point=>'AFTER_SUBMIT'
 ,p_region_id=>wwv_flow_imp.id(56062620222263661)
 ,p_process_type=>'NATIVE_FORM_DML'
-,p_process_name=>'Process form EditWatchLog'
+,p_process_name=>'Process form EditWatchLogSave'
 ,p_static_id=>'process-form-editwatchlog_1'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'lock_row', 'Y',
@@ -576,7 +577,7 @@ wwv_flow_imp_page.create_page_process(
 ,p_process_point=>'AFTER_SUBMIT'
 ,p_region_id=>wwv_flow_imp.id(56062620222263661)
 ,p_process_type=>'NATIVE_FORM_DML'
-,p_process_name=>'Process form EditWatchLog'
+,p_process_name=>'Process form EditWatchLogDel'
 ,p_static_id=>'process-form-editwatchlog_1_1'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'lock_row', 'Y',

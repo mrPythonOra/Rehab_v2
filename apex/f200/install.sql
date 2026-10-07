@@ -74,6 +74,8 @@ prompt --install
 @@application/pages/page_00301.sql
 @@application/pages/page_00401.sql
 @@application/pages/page_00402.sql
+@@application/pages/page_00403.sql
+@@application/pages/page_00411.sql
 @@application/pages/page_09999.sql
 @@application/pages/page_10000.sql
 @@application/pages/page_10010.sql

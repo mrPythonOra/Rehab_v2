@@ -168,10 +168,12 @@
         --prompt rehab_prescriptor2drug_flts
         INSERT INTO rehab_prescriptor2drug_flts (
             prrf_prr_id,
+            PRRF_DR_ID,
             PRRF_WS_ID
         )
         SELECT
             prr_id,
+            d.dr_id,
             DR_WS_ID
         FROM
             reabilitation.prescriptor2drug_flt f, REHAB_DRUGS d
