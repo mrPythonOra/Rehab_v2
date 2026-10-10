@@ -22,6 +22,7 @@
 
   --debug
   procedure set_current_user(p_apex_user varchar2);
+  procedure set_current_date(p_dt date);
 
 END REHAB_CONTEXT_PKG;
 /

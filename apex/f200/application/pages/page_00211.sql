@@ -73,7 +73,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(51854984649079128)
 ,p_chart_type=>'line'
 ,p_title=>unistr('\041A\0440\043E\043A\0438')
-,p_height=>'200'
+,p_height=>'300'
 ,p_animation_on_display=>'auto'
 ,p_animation_on_data_change=>'auto'
 ,p_orientation=>'vertical'
@@ -134,6 +134,49 @@ unistr('    ''\041A\0440\043E\043A\0438'' series_name'),
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(58057265737597021)
+,p_chart_id=>wwv_flow_imp.id(51856847569079147)
+,p_static_id=>'steps-min'
+,p_seq=>20
+,p_name=>'Steps_TRG'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'SELECT',
+'    -- tr_id,',
+'    -- tr_type,',
+'    -- tr_pat_id,',
+'     trunc(tr_start, ''dd'') tr_start,',
+'    -- tr_end,',
+'    -- tr_distance_length,',
+'    -- sum(tr_steps) tr_steps,',
+'    -- tr_pulse_avg,',
+'    -- tr_pulse_min,',
+'    -- tr_pulse_max,',
+'    -- tr_descr,',
+'    -- tr_img1,',
+'    -- tr_img2,',
+'    -- real_distance,',
+'    -- real_step_length,',
+'    -- real_speed',
+'    to_number(REHAB_CONFIG_PKG.get_config_par(''DBTRG_TRAINSTEPS'')) steps_trg,',
+unistr('    ''\041C\0435\0442\0430'' series_name'),
+'FROM',
+'    rehab_trainings',
+'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
+'  and trunc(TR_START) between REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par(''DBAGG_TRAI'') - 1 and REHAB_CONTEXT_PKG.getGLOBAL_DATE()',
+'group by trunc(tr_start, ''dd'')',
+'order by tr_start'))
+,p_series_name_column_name=>'SERIES_NAME'
+,p_items_value_column_name=>'STEPS_TRG'
+,p_items_label_column_name=>'TR_START'
+,p_line_style=>'solid'
+,p_line_type=>'curved'
+,p_marker_rendered=>'auto'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
 );
 wwv_flow_imp_page.create_jet_chart_axis(
  p_id=>wwv_flow_imp.id(51857069560079149)
@@ -466,7 +509,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(54685244439388102)
 ,p_chart_type=>'line'
 ,p_title=>unistr('\041A\0440\043E\043A\0438')
-,p_height=>'200'
+,p_height=>'300'
 ,p_animation_on_display=>'auto'
 ,p_animation_on_data_change=>'auto'
 ,p_orientation=>'vertical'
@@ -529,6 +572,49 @@ unistr('    ''\0414\0438\0441\0442\0430\043D\0446\0456\044F \043F\043E \0433\043
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(58057390293597022)
+,p_chart_id=>wwv_flow_imp.id(54685370112388103)
+,p_static_id=>'disnatce-trg'
+,p_seq=>30
+,p_name=>'Disnatce_TRG'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'SELECT',
+'    -- tr_id,',
+'    -- tr_type,',
+'    -- tr_pat_id,',
+'     trunc(tr_start, ''dd'') tr_start,',
+'    -- tr_end,',
+'    -- sum(tr_distance_length) tr_distance_length,',
+'    -- sum(tr_steps) tr_steps,',
+'    -- tr_pulse_avg,',
+'    -- tr_pulse_min,',
+'    -- tr_pulse_max,',
+'    -- tr_descr,',
+'    -- tr_img1,',
+'    -- tr_img2,',
+'    -- sum(real_distance) real_distance,',
+'    -- real_step_length,',
+'    -- real_speed',
+'    to_number(REHAB_CONFIG_PKG.get_config_par(''DBTRG_TRAINDIST'')) distance_trg,',
+unistr('    ''\041C\0435\0442\0430'' series_name'),
+'FROM',
+'    rehab_trainings',
+'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
+'  and trunc(TR_START) between REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par(''DBAGG_TRAI'') - 1 and REHAB_CONTEXT_PKG.getGLOBAL_DATE()',
+'group by trunc(tr_start, ''dd'')',
+'order by tr_start'))
+,p_series_name_column_name=>'SERIES_NAME'
+,p_items_value_column_name=>'DISTANCE_TRG'
+,p_items_label_column_name=>'TR_START'
+,p_line_style=>'solid'
+,p_line_type=>'curved'
+,p_marker_rendered=>'auto'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
 );
 wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(54685750469388107)
@@ -624,7 +710,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(54685835637388108)
 ,p_chart_type=>'line'
 ,p_title=>unistr('\041A\0440\043E\043A\0438')
-,p_height=>'200'
+,p_height=>'300'
 ,p_animation_on_display=>'auto'
 ,p_animation_on_data_change=>'auto'
 ,p_orientation=>'vertical'

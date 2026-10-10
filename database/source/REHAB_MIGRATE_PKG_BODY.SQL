@@ -2,6 +2,22 @@
 
   CREATE OR REPLACE EDITIONABLE PACKAGE BODY "REHAB_MIGRATE_PKG" AS
 
+  procedure fix_prescriptions(p_prr_id number, p_ws_id number)
+  is
+  begin
+        update REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES set PRATR_PR_ID = (select min(pr_id) from REHAB_PRESCRIPTIONS where pr_ws_id=p_ws_id and pr_prr_id=p_prr_id)
+        where PRATR_PR_ID in (select pr_id from REHAB_PRESCRIPTIONS where pr_ws_id=p_ws_id and pr_prr_id=p_prr_id);
+
+        update REHAB_DRUG_ACCOUNTINGS set DA_PR_ID = (select min(pr_id) from REHAB_PRESCRIPTIONS where pr_ws_id=p_ws_id and pr_prr_id=p_prr_id)
+        where DA_PR_ID in (select pr_id from REHAB_PRESCRIPTIONS where pr_ws_id=p_ws_id and pr_prr_id=p_prr_id);
+
+        update REHAB_DRUG_USES set DRU_PR_ID = (select min(pr_id) from REHAB_PRESCRIPTIONS where pr_ws_id=p_ws_id and pr_prr_id=p_prr_id)
+        where DRU_PR_ID in (select pr_id from REHAB_PRESCRIPTIONS where pr_ws_id=p_ws_id and pr_prr_id=p_prr_id);
+
+        delete from REHAB_PRESCRIPTIONS where pr_ws_id=p_ws_id and pr_prr_id=p_prr_id and pr_id<>(select min(pr_id) from REHAB_PRESCRIPTIONS where pr_ws_id=p_ws_id and pr_prr_id=p_prr_id);
+        update REHAB_PRESCRIPTIONS set PR_PLANNED_END = case when PR_PLANNED_END > systimestamp then null else PR_PLANNED_END end, pr_dr_id=null where pr_ws_id=p_ws_id and pr_prr_id=p_prr_id;
+  end;
+
   procedure refresh_data AS
   BEGIN
         --******************************************************************************
@@ -115,6 +131,14 @@
            (ws_id, WS_TE_ID, WS_NAME, WS_DESCR)
         values
            (2,1,'Розувастатин','Розувастатин − це селективний та конкурентний інгібітор ГМГ-КоА-редуктази, ферменту, що визначає швидкість реакції та перетворює 3-гідрокси-3-метилглутарил кофермент А у мевалонат, попередник холестерину. Основним місцем дії розувастатину є печінка: орган-мішень для зменшення рівня холестерину.');
+        INSERT INTO REHAB_WORKING_SUBSTANCE
+           (ws_id, WS_TE_ID, WS_NAME, WS_DESCR)
+        values
+           (3,1,'Раміпріл','Раміприлат, активний метаболіт проліків − раміприлу, є інгібітором ферменту дипептидилкарбоксипептидази І (синоніми: ангіотензинперетворювальний фермент; кіназа ІІ).');
+        INSERT INTO REHAB_WORKING_SUBSTANCE
+           (ws_id, WS_TE_ID, WS_NAME, WS_DESCR)
+        values
+           (4,1,'Ацетилсаліцилова кислота','Антитромботичний ефект ацетилсаліцилової кислоти обумовлений блокуванням синтезу тромбоксану А2 у тромбоцитах.');
         commit;
         declare
           l_id_max number;
@@ -137,7 +161,11 @@
         update rehab_drugs
         set DR_WS_ID = 1 where dr_id in (25, 61, 161);
         update rehab_drugs
-        set DR_WS_ID = 2 where dr_id in (24, 62, 84);
+        set DR_WS_ID = 2 where dr_id in (24, 62, 84, 281, 301, 302);
+        update rehab_drugs
+        set DR_WS_ID = 3 where dr_id in (27, 221);
+        update rehab_drugs
+        set DR_WS_ID = 4 where dr_id in (9, 23);
         commit;
         declare
           l_id_max number;
@@ -579,9 +607,22 @@
 --        select (select count(1) from REABILITATION.WATCH_LOG) WATCH_LOG,(select count(1) from REHAB_WATCH_LOGS) RB_WATCH_LOGS from dual;
 
         --******************************************************************************
-        --test data---------------------------------------------------------------------
+        --Fix data----------------------------------------------------------------------
         --******************************************************************************
 
+        for i in (
+            select pr_prr_id, pr_ws_id from REHAB_PRESCRIPTIONS
+            where pr_ws_id is not null
+            group by pr_prr_id, pr_ws_id
+            --having count(1) > 1
+            )
+        loop
+          REHAB_MIGRATE_PKG.fix_prescriptions (  P_PRR_ID => i.pr_prr_id,
+                                                 P_WS_ID => i.pr_ws_id) ;
+        end loop;
+        --******************************************************************************
+        --test data---------------------------------------------------------------------
+        --******************************************************************************
         --select /*insert*/ * from REHAB_TENANTS;
         Insert into REHAB_TENANTS (TE_ID,TE_NAME,TE_DESCR) values (2,'Test 2','Second tenant');
         execute immediate 'ALTER SEQUENCE SQ_REHAB_TENANTS RESTART START WITH 3';

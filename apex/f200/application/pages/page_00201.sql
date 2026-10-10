@@ -322,7 +322,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(106557351204561695)
 ,p_chart_type=>'range'
 ,p_title=>unistr('\041A\0440\043E\043A\0438')
-,p_height=>'200'
+,p_height=>'300'
 ,p_animation_on_display=>'auto'
 ,p_animation_on_data_change=>'auto'
 ,p_orientation=>'vertical'
@@ -339,43 +339,6 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_show_value=>true
 ,p_legend_rendered=>'on'
 ,p_legend_position=>'top'
-);
-wwv_flow_imp_page.create_jet_chart_series(
- p_id=>wwv_flow_imp.id(54687942562388129)
-,p_chart_id=>wwv_flow_imp.id(54709206434482624)
-,p_static_id=>'pulse'
-,p_seq=>20
-,p_name=>'Pulse'
-,p_data_source_type=>'SQL'
-,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'SELECT',
-'    -- mt_id,',
-'    -- mt_pat_id,',
-'    to_char(trunc(mt_taken, ''dd''),''YYYY-MM-DD'') mt_taken,',
-unistr('    -- decode(mt_pressure_lr, ''L'', ''\041B\0456\0432\0430'', ''R'', ''\041F\0440\0430\0432\0430'') mt_pressure_lr,'),
-'    --avg(mt_pressure_sys) mt_pressure_sys,',
-'    --avg(mt_pressure_dia) mt_pressure_dia,',
-'    min(mt_pulse) mt_pulse_min,',
-'    max(mt_pulse) mt_pulse_max,',
-'    -- mt_temperature,',
-'    -- mt_sugar,',
-'    -- mt_oxigenation,',
-'    -- mt_weight,',
-'    -- mt_descr',
-unistr('    ''\041F\0443\043B\044C\0441'' series_name'),
-'  FROM',
-'    rehab_measurements',
-' where MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
-'   and trunc(MT_TAKEN) between REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par(''DBAGG_MEAS'') - 1 and REHAB_CONTEXT_PKG.getGLOBAL_DATE()',
-' group by trunc(mt_taken, ''dd'')',
-'order by mt_taken'))
-,p_series_type=>'barRange'
-,p_series_name_column_name=>'SERIES_NAME'
-,p_items_low_column_name=>'MT_PULSE_MIN'
-,p_items_high_column_name=>'MT_PULSE_MAX'
-,p_items_label_column_name=>'MT_TAKEN'
-,p_items_label_rendered=>true
-,p_items_label_position=>'outsideBarEdge'
 );
 wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(54710983980482628)
@@ -399,6 +362,9 @@ unistr('    -- decode(mt_pressure_lr, ''L'', ''\041B\0456\0432\0430'', ''R'', ''
 '    -- mt_weight,',
 '    -- mt_descr',
 unistr('    ''\0422\0438\0441\043A'' series_name'),
+'    -- REHAB_CONFIG_PKG.get_config_par(''DBTRG_PSYS_MIN'') sys_min,',
+'    -- REHAB_CONFIG_PKG.get_config_par(''DBTRG_PSYS_MAX'') sys_max,',
+unistr('    -- ''\041C\0435\0436\0430 SYS'' sys_minmax_name'),
 '  FROM',
 '    rehab_measurements',
 ' where MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
@@ -410,7 +376,7 @@ unistr('    ''\0422\0438\0441\043A'' series_name'),
 ,p_items_low_column_name=>'MT_PRESSURE_DIA'
 ,p_items_high_column_name=>'MT_PRESSURE_SYS'
 ,p_items_label_column_name=>'MT_TAKEN'
-,p_line_type=>'auto'
+,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
 ,p_marker_shape=>'auto'
 ,p_items_label_rendered=>true
@@ -449,14 +415,14 @@ wwv_flow_imp_page.create_jet_chart_axis(
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(109387610994870669)
-,p_plug_name=>'SmallChart2'
+,p_plug_name=>'SmallChart3'
 ,p_static_id=>'smallchart2'
 ,p_title=>unistr('\0412\0430\0433\0430')
 ,p_parent_plug_id=>wwv_flow_imp.id(109387487319870668)
 ,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
 ,p_plug_template=>4073835273271169698
-,p_plug_display_sequence=>30
+,p_plug_display_sequence=>40
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -467,7 +433,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(109387610994870669)
 ,p_chart_type=>'line'
 ,p_title=>unistr('\041A\0440\043E\043A\0438')
-,p_height=>'200'
+,p_height=>'300'
 ,p_animation_on_display=>'auto'
 ,p_animation_on_data_change=>'auto'
 ,p_orientation=>'vertical'
@@ -493,7 +459,7 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_chart_id=>wwv_flow_imp.id(54702998859482597)
 ,p_static_id=>'disnatce'
 ,p_seq=>10
-,p_name=>'Disnatce'
+,p_name=>'Weight'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'SELECT',
@@ -528,6 +494,86 @@ unistr('    ''\0412\0430\0433\0430'' series_name'),
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
 );
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(58057121096597020)
+,p_chart_id=>wwv_flow_imp.id(54702998859482597)
+,p_static_id=>'weight-max'
+,p_seq=>30
+,p_name=>'Weight_MAX'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'SELECT',
+'    -- mt_id,',
+'    -- mt_pat_id,',
+'    trunc(mt_taken, ''dd'') mt_taken,',
+unistr('    -- decode(mt_pressure_lr, ''L'', ''\041B\0456\0432\0430'', ''R'', ''\041F\0440\0430\0432\0430'') mt_pressure_lr,'),
+'    --avg(mt_pressure_sys) mt_pressure_sys,',
+'    --avg(mt_pressure_dia) mt_pressure_dia,',
+'    --min(mt_pulse) mt_pulse_min,',
+'   --max(mt_pulse) mt_pulse_max,',
+'    -- mt_temperature,',
+'    -- mt_sugar,',
+'    -- mt_oxigenation,',
+'    --avg(mt_weight) mt_weight,',
+'    to_number(REHAB_CONFIG_PKG.get_config_par(''DBTRG_WEIGHT_MAX'')) weight_max,',
+'    -- mt_descr',
+unistr('    ''\041C\0430\043A\0441'' series_name'),
+'  FROM',
+'    rehab_measurements',
+' where MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
+'   and trunc(MT_TAKEN) between REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par(''DBAGG_MEAS'') - 1 and REHAB_CONTEXT_PKG.getGLOBAL_DATE()',
+' group by trunc(mt_taken, ''dd'')',
+'order by mt_taken'))
+,p_series_name_column_name=>'SERIES_NAME'
+,p_items_value_column_name=>'WEIGHT_MAX'
+,p_items_label_column_name=>'MT_TAKEN'
+,p_line_style=>'solid'
+,p_line_type=>'curved'
+,p_marker_rendered=>'auto'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(58057015083597019)
+,p_chart_id=>wwv_flow_imp.id(54702998859482597)
+,p_static_id=>'weight-min'
+,p_seq=>20
+,p_name=>'Weight_MIN'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'SELECT',
+'    -- mt_id,',
+'    -- mt_pat_id,',
+'    trunc(mt_taken, ''dd'') mt_taken,',
+unistr('    -- decode(mt_pressure_lr, ''L'', ''\041B\0456\0432\0430'', ''R'', ''\041F\0440\0430\0432\0430'') mt_pressure_lr,'),
+'    --avg(mt_pressure_sys) mt_pressure_sys,',
+'    --avg(mt_pressure_dia) mt_pressure_dia,',
+'    --min(mt_pulse) mt_pulse_min,',
+'   --max(mt_pulse) mt_pulse_max,',
+'    -- mt_temperature,',
+'    -- mt_sugar,',
+'    -- mt_oxigenation,',
+'    --avg(mt_weight) mt_weight,',
+'    to_number(REHAB_CONFIG_PKG.get_config_par(''DBTRG_WEIGHT_MIN'')) weight_min,',
+'    -- mt_descr',
+unistr('    ''\041C\0456\043D'' series_name'),
+'  FROM',
+'    rehab_measurements',
+' where MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
+'   and trunc(MT_TAKEN) between REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par(''DBAGG_MEAS'') - 1 and REHAB_CONTEXT_PKG.getGLOBAL_DATE()',
+' group by trunc(mt_taken, ''dd'')',
+'order by mt_taken'))
+,p_series_name_column_name=>'SERIES_NAME'
+,p_items_value_column_name=>'WEIGHT_MIN'
+,p_items_label_column_name=>'MT_TAKEN'
+,p_line_style=>'solid'
+,p_line_type=>'curved'
+,p_marker_rendered=>'auto'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+);
 wwv_flow_imp_page.create_jet_chart_axis(
  p_id=>wwv_flow_imp.id(54703466377482600)
 ,p_chart_id=>wwv_flow_imp.id(54702998859482597)
@@ -551,6 +597,198 @@ wwv_flow_imp_page.create_jet_chart_axis(
 ,p_is_rendered=>'on'
 ,p_format_type=>'decimal'
 ,p_decimal_places=>1
+,p_format_scaling=>'none'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'min'
+,p_position=>'auto'
+,p_major_tick_rendered=>'on'
+,p_minor_tick_rendered=>'auto'
+,p_tick_label_rendered=>'on'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(58056204346597011)
+,p_plug_name=>'SmallChart2'
+,p_static_id=>'smallchart2_1'
+,p_title=>unistr('\041F\0443\043B\044C\0441')
+,p_parent_plug_id=>wwv_flow_imp.id(109387487319870668)
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>30
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source_type=>'NATIVE_JET_CHART'
+);
+wwv_flow_imp_page.create_jet_chart(
+ p_id=>wwv_flow_imp.id(58056358979597012)
+,p_region_id=>wwv_flow_imp.id(58056204346597011)
+,p_chart_type=>'line'
+,p_title=>unistr('\041A\0440\043E\043A\0438')
+,p_height=>'300'
+,p_animation_on_display=>'auto'
+,p_animation_on_data_change=>'auto'
+,p_orientation=>'vertical'
+,p_data_cursor=>'auto'
+,p_data_cursor_behavior=>'auto'
+,p_hide_and_show_behavior=>'withRescale'
+,p_hover_behavior=>'dim'
+,p_stack=>'off'
+,p_connect_nulls=>'Y'
+,p_sorting=>'label-asc'
+,p_fill_multi_series_gaps=>true
+,p_zoom_and_scroll=>'off'
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_legend_rendered=>'on'
+,p_legend_position=>'top'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(58056529866597014)
+,p_chart_id=>wwv_flow_imp.id(58056358979597012)
+,p_static_id=>'pulse'
+,p_seq=>20
+,p_name=>'Pulse'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'SELECT',
+'    -- mt_id,',
+'    -- mt_pat_id,',
+'    to_char(trunc(mt_taken, ''dd''),''YYYY-MM-DD'') mt_taken,',
+unistr('    -- decode(mt_pressure_lr, ''L'', ''\041B\0456\0432\0430'', ''R'', ''\041F\0440\0430\0432\0430'') mt_pressure_lr,'),
+'    --avg(mt_pressure_sys) mt_pressure_sys,',
+'    --avg(mt_pressure_dia) mt_pressure_dia,',
+'    -- min(mt_pulse) mt_pulse_min,',
+'    -- max(mt_pulse) mt_pulse_max,',
+'    avg(mt_pulse) mt_pulse_avg,',
+'    -- mt_temperature,',
+'    -- mt_sugar,',
+'    -- mt_oxigenation,',
+'    -- mt_weight,',
+'    -- mt_descr',
+unistr('    ''\041F\0443\043B\044C\0441'' series_name'),
+'  FROM',
+'    rehab_measurements',
+' where MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
+'   and trunc(MT_TAKEN) between REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par(''DBAGG_MEAS'') - 1 and REHAB_CONTEXT_PKG.getGLOBAL_DATE()',
+' group by trunc(mt_taken, ''dd'')',
+'order by mt_taken'))
+,p_series_name_column_name=>'SERIES_NAME'
+,p_items_value_column_name=>'MT_PULSE_AVG'
+,p_items_label_column_name=>'MT_TAKEN'
+,p_line_style=>'solid'
+,p_line_type=>'curved'
+,p_marker_rendered=>'auto'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>true
+,p_items_label_position=>'outsideBarEdge'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(58056963858597018)
+,p_chart_id=>wwv_flow_imp.id(58056358979597012)
+,p_static_id=>'pulse-max'
+,p_seq=>40
+,p_name=>'Pulse_MAX'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'SELECT',
+'    -- mt_id,',
+'    -- mt_pat_id,',
+'    to_char(trunc(mt_taken, ''dd''),''YYYY-MM-DD'') mt_taken,',
+unistr('    -- decode(mt_pressure_lr, ''L'', ''\041B\0456\0432\0430'', ''R'', ''\041F\0440\0430\0432\0430'') mt_pressure_lr,'),
+'    --avg(mt_pressure_sys) mt_pressure_sys,',
+'    --avg(mt_pressure_dia) mt_pressure_dia,',
+'    --min(mt_pulse) mt_pulse_min,',
+'    --max(mt_pulse) mt_pulse_max,',
+'    -- mt_temperature,',
+'    -- mt_sugar,',
+'    -- mt_oxigenation,',
+'    -- mt_weight,',
+'    -- mt_descr',
+'    to_number(REHAB_CONFIG_PKG.get_config_par(''DBTRG_PULSE_MAX'')) pulse_max,',
+unistr('    ''\041C\0430\043A\0441'' series_name'),
+'  FROM',
+'    rehab_measurements',
+' where MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
+'   and trunc(MT_TAKEN) between REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par(''DBAGG_MEAS'') - 1 and REHAB_CONTEXT_PKG.getGLOBAL_DATE()',
+' group by trunc(mt_taken, ''dd'')',
+'order by mt_taken'))
+,p_series_name_column_name=>'SERIES_NAME'
+,p_items_value_column_name=>'PULSE_MAX'
+,p_items_label_column_name=>'MT_TAKEN'
+,p_line_style=>'solid'
+,p_line_type=>'auto'
+,p_marker_rendered=>'auto'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(58056867661597017)
+,p_chart_id=>wwv_flow_imp.id(58056358979597012)
+,p_static_id=>'pulse-min_1'
+,p_seq=>30
+,p_name=>'Pulse_MIN'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'SELECT',
+'    -- mt_id,',
+'    -- mt_pat_id,',
+'    to_char(trunc(mt_taken, ''dd''),''YYYY-MM-DD'') mt_taken,',
+unistr('    -- decode(mt_pressure_lr, ''L'', ''\041B\0456\0432\0430'', ''R'', ''\041F\0440\0430\0432\0430'') mt_pressure_lr,'),
+'    --avg(mt_pressure_sys) mt_pressure_sys,',
+'    --avg(mt_pressure_dia) mt_pressure_dia,',
+'    --min(mt_pulse) mt_pulse_min,',
+'    --max(mt_pulse) mt_pulse_max,',
+'    -- mt_temperature,',
+'    -- mt_sugar,',
+'    -- mt_oxigenation,',
+'    -- mt_weight,',
+'    -- mt_descr',
+'    to_number(REHAB_CONFIG_PKG.get_config_par(''DBTRG_PULSE_MIN'')) pulse_mix,',
+unistr('    ''\041C\0456\043D'' series_name'),
+'  FROM',
+'    rehab_measurements',
+' where MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
+'   and trunc(MT_TAKEN) between REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par(''DBAGG_MEAS'') - 1 and REHAB_CONTEXT_PKG.getGLOBAL_DATE()',
+' group by trunc(mt_taken, ''dd'')',
+'order by mt_taken'))
+,p_series_name_column_name=>'SERIES_NAME'
+,p_items_value_column_name=>'PULSE_MIX'
+,p_items_label_column_name=>'MT_TAKEN'
+,p_line_style=>'solid'
+,p_line_type=>'auto'
+,p_marker_rendered=>'auto'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(58056613996597015)
+,p_chart_id=>wwv_flow_imp.id(58056358979597012)
+,p_static_id=>'x'
+,p_axis=>'x'
+,p_is_rendered=>'on'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_major_tick_rendered=>'on'
+,p_minor_tick_rendered=>'auto'
+,p_tick_label_rendered=>'on'
+,p_tick_label_rotation=>'auto'
+,p_tick_label_position=>'outside'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(58056710285597016)
+,p_chart_id=>wwv_flow_imp.id(58056358979597012)
+,p_static_id=>'y'
+,p_axis=>'y'
+,p_is_rendered=>'on'
+,p_format_type=>'decimal'
+,p_decimal_places=>0
 ,p_format_scaling=>'none'
 ,p_scaling=>'linear'
 ,p_baseline_scaling=>'min'

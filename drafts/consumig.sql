@@ -222,7 +222,7 @@ as
           (DA_STORED_AMOUNT - DRU_CONSUMED_BEFORE - daily_dose)/daily_dose days_remain_from_tomorrow,
           DR_NAME,
           PRATR_ACTUAL_END, PR_PLANNED_END,
-          trunc(REHAB_CONTEXT_PKG.getGLOBAL_DATE()+(DA_STORED_AMOUNT - DRU_CONSUMED_BEFORE - daily_dose)/daily_dose) end_date
+          trunc(REHAB_CONTEXT_PKG.getGLOBAL_DATE()+(DA_STORED_AMOUNT - nvl(DRU_CONSUMED_BEFORE,0) - daily_dose)/daily_dose) end_date
         from
             (select P2S_PAT_ID PAT_ID, DA_DR_ID DR_ID,sum(DA_QUANTITY*DA_ENTIRY_WEIGHT) DA_STORED_AMOUNT, min(DA_CHECK_POINT_DT) DA_CHECK_POINT_DT 
                from REHAB_DRUG_ACCOUNTINGS A, REHAB_PATIENT2STORAGES P2S 
@@ -239,7 +239,7 @@ as
               where stor.PAT_ID=c.DRU_PAT_ID and stor.DR_ID=c.DRU_DR_ID
                 and DRU_CONSUMED <= REHAB_CONTEXT_PKG.getGLOBAL_DATE()
                 and DRU_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() 
-              group by DRU_PAT_ID, DRU_DR_ID) cons,
+              group by DRU_PAT_ID, DRU_DR_ID)(+) cons,
              (select PR_PAT_ID PAT_ID, PR_DR_ID DR_ID, sum(days_planned) days_planned,
                      sum(PRD_DOSAGE * days_planned ) PRD_DOSAGE_PLANNED,
                      sum(PRD_DOSAGE) daily_dose,
@@ -264,7 +264,7 @@ as
                 where PR.PR_ID=PRATR_PR_ID and PRATR.PRATR_ID=PRD.PRD_PRATR_ID
                 group by PR_PAT_ID, PR_DR_ID) planned,
              REHAB_DRUGS d
-        where stor.PAT_ID=cons.PAT_ID and stor.DR_ID=cons.DR_ID and stor.DR_ID=d.DR_ID
+        where stor.PAT_ID=cons.PAT_ID(+) and stor.DR_ID=cons.DR_ID(+) and stor.DR_ID=d.DR_ID
           and stor.PAT_ID=planned.PAT_ID and stor.DR_ID=planned.DR_ID;
 
 SELECT
@@ -288,6 +288,7 @@ select REHAB_CONTEXT_PKG.getGLOBAL_DATE()+4;
 begin
     REHAB_CONTEXT_PKG.set_current_user('YURI');
     REHAB_CONTEXT_PKG.set_specific_context('YURI');
+    REHAB_CONTEXT_PKG.set_current_date(sysdate);
 end;
 /
 
@@ -317,3 +318,5 @@ alter TABLE REHAB_DRUG_USES modify DRU_WS_ID number null;
 alter TABLE REHAB_TRAININGS add (real_distance number,
     real_step_length number,
     real_speed number);
+    
+select to_date('20261224','YYYYMMDD') t1, to_date('20261224','YYYYMMDD')+180 t2;

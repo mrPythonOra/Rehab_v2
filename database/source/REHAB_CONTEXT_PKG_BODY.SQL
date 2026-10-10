@@ -8,7 +8,7 @@
   gPATIENT   constant varchar2(128) := 'PATIENT';
   gCURR_PATIENT   constant varchar2(128) := 'CURR_PATIENT';
   gMODE      constant varchar2(128) := 'MODE';
-
+  gCurrentDate        varchar2(128);
   vCurrentApexUser    varchar2(128);
 
   procedure set_current_user(p_apex_user varchar2)
@@ -149,13 +149,19 @@
        value     => l_patient);
   end;
 
+  procedure set_current_date(p_dt date)
+  is
+  begin
+    gCurrentDate := to_char(p_dt,'YYYY-MM-DD');
+  end;
+
   function getCURR_APEX_USER return varchar2 is begin return vCurrentApexUser; end;
   function getCURR_PATIENT   return number   is begin return SYS_CONTEXT(gNameSpace, gCURR_PATIENT); end;
-  function getGLOBAL_DATE    return date     is begin return to_date(nvl(v('GLOBAL_DATE'),to_char(sysdate,'YYYY-MM-DD'))||'235959','YYYY-MM-DDHH24MISS'); end;
+  function getGLOBAL_DATE    return date     is begin return to_date(coalesce(v('GLOBAL_DATE'),gCurrentDate,to_char(sysdate,'YYYY-MM-DD'))||'235959','YYYY-MM-DDHH24MISS'); end;
   function getGLOBAL_DATE_TRUNC return date  is begin return trunc(getGLOBAL_DATE); end;
   function getGLOBAL_DATE_TSTZ return timestamp with time zone is
   begin
-    return to_timestamp_tz(nvl(v('GLOBAL_DATE'),to_char(systimestamp at time zone SESSIONTIMEZONE,'YYYY-MM-DD'))||'235959 '||sessiontimezone,'YYYYMMDDHH24:MI TZR');
+    return to_timestamp_tz(coalesce(v('GLOBAL_DATE'),gCurrentDate,to_char(systimestamp at time zone SESSIONTIMEZONE,'YYYY-MM-DD'))||'235959 '||sessiontimezone,'YYYYMMDDHH24:MI TZR');
   end;
 --  to_timestamp_tz(to_char(systimestamp at time zone SESSIONTIMEZONE,'YYYYMMDD')||CPTR_START_TIME_STR||' '||sessiontimezone,'YYYYMMDDHH24:MI TZR')
   function getAPEX_USER return varchar2 is begin return SYS_CONTEXT(gNameSpace, gAPEX_USER); end;

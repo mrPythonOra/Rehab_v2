@@ -659,7 +659,7 @@ CREATE SEQUENCE  SQ_REHAB_CONSUME_TIME_RANGES;
 CREATE TABLE REHAB_PRESCRIPTIONS
    (PR_ID NUMBER NOT NULL ENABLE,
 	  PR_WS_ID NUMBER,
-    PR_DR_ID NUMBER NOT NULL ENABLE,
+    PR_DR_ID NUMBER,
     PR_PAT_ID NUMBER NOT NULL ENABLE,
     PR_PRR_ID NUMBER NOT NULL ENABLE,
     PR_PLANNED_START TIMESTAMP (6) WITH TIME ZONE,
@@ -707,6 +707,20 @@ create assertion rehub_check_pr_prr_pat check(
     )
   )
 );
+
+-- create assertion rehub_check_pr_ws_dr check(
+--   all (
+--     select PR_WS_ID, PR_DR_ID
+--     from   REHAB_PRESCRIPTIONS
+--   ) pr1
+--   satisfy (
+--     exists (
+--       select 1
+--       from   REHAB_PRESCRIPTORS prr1
+--       where  pr1.PR_PAT_ID = prr1.PRR_PAT_ID and pr1.PR_PRR_ID = prr1.PRR_ID
+--     )
+--   )
+-- );
 
 CREATE SEQUENCE  SQ_REHAB_PRESCRIPTIONS;
 --//////////////////////////////////////////////////////////////////////////////

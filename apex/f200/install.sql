@@ -41,6 +41,8 @@ prompt --install
 @@application/shared_components/user_interface/lovs/feedback_status.sql
 @@application/shared_components/user_interface/lovs/gd_consuming_time_periods.sql
 @@application/shared_components/user_interface/lovs/gd_time_ranges_available.sql
+@@application/shared_components/user_interface/lovs/rehab_consume_patterns_available.sql
+@@application/shared_components/user_interface/lovs/rehab_consume_time_ranges_available.sql
 @@application/shared_components/user_interface/lovs/rehab_drugs_dr_name.sql
 @@application/shared_components/user_interface/lovs/rehab_patients_pat_name.sql
 @@application/shared_components/user_interface/lovs/rehab_working_substance_ws_name.sql
