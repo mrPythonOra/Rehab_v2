@@ -4,18 +4,31 @@
 
   procedure fix_prescriptions(p_prr_id number, p_ws_id number)
   is
+    l_pr_id number;
+    l_cnt number;
+    l_max_PR_PLANNED_END timestamp with time zone;
   begin
-        update REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES set PRATR_PR_ID = (select min(pr_id) from REHAB_PRESCRIPTIONS where pr_ws_id=p_ws_id and pr_prr_id=p_prr_id)
+        --select min(pr_id) into l_pr_id from REHAB_PRESCRIPTIONS where pr_ws_id=p_ws_id and pr_prr_id=p_prr_id;
+        select min(pr_id),
+               count(*) filter (where PR_PLANNED_END is null) ,
+               max(PR_PLANNED_END) filter (where PR_PLANNED_END is not null)
+          into l_pr_id, l_cnt, l_max_PR_PLANNED_END
+          from REHAB_PRESCRIPTIONS where pr_ws_id=p_ws_id and pr_prr_id=p_prr_id;
+
+        update REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES set PRATR_PR_ID = l_pr_id
         where PRATR_PR_ID in (select pr_id from REHAB_PRESCRIPTIONS where pr_ws_id=p_ws_id and pr_prr_id=p_prr_id);
 
-        update REHAB_DRUG_ACCOUNTINGS set DA_PR_ID = (select min(pr_id) from REHAB_PRESCRIPTIONS where pr_ws_id=p_ws_id and pr_prr_id=p_prr_id)
+        update REHAB_DRUG_ACCOUNTINGS set DA_PR_ID = l_pr_id
         where DA_PR_ID in (select pr_id from REHAB_PRESCRIPTIONS where pr_ws_id=p_ws_id and pr_prr_id=p_prr_id);
 
-        update REHAB_DRUG_USES set DRU_PR_ID = (select min(pr_id) from REHAB_PRESCRIPTIONS where pr_ws_id=p_ws_id and pr_prr_id=p_prr_id)
+        update REHAB_DRUG_USES set DRU_PR_ID = l_pr_id
         where DRU_PR_ID in (select pr_id from REHAB_PRESCRIPTIONS where pr_ws_id=p_ws_id and pr_prr_id=p_prr_id);
 
-        delete from REHAB_PRESCRIPTIONS where pr_ws_id=p_ws_id and pr_prr_id=p_prr_id and pr_id<>(select min(pr_id) from REHAB_PRESCRIPTIONS where pr_ws_id=p_ws_id and pr_prr_id=p_prr_id);
-        update REHAB_PRESCRIPTIONS set PR_PLANNED_END = case when PR_PLANNED_END > systimestamp then null else PR_PLANNED_END end, pr_dr_id=null where pr_ws_id=p_ws_id and pr_prr_id=p_prr_id;
+        delete from REHAB_PRESCRIPTIONS where pr_ws_id=p_ws_id and pr_prr_id=p_prr_id and pr_id<>l_pr_id;
+        update REHAB_PRESCRIPTIONS set
+          PR_PLANNED_END = case when l_cnt > 0 or l_max_PR_PLANNED_END > systimestamp then null else PR_PLANNED_END end,
+          pr_dr_id=null
+        where pr_ws_id=p_ws_id and pr_prr_id=p_prr_id;
   end;
 
   procedure refresh_data AS

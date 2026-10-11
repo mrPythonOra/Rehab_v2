@@ -22,13 +22,13 @@ wwv_flow_imp_shared.create_flow_computation(
 ,p_computation_processed=>'REPLACE_EXISTING'
 ,p_computation=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'begin',
-'  if REHAB_CONTEXT_PKG.getGLOBAL_DATE = trunc(sysdate) then',
+'  if trunc(REHAB_CONTEXT_PKG.getGLOBAL_DATE) = trunc(systimestamp at time zone SESSIONTIMEZONE) then',
 unistr('    return v(''GLOBAL_DATE'') || ''(\0441\044C\043E\0433\043E\0434\043D\0456)'';'),
 '  else',
 '    return v(''GLOBAL_DATE'');',
 '  end if;',
 'end;'))
-,p_version_scn=>'SH256:0mLfhd41fDayTedeW4JM6sk6-CyKJOTnoCYsj_yUOUk'
+,p_version_scn=>'SH256:bYaM-0Ro47rjUEQZXAqgLKZypxD9tIwI1VynR1P-p-E'
 );
 wwv_flow_imp.component_end;
 end;

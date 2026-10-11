@@ -18,14 +18,14 @@ wwv_flow_imp_shared.create_list_of_values(
 ,p_lov_query=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'select ws_id, ws_name from REHAB_WORKING_SUBSTANCE',
 'union all',
-unistr('select -1, ''\041D\0435 \0432\0441\0442\0430\043D\043E\0432\043B\0435\043D\043E'' from dual')))
+unistr('select -1, ''--'' --''\041D\0435 \0432\0441\0442\0430\043D\043E\0432\043B\0435\043D\043E'''),
+'  from dual',
+'order by 2'))
 ,p_source_type=>'SQL'
 ,p_location=>'LOCAL'
 ,p_return_column_name=>'WS_ID'
 ,p_display_column_name=>'WS_NAME'
-,p_default_sort_column_name=>'WS_NAME'
-,p_default_sort_direction=>'ASC'
-,p_version_scn=>'SH256:aTMmDq1Jrw1zF3LARGZlAgWP0EBZk1O5p_C7UIShsEE'
+,p_version_scn=>'SH256:wH-UPaIISnibg2JkmgJZAKlaz6ZZVvYg5KjmvNF4J4c'
 );
 wwv_flow_imp.component_end;
 end;

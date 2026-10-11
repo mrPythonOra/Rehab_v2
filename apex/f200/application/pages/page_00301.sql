@@ -77,8 +77,8 @@ wwv_flow_imp_page.create_page_plug(
 '    round(days_planned) days_planned,',
 '    round(prd_dosage_planned) prd_dosage_planned,',
 '    daily_dose,',
-'    days_remain,days_remain_from_tomorrow,',
-'    dr_name,',
+'    round(days_remain) days_remain,days_remain_from_tomorrow,',
+'    dr_name,WS_NAME,',
 '    pratr_actual_end,',
 '    pr_planned_end,',
 '    end_date',
@@ -118,8 +118,8 @@ wwv_flow_imp_page.create_page_plug(
 );
 wwv_flow_imp_page.create_worksheet(
  p_id=>wwv_flow_imp.id(44056407187422948)
-,p_pagination_type=>'ROWS_X_TO_Y'
-,p_pagination_display_pos=>'BOTTOM_RIGHT'
+,p_pagination_type=>'ROWS_X_TO_Y_OF_Z'
+,p_pagination_display_pos=>'TOP_AND_BOTTOM_RIGHT'
 ,p_report_list_mode=>'TABS'
 ,p_lazy_loading=>false
 ,p_show_detail_link=>'N'
@@ -145,7 +145,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_db_column_name=>'DAILY_DOSE'
 ,p_display_order=>80
 ,p_column_identifier=>'H'
-,p_column_label=>unistr('\0414\0435\043D\043D\0430 \0434\043E\0437\0430')
+,p_column_label=>unistr('\0414\0435\043D\043D\0430 \0434\043E\0437\0430, \043C\0433')
 ,p_column_type=>'NUMBER'
 ,p_heading_alignment=>'RIGHT'
 ,p_column_alignment=>'RIGHT'
@@ -179,7 +179,7 @@ wwv_flow_imp_page.create_worksheet_column(
 wwv_flow_imp_page.create_worksheet_column(
  p_id=>wwv_flow_imp.id(51853689659079115)
 ,p_db_column_name=>'DAYS_REMAIN_FROM_TOMORROW'
-,p_display_order=>160
+,p_display_order=>170
 ,p_column_identifier=>'Q'
 ,p_column_label=>unistr('\0417\0430\043B\0438\0448\0438\043B\043E\0441\044F \043D\0430 \0434\043D\0456\0432 \0456\0437 \0437\0430\0432\0442\0440\0430')
 ,p_column_type=>'NUMBER'
@@ -215,9 +215,9 @@ wwv_flow_imp_page.create_worksheet_column(
 wwv_flow_imp_page.create_worksheet_column(
  p_id=>wwv_flow_imp.id(51853420445079113)
 ,p_db_column_name=>'DRU_CONSUMED_BEFORE'
-,p_display_order=>140
+,p_display_order=>150
 ,p_column_identifier=>'O'
-,p_column_label=>unistr('\0421\043F\043E\0436\0438\0442\043E \0434\043E \0441\044C\043E\0433\043E\0434\043D\0456')
+,p_column_label=>unistr('\0421\043F\043E\0436\0438\0442\043E \0434\043E \0441\044C\043E\0433\043E\0434\043D\0456, \043C\0433')
 ,p_column_type=>'NUMBER'
 ,p_heading_alignment=>'RIGHT'
 ,p_column_alignment=>'RIGHT'
@@ -227,9 +227,9 @@ wwv_flow_imp_page.create_worksheet_column(
 wwv_flow_imp_page.create_worksheet_column(
  p_id=>wwv_flow_imp.id(51853580044079114)
 ,p_db_column_name=>'DRU_CONSUMED_TODAY'
-,p_display_order=>150
+,p_display_order=>160
 ,p_column_identifier=>'P'
-,p_column_label=>unistr('\0421\043F\043E\0436\0438\0442\043E \0441\044C\043E\0433\0434\043D\0456')
+,p_column_label=>unistr('\0421\043F\043E\0436\0438\0442\043E \0441\044C\043E\0433\0434\043D\0456, \043C\0433')
 ,p_column_type=>'NUMBER'
 ,p_heading_alignment=>'RIGHT'
 ,p_column_alignment=>'RIGHT'
@@ -249,7 +249,7 @@ wwv_flow_imp_page.create_worksheet_column(
 wwv_flow_imp_page.create_worksheet_column(
  p_id=>wwv_flow_imp.id(51852950415079108)
 ,p_db_column_name=>'DR_NAME'
-,p_display_order=>100
+,p_display_order=>110
 ,p_column_identifier=>'J'
 ,p_column_label=>unistr('\041D\0430\0437\0432\0430 \043C\0435\0434\0456\043A\0430\043C\0435\043D\0442\0443')
 ,p_column_type=>'STRING'
@@ -260,9 +260,9 @@ wwv_flow_imp_page.create_worksheet_column(
 wwv_flow_imp_page.create_worksheet_column(
  p_id=>wwv_flow_imp.id(51853279226079111)
 ,p_db_column_name=>'END_DATE'
-,p_display_order=>130
+,p_display_order=>140
 ,p_column_identifier=>'M'
-,p_column_label=>unistr('\0412 \043D\0430\044F\0432\043D\043E\0441\0442\0456 \0434\043E')
+,p_column_label=>unistr('\0412 \043D\0430\044F\0432\043D\043E\0441\0442\0456 \0434\043E &P301_END_DATE_CAPT.')
 ,p_column_type=>'DATE'
 ,p_heading_alignment=>'LEFT'
 ,p_format_mask=>'YYYY-MON-DD'
@@ -283,7 +283,7 @@ wwv_flow_imp_page.create_worksheet_column(
 wwv_flow_imp_page.create_worksheet_column(
  p_id=>wwv_flow_imp.id(51853096470079109)
 ,p_db_column_name=>'PRATR_ACTUAL_END'
-,p_display_order=>110
+,p_display_order=>120
 ,p_column_identifier=>'K'
 ,p_column_label=>unistr('\0417\0430\043F\043B\0430\043D\043E\0432\0430\043D\0438\0435 \0437\0430\0432\0435\0440\0448\0435\043D\043D\044F \043F\0435\0440\0456\043E\0434\0443')
 ,p_column_type=>'DATE'
@@ -297,7 +297,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_db_column_name=>'PRD_DOSAGE_PLANNED'
 ,p_display_order=>70
 ,p_column_identifier=>'G'
-,p_column_label=>unistr('\0417\0430\043F\043B\0430\043D\043E\0432\0430\043D\043E \0441\043F\043E\0436\0438\0442\0438')
+,p_column_label=>unistr('\0417\0430\043F\043B\0430\043D\043E\0432\0430\043D\043E \0441\043F\043E\0436\0438\0442\0438, \043C\0433')
 ,p_column_type=>'NUMBER'
 ,p_heading_alignment=>'RIGHT'
 ,p_column_alignment=>'RIGHT'
@@ -307,12 +307,23 @@ wwv_flow_imp_page.create_worksheet_column(
 wwv_flow_imp_page.create_worksheet_column(
  p_id=>wwv_flow_imp.id(51853189530079110)
 ,p_db_column_name=>'PR_PLANNED_END'
-,p_display_order=>120
+,p_display_order=>130
 ,p_column_identifier=>'L'
 ,p_column_label=>unistr('\0417\0430\043F\043B\0430\043D\043E\0432\0430\043D\0438\0435 \0437\0430\0432\0435\0440\0448\0435\043D\043D\044F')
 ,p_column_type=>'DATE'
 ,p_heading_alignment=>'LEFT'
 ,p_tz_dependent=>'N'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(61876317147921425)
+,p_db_column_name=>'WS_NAME'
+,p_display_order=>100
+,p_column_identifier=>'R'
+,p_column_label=>unistr('\0414\0456\044E\0447\0430 \0440\0435\0447\043E\0432\0438\043D\0430')
+,p_column_type=>'STRING'
+,p_heading_alignment=>'LEFT'
 ,p_use_as_row_header=>'N'
 ,p_available_clientside=>'N'
 );
@@ -323,9 +334,40 @@ wwv_flow_imp_page.create_worksheet_rpt(
 ,p_report_alias=>'primary'
 ,p_status=>'PUBLIC'
 ,p_is_default=>'Y'
-,p_report_columns=>'DR_NAME:DA_STORED_AMOUNT:DRU_CONSUMED:BALANCE:DAYS_PLANNED:PRD_DOSAGE_PLANNED:DAILY_DOSE:DAYS_REMAIN:PRATR_ACTUAL_END:PR_PLANNED_END:END_DATE:DAYS_REMAIN_FROM_TOMORROW:DRU_CONSUMED_BEFORE:DRU_CONSUMED_TODAY'
-,p_sort_column_1=>'DR_NAME'
-,p_sort_direction_1=>'ASC'
+,p_report_columns=>'WS_NAME:DR_NAME:DA_STORED_AMOUNT:DRU_CONSUMED:BALANCE:DAYS_PLANNED:PRD_DOSAGE_PLANNED:DAILY_DOSE:DAYS_REMAIN:PRATR_ACTUAL_END:PR_PLANNED_END:END_DATE:DAYS_REMAIN_FROM_TOMORROW:DRU_CONSUMED_BEFORE:DRU_CONSUMED_TODAY'
+,p_sort_column_1=>'WS_NAME'
+,p_sort_direction_1=>'ASC NULLS FIRST'
+,p_sort_column_2=>'PR_PLANNED_END'
+,p_sort_direction_2=>'ASC NULLS FIRST'
+,p_sort_column_3=>'PRATR_ACTUAL_END'
+,p_sort_direction_3=>'ASC'
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(61876413486921426)
+,p_name=>'P301_END_DATE_CAPT'
+,p_item_sequence=>10
+,p_item_plug_id=>wwv_flow_imp.id(44056329294422947)
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+);
+wwv_flow_imp_page.create_page_computation(
+ p_id=>wwv_flow_imp.id(61876796220921429)
+,p_computation_sequence=>10
+,p_computation_item=>'P301_END_DATE_CAPT'
+,p_static_id=>'p301-end-date-capt'
+,p_computation_point=>'BEFORE_HEADER'
+,p_computation_type=>'FUNCTION_BODY'
+,p_computation_language=>'PLSQL'
+,p_computation=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'begin',
+'  if trunc(REHAB_CONTEXT_PKG.getGLOBAL_DATE) > trunc(systimestamp at time zone SESSIONTIMEZONE) then',
+unistr('    return ''(\043F\043E\0447\0438\043D\0430\044E\0447\0438 \0437 '' || to_char(trunc(REHAB_CONTEXT_PKG.getGLOBAL_DATE),''YYYY-MM-DD'') || '')'' ;'),
+'  else',
+'    return null;',
+'  end if;',
+'end;'))
 );
 wwv_flow_imp.component_end;
 end;
