@@ -251,7 +251,7 @@ as
                 and DRU_CONSUMED <= REHAB_CONTEXT_PKG.getGLOBAL_DATE()
                 and DRU_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() 
               group by DRU_PAT_ID, DRU_DR_ID)(+) cons,
-             (select PR_PAT_ID PAT_ID, nvl(PR_DR_ID,PRD_DR_ID) DR_ID, sum(days_planned) days_planned,
+             (select PR_PAT_ID PAT_ID, nvl(PR_DR_ID,PRD_DR_ID) DR_ID, max(days_planned) days_planned,
                      sum(PRD_DOSAGE * days_planned ) PRD_DOSAGE_PLANNED,
                      sum(PRD_DOSAGE) daily_dose,
                      max(PRATR_ACTUAL_END) PRATR_ACTUAL_END,

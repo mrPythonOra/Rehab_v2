@@ -87,7 +87,7 @@ unistr('            when trunc(REHAB_CONTEXT_PKG.getGLOBAL_DATE()) < PR_PLANNED_
 unistr('            else ''\041D\0435\0432\0438\0437\043D\0430\0447\0435\043D\043E'' end current_status'),
 '  from REHAB_PRESCRIPTIONS',
 ' where PR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and PR_PRR_ID = :P401_PRR_ID'))
+'and PR_PRR_ID = :P401_PRR_ID_CURR'))
 ,p_plug_source_type=>'NATIVE_IR'
 ,p_prn_content_disposition=>'ATTACHMENT'
 ,p_prn_units=>'MILLIMETERS'
@@ -338,7 +338,7 @@ wwv_flow_imp_page.create_worksheet(
 ,p_lazy_loading=>false
 ,p_show_detail_link=>'C'
 ,p_enable_mail_download=>'Y'
-,p_detail_link=>'f?p=&APP_ID.:402:&SESSION.::&DEBUG.::P402_PRR_ID,P401_PRR_ID:#PRR_ID#,#PRR_ID#'
+,p_detail_link=>'f?p=&APP_ID.:402:&SESSION.::&DEBUG.::P402_PRR_ID_CURR,P401_PRR_ID_CURR:#PRR_ID#,#PRR_ID#'
 ,p_internal_uid=>178663210019429027
 );
 wwv_flow_imp_page.create_worksheet_column(
@@ -380,7 +380,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_is_primary_key=>'Y'
 ,p_column_identifier=>'A'
 ,p_column_label=>unistr('\0414\0435\0442\0430\043B\0456')
-,p_column_link=>'f?p=&APP_ID.:401:&SESSION.::&DEBUG.::P401_PRR_ID:#PRR_ID#'
+,p_column_link=>'f?p=&APP_ID.:401:&SESSION.::&DEBUG.::P401_PRR_ID_CURR:#PRR_ID#'
 ,p_column_linktext=>'<img src="#APEX_FILES#app_ui/img/icons/apex-edit-view.png" class="apex-edit-view" alt="">'
 ,p_column_type=>'NUMBER'
 ,p_heading_alignment=>'RIGHT'
@@ -543,7 +543,7 @@ wwv_flow_imp_page.create_page_button(
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(180348249180976392)
-,p_name=>'P401_PRR_ID'
+,p_name=>'P401_PRR_ID_CURR'
 ,p_item_sequence=>10
 ,p_item_plug_id=>wwv_flow_imp.id(178663107063429026)
 ,p_source_type=>'ALWAYS_NULL'

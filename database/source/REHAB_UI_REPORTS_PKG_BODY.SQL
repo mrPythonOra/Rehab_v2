@@ -336,7 +336,7 @@
         order by days_remain desc
     )
     loop
-      l_msg := l_msg || '<b>' || i.DR_NAME || '</b> запасів на ' || i.days_remain || ' дні(в).<br> Заплановано: '||round(i.DAYS_PLANNED)||' дні(в) до '||to_char(i.PR_PLANNED_END,'YYYY-Mon-DD');
+      l_msg := l_msg || nvl2(l_msg,'<br>',null) || '<b>' || i.DR_NAME || '</b> запасів на ' || i.days_remain || ' дні(в).<br> Заплановано: '||round(i.DAYS_PLANNED)||' дні(в) до '||to_char(i.PR_PLANNED_END,'YYYY-Mon-DD');
     end loop;
     --**************************************************************************
     l_msg := rtrim(l_msg,'<br>');

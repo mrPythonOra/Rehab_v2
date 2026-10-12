@@ -64,21 +64,26 @@
 --                                     end
 --                        else '<br>Інформація по залишкам відсутня' end ||
                         nvl2(i.PRD_NOTES,'<br>'||i.PRD_NOTES,null),  --     sublabel     varchar2(4000),
-           data1     => nvl2(i.DRU_CONSUMED,'<span style="color: lime;">'||UNISTR('\D83C\DF23')||/*Прийнято*/'</span> '||to_char(i.DRU_CONSUMED at time zone SESSIONTIMEZONE,'YYYY-Mon-DD HH24:MI')||
-                                            '<span style="color: '||case when i.DRU_ACTUAL_DOSAGE = i.PRD_DOSAGE then 'lime' else 'yellow' end||';"> '||i.DRU_ACTUAL_DOSAGE||' мг</span>',--||
+           data1     => nvl2(i.DRU_CONSUMED,REHAB_UI_REPORTS_PKG.clr('lime',UNISTR('\D83C\DF23'))||to_char(i.DRU_CONSUMED at time zone SESSIONTIMEZONE,'YYYY-Mon-DD HH24:MI')||
+                                            REHAB_UI_REPORTS_PKG.clr(case when i.DRU_ACTUAL_DOSAGE = i.PRD_DOSAGE then 'lime' else 'yellow' end,' '||i.DRU_ACTUAL_DOSAGE||' мг'),--||
                                             --UNISTR('\D83D\DDD2')||' "'||i.CPTR_NAME||'; '||i.CPTR_START_TIME_STR||'-'||i.CPTR_END_TIME_STR||'"',
-                                            '<span style="color: yellow;">'||UNISTR('\D83C\DF27')||' Не прийнято</span>'),     --     data1        VARCHAR2(4000),
+                                            REHAB_UI_REPORTS_PKG.clr('yellow',UNISTR('\D83C\DF27')||' Не прийнято')),     --     data1        VARCHAR2(4000),
            data2     => REHAB_UI_REPORTS_PKG.clr('lime',UNISTR('\2762'))||' '||
                          nvl(i.DR_USE_CASE,i.DR_TYPE_SHORT)||
                          nvl2(i.PR_NOTES,'<br>'||REHAB_UI_REPORTS_PKG.clr('lime',UNISTR('\D83D\DD8E'))||' '||i.PR_NOTES,null)||
                          nvl2(i.PRATR_NOTES,'<br>'||REHAB_UI_REPORTS_PKG.clr('lime',UNISTR('\D83D\DDB9'))||' '||i.PRATR_NOTES,null)||
                         case when i.DA_STORED_AMOUNT is not null then
-                        '<br>'||REHAB_UI_REPORTS_PKG.clr('lime',UNISTR('\D83D\DDC4'))||' Залишок на: '||case when i.DAYS_PLANNED is null
-                                     then '<span style="color: '||case when i.DAYS_REMAIN >= to_number(REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT')) then 'lime' else 'yellow' end||';"> '
-                                     else '<span style="color: '||case when i.DAYS_REMAIN >= i.DAYS_PLANNED then 'lime' else 'yellow' end||';"> '
-                                     end ||i.DAYS_REMAIN||' дні(в)</span> до '||to_char(i.end_date, 'YYYY-Mon-DD')||'. Заплановано'||case when i.DAYS_PLANNED is null then ': без обмеження дати' else ' до: ' || to_char(i.PR_PLANNED_END, 'YYYY-Mon-DD') --||
-                                     --'<br>В наявності до '||to_char(i.end_date, 'YYYY-Mon-DD')
-                                     end
+                        '<br>'||REHAB_UI_REPORTS_PKG.clr('lime',UNISTR('\D83D\DDC4'))||' Залишок на: '||
+                                REHAB_UI_REPORTS_PKG.clr(case when i.DAYS_PLANNED is null
+                                     then case when i.DAYS_REMAIN >= to_number(REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT')) then 'lime' else 'yellow' end
+                                     else case when i.DAYS_REMAIN >= i.DAYS_PLANNED then 'lime' else 'yellow' end
+                                     end, round(i.DAYS_REMAIN)||' дні(в)')||' до '||to_char(i.end_date, 'YYYY-Mon-DD')||'. Заплановано'||case when i.PR_PLANNED_END is null then ': без обмеження дати' else ' до: ' || to_char(i.PR_PLANNED_END, 'YYYY-Mon-DD') end
+--                                case when i.DAYS_PLANNED is null
+--                                     then '<span style="color: '||case when i.DAYS_REMAIN >= to_number(REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT')) then 'lime' else 'yellow' end||';"> '
+--                                     else '<span style="color: '||case when i.DAYS_REMAIN >= i.DAYS_PLANNED then 'lime' else 'yellow' end||';"> '
+--                                     end ||round(i.DAYS_REMAIN)||' дні(в)</span> до '||to_char(i.end_date, 'YYYY-Mon-DD')||'. Заплановано'||case when i.DAYS_PLANNED is null then ': без обмеження дати' else ' до: ' || to_char(i.PR_PLANNED_END, 'YYYY-Mon-DD') --||
+--                                     --'<br>В наявності до '||to_char(i.end_date, 'YYYY-Mon-DD')
+--                                     end
                         else '<br>Інформація по залишкам відсутня' end
            ,     --     data2        VARCHAR2(4000),
            bagecol   => '',   --bagecol      VARCHAR2(4000),
