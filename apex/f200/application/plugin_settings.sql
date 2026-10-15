@@ -15,6 +15,12 @@ wwv_flow_imp_shared.create_plugin_setting(
 ,p_version_scn=>'SH256:NcagEyRP_F17oe14bnrSYSYienkBgpdRSvH17g_NxoE'
 );
 wwv_flow_imp_shared.create_plugin_setting(
+ p_id=>wwv_flow_imp.id(63283003851371705)
+,p_plugin_type=>'DYNAMIC ACTION'
+,p_plugin=>'PLUGIN_COM.ORACLE.APEX.HIGHLIGHT'
+,p_version_scn=>'SH256:0wYTOEGlHb4ePwJ_F-bgKrm2Vx7hAfd_lxsD-GesAOA'
+);
+wwv_flow_imp_shared.create_plugin_setting(
  p_id=>wwv_flow_imp.id(16865682392504184)
 ,p_plugin_type=>'ITEM TYPE'
 ,p_plugin=>'NATIVE_COLOR_PICKER'

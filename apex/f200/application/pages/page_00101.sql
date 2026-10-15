@@ -100,7 +100,7 @@ wwv_flow_imp_page.create_card_action(
 ,p_link_target_type=>'REDIRECT_PAGE'
 ,p_link_target=>'f?p=&APP_ID.:102:&SESSION.::&DEBUG.::P102_DRU_PRD_ID,P102_DRU_PR_ID,P102_DRU_CPTR_ID,P102_DRU_DR_ID,P102_DRU_ID:&PRD_ID.,&PR_ID.,&CPTR_ID.,&DR_ID.,&DRU_ID.'
 ,p_button_display_type=>'ICON'
-,p_icon_css_classes=>'fa-plus-square-o'
+,p_icon_css_classes=>'fa-plus'
 ,p_is_hot=>false
 ,p_condition_type=>'EXPRESSION'
 ,p_condition_expr1=>'''&DRU_ID.'' is null'

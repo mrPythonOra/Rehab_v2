@@ -3,6 +3,7 @@ prompt --install
 @@application/delete_application.sql
 @@application/create_application.sql
 @@workspace/credentials/app_200_push_notifications_credentials.sql
+@@application/shared_components/plugins/dynamic_action/com_oracle_apex_highlight.sql
 @@application/plugin_settings.sql
 @@application/shared_components/navigation/lists/access_control.sql
 @@application/shared_components/navigation/lists/activity_reports.sql
@@ -64,6 +65,8 @@ prompt --install
 @@application/user_interfaces/combined_files.sql
 @@application/pages/page_00000.sql
 @@application/pages/page_00001.sql
+@@application/pages/page_00002.sql
+@@application/pages/page_00003.sql
 @@application/pages/page_00081.sql
 @@application/pages/page_00101.sql
 @@application/pages/page_00102.sql
