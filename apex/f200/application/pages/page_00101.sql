@@ -146,6 +146,34 @@ wwv_flow_imp_page.create_page_item(
   'number_of_columns', '10',
   'page_action_on_selection', 'SUBMIT')).to_clob
 );
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(65076848329556913)
+,p_name=>'SortUp'
+,p_static_id=>'sortup'
+,p_event_sequence=>10
+,p_triggering_element_type=>'REGION'
+,p_triggering_region_id=>wwv_flow_imp.id(44051944887422903)
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'NATIVE_CARDS|REGION TYPE|tablemodelviewpagechange'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(65076999377556914)
+,p_event_id=>wwv_flow_imp.id(65076848329556913)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_static_id=>'native-execute-plsql-code'
+,p_action=>'NATIVE_EXECUTE_PLSQL_CODE'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'language', 'PLSQL',
+  'plsql_code', wwv_flow_string.join(wwv_flow_t_varchar2(
+    'begin',
+    '  raise_application_error(-20000,''PRD_ID: &PRD_ID.'');',
+    'end;')),
+  'show_processing', 'N')).to_clob
+,p_wait_for_result=>'Y'
+);
 wwv_flow_imp.component_end;
 end;
 /

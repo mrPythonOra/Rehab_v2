@@ -834,7 +834,9 @@ ALTER TABLE REHAB_PRESCRIPTIONS_DETAILS ADD CONSTRAINT FK_REHAB_PRESCRIPTIONS_DE
 
 ALTER TABLE REHAB_PRESCRIPTIONS_DETAILS ADD CONSTRAINT FK_REHAB_PRESCRIPTIONS_DETAILS_DR FOREIGN KEY (PRD_DR_ID)
 	  REFERENCES REHAB_DRUGS (DR_ID) ENABLE;
-      
+
+create unique index UK_REHAB_PRESCRIPTIONS_DETAILS_1 on REHAB_PRESCRIPTIONS_DETAILS(PRD_PRATR_ID, PRD_CPTR_ID, PRD_DR_ID);
+     
 create sequence SQ_REHAB_PRESCRIPTIONS_DETAILS;
 --//////////////////////////////////////////////////////////////////////////////
 --select * from rehab_consume_time_ranges order by 1;
@@ -1394,6 +1396,15 @@ create index IDX_REHAB_WATCH_LOGS_PAT_TAKEN  on REHAB_WATCH_LOGS(WL_PAT_ID, SYS_
 --              REHAB_DRUGS d
 --         where stor.PAT_ID=cons.PAT_ID and stor.DR_ID=cons.DR_ID and stor.DR_ID=d.DR_ID
 --           and stor.PAT_ID=planned.PAT_ID and stor.DR_ID=planned.DR_ID;
+--******************************************************************************
+create table REHAB_LOG (
+log_id number primary key,
+log_timestampt timestamp with time zone default systimestamp,
+log_module varchar2(512),
+log_module_line number,
+log_message varchar2(4000));
+
+create sequence SQ_REHAB_LOG;
 --******************************************************************************
 select (select count(1) from reabilitation.drug_accounting) drug_accounting,(select count(1) from REHAB_DRUG_ACCOUNTINGS) RB_DRUG_ACCOUNTINGS from dual;
 select (select count(1) from REABILITATION.DRUG_STORAGE) DRUG_STORAGE,(select count(1) from REHAB_DRUG_STORAGES) RB_DRUG_STORAGES from dual;
