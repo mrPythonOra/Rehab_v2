@@ -235,23 +235,23 @@
         execute immediate 'ALTER SEQUENCE SQ_REHAB_CONSUME_PATTERNS RESTART START WITH 6';
         --******************************************************************************
         --prompt rehab_consume_patterns
-        INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,cp_name,cp_descr) VALUES (1,null,null,null,'Одноразово вранці','Загальний спосіб "Одноразово вранці"');
-        INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,cp_name,cp_descr) VALUES (2,null,null,null,'Одноразово вдень','Загальний спосіб "Одноразово вдень"');
-        INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,cp_name,cp_descr) VALUES (3,null,null,null,'Одноразово увечорі','Загальний спосіб "Одноразово увечорі"');
-        INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,cp_name,cp_descr) VALUES (4,null,null,null,'Два рази на день вранці і увечорі','Загальний спосіб "Два рази на день вранці і увечорі"');
-        INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,cp_name,cp_descr) VALUES (5,null,null,null,'Три рази на день','Загальний спосіб "Три рази на день"');
+        INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,CP_NUM_PER_DAY,cp_name,cp_descr) VALUES (1,null,null,null,1,'Одноразово вранці','Загальний спосіб "Одноразово вранці"');
+        INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,CP_NUM_PER_DAY,cp_name,cp_descr) VALUES (2,null,null,null,1,'Одноразово вдень','Загальний спосіб "Одноразово вдень"');
+        INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,CP_NUM_PER_DAY,cp_name,cp_descr) VALUES (3,null,null,null,1,'Одноразово увечорі','Загальний спосіб "Одноразово увечорі"');
+        INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,CP_NUM_PER_DAY,cp_name,cp_descr) VALUES (4,null,null,null,2,'Два рази на день вранці і увечорі','Загальний спосіб "Два рази на день вранці і увечорі"');
+        INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,CP_NUM_PER_DAY,cp_name,cp_descr) VALUES (5,null,null,null,3,'Три рази на день','Загальний спосіб "Три рази на день"');
         --Olya
-        INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,cp_name,cp_descr) VALUES (21,1,1,21,q'[Одноразово вранці]',q'[Змінений спосіб "Одноразово вранці"]');
-        --INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,cp_name,cp_descr) VALUES (22,2,21,null,q'[Одноразово вдень]',q'[Змінений спосіб "Одноразово вдень"]');
-        INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,cp_name,cp_descr) VALUES (23,3,1,21,q'[Одноразово увечорі]',q'[Змінений спосіб "Одноразово увечорі"]');
-        INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,cp_name,cp_descr) VALUES (24,4,1,21,q'[Два рази на день вранці і увечорі]',q'[Змінений спосіб "Два рази на день вранці і увечорі"]');
-        INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,cp_name,cp_descr) VALUES (25,5,1,21,q'[Три рази на день]',q'[Змінений спосіб "Три рази на день"]');
+        INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,CP_NUM_PER_DAY,cp_name,cp_descr) VALUES (21,1,1,21,1,q'[Одноразово вранці]',q'[Змінений спосіб "Одноразово вранці"]');
+        --INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,CP_NUM_PER_DAY,cp_name,cp_descr) VALUES (22,2,21,null,1,q'[Одноразово вдень]',q'[Змінений спосіб "Одноразово вдень"]');
+        INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,CP_NUM_PER_DAY,cp_name,cp_descr) VALUES (23,3,1,21,1,q'[Одноразово увечорі]',q'[Змінений спосіб "Одноразово увечорі"]');
+        INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,CP_NUM_PER_DAY,cp_name,cp_descr) VALUES (24,4,1,21,2,q'[Два рази на день вранці і увечорі]',q'[Змінений спосіб "Два рази на день вранці і увечорі"]');
+        INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,CP_NUM_PER_DAY,cp_name,cp_descr) VALUES (25,5,1,21,3,q'[Три рази на день]',q'[Змінений спосіб "Три рази на день"]');
         --Yuri
-        INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,cp_name,cp_descr) VALUES (41,1,1,5,q'[Одноразово вранці]',q'[Змінений спосіб "Одноразово вранці"]');
-        INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,cp_name,cp_descr) VALUES (42,2,1,5,q'[Одноразово вдень]',q'[Змінений спосіб "Одноразово вдень"]');
-        INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,cp_name,cp_descr) VALUES (43,3,1,5,q'[Одноразово увечорі]',q'[Змінений спосіб "Одноразово увечорі"]');
-        INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,cp_name,cp_descr) VALUES (44,4,1,5,q'[Два рази на день вранці і увечорі]',q'[Змінений спосіб "Два рази на день вранці і увечорі"]');
-        INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,cp_name,cp_descr) VALUES (45,5,1,5,q'[Три рази на день]',q'[Змінений спосіб "Три рази на день"]');
+        INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,CP_NUM_PER_DAY,cp_name,cp_descr) VALUES (41,1,1,5,1,q'[Одноразово вранці]',q'[Змінений спосіб "Одноразово вранці"]');
+        INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,CP_NUM_PER_DAY,cp_name,cp_descr) VALUES (42,2,1,5,1,q'[Одноразово вдень]',q'[Змінений спосіб "Одноразово вдень"]');
+        INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,CP_NUM_PER_DAY,cp_name,cp_descr) VALUES (43,3,1,5,1,q'[Одноразово увечорі]',q'[Змінений спосіб "Одноразово увечорі"]');
+        INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,CP_NUM_PER_DAY,cp_name,cp_descr) VALUES (44,4,1,5,2,q'[Два рази на день вранці і увечорі]',q'[Змінений спосіб "Два рази на день вранці і увечорі"]');
+        INSERT INTO rehab_consume_patterns (cp_id,cp_prnt_id,cp_te_id,cp_pat_id,CP_NUM_PER_DAY,cp_name,cp_descr) VALUES (45,5,1,5,3,q'[Три рази на день]',q'[Змінений спосіб "Три рази на день"]');
         commit;
         execute immediate 'ALTER SEQUENCE SQ_REHAB_CONSUME_PATTERNS RESTART START WITH 61';
         --******************************************************************************

@@ -20,9 +20,9 @@ wwv_flow_imp_shared.create_list_of_values(
 ,p_query_table=>'V$REHAB_CONSUME_PATTERNS_AVAILABLE'
 ,p_return_column_name=>'CP_ID'
 ,p_display_column_name=>'CP_NAME'
-,p_default_sort_column_name=>'CP_NAME'
+,p_default_sort_column_name=>'CP_NUM_PER_DAY'
 ,p_default_sort_direction=>'ASC'
-,p_version_scn=>'SH256:bhitwFc8lrOJ8cSbmpEHeW35vaQoCvlBakkSiFSTXQM'
+,p_version_scn=>'SH256:UsjBIGhVL0M0yDT6S2nK_742HQGOCwOolpQ8HOf4DYc'
 );
 wwv_flow_imp.component_end;
 end;

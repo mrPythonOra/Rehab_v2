@@ -66,7 +66,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'select PR_ID,',
-'       nvl(PR_WS_ID,-1)PR_WS_ID,',
+'       PR_WS_ID,',
 '       PR_DR_ID,',
 '       PR_PAT_ID,',
 '       PR_PRR_ID,',

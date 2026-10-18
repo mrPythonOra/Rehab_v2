@@ -2,6 +2,9 @@
 
   CREATE OR REPLACE EDITIONABLE PACKAGE BODY "REHAB_PRESCRIPTIONS_PKG" AS
 
+    exUniqueConstrViolation exception;
+    PRAGMA EXCEPTION_INIT(exUniqueConstrViolation, -1);
+
     function get_prescriptor_status(p_PRR_ID REHAB_PRESCRIPTORS.PRR_ID%type) return varchar2
     is
       l_cnt number;
@@ -71,6 +74,15 @@
                                         case when l_cnt2 = 0 then 'Not ' else null end ||'Found WS assignement');
       end if;
     end;
+
+    function decode_uq_constr_error(p_errm varchar2) return varchar2
+    is
+    begin
+      return case when upper(p_errm) like upper('%UK_REHAB_PRESCRIPTIONS_DETAILS_1%') then 'Заборонено додавати один і той же медікамент в використаний час прийому.'
+                  when upper(p_errm) like upper('%UK_REHAB_PRESCRIPTIONS_DETAILS_2%') then 'Заборонено використовувати час прийому більше одного разу.'
+                  else p_errm end;
+    end;
+
 --    procedure insert_PRESCRIPTOR (
 --         p_PRR_ID in REHAB_PRESCRIPTORS.PRR_ID%type
 --        ,p_PRR_PRESCRIPTED_BY_SHORT in REHAB_PRESCRIPTORS.PRR_PRESCRIPTED_BY_SHORT%type
@@ -339,6 +351,10 @@
             ,p_PRD_ID
         );
         validate_dr_assignement(p_PRD_PRATR_ID, p_PRD_DR_ID);
+    exception
+      when exUniqueConstrViolation then raise_application_error(-20102,decode_uq_constr_error(sqlerrm));
+      when others then
+        REHAB_LOGGING_PKG.lognraise($$PLSQL_UNIT, $$PLSQL_LINE,sqlerrm);
     end;
     -- update
     procedure update_REHAB_PRESCRIPTIONS_DETAILS (
@@ -359,6 +375,9 @@
             ,PRD_DOSAGE = p_PRD_DOSAGE
         where PRD_ID = p_PRD_ID returning PRD_PRATR_ID into l_PRD_PRATR_ID;
         validate_dr_assignement(l_PRD_PRATR_ID, p_PRD_DR_ID);
+    exception
+      when others then
+        REHAB_LOGGING_PKG.lognraise($$PLSQL_UNIT, $$PLSQL_LINE,sqlerrm);
     end;
     -- del
     procedure delete_REHAB_PRESCRIPTIONS_DETAILS (
@@ -367,6 +386,9 @@
     begin
         delete from REHAB_PRESCRIPTIONS_DETAILS
          where PRD_ID = p_PRD_ID;
+    exception
+      when others then
+        REHAB_LOGGING_PKG.lognraise($$PLSQL_UNIT, $$PLSQL_LINE,sqlerrm);
     end;
 END REHAB_PRESCRIPTIONS_PKG;
 /
