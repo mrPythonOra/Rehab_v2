@@ -124,6 +124,14 @@ wwv_flow_imp_shared.create_menu_option(
 ,p_link=>'f?p=&APP_ID.:401:&APP_SESSION.::&DEBUG.:::'
 ,p_page_id=>401
 );
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(68057013201738056)
+,p_parent_id=>wwv_flow_imp.id(29457611096221950)
+,p_short_name=>unistr('\0421\043E\0440\0442\0443\0432\0430\0442\0438')
+,p_static_id=>unistr('\0441\043E\0440\0442\0443\0432\0430\0442\0438')
+,p_link=>'f?p=&APP_ID.:104:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>104
+);
 wwv_flow_imp.component_end;
 end;
 /

@@ -60,7 +60,7 @@
         --delete from apex_stored_states;commit;
         delete from REHAB_CONFIGS;commit;
         commit;
-
+execute immediate 'drop INDEX if exists IDX_UQ_REHAB_PRESCRIPTIONS_PRR_WS_DR';
         --******************************************************************************
         --load data---------------------------------------------------------------------
         --******************************************************************************
@@ -382,11 +382,15 @@
         --prompt rehab_prescriptions
         INSERT INTO rehab_prescriptions
            (pr_id,pr_dr_id,pr_pat_id,pr_prr_id,pr_planned_start,pr_planned_end,pr_notes, PR_WS_ID)
-        SELECT
-            pr_id,   p.dr_id,   pat_id,   prr_id,   planned_start,   planned_end + 1 - 1/24/60/60,   case when notes like '%http%' then notes else null end,    DR_WS_ID
+        select
+            pr_id,   dr_id,   pat_id,   prr_id,   planned_start,   planned_end,   notes, DR_WS_ID
+        from
+        (SELECT min(pr_id)over(partition by p.dr_id, prr_id, DR_WS_ID) m_pr_id,
+            pr_id,   p.dr_id,   pat_id,   prr_id,   planned_start,   max(planned_end) over(partition by p.dr_id, prr_id, DR_WS_ID) + 1 - 1/24/60/60 planned_end,   case when notes like '%http%' then notes else null end notes,    DR_WS_ID
         FROM
             reabilitation.prescription p, REHAB_DRUGS d
-            where p.dr_id=d.dr_id and nvl(notes,'~')<>'--no_copy_data--';
+            where p.dr_id=d.dr_id and nvl(notes,'~') not like '%--no_copy_data--%')
+            where m_pr_id = pr_id;
         declare
           l_id_max number;
         begin
@@ -400,10 +404,11 @@
            (pratr_id,
             PRATR_PR_ID,
             PRATR_CP_ID,
-            PRATR_ACTUAL_START, PRATR_ACTUAL_END, PRATR_NOTES)
+            PRATR_ACTUAL_START, PRATR_ACTUAL_END, PRATR_NOTES,
+            PRATR_PR_ID_ORIG)
         SELECT
             SQ_REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES.nextval,
-            pr_id,
+            min(pr_id)over(partition by p.dr_id, prr_id, DR_WS_ID) pr_id_n,
             case
               when PAT_ID = 5 then
                 case when TIMES_PER_DAY = 1 then decode(TIME_SLOT,1,41,2,42,3,43)
@@ -422,9 +427,10 @@
                  when SUSPENDED = 'Y' and (planned_end is not null and trunc(planned_end,'dd') > trunc(systimestamp,'dd') or planned_end is null) then
                    nvl((select trunc(max(CONSUMED),'DD') from reabilitation.DRUG_USE u where u.pr_id=p.pr_id and u.PAT_ID=p.PAT_ID),planned_start+0.1)
             end planned_end,
-            decode(SUSPENDED,'Y','Suspended')
+            decode(SUSPENDED,'Y','Suspended'),
+            pr_id
         FROM
-            reabilitation.prescription p where nvl(notes,'~')<>'--no_copy_data--'; --order by 1,2;
+            reabilitation.prescription p, REHAB_DRUGS d where p.dr_id=d.dr_id and nvl(notes,'~') not like '%--no_copy_data--%'; --order by 1,2;
         commit;
         --******************************************************************************
         --prompt rehab_prescriptions_details
@@ -456,7 +462,7 @@
         FROM
             reabilitation.prescription p0, REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES p1,
             (select level l from dual connect by level <=3) l
-        where p0.PR_ID = p1.PRATR_PR_ID and l.l <= TIMES_PER_DAY and nvl(p0.notes,'~')<>'--no_copy_data--';
+        where p0.PR_ID = p1.PRATR_PR_ID_ORIG and l.l <= TIMES_PER_DAY and nvl(notes,'~') not like '%--no_copy_data--%';
         commit;
         declare
           l_id_max number;
@@ -500,12 +506,27 @@
                --to_date(to_char(CONSUMED,'HH24:MI'),'HH24:MI') cc, PRATR_CP_ID
         from reabilitation.DRUG_USE u, REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES r, --REHAB_PRESCRIPTIONS_DETAILS d,
              REHAB_PRESCRIPTIONS p
-        where u.PR_ID=r.PRATR_PR_ID --and r.pratr_id=d.PRD_PRATR_ID
+        where u.PR_ID=r.PRATR_PR_ID_ORIG --and r.pratr_id=d.PRD_PRATR_ID
           and p.PR_ID = u.PR_ID
         order by 1;
         commit;
+
         update REHAB_DRUG_USES u
-        set DRU_PRD_ID = (select PRD_ID from REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES a, REHAB_PRESCRIPTIONS_DETAILS d where a.PRATR_ID = d.PRD_PRATR_ID and d.PRD_CPTR_ID=u.DRU_CPTR_ID and u.DRU_PR_ID=a.PRATR_PR_ID);
+        set DRU_PRD_ID = (select /*+ no_unnest */ PRD_ID from
+                         (select PRD_ID
+                            from REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES a, REHAB_PRESCRIPTIONS_DETAILS d
+                           where a.PRATR_ID = d.PRD_PRATR_ID
+                             and d.PRD_CPTR_ID=u.DRU_CPTR_ID
+                             and u.DRU_PR_ID=a.PRATR_PR_ID
+                             and u.DRU_CONSUMED between a.PRATR_ACTUAL_START and nvl(a.PRATR_ACTUAL_END,sysdate+1000)
+                          union all
+                          select /*+ no_unnest */ PRD_ID
+                            from REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES a, REHAB_PRESCRIPTIONS_DETAILS d
+                           where a.PRATR_ID = d.PRD_PRATR_ID
+                             and d.PRD_CPTR_ID=u.DRU_CPTR_ID
+                             and u.DRU_PR_ID=a.PRATR_PR_ID)
+                             where rownum=1
+                             );
         commit;
 
         update REHAB_DRUG_USES u
@@ -548,7 +569,7 @@
         select
           da_id, DA_DS_ID, DA_DRUG_ID, DA_ORDER_TYPE, DA_QUANTITY, DA_ENTIRY_WEIGHT, DA_COST, DA_PURCHASED, CHECK_POINT_DT,    DA_PRR_ID,    PR_ID,    PRATR_ID, PR_WS_ID, DA_BEST_BEFORE
         from reabilitation.drug_accounting a, REHAB_PRESCRIPTIONS p, REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES r
-        where a.DA_PRR_ID = p.PR_PRR_ID and a.DA_DRUG_ID=p.PR_DR_ID and p.PR_ID=r.PRATR_PR_ID order by 1;
+        where a.DA_PRR_ID = p.PR_PRR_ID and a.DA_DRUG_ID=p.PR_DR_ID and p.PR_ID=r.PRATR_PR_ID_ORIG order by 1;
         commit;
         declare
           l_id_max number;
@@ -643,6 +664,7 @@
         Insert into REHAB_PATIENTS (PAT_ID,PAT_TE_ID,PAT_NAME,PAT_SURNAME,PAT_EMAIL,PAT_STATUS,PAT_CREATED,PAT_STATUS_CHANGED,PAT_APEX_USER,PAT_IS_SUPERUSER,PAT_IS_TENANTADM) values (1,2,'Test1','T','t@a.com','ACTIVE',to_timestamp_tz('2026-09-08 11.40.04 +03:00','YYYY-MM-DD HH24.MI.SS TZH:TZM'),to_timestamp_tz('2026-09-08 11.40.10 +03:00','YYYY-MM-DD HH24.MI.SS TZH:TZM'),'TEST1','false','true');
         Insert into REHAB_PATIENTS (PAT_ID,PAT_TE_ID,PAT_NAME,PAT_SURNAME,PAT_EMAIL,PAT_STATUS,PAT_CREATED,PAT_STATUS_CHANGED,PAT_APEX_USER,PAT_IS_SUPERUSER,PAT_IS_TENANTADM) values (2,2,'Test2','T2','t2@a.com','ACTIVE',to_timestamp_tz('2026-09-08 11.40.52 +03:00','YYYY-MM-DD HH24.MI.SS TZH:TZM'),to_timestamp_tz('2026-09-08 11.40.57 +03:00','YYYY-MM-DD HH24.MI.SS TZH:TZM'),'TEST2','false','false');
         commit;
+execute immediate 'CREATE UNIQUE INDEX if not exists IDX_UQ_REHAB_PRESCRIPTIONS_PRR_WS_DR ON REHAB_PRESCRIPTIONS (PR_PRR_ID, PR_WS_ID, PR_DR_ID)';
   END refresh_data;
 
 END REHAB_MIGRATE_PKG;

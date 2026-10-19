@@ -2,7 +2,7 @@
 
   CREATE OR REPLACE EDITIONABLE PACKAGE BODY "REHAB_DRUGUSE_PKG" AS
 
-  function druguse_dashboard_ref(p_tp_id REHAB_TIME_PERIODS.TP_ID%type) return rehab_druguse_dashboard_tab pipelined AS
+  function druguse_dashboard_ref(p_tp_id REHAB_TIME_PERIODS.TP_ID%type, p_sortbyconsumed boolean default true) return rehab_druguse_dashboard_tab pipelined AS
     l_img blob;
     l_img2 blob;
   BEGIN
@@ -48,7 +48,7 @@
                  and (CPTR_START_TIME_DT_GDT >= TP_START_TIME_DT_GDT and CPTR_START_TIME_DT_GDT < TP_END_TIME_DT_GDT or
                       CPTR_END_TIME_DT_GDT   >= TP_START_TIME_DT_GDT and CPTR_END_TIME_DT_GDT   < TP_END_TIME_DT_GDT)
                  and d.PRD_DR_ID = r.DR_ID(+)
-               order by decode(d.DRU_CONSUMED,null,-1e6,PRD_SORT_ORDER))
+               order by case when p_sortbyconsumed then decode(d.DRU_CONSUMED,null,-1e6,PRD_SORT_ORDER) else PRD_SORT_ORDER end nulls last)
     loop
         pipe row (rehab_druguse_dashboard_rec(
            id        => i.PRD_ID,           --     id           number,
@@ -149,6 +149,49 @@
 --    consume_drug(p_dru_prd_id, P_DRU_PR_ID, P_DRU_CPTR_ID, P_DRU_DR_ID, systimestamp at time zone SESSIONTIMEZONE, null);
 --  end;
 
+  procedure sort_drugs_in_window(p_tp_id REHAB_TIME_PERIODS.TP_ID%type, p_prd_id REHAB_PRESCRIPTIONS_DETAILS.PRD_ID%type, p_dir varchar2)
+  is
+    l_swap_prd_id REHAB_PRESCRIPTIONS_DETAILS.PRD_ID%type;
+    l_swap_ordr pls_integer;
+    type t_sort_ordr is table of number index by pls_integer;
+    l_sort_ordr t_sort_ordr;
+    l_id        t_sort_ordr;
+    l_min       pls_integer;
+    l_max       pls_integer;
+  begin
+    for i in (select PRD_ID, rownum rn from
+             (select d.PRD_ID
+                from V$REHAB_CONSUME_DATA d, V$REHAB_TIME_PERIODS tp
+               where tp.TP_ID = p_tp_id
+                 and (CPTR_START_TIME_DT_GDT >= TP_START_TIME_DT_GDT and CPTR_START_TIME_DT_GDT < TP_END_TIME_DT_GDT or
+                      CPTR_END_TIME_DT_GDT   >= TP_START_TIME_DT_GDT and CPTR_END_TIME_DT_GDT   < TP_END_TIME_DT_GDT)
+               order by PRD_SORT_ORDER nulls last))
+    loop
+      l_sort_ordr(i.rn*10) := i.PRD_ID;
+      l_id(i.PRD_ID) := i.rn*10;
+      if l_min is null then l_min := i.rn*10; end if;
+      l_max := i.rn*10;
+    end loop;
+
+    if p_dir = 'UP' and l_id(p_prd_id) = l_min or p_dir = 'DOWN' and l_id(p_prd_id) = l_max then
+      return;
+    end if;
+
+    if    p_dir = 'UP'   then l_swap_prd_id := l_sort_ordr(l_sort_ordr.prior(l_id(p_prd_id)));
+    elsif p_dir = 'DOWN' then l_swap_prd_id := l_sort_ordr(l_sort_ordr.next (l_id(p_prd_id)));
+    end if;
+    l_swap_ordr   := l_id(l_swap_prd_id);
+    l_id(l_swap_prd_id) := l_id(p_prd_id);
+
+    l_id(p_prd_id) := l_swap_ordr;
+
+    l_min := l_id.first;
+    while (l_min is not null)
+    loop
+      update REHAB_PRESCRIPTIONS_DETAILS set PRD_SORT_ORDER = l_id(l_min) where PRD_ID = l_min;
+      l_min := l_id.next(l_min);
+    end loop;
+  end;
 END REHAB_DRUGUSE_PKG;
 /
 

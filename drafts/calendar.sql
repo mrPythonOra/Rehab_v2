@@ -170,3 +170,7 @@ select
 from ds, ints
 where ds.prr_id = ints.prr_id and ds.dr_id=ints.dr_id
 ORDER BY start_date;
+
+drop INDEX IDX_UQ_REHAB_PRESCRIPTIONS_PRR_WS_DR;
+delete from REHAB_PRESCRIPTIONS;
+CREATE UNIQUE INDEX IDX_UQ_REHAB_PRESCRIPTIONS_PRR_WS_DR ON REHAB_PRESCRIPTIONS (PR_PRR_ID, PR_WS_ID, PR_DR_ID) ;
