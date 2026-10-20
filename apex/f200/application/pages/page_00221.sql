@@ -332,7 +332,8 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    -- wl_total_avg_pulse,',
 '    -- wl_total_min_pulse,',
 '    -- wl_total_max_pulse',
-unistr('    ''\041A\0440\043E\043A\0438'' series_name'),
+unistr('    ''\041A\0440\043E\043A\0438'' series_name,'),
+unistr('    to_char(trunc(wl_taken, ''dd''),''YYYY-MM-DD Day'') || round(sum(wl_steps)) || '' \043A\0440\043E\043A\0456\0432'' ct'),
 'FROM',
 '    rehab_watch_logs',
 'where wl_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -342,6 +343,7 @@ unistr('    ''\041A\0440\043E\043A\0438'' series_name'),
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'WL_STEPS'
 ,p_items_label_column_name=>'WL_TAKEN'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
@@ -481,7 +483,8 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    -- wl_total_avg_pulse,',
 '    -- wl_total_min_pulse,',
 '    -- wl_total_max_pulse',
-unistr('    ''\0421\0435\0440\0435\0434\043D\0456\0439'' series_name'),
+unistr('    ''\0421\0435\0440\0435\0434\043D\0456\0439'' series_name,'),
+unistr('    to_char(trunc(wl_taken, ''dd''),''YYYY-MM-DD Day'') || round(avg(wl_night_avg_pulse)) || '' \0443\0434\0430\0440\0456\0432/\0445\0432'' ct'),
 'FROM',
 '    rehab_watch_logs',
 'where wl_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -491,6 +494,7 @@ unistr('    ''\0421\0435\0440\0435\0434\043D\0456\0439'' series_name'),
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'WL_NIGHT_AVG_PULSE'
 ,p_items_label_column_name=>'WL_TAKEN'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
@@ -519,7 +523,8 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    -- wl_total_avg_pulse,',
 '    -- wl_total_min_pulse,',
 '    -- wl_total_max_pulse',
-unistr('    ''\041C\0430\043A\0441\0438\043C\0430\043B\044C\043D\0438\0439'' series_name'),
+unistr('    ''\041C\0430\043A\0441\0438\043C\0430\043B\044C\043D\0438\0439'' series_name,'),
+unistr('    to_char(trunc(wl_taken, ''dd''),''YYYY-MM-DD Day'') || round(max(wl_night_max_pulse)) || '' \0443\0434\0430\0440\0456\0432/\0445\0432'' ct'),
 'FROM',
 '    rehab_watch_logs',
 'where wl_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -529,6 +534,7 @@ unistr('    ''\041C\0430\043A\0441\0438\043C\0430\043B\044C\043D\0438\0439'' ser
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'WL_NIGHT_MAX_PULSE'
 ,p_items_label_column_name=>'WL_TAKEN'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
@@ -558,7 +564,8 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    -- wl_total_avg_pulse,',
 '    -- wl_total_min_pulse,',
 '    -- wl_total_max_pulse',
-unistr('    ''\041C\0456\043D\0456\043C\0430\043B\044C\043D\0438\0439'' series_name'),
+unistr('    ''\041C\0456\043D\0456\043C\0430\043B\044C\043D\0438\0439'' series_name,'),
+unistr('    to_char(trunc(wl_taken, ''dd''),''YYYY-MM-DD Day'') || round(min(wl_night_min_pulse)) || '' \0443\0434\0430\0440\0456\0432/\0445\0432'' ct'),
 'FROM',
 '    rehab_watch_logs',
 'where wl_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -568,6 +575,7 @@ unistr('    ''\041C\0456\043D\0456\043C\0430\043B\044C\043D\0438\0439'' series_n
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'WL_NIGHT_MIN_PULSE'
 ,p_items_label_column_name=>'WL_TAKEN'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
@@ -668,7 +676,8 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    round(avg(wl_total_avg_pulse)) wl_total_avg_pulse,',
 '    -- wl_total_min_pulse,',
 '    -- wl_total_max_pulse',
-unistr('    ''\0421\0435\0440\0435\0434\043D\0456\0439'' series_name'),
+unistr('    ''\0421\0435\0440\0435\0434\043D\0456\0439'' series_name,'),
+unistr('    to_char(trunc(wl_taken, ''dd''),''YYYY-MM-DD Day'') || round(avg(wl_total_avg_pulse)) || '' \0443\0434\0430\0440\0456\0432/\0445\0432'' ct'),
 'FROM',
 '    rehab_watch_logs',
 'where wl_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -678,6 +687,7 @@ unistr('    ''\0421\0435\0440\0435\0434\043D\0456\0439'' series_name'),
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'WL_TOTAL_AVG_PULSE'
 ,p_items_label_column_name=>'WL_TAKEN'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
@@ -706,7 +716,8 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    -- wl_total_avg_pulse,',
 '    -- wl_total_min_pulse,',
 '    -- wl_total_max_pulse',
-unistr('    ''\0423 \0441\043F\043E\043A\043E\0457'' series_name'),
+unistr('    ''\0423 \0441\043F\043E\043A\043E\0457'' series_name,'),
+unistr('    to_char(trunc(wl_taken, ''dd''),''YYYY-MM-DD Day'') || round(avg(wl_calm_avg_pulse)) || '' \0443\0434\0430\0440\0456\0432/\0445\0432'' ct'),
 'FROM',
 '    rehab_watch_logs',
 'where wl_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -716,6 +727,7 @@ unistr('    ''\0423 \0441\043F\043E\043A\043E\0457'' series_name'),
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'WL_CALM_AVG_PULSE'
 ,p_items_label_column_name=>'WL_TAKEN'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
@@ -744,7 +756,8 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    --round(avg(wl_total_avg_pulse)) wl_total_avg_pulse,',
 '    --min(wl_total_min_pulse) wl_total_min_pulse,',
 '    max(wl_total_max_pulse) wl_total_max_pulse,',
-unistr('    ''\041C\0430\043A\0441'' series_name'),
+unistr('    ''\041C\0430\043A\0441'' series_name,'),
+unistr('    to_char(trunc(wl_taken, ''dd''),''YYYY-MM-DD Day'') || round(max(wl_total_max_pulse)) || '' \0443\0434\0430\0440\0456\0432/\0445\0432'' ct'),
 'FROM',
 '    rehab_watch_logs',
 'where wl_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -754,6 +767,7 @@ unistr('    ''\041C\0430\043A\0441'' series_name'),
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'WL_TOTAL_MAX_PULSE'
 ,p_items_label_column_name=>'WL_TAKEN'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
@@ -782,7 +796,8 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    --round(avg(wl_total_avg_pulse)) wl_total_avg_pulse,',
 '    min(wl_total_min_pulse) wl_total_min_pulse,',
 '    -- wl_total_max_pulse',
-unistr('    ''\041C\0456\043D'' series_name'),
+unistr('    ''\041C\0456\043D'' series_name,'),
+unistr('    to_char(trunc(wl_taken, ''dd''),''YYYY-MM-DD Day'') || round(min(wl_total_min_pulse)) || '' \0443\0434\0430\0440\0456\0432/\0445\0432'' ct'),
 'FROM',
 '    rehab_watch_logs',
 'where wl_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -792,6 +807,7 @@ unistr('    ''\041C\0456\043D'' series_name'),
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'WL_TOTAL_MIN_PULSE'
 ,p_items_label_column_name=>'WL_TAKEN'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'

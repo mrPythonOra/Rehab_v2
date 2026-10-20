@@ -47,6 +47,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source_type=>'NATIVE_DISPLAY_SELECTOR'
+,p_required_patch=>wwv_flow_imp.id(16869691178504232)
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'display_region_icons', 'N',
   'include_show_all', 'N',
@@ -58,12 +59,10 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Inventory'
 ,p_static_id=>'inventory'
 ,p_title=>unistr('\0417\0430\043B\0438\0448\043A\0438')
-,p_parent_plug_id=>wwv_flow_imp.id(44056290495422946)
 ,p_region_template_options=>'#DEFAULT#:t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc'
 ,p_plug_template=>2102002977963900996
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
@@ -77,10 +76,11 @@ wwv_flow_imp_page.create_page_plug(
 '    round(days_planned) days_planned,',
 '    round(prd_dosage_planned) prd_dosage_planned,',
 '    daily_dose,',
-'    round(days_remain) days_remain,days_remain_from_tomorrow,',
+'    round(days_remain) days_remain,',
+'    round(days_remain_from_tomorrow) days_remain_from_tomorrow,',
 '    dr_name,WS_NAME,',
 '    pratr_actual_end,',
-'    pr_planned_end,',
+'    PR_PLANNED_START,pr_planned_end,',
 '    end_date',
 'FROM',
 '    v$rehab_remains'))
@@ -265,7 +265,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_column_label=>unistr('\0412 \043D\0430\044F\0432\043D\043E\0441\0442\0456 \0434\043E &P301_END_DATE_CAPT.')
 ,p_column_type=>'DATE'
 ,p_heading_alignment=>'LEFT'
-,p_format_mask=>'YYYY-MON-DD'
+,p_format_mask=>'&APP_DTFMT_DATE.'
 ,p_tz_dependent=>'N'
 ,p_use_as_row_header=>'N'
 ,p_available_clientside=>'N'
@@ -288,6 +288,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_column_label=>unistr('\0417\0430\043F\043B\0430\043D\043E\0432\0430\043D\0438\0435 \0437\0430\0432\0435\0440\0448\0435\043D\043D\044F \043F\0435\0440\0456\043E\0434\0443')
 ,p_column_type=>'DATE'
 ,p_heading_alignment=>'LEFT'
+,p_format_mask=>'&APP_DTFMT_DATE.'
 ,p_tz_dependent=>'N'
 ,p_use_as_row_header=>'N'
 ,p_available_clientside=>'N'
@@ -312,6 +313,20 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_column_label=>unistr('\0417\0430\043F\043B\0430\043D\043E\0432\0430\043D\0438\0435 \0437\0430\0432\0435\0440\0448\0435\043D\043D\044F')
 ,p_column_type=>'DATE'
 ,p_heading_alignment=>'LEFT'
+,p_format_mask=>'&APP_DTFMT_DATE.'
+,p_tz_dependent=>'N'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(68078740419157005)
+,p_db_column_name=>'PR_PLANNED_START'
+,p_display_order=>180
+,p_column_identifier=>'S'
+,p_column_label=>unistr('\0417\0430\043F\043B\0430\043D\043E\0432\0430\043D\0438\0439 \043F\043E\0447\0430\0442\043E\043A')
+,p_column_type=>'DATE'
+,p_heading_alignment=>'LEFT'
+,p_format_mask=>'&APP_DTFMT_DATE.'
 ,p_tz_dependent=>'N'
 ,p_use_as_row_header=>'N'
 ,p_available_clientside=>'N'
@@ -334,13 +349,29 @@ wwv_flow_imp_page.create_worksheet_rpt(
 ,p_report_alias=>'primary'
 ,p_status=>'PUBLIC'
 ,p_is_default=>'Y'
-,p_report_columns=>'WS_NAME:DR_NAME:DA_STORED_AMOUNT:DRU_CONSUMED:BALANCE:DAYS_PLANNED:PRD_DOSAGE_PLANNED:DAILY_DOSE:DAYS_REMAIN:PRATR_ACTUAL_END:PR_PLANNED_END:END_DATE:DAYS_REMAIN_FROM_TOMORROW:DRU_CONSUMED_BEFORE:DRU_CONSUMED_TODAY'
+,p_report_columns=>'WS_NAME:DR_NAME:DA_STORED_AMOUNT:DRU_CONSUMED:BALANCE:DAYS_PLANNED:PRD_DOSAGE_PLANNED:DAILY_DOSE:DAYS_REMAIN:PR_PLANNED_START:PR_PLANNED_END:PRATR_ACTUAL_END:END_DATE:DAYS_REMAIN_FROM_TOMORROW:DRU_CONSUMED_BEFORE:DRU_CONSUMED_TODAY'
 ,p_sort_column_1=>'WS_NAME'
 ,p_sort_direction_1=>'ASC NULLS FIRST'
 ,p_sort_column_2=>'PR_PLANNED_END'
 ,p_sort_direction_2=>'ASC NULLS FIRST'
 ,p_sort_column_3=>'PRATR_ACTUAL_END'
 ,p_sort_direction_3=>'ASC'
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(68078897091157006)
+,p_button_sequence=>20
+,p_button_plug_id=>wwv_flow_imp.id(44056329294422947)
+,p_button_name=>'Edit'
+,p_static_id=>'edit'
+,p_show_as_disabled=>false
+,p_button_action=>'REDIRECT_PAGE'
+,p_button_template_options=>'#DEFAULT#'
+,p_button_template_id=>2350584059425431644
+,p_button_image_alt=>unistr('\0412\0435\0441\0442\0438 \0437\0430\043F\0430\0441\0438')
+,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
+,p_button_redirect_url=>'f?p=&APP_ID.:302:&SESSION.::&DEBUG.:::'
+,p_warn_on_unsaved_changes=>null
+,p_icon_css_classes=>'fa-file-edit'
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(61876413486921426)

@@ -46,6 +46,7 @@ prompt --install
 @@application/shared_components/user_interface/lovs/rehab_consume_time_ranges_available.sql
 @@application/shared_components/user_interface/lovs/rehab_drugs_dr_name.sql
 @@application/shared_components/user_interface/lovs/rehab_patients_pat_name.sql
+@@application/shared_components/user_interface/lovs/rehab_tenants_te_name.sql
 @@application/shared_components/user_interface/lovs/rehab_working_substance_ws_name.sql
 @@application/shared_components/user_interface/lovs/timeframe_4_weeks.sql
 @@application/shared_components/user_interface/lovs/view_as_report_chart.sql
@@ -68,6 +69,7 @@ prompt --install
 @@application/pages/page_00002.sql
 @@application/pages/page_00003.sql
 @@application/pages/page_00004.sql
+@@application/pages/page_00005.sql
 @@application/pages/page_00081.sql
 @@application/pages/page_00101.sql
 @@application/pages/page_00102.sql
@@ -80,9 +82,12 @@ prompt --install
 @@application/pages/page_00221.sql
 @@application/pages/page_00222.sql
 @@application/pages/page_00301.sql
+@@application/pages/page_00302.sql
+@@application/pages/page_00303.sql
 @@application/pages/page_00401.sql
 @@application/pages/page_00402.sql
 @@application/pages/page_00403.sql
+@@application/pages/page_00404.sql
 @@application/pages/page_09999.sql
 @@application/pages/page_10000.sql
 @@application/pages/page_10010.sql

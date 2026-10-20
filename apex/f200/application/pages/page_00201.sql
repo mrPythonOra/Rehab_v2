@@ -361,7 +361,9 @@ unistr('    -- decode(mt_pressure_lr, ''L'', ''\041B\0456\0432\0430'', ''R'', ''
 '    -- mt_oxigenation,',
 '    -- mt_weight,',
 '    -- mt_descr',
-unistr('    ''\0422\0438\0441\043A'' series_name'),
+unistr('    ''\0422\0438\0441\043A'' series_name,'),
+'    to_char(trunc(mt_taken, ''dd''),''YYYY-MM-DD Day'') || round(avg(mt_pressure_sys)) || ''/'' || round(avg(mt_pressure_dia)) ct,',
+'    ''custom column'' cc',
 '    -- REHAB_CONFIG_PKG.get_config_par(''DBTRG_PSYS_MIN'') sys_min,',
 '    -- REHAB_CONFIG_PKG.get_config_par(''DBTRG_PSYS_MAX'') sys_max,',
 unistr('    -- ''\041C\0435\0436\0430 SYS'' sys_minmax_name'),
@@ -376,6 +378,7 @@ unistr('    -- ''\041C\0435\0436\0430 SYS'' sys_minmax_name'),
 ,p_items_low_column_name=>'MT_PRESSURE_DIA'
 ,p_items_high_column_name=>'MT_PRESSURE_SYS'
 ,p_items_label_column_name=>'MT_TAKEN'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
 ,p_marker_shape=>'auto'
@@ -476,7 +479,8 @@ unistr('    -- decode(mt_pressure_lr, ''L'', ''\041B\0456\0432\0430'', ''R'', ''
 '    -- mt_oxigenation,',
 '    avg(mt_weight) mt_weight,',
 '    -- mt_descr',
-unistr('    ''\0412\0430\0433\0430'' series_name'),
+unistr('    ''\0412\0430\0433\0430'' series_name,'),
+unistr('    to_char(trunc(mt_taken, ''dd''),''YYYY-MM-DD Day'') || round(avg(mt_weight),2) || '' \043A\0433'' ct'),
 '  FROM',
 '    rehab_measurements',
 ' where MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
@@ -486,6 +490,7 @@ unistr('    ''\0412\0430\0433\0430'' series_name'),
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'MT_WEIGHT'
 ,p_items_label_column_name=>'MT_TAKEN'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
@@ -668,7 +673,8 @@ unistr('    -- decode(mt_pressure_lr, ''L'', ''\041B\0456\0432\0430'', ''R'', ''
 '    -- mt_oxigenation,',
 '    -- mt_weight,',
 '    -- mt_descr',
-unistr('    ''\041F\0443\043B\044C\0441'' series_name'),
+unistr('    ''\041F\0443\043B\044C\0441'' series_name,'),
+unistr('    to_char(trunc(mt_taken, ''dd''),''YYYY-MM-DD Day'') || round(avg(mt_pulse)) || '' \0443\0434\0430\0440\0456\0432/\0445\0432'' ct'),
 '  FROM',
 '    rehab_measurements',
 ' where MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
@@ -678,6 +684,7 @@ unistr('    ''\041F\0443\043B\044C\0441'' series_name'),
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'MT_PULSE_AVG'
 ,p_items_label_column_name=>'MT_TAKEN'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'

@@ -78,3 +78,22 @@ select * from REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES
        where PRATR_ACTUAL_START <=to_date('20260919','YYYYMMDD') and nvl(PRATR_ACTUAL_END,to_date('20260919','YYYYMMDD'))>=to_date('20260919','YYYYMMDD')
           or PRATR_ACTUAL_START >to_date('20260919','YYYYMMDD') order by 2;
 select * from reabilitation.prescription order by 1;
+
+begin
+    REHAB_CONTEXT_PKG.set_current_user('YURI');
+    REHAB_CONTEXT_PKG.set_specific_context('YURI');
+    REHAB_CONTEXT_PKG.set_current_date(sysdate);
+end;
+/
+
+SELECT
+    ds_id,
+    ds_te_id,
+    ds_name,
+    ds_description,
+    ds_created,
+    ds_updated,
+    P2S_IS_OWNER
+FROM
+    REHAB_DRUG_STORAGES, REHAB_PATIENT2STORAGES
+where P2S_DS_ID = ds_id and P2S_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ;

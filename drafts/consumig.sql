@@ -232,7 +232,7 @@ as
           (DA_STORED_AMOUNT - DRU_CONSUMED)/daily_dose days_remain,
           (DA_STORED_AMOUNT - DRU_CONSUMED_BEFORE - daily_dose)/daily_dose days_remain_from_tomorrow,
           DR_NAME,WS_NAME,
-          PRATR_ACTUAL_END, PR_PLANNED_END,
+          PRATR_ACTUAL_END, PR_PLANNED_START,PR_PLANNED_END,
           trunc(REHAB_CONTEXT_PKG.getGLOBAL_DATE()+(DA_STORED_AMOUNT - DRU_CONSUMED_BEFORE - daily_dose)/daily_dose) end_date
         from
             (select P2S_PAT_ID PAT_ID, DA_DR_ID DR_ID,sum(DA_QUANTITY*DA_ENTIRY_WEIGHT) DA_STORED_AMOUNT, min(DA_CHECK_POINT_DT) DA_CHECK_POINT_DT 
@@ -255,7 +255,8 @@ as
                      sum(PRD_DOSAGE * days_planned ) PRD_DOSAGE_PLANNED,
                      sum(PRD_DOSAGE) daily_dose,
                      max(PRATR_ACTUAL_END) PRATR_ACTUAL_END,
-                     max(PR_PLANNED_END) PR_PLANNED_END
+                     max(PR_PLANNED_END) PR_PLANNED_END,
+                     min(PR_PLANNED_START) PR_PLANNED_START
                 from (select * from REHAB_PRESCRIPTIONS 
                        where (PR_PLANNED_START <= REHAB_CONTEXT_PKG.getGLOBAL_DATE() and nvl(PR_PLANNED_END,REHAB_CONTEXT_PKG.getGLOBAL_DATE())>=REHAB_CONTEXT_PKG.getGLOBAL_DATE()
                           or PR_PLANNED_START >  REHAB_CONTEXT_PKG.getGLOBAL_DATE())

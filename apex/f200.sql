@@ -33,18 +33,18 @@ prompt APPLICATION 200 - Rehabilitation 2.0
 -- Application Export:
 --   Application:     200
 --   Name:            Rehabilitation 2.0
---   Date and Time:   15:19 Monday October 19, 2026
+--   Date and Time:   15:58 Tuesday October 20, 2026
 --   Exported By:     REHAB_V2
 --   Flashback:       0
 --   Export Type:     Application Export
---     Pages:                     43
---       Items:                  166
---       Computations:             1
---       Validations:             18
---       Processes:               81
---       Regions:                123
---       Buttons:                 99
---       Dynamic Actions:         31
+--     Pages:                     47
+--       Items:                  181
+--       Computations:             2
+--       Validations:             20
+--       Processes:               84
+--       Regions:                141
+--       Buttons:                106
+--       Dynamic Actions:         33
 --     Shared Components:
 --       Logic:
 --         Items:                  1
@@ -55,7 +55,7 @@ prompt APPLICATION 200 - Rehabilitation 2.0
 --       Navigation:
 --         Lists:                  7
 --         Breadcrumbs:            1
---           Entries:             15
+--           Entries:             17
 --       Security:
 --         Authentication:         1
 --         Authorization:          5
@@ -63,7 +63,7 @@ prompt APPLICATION 200 - Rehabilitation 2.0
 --       User Interface:
 --         Themes:                 1
 --         Templates:
---         LOVs:                  14
+--         LOVs:                  15
 --         Plug-ins:               1
 --       PWA:
 --       Globalization:
@@ -134,7 +134,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_03=>'YYYY-Mon-DD'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>2461288113614
-,p_version_scn=>'50679411868175'
+,p_version_scn=>'50679637318370'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -719,7 +719,7 @@ wwv_flow_imp_shared.create_list(
  p_id=>wwv_flow_imp.id(16870838765504258)
 ,p_name=>'Navigation Menu'
 ,p_static_id=>'navigation-menu'
-,p_version_scn=>'SH256:YxUs8s0naWhJypNXM6l4yip0KM0D3HK6GvuqtCJFYJU'
+,p_version_scn=>'SH256:fFlArbTCWSUGBaDwvV4AHg8jtr-noSmpjZAQOCKdCyI'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(17056773995505539)
@@ -740,6 +740,17 @@ wwv_flow_imp_shared.create_list_item(
 ,p_parent_list_item_id=>wwv_flow_imp.id(29456772809221898)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'104'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(70062816257282955)
+,p_list_item_display_sequence=>240
+,p_list_item_link_text=>unistr('\0412\0435\0441\0442\0438 \0437\0430\043F\0430\0441\0438')
+,p_static_id=>'editinventory'
+,p_list_item_link_target=>'f?p=&APP_ID.:302:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-toolbox'
+,p_parent_list_item_id=>wwv_flow_imp.id(29857217938894290)
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'302'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(16885212315504474)
@@ -813,6 +824,17 @@ wwv_flow_imp_shared.create_list_item(
 ,p_parent_list_item_id=>wwv_flow_imp.id(16885212315504474)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'221,222'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(69880499888329960)
+,p_list_item_display_sequence=>230
+,p_list_item_link_text=>unistr('\041A\0430\043B\0435\043D\0434\0430\0440 \043F\0440\0438\0437\043D\0430\0447\0435\043D\043D\044C 2')
+,p_static_id=>unistr('\043A\0430\043B\0435\043D\0434\0430\0440-\043F\0440\0438\0437\043D\0430\0447\0435\043D\043D\044C-2')
+,p_list_item_link_target=>'f?p=&APP_ID.:404:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_icon=>'fa-gantt-chart'
+,p_parent_list_item_id=>wwv_flow_imp.id(56455649121460212)
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'404'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(67264001645306150)
@@ -7123,6 +7145,23 @@ wwv_flow_imp_shared.create_list_of_values(
 );
 end;
 /
+prompt --application/shared_components/user_interface/lovs/rehab_tenants_te_name
+begin
+wwv_flow_imp_shared.create_list_of_values(
+ p_id=>wwv_flow_imp.id(70077718526459727)
+,p_lov_name=>'REHAB_TENANTS.TE_NAME'
+,p_static_id=>'rehab-tenants-te-name'
+,p_source_type=>'TABLE'
+,p_location=>'LOCAL'
+,p_query_table=>'REHAB_TENANTS'
+,p_return_column_name=>'TE_ID'
+,p_display_column_name=>'TE_NAME'
+,p_default_sort_column_name=>'TE_NAME'
+,p_default_sort_direction=>'ASC'
+,p_version_scn=>'SH256:MsWyIdWJL5dbhz7Zg9rr7k8BeM8jpat9JM2j69Trkjc'
+);
+end;
+/
 prompt --application/shared_components/user_interface/lovs/rehab_working_substance_ws_name
 begin
 wwv_flow_imp_shared.create_list_of_values(
@@ -7216,6 +7255,14 @@ wwv_flow_imp_shared.create_menu_option(
 ,p_page_id=>10000
 );
 wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(70063704943283017)
+,p_parent_id=>wwv_flow_imp.id(29858227656894296)
+,p_short_name=>unistr('\0412\0435\0441\0442\0438 \0437\0430\043F\0430\0441\0438')
+,p_static_id=>'editinventory'
+,p_link=>'f?p=&APP_ID.:302:&SESSION.::&DEBUG.:::'
+,p_page_id=>302
+);
+wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(54762914743912837)
 ,p_parent_id=>wwv_flow_imp.id(29459699401248128)
 ,p_short_name=>'&P202_TITLE.'
@@ -7299,6 +7346,14 @@ wwv_flow_imp_shared.create_menu_option(
 ,p_static_id=>'watchlogs'
 ,p_link=>'f?p=&APP_ID.:221:&SESSION.::&DEBUG.:::'
 ,p_page_id=>221
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(69881324977330029)
+,p_parent_id=>wwv_flow_imp.id(61950748382182863)
+,p_short_name=>unistr('\041A\0430\043B\0435\043D\0434\0430\0440 \043F\0440\0438\0437\043D\0430\0447\0435\043D\043D\044C 2')
+,p_static_id=>unistr('\043A\0430\043B\0435\043D\0434\0430\0440-\043F\0440\0438\0437\043D\0430\0447\0435\043D\043D\044C-2')
+,p_link=>'f?p=&APP_ID.:404:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>404
 );
 wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(67284039495846327)
@@ -8730,6 +8785,694 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_action=>'NATIVE_REFRESH'
 ,p_affected_elements_type=>'REGION'
 ,p_affected_region_id=>wwv_flow_imp.id(3228663982632919419)
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'maintain_pagination', 'N')).to_clob
+);
+end;
+/
+prompt --application/pages/page_00005
+begin
+wwv_flow_imp_page.create_page(
+ p_id=>5
+,p_name=>'Gantt'
+,p_alias=>'GANTT'
+,p_step_title=>'Gantt'
+,p_reload_on_submit=>'A'
+,p_warn_on_unsaved_changes=>'N'
+,p_first_item=>'AUTO_FIRST_ITEM'
+,p_autocomplete_on_off=>'OFF'
+,p_step_template=>4073832297226169690
+,p_page_template_options=>'#DEFAULT#'
+,p_protection_level=>'C'
+,p_help_text=>'No help is available for this page.'
+,p_page_component_map=>'04'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(1443301836384268320)
+,p_plug_name=>'About this page'
+,p_static_id=>'about-this-page'
+,p_icon_css_classes=>'fa-gantt-chart'
+,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
+,p_plug_template=>2042159785845301134
+,p_plug_display_sequence=>10
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>'<p>&PRODUCT_NAME. native Gantt charts, using Oracle JET, are showcased on this page.  Explore the wide range of attributes declaratively available with our native JavaScript-based solution, to format and customize your gantt charts.</p><br/>'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(1443296631142238501)
+,p_plug_name=>'Gantt Chart'
+,p_static_id=>'gantt-chart'
+,p_parent_plug_id=>wwv_flow_imp.id(563367908951731805)
+,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:js-showMaximizeButton:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>20
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source_type=>'NATIVE_JET_CHART'
+);
+wwv_flow_imp_page.create_jet_chart(
+ p_id=>wwv_flow_imp.id(69865909422322001)
+,p_region_id=>wwv_flow_imp.id(1443296631142238501)
+,p_chart_type=>'gantt'
+,p_height=>'400'
+,p_animation_on_display=>'none'
+,p_animation_on_data_change=>'none'
+,p_stack=>'off'
+,p_stack_label=>'off'
+,p_connect_nulls=>'Y'
+,p_sorting=>'label-asc'
+,p_fill_multi_series_gaps=>true
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_show_label=>true
+,p_show_row=>false
+,p_show_start=>true
+,p_show_end=>true
+,p_show_progress=>true
+,p_show_baseline=>false
+,p_legend_position=>'auto'
+,p_overview_rendered=>'off'
+,p_no_data_found_message=>'Select a start and end date, to render the gantt chart'
+,p_horizontal_grid=>'visible'
+,p_vertical_grid=>'visible'
+,p_row_axis_rendered=>'on'
+,p_gantt_axis_position=>'top'
+,p_javascript_code=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'function (options) {',
+'    options.dataFilter = function( data ) {',
+'      ',
+'        // Change message during rendering when no data found i.e. data.series array is empty',
+'        if ( $.isEmptyObject ( data ) ) {  ',
+'            data = $.extend( data, {translations: {labelInvalidData: ''No data found'' } }) ;',
+'        }',
+'        return data;',
+'    };',
+'   return options;',
+'}'))
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(69867532182322010)
+,p_chart_id=>wwv_flow_imp.id(69865909422322001)
+,p_static_id=>'tasks'
+,p_seq=>10
+,p_name=>'Tasks'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select id                            task_id,',
+'       task_name                     task_name,',
+'       parent_task                   parent_task_id,',
+'       start_date                    task_start_date,',
+'       end_date                      task_end_date,',
+'       decode(status,''Closed'',1,',
+'                     ''Open'',0.6,',
+'                     ''On-Hold'',0.1,',
+'                     ''Pending'',0)    status,',
+'       start_date-2                  baseline_start,',
+'       end_date+3                    baseline_end,',
+'       SYSDATE-200                   GANTT_START,',
+'       SYSDATE+10                    GANTT_END',
+'from eba_demo_chart_tasks',
+'start with parent_task is null',
+'connect by prior id = parent_task',
+'order siblings by task_name',
+''))
+,p_ajax_items_to_submit=>'P5_START_DATE,P5_END_DATE'
+,p_series_type=>'gantt'
+,p_items_label_rendered=>true
+,p_items_label_display_as=>'PERCENT'
+,p_gantt_start_date_source=>'DB_COLUMN'
+,p_gantt_start_date_column=>'GANTT_START'
+,p_gantt_end_date_source=>'DB_COLUMN'
+,p_gantt_end_date_column=>'GANTT_END'
+,p_gantt_row_id=>'PARENT_TASK_ID'
+,p_gantt_row_name=>'TASK_NAME'
+,p_gantt_task_id=>'TASK_ID'
+,p_gantt_task_name=>'TASK_NAME'
+,p_gantt_task_start_date=>'TASK_START_DATE'
+,p_gantt_task_end_date=>'TASK_END_DATE'
+,p_gantt_task_css_class=>'u-color-22'
+,p_gantt_baseline_start_column=>'BASELINE_START'
+,p_gantt_baseline_end_column=>'BASELINE_END'
+,p_gantt_baseline_css_class=>'u-color-43'
+,p_gantt_progress_column=>'STATUS'
+,p_gantt_progress_css_class=>'u-color-11'
+,p_gantt_viewport_start_source=>'ITEM'
+,p_gantt_viewport_start_item=>'P5_START_DATE'
+,p_gantt_viewport_end_source=>'ITEM'
+,p_gantt_viewport_end_item=>'P5_END_DATE'
+,p_task_label_position=>'innerStart'
+,p_threshold_display=>'onIndicator'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(69866409121322004)
+,p_chart_id=>wwv_flow_imp.id(69865909422322001)
+,p_static_id=>'major'
+,p_axis=>'major'
+,p_is_rendered=>'on'
+,p_baseline_scaling=>'zero'
+,p_major_tick_rendered=>'auto'
+,p_minor_tick_rendered=>'auto'
+,p_tick_label_rendered=>'on'
+,p_axis_scale=>'months'
+,p_zoom_order_seconds=>false
+,p_zoom_order_minutes=>false
+,p_zoom_order_hours=>false
+,p_zoom_order_days=>true
+,p_zoom_order_weeks=>true
+,p_zoom_order_months=>true
+,p_zoom_order_quarters=>true
+,p_zoom_order_years=>false
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(69866997788322007)
+,p_chart_id=>wwv_flow_imp.id(69865909422322001)
+,p_static_id=>'minor'
+,p_axis=>'minor'
+,p_format_type=>'date-medium'
+,p_baseline_scaling=>'zero'
+,p_major_tick_rendered=>'auto'
+,p_minor_tick_rendered=>'auto'
+,p_tick_label_rendered=>'on'
+,p_axis_scale=>'weeks'
+,p_zoom_order_seconds=>false
+,p_zoom_order_minutes=>false
+,p_zoom_order_hours=>false
+,p_zoom_order_days=>true
+,p_zoom_order_weeks=>true
+,p_zoom_order_months=>true
+,p_zoom_order_quarters=>true
+,p_zoom_order_years=>false
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(1768780810750491294)
+,p_plug_name=>'Gantt Controls'
+,p_static_id=>'gantt-controls'
+,p_parent_plug_id=>wwv_flow_imp.id(563367908951731805)
+,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noPadding:t-ButtonRegion--noUI'
+,p_plug_template=>2127905476394690047
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_header=>'To render the gantt chart, select a start and end date.  Any tasks within the date range selected will be rendered on the chart.'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(4511572232591527624)
+,p_plug_name=>'Multiple Tasks Information'
+,p_static_id=>'multiple-tasks-information'
+,p_parent_plug_id=>wwv_flow_imp.id(563367908951731805)
+,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
+,p_plug_template=>2665811232373458102
+,p_plug_display_sequence=>30
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'This example demonstrates how to customize a Gantt chart''s colors, using Universal Theme color css classes, and the setting of the chart start and end dates based upon page items.<p/><p/>',
+'',
+'<strong>Start Date Source Type</strong> - Set this series-level attribute to ''Item'', and select the page item to be used for setting the start date of the gantt chart.  This is a required setting in order to render the chart.<br/>',
+'<strong>End Date Source Type</strong> - Set this series-level attribute to ''Item'', and select the page item to be used for setting the end date of the gantt chart. This is a required setting in order to render the chart.<p/>',
+'',
+'<strong>Task CSS Classes</strong> - Use this series-level attribute to customize the color of tasks bars<br/>',
+'<strong>Progress CSS Classes</strong> - Use this series-level attribute to customize the color of progress bars<br/>',
+'<strong>Baseline CSS Classes</strong> - Use this series-level attribute to customize the color of baseline bars<br/>',
+'',
+'<p>',
+'For more information on the JET Gantt chart options, refer to the Oracle JET <a href="https://www.oracle.com/webfolder/technetwork/jet-800/jsdocs/oj.ojGantt.html" target="_blank">ojGantt API</a>.',
+'</p>',
+'<p>',
+'For more information on Universal Theme Color css classes, refer to the Universal Theme Sample Application <a href="https://apex.oracle.com/pls/apex/f?p=42:6302:::NO:::" target="_blank">Color and Status Modifiers</a> page.'))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(563367908951731805)
+,p_plug_name=>'Multiple Tasks per Row'
+,p_static_id=>'multiple-tasks-per-row'
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>80
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(563367810603731804)
+,p_plug_name=>'Region Display Selector'
+,p_static_id=>'region-display-selector'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>4502917002193490937
+,p_plug_display_sequence=>20
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source_type=>'NATIVE_DISPLAY_SELECTOR'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'display_region_icons', 'N',
+  'include_show_all', 'Y',
+  'rds_mode', 'STANDARD',
+  'remember_selection', 'NO')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(868832668616914177)
+,p_plug_name=>'Single Task Information'
+,p_static_id=>'single-task-information'
+,p_parent_plug_id=>wwv_flow_imp.id(2712582215341878743)
+,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
+,p_plug_template=>2665811232373458102
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'This example demonstrates the rendering of a Gantt chart with a single task per row of the chart, and a JavaScript customization to apply a Reference Object.  The Reference Object is displayed as a thin red line, marking today''s date.  The chart sett'
+||'ings in use are as follows:<p/><p/>',
+'',
+'<strong>Show Row Axis</strong> - set to <strong>Yes</strong>, to render the left section of the Gantt. For this example, the value of Task Name is displayed. The text rendered in this region is dependent upon the column mappings defined at series-lev'
+||'el.  By default, the Task Name will be rendered.  However, if the Row Name column mapping is set, its associated text will be rendered for the given row of the chart.<p/>',
+'<strong>Tooltip Settings</strong> - The new <strong>Show Row</strong> attribute has been set to No, to prevent a ''Row'' entry being displayed in a task tooltip.  By default, a tooltip displays an entry for ''Row'' and ''Label''.  The ''Label'' displays the '
+||'value for the Task Name column.  When the Row Name column mapping is set, ''Row'' displays the value for the Row Name column.  However, when that column mapping is not set, ''Row'' will display the value for the Task Name column. <p/>',
+'',
+'<strong>Task Appearance</strong> - the Tasks rendered on this example differ in appearance, with some being displayed as blue lines with start/end dates, while others are displayed as gray diamond-shaped markers.  The difference in appearance is due '
+||'to how JET interprets the Task ''type''. Normal tasks are rendered as the blue lines, while Milestones are rendered as gray diamond-shaped markers. As outlined in the <a href="https://docs.oracle.com/en/middleware/developer-tools/jet/7.2/reference-api/'
+||'oj.ojGantt.html#RowTask" target="_blank">type</a> property of the RowTask type definition in the <a href="https://docs.oracle.com/en/middleware/developer-tools/jet/7.2/reference-api/oj.ojGantt.html" target="_blank">ojGantt</a> API, if Task Start Date'
+||' and Task End Date values are specified and unequal, then the assumption is that the task type is "normal".  Otherwise, the type is assumed to be "milestone".<p/>',
+'',
+'<strong>JavaScript Code</strong> - Use this chart-level attribute to customize your chart attributes and data.  Any chart initialization changes, to attributes such as the chart y-axis, type, or orientation, can also be made.  The JavaScript Code sho'
+||'uld follow a template similar to the following:<br/>',
+'',
+'<pre>',
+'function( options ) {',
+'',
+'    var event = new Date();',
+'    // Define Reference Object line on the chart',
+'    var constantLine = [ { value: event.toISOString() } ];',
+'    ',
+'    // Set the referenceObjects option as part of the chart initialization',
+'    options.referenceObjects = constantLine;',
+'    ',
+'    return options;',
+'}',
+'</pre><p/>',
+'<strong>Tooltip Options</strong> - Use the chart-level Tooltip attributes to declaratively choose what information should be displayed in the Gantt chart tooltip. This chart only displays the Row, Label, and Progress information, by setting the <stro'
+||'ng>Show Row</strong>, <strong>Show Label</strong> and <strong>Show Progress</strong> attributes.<br/> ',
+'<p>',
+'For more information on the JET Gantt chart options, refer to the Oracle JET <a href="https://www.oracle.com/webfolder/technetwork/jet-800/jsdocs/oj.ojGantt.html" target="_blank">ojGantt API</a>.',
+'</p>',
+'<p>',
+'For more information on Reference Object settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet-800/jetCookbook.html?component=gantt&demo=multipleTasks" target="_blank">Gantt Chart: Multiple Tasks Per Row'
+||'</a> example.'))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(2712582215341878743)
+,p_plug_name=>'Single Task per Row (Reference Object via JavaScript Code)'
+,p_static_id=>'single-task-per-row-reference-object-via-javascript-code'
+,p_region_name=>'gantt'
+,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>30
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source_type=>'NATIVE_JET_CHART'
+);
+wwv_flow_imp_page.create_jet_chart(
+ p_id=>wwv_flow_imp.id(69869126799322018)
+,p_region_id=>wwv_flow_imp.id(2712582215341878743)
+,p_chart_type=>'gantt'
+,p_height=>'400'
+,p_animation_on_display=>'none'
+,p_animation_on_data_change=>'none'
+,p_stack=>'off'
+,p_stack_label=>'off'
+,p_connect_nulls=>'Y'
+,p_sorting=>'label-asc'
+,p_fill_multi_series_gaps=>true
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_show_label=>true
+,p_show_row=>false
+,p_show_start=>true
+,p_show_end=>true
+,p_show_progress=>true
+,p_show_baseline=>false
+,p_legend_position=>'auto'
+,p_overview_rendered=>'off'
+,p_horizontal_grid=>'visible'
+,p_vertical_grid=>'visible'
+,p_row_axis_rendered=>'on'
+,p_gantt_axis_position=>'top'
+,p_javascript_code=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'function( options ) {',
+'',
+'    var event = new Date();',
+'    // Define Reference Object line on the chart',
+'    var constantLine = [ { value: event.toISOString() } ];',
+'    ',
+'    // Set the referenceObjects option as part of the chart initialization',
+'    options.referenceObjects = constantLine;',
+'    ',
+'    return options;',
+'}'))
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(69870885636322025)
+,p_chart_id=>wwv_flow_imp.id(69869126799322018)
+,p_static_id=>'tasks'
+,p_seq=>10
+,p_name=>'Tasks'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select task_name    task_name,',
+'       id           task_id,',
+'       start_date   task_start_date,',
+'       end_date     task_end_date,',
+'       decode(status,''Closed'',1,''Open'',0.6,''On-Hold'',0.1,''Pending'',0) status,',
+'       (select min(start_date) -5 from eba_demo_chart_tasks) gantt_start_date,',
+'       (select max(end_date) from eba_demo_chart_tasks)  gantt_end_date',
+'from eba_demo_chart_tasks',
+'order by id asc'))
+,p_series_type=>'gantt'
+,p_items_label_rendered=>false
+,p_items_label_display_as=>'PERCENT'
+,p_gantt_start_date_source=>'DB_COLUMN'
+,p_gantt_start_date_column=>'GANTT_START_DATE'
+,p_gantt_end_date_source=>'DB_COLUMN'
+,p_gantt_end_date_column=>'GANTT_END_DATE'
+,p_gantt_task_id=>'TASK_ID'
+,p_gantt_task_name=>'TASK_NAME'
+,p_gantt_task_start_date=>'TASK_START_DATE'
+,p_gantt_task_end_date=>'TASK_END_DATE'
+,p_gantt_progress_column=>'STATUS'
+,p_task_label_position=>'end'
+,p_threshold_display=>'onIndicator'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(69869626468322020)
+,p_chart_id=>wwv_flow_imp.id(69869126799322018)
+,p_static_id=>'major'
+,p_axis=>'major'
+,p_is_rendered=>'off'
+,p_baseline_scaling=>'zero'
+,p_major_tick_rendered=>'auto'
+,p_minor_tick_rendered=>'auto'
+,p_tick_label_rendered=>'on'
+,p_axis_scale=>'months'
+,p_zoom_order_seconds=>false
+,p_zoom_order_minutes=>false
+,p_zoom_order_hours=>false
+,p_zoom_order_days=>true
+,p_zoom_order_weeks=>true
+,p_zoom_order_months=>true
+,p_zoom_order_quarters=>true
+,p_zoom_order_years=>false
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(69870243539322022)
+,p_chart_id=>wwv_flow_imp.id(69869126799322018)
+,p_static_id=>'minor'
+,p_axis=>'minor'
+,p_baseline_scaling=>'zero'
+,p_major_tick_rendered=>'auto'
+,p_minor_tick_rendered=>'auto'
+,p_tick_label_rendered=>'on'
+,p_axis_scale=>'months'
+,p_zoom_order_seconds=>false
+,p_zoom_order_minutes=>false
+,p_zoom_order_hours=>false
+,p_zoom_order_days=>false
+,p_zoom_order_weeks=>false
+,p_zoom_order_months=>false
+,p_zoom_order_quarters=>false
+,p_zoom_order_years=>false
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(350071652228587141)
+,p_plug_name=>'Tasks per Employee ( not hierarchical )'
+,p_static_id=>'tasks-per-employee-not-hierarchical'
+,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>50
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source_type=>'NATIVE_JET_CHART'
+);
+wwv_flow_imp_page.create_jet_chart(
+ p_id=>wwv_flow_imp.id(69872459674322030)
+,p_region_id=>wwv_flow_imp.id(350071652228587141)
+,p_chart_type=>'gantt'
+,p_height=>'400'
+,p_animation_on_display=>'none'
+,p_animation_on_data_change=>'none'
+,p_stack=>'off'
+,p_stack_label=>'off'
+,p_connect_nulls=>'Y'
+,p_sorting=>'label-asc'
+,p_fill_multi_series_gaps=>true
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_show_label=>true
+,p_show_row=>true
+,p_show_start=>true
+,p_show_end=>true
+,p_show_progress=>true
+,p_show_baseline=>false
+,p_legend_position=>'auto'
+,p_overview_rendered=>'off'
+,p_horizontal_grid=>'visible'
+,p_vertical_grid=>'visible'
+,p_row_axis_rendered=>'on'
+,p_gantt_axis_position=>'top'
+,p_javascript_code=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'function( options ) {',
+'',
+'    var event = new Date();',
+'    // Define Reference Object line on the chart',
+'    var constantLine = [ { value: event.toISOString() } ];',
+'    ',
+'    // Set the referenceObjects option as part of the chart initialization',
+'    options.referenceObjects = constantLine;',
+'    ',
+'    return options;',
+'}'))
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(69874189454322035)
+,p_chart_id=>wwv_flow_imp.id(69872459674322030)
+,p_static_id=>'tasks'
+,p_seq=>10
+,p_name=>'Tasks'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'    select ASSIGNED_TO employee ,  ',
+'           task_name    task_name,  ',
+'           id           task_id,  ',
+'           parent_task  parent_task,  ',
+'           start_date   task_start_date,  ',
+'           end_date     task_end_date,  ',
+'           decode(status,''Closed'',1,''Open'',0.6,''On-Hold'',0.1,''Pending'',0) status,  ',
+'           (select min(start_date) from eba_demo_chart_tasks) gantt_start_date,  ',
+'           (select max(end_date) from eba_demo_chart_tasks)  gantt_end_date  ',
+'    from eba_demo_chart_tasks  ',
+'    start with parent_task is null  ',
+'    connect by prior id = parent_task  ',
+'    order siblings by task_name  '))
+,p_series_type=>'gantt'
+,p_items_label_rendered=>true
+,p_items_label_display_as=>'PERCENT'
+,p_gantt_start_date_source=>'DB_COLUMN'
+,p_gantt_start_date_column=>'GANTT_START_DATE'
+,p_gantt_end_date_source=>'DB_COLUMN'
+,p_gantt_end_date_column=>'GANTT_END_DATE'
+,p_gantt_row_name=>'EMPLOYEE'
+,p_gantt_task_id=>'TASK_ID'
+,p_gantt_task_name=>'TASK_NAME'
+,p_gantt_task_start_date=>'TASK_START_DATE'
+,p_gantt_task_end_date=>'TASK_END_DATE'
+,p_gantt_progress_column=>'STATUS'
+,p_task_label_position=>'start'
+,p_threshold_display=>'onIndicator'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(69872988668322031)
+,p_chart_id=>wwv_flow_imp.id(69872459674322030)
+,p_static_id=>'major'
+,p_axis=>'major'
+,p_is_rendered=>'on'
+,p_baseline_scaling=>'zero'
+,p_major_tick_rendered=>'auto'
+,p_minor_tick_rendered=>'auto'
+,p_tick_label_rendered=>'on'
+,p_axis_scale=>'months'
+,p_zoom_order_seconds=>false
+,p_zoom_order_minutes=>false
+,p_zoom_order_hours=>false
+,p_zoom_order_days=>true
+,p_zoom_order_weeks=>true
+,p_zoom_order_months=>true
+,p_zoom_order_quarters=>true
+,p_zoom_order_years=>false
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(69873577913322033)
+,p_chart_id=>wwv_flow_imp.id(69872459674322030)
+,p_static_id=>'minor'
+,p_axis=>'minor'
+,p_baseline_scaling=>'zero'
+,p_major_tick_rendered=>'auto'
+,p_minor_tick_rendered=>'auto'
+,p_tick_label_rendered=>'on'
+,p_axis_scale=>'days'
+,p_zoom_order_seconds=>false
+,p_zoom_order_minutes=>false
+,p_zoom_order_hours=>true
+,p_zoom_order_days=>true
+,p_zoom_order_weeks=>true
+,p_zoom_order_months=>false
+,p_zoom_order_quarters=>false
+,p_zoom_order_years=>false
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(69863471607321979)
+,p_button_sequence=>50
+,p_button_plug_id=>wwv_flow_imp.id(1768780810750491294)
+,p_button_name=>'P5_GO'
+,p_static_id=>'p3-go'
+,p_button_static_id=>'P3_GO'
+,p_show_as_disabled=>false
+,p_button_action=>'DEFINED_BY_DA'
+,p_button_template_options=>'#DEFAULT#:t-Button--large'
+,p_button_template_id=>4073839297780169708
+,p_button_is_hot=>'Y'
+,p_button_image_alt=>'Go'
+,p_warn_on_unsaved_changes=>null
+,p_button_cattributes=>'style="margin: 8px 0 0 8px;"'
+,p_grid_new_row=>'N'
+,p_grid_new_column=>'Y'
+,p_grid_column_span=>1
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(767558048922644569)
+,p_name=>'P5_END_DATE'
+,p_item_sequence=>40
+,p_item_plug_id=>wwv_flow_imp.id(1768780810750491294)
+,p_prompt=>'End Date'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_DATE_PICKER_APEX'
+,p_cSize=>64
+,p_cMaxlength=>4000
+,p_begin_on_new_line=>'N'
+,p_colspan=>2
+,p_field_template=>1610598484065263269
+,p_item_template_options=>'#DEFAULT#'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'display_as', 'POPUP',
+  'max_date', 'NONE',
+  'min_date', 'NONE',
+  'multiple_months', 'N',
+  'show_time', 'N',
+  'use_defaults', 'Y')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(4511574865952527687)
+,p_name=>'P5_MAX_END_DATE'
+,p_item_sequence=>20
+,p_item_plug_id=>wwv_flow_imp.id(1768780810750491294)
+,p_source=>'select SYSDATE+10 from dual'
+,p_source_type=>'QUERY'
+,p_display_as=>'NATIVE_HIDDEN'
+,p_protection_level=>'S'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(4511574703030527686)
+,p_name=>'P5_MIN_START_DATE'
+,p_item_sequence=>10
+,p_item_plug_id=>wwv_flow_imp.id(1768780810750491294)
+,p_source=>'select SYSDATE-125 from dual'
+,p_source_type=>'QUERY'
+,p_display_as=>'NATIVE_HIDDEN'
+,p_protection_level=>'S'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(1443298819551237439)
+,p_name=>'P5_START_DATE'
+,p_item_sequence=>30
+,p_item_plug_id=>wwv_flow_imp.id(1768780810750491294)
+,p_prompt=>'Start Date'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_DATE_PICKER_APEX'
+,p_cSize=>64
+,p_cMaxlength=>4000
+,p_colspan=>2
+,p_field_template=>1610598484065263269
+,p_item_template_options=>'#DEFAULT#'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'display_as', 'POPUP',
+  'max_date', 'NONE',
+  'min_date', 'NONE',
+  'multiple_months', 'N',
+  'show_time', 'N',
+  'use_defaults', 'Y')).to_clob
+);
+wwv_flow_imp_page.create_page_computation(
+ p_id=>wwv_flow_imp.id(69875314554322092)
+,p_computation_sequence=>10
+,p_computation_item=>'LAST_VIEW'
+,p_static_id=>'last-view'
+,p_computation_point=>'BEFORE_HEADER'
+,p_computation_type=>'STATIC_ASSIGNMENT'
+,p_computation=>'&APP_PAGE_ID.'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(69875754930322097)
+,p_name=>'Refresh chart'
+,p_static_id=>'refresh-chart'
+,p_event_sequence=>10
+,p_triggering_element_type=>'BUTTON'
+,p_triggering_button_id=>wwv_flow_imp.id(69863471607321979)
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'click'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(69876187191322102)
+,p_event_id=>wwv_flow_imp.id(69875754930322097)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_static_id=>'native-refresh'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(1443296631142238501)
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'maintain_pagination', 'N')).to_clob
 );
@@ -10192,7 +10935,9 @@ unistr('    -- decode(mt_pressure_lr, ''L'', ''\041B\0456\0432\0430'', ''R'', ''
 '    -- mt_oxigenation,',
 '    -- mt_weight,',
 '    -- mt_descr',
-unistr('    ''\0422\0438\0441\043A'' series_name'),
+unistr('    ''\0422\0438\0441\043A'' series_name,'),
+'    to_char(trunc(mt_taken, ''dd''),''YYYY-MM-DD Day'') || round(avg(mt_pressure_sys)) || ''/'' || round(avg(mt_pressure_dia)) ct,',
+'    ''custom column'' cc',
 '    -- REHAB_CONFIG_PKG.get_config_par(''DBTRG_PSYS_MIN'') sys_min,',
 '    -- REHAB_CONFIG_PKG.get_config_par(''DBTRG_PSYS_MAX'') sys_max,',
 unistr('    -- ''\041C\0435\0436\0430 SYS'' sys_minmax_name'),
@@ -10207,6 +10952,7 @@ unistr('    -- ''\041C\0435\0436\0430 SYS'' sys_minmax_name'),
 ,p_items_low_column_name=>'MT_PRESSURE_DIA'
 ,p_items_high_column_name=>'MT_PRESSURE_SYS'
 ,p_items_label_column_name=>'MT_TAKEN'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
 ,p_marker_shape=>'auto'
@@ -10307,7 +11053,8 @@ unistr('    -- decode(mt_pressure_lr, ''L'', ''\041B\0456\0432\0430'', ''R'', ''
 '    -- mt_oxigenation,',
 '    avg(mt_weight) mt_weight,',
 '    -- mt_descr',
-unistr('    ''\0412\0430\0433\0430'' series_name'),
+unistr('    ''\0412\0430\0433\0430'' series_name,'),
+unistr('    to_char(trunc(mt_taken, ''dd''),''YYYY-MM-DD Day'') || round(avg(mt_weight),2) || '' \043A\0433'' ct'),
 '  FROM',
 '    rehab_measurements',
 ' where MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
@@ -10317,6 +11064,7 @@ unistr('    ''\0412\0430\0433\0430'' series_name'),
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'MT_WEIGHT'
 ,p_items_label_column_name=>'MT_TAKEN'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
@@ -10499,7 +11247,8 @@ unistr('    -- decode(mt_pressure_lr, ''L'', ''\041B\0456\0432\0430'', ''R'', ''
 '    -- mt_oxigenation,',
 '    -- mt_weight,',
 '    -- mt_descr',
-unistr('    ''\041F\0443\043B\044C\0441'' series_name'),
+unistr('    ''\041F\0443\043B\044C\0441'' series_name,'),
+unistr('    to_char(trunc(mt_taken, ''dd''),''YYYY-MM-DD Day'') || round(avg(mt_pulse)) || '' \0443\0434\0430\0440\0456\0432/\0445\0432'' ct'),
 '  FROM',
 '    rehab_measurements',
 ' where MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
@@ -10509,6 +11258,7 @@ unistr('    ''\041F\0443\043B\044C\0441'' series_name'),
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'MT_PULSE_AVG'
 ,p_items_label_column_name=>'MT_TAKEN'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
@@ -11367,7 +12117,8 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    -- real_distance,',
 '    -- real_step_length,',
 '    -- real_speed',
-unistr('    ''\041A\0440\043E\043A\0438'' series_name'),
+unistr('    ''\041A\0440\043E\043A\0438'' series_name,'),
+unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(sum(tr_steps)) || '' \043A\0440\043E\043A\0456\0432'' ct'),
 'FROM',
 '    rehab_trainings',
 'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -11377,6 +12128,7 @@ unistr('    ''\041A\0440\043E\043A\0438'' series_name'),
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'TR_STEPS'
 ,p_items_label_column_name=>'TR_START'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
@@ -11805,7 +12557,8 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    -- real_distance,',
 '    -- real_step_length,',
 '    -- real_speed',
-unistr('    ''\0414\0438\0441\0442\0430\043D\0446\0456\044F \043F\043E \0433\0430\0434\0436\0435\0442\0443, \043A\043C'' series_name'),
+unistr('    ''\0414\0438\0441\0442\0430\043D\0446\0456\044F \043F\043E \0433\0430\0434\0436\0435\0442\0443, \043A\043C'' series_name,'),
+unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(sum(tr_distance_length),3) || '' \043A\043C'' ct'),
 'FROM',
 '    rehab_trainings',
 'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -11815,6 +12568,7 @@ unistr('    ''\0414\0438\0441\0442\0430\043D\0446\0456\044F \043F\043E \0433\043
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'TR_DISTANCE_LENGTH'
 ,p_items_label_column_name=>'TR_START'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
@@ -11891,7 +12645,8 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    sum(real_distance) real_distance,',
 '    -- real_step_length,',
 '    -- real_speed',
-unistr('    ''\0414\0438\0441\0442\0430\043D\0446\0456\044F \0440\0435\0430\043B\044C\043D\0430, \043A\043C'' series_name'),
+unistr('    ''\0414\0438\0441\0442\0430\043D\0446\0456\044F \0440\0435\0430\043B\044C\043D\0430, \043A\043C'' series_name,'),
+unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(sum(real_distance),3) || '' \043A\043C'' ct'),
 'FROM',
 '    rehab_trainings',
 'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -11901,6 +12656,7 @@ unistr('    ''\0414\0438\0441\0442\0430\043D\0446\0456\044F \0440\0435\0430\043B
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'REAL_DISTANCE'
 ,p_items_label_column_name=>'TR_START'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
@@ -11986,7 +12742,7 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_chart_id=>wwv_flow_imp.id(54685932904388109)
 ,p_static_id=>'disnatce'
 ,p_seq=>10
-,p_name=>'Disnatce'
+,p_name=>'Speed'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'SELECT',
@@ -12006,7 +12762,8 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    -- real_distance,',
 '    -- real_step_length,',
 '    avg(real_speed) real_speed,',
-unistr('    ''\0428\0432\0438\0434\043A\0456\0441\0442\044C, \043A\043C/\0433\043E\0434'' series_name'),
+unistr('    ''\0428\0432\0438\0434\043A\0456\0441\0442\044C, \043A\043C/\0433\043E\0434'' series_name,'),
+unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(avg(real_speed),3) || '' \043A\043C/\0433\043E\0434'' ct'),
 'FROM',
 '    rehab_trainings',
 'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -12016,6 +12773,7 @@ unistr('    ''\0428\0432\0438\0434\043A\0456\0441\0442\044C, \043A\043C/\0433\04
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'REAL_SPEED'
 ,p_items_label_column_name=>'TR_START'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
@@ -12029,7 +12787,7 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_chart_id=>wwv_flow_imp.id(54685932904388109)
 ,p_static_id=>'disnatcereal'
 ,p_seq=>20
-,p_name=>'DisnatceReal'
+,p_name=>'StepLength'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'SELECT',
@@ -12049,7 +12807,8 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    -- sum(real_distance) real_distance,',
 '    avg(real_step_length) real_step_length,',
 '    -- real_speed',
-unistr('    ''\0414\043E\0432\0436\0438\043D\0430 \043A\0440\043E\043A\0443, \043C'' series_name'),
+unistr('    ''\0414\043E\0432\0436\0438\043D\0430 \043A\0440\043E\043A\0443, \043C'' series_name,'),
+unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(avg(real_step_length),3) || '' \043C'' ct'),
 'FROM',
 '    rehab_trainings',
 'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -12059,11 +12818,12 @@ unistr('    ''\0414\043E\0432\0436\0438\043D\0430 \043A\0440\043E\043A\0443, \04
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'REAL_STEP_LENGTH'
 ,p_items_label_column_name=>'TR_START'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
 ,p_marker_shape=>'auto'
-,p_assigned_to_y2=>'off'
+,p_assigned_to_y2=>'on'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
 );
@@ -12097,6 +12857,21 @@ wwv_flow_imp_page.create_jet_chart_axis(
 ,p_major_tick_rendered=>'on'
 ,p_minor_tick_rendered=>'auto'
 ,p_tick_label_rendered=>'on'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(68078428757157002)
+,p_chart_id=>wwv_flow_imp.id(54685932904388109)
+,p_static_id=>'y2'
+,p_axis=>'y2'
+,p_is_rendered=>'on'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'min'
+,p_position=>'auto'
+,p_major_tick_rendered=>'on'
+,p_minor_tick_rendered=>'auto'
+,p_tick_label_rendered=>'on'
+,p_split_dual_y=>'auto'
 );
 wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(54856939458705611)
@@ -13188,7 +13963,8 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    -- wl_total_avg_pulse,',
 '    -- wl_total_min_pulse,',
 '    -- wl_total_max_pulse',
-unistr('    ''\041A\0440\043E\043A\0438'' series_name'),
+unistr('    ''\041A\0440\043E\043A\0438'' series_name,'),
+unistr('    to_char(trunc(wl_taken, ''dd''),''YYYY-MM-DD Day'') || round(sum(wl_steps)) || '' \043A\0440\043E\043A\0456\0432'' ct'),
 'FROM',
 '    rehab_watch_logs',
 'where wl_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -13198,6 +13974,7 @@ unistr('    ''\041A\0440\043E\043A\0438'' series_name'),
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'WL_STEPS'
 ,p_items_label_column_name=>'WL_TAKEN'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
@@ -13337,7 +14114,8 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    -- wl_total_avg_pulse,',
 '    -- wl_total_min_pulse,',
 '    -- wl_total_max_pulse',
-unistr('    ''\0421\0435\0440\0435\0434\043D\0456\0439'' series_name'),
+unistr('    ''\0421\0435\0440\0435\0434\043D\0456\0439'' series_name,'),
+unistr('    to_char(trunc(wl_taken, ''dd''),''YYYY-MM-DD Day'') || round(avg(wl_night_avg_pulse)) || '' \0443\0434\0430\0440\0456\0432/\0445\0432'' ct'),
 'FROM',
 '    rehab_watch_logs',
 'where wl_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -13347,6 +14125,7 @@ unistr('    ''\0421\0435\0440\0435\0434\043D\0456\0439'' series_name'),
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'WL_NIGHT_AVG_PULSE'
 ,p_items_label_column_name=>'WL_TAKEN'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
@@ -13375,7 +14154,8 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    -- wl_total_avg_pulse,',
 '    -- wl_total_min_pulse,',
 '    -- wl_total_max_pulse',
-unistr('    ''\041C\0430\043A\0441\0438\043C\0430\043B\044C\043D\0438\0439'' series_name'),
+unistr('    ''\041C\0430\043A\0441\0438\043C\0430\043B\044C\043D\0438\0439'' series_name,'),
+unistr('    to_char(trunc(wl_taken, ''dd''),''YYYY-MM-DD Day'') || round(max(wl_night_max_pulse)) || '' \0443\0434\0430\0440\0456\0432/\0445\0432'' ct'),
 'FROM',
 '    rehab_watch_logs',
 'where wl_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -13385,6 +14165,7 @@ unistr('    ''\041C\0430\043A\0441\0438\043C\0430\043B\044C\043D\0438\0439'' ser
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'WL_NIGHT_MAX_PULSE'
 ,p_items_label_column_name=>'WL_TAKEN'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
@@ -13414,7 +14195,8 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    -- wl_total_avg_pulse,',
 '    -- wl_total_min_pulse,',
 '    -- wl_total_max_pulse',
-unistr('    ''\041C\0456\043D\0456\043C\0430\043B\044C\043D\0438\0439'' series_name'),
+unistr('    ''\041C\0456\043D\0456\043C\0430\043B\044C\043D\0438\0439'' series_name,'),
+unistr('    to_char(trunc(wl_taken, ''dd''),''YYYY-MM-DD Day'') || round(min(wl_night_min_pulse)) || '' \0443\0434\0430\0440\0456\0432/\0445\0432'' ct'),
 'FROM',
 '    rehab_watch_logs',
 'where wl_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -13424,6 +14206,7 @@ unistr('    ''\041C\0456\043D\0456\043C\0430\043B\044C\043D\0438\0439'' series_n
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'WL_NIGHT_MIN_PULSE'
 ,p_items_label_column_name=>'WL_TAKEN'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
@@ -13524,7 +14307,8 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    round(avg(wl_total_avg_pulse)) wl_total_avg_pulse,',
 '    -- wl_total_min_pulse,',
 '    -- wl_total_max_pulse',
-unistr('    ''\0421\0435\0440\0435\0434\043D\0456\0439'' series_name'),
+unistr('    ''\0421\0435\0440\0435\0434\043D\0456\0439'' series_name,'),
+unistr('    to_char(trunc(wl_taken, ''dd''),''YYYY-MM-DD Day'') || round(avg(wl_total_avg_pulse)) || '' \0443\0434\0430\0440\0456\0432/\0445\0432'' ct'),
 'FROM',
 '    rehab_watch_logs',
 'where wl_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -13534,6 +14318,7 @@ unistr('    ''\0421\0435\0440\0435\0434\043D\0456\0439'' series_name'),
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'WL_TOTAL_AVG_PULSE'
 ,p_items_label_column_name=>'WL_TAKEN'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
@@ -13562,7 +14347,8 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    -- wl_total_avg_pulse,',
 '    -- wl_total_min_pulse,',
 '    -- wl_total_max_pulse',
-unistr('    ''\0423 \0441\043F\043E\043A\043E\0457'' series_name'),
+unistr('    ''\0423 \0441\043F\043E\043A\043E\0457'' series_name,'),
+unistr('    to_char(trunc(wl_taken, ''dd''),''YYYY-MM-DD Day'') || round(avg(wl_calm_avg_pulse)) || '' \0443\0434\0430\0440\0456\0432/\0445\0432'' ct'),
 'FROM',
 '    rehab_watch_logs',
 'where wl_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -13572,6 +14358,7 @@ unistr('    ''\0423 \0441\043F\043E\043A\043E\0457'' series_name'),
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'WL_CALM_AVG_PULSE'
 ,p_items_label_column_name=>'WL_TAKEN'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
@@ -13600,7 +14387,8 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    --round(avg(wl_total_avg_pulse)) wl_total_avg_pulse,',
 '    --min(wl_total_min_pulse) wl_total_min_pulse,',
 '    max(wl_total_max_pulse) wl_total_max_pulse,',
-unistr('    ''\041C\0430\043A\0441'' series_name'),
+unistr('    ''\041C\0430\043A\0441'' series_name,'),
+unistr('    to_char(trunc(wl_taken, ''dd''),''YYYY-MM-DD Day'') || round(max(wl_total_max_pulse)) || '' \0443\0434\0430\0440\0456\0432/\0445\0432'' ct'),
 'FROM',
 '    rehab_watch_logs',
 'where wl_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -13610,6 +14398,7 @@ unistr('    ''\041C\0430\043A\0441'' series_name'),
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'WL_TOTAL_MAX_PULSE'
 ,p_items_label_column_name=>'WL_TAKEN'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
@@ -13638,7 +14427,8 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    --round(avg(wl_total_avg_pulse)) wl_total_avg_pulse,',
 '    min(wl_total_min_pulse) wl_total_min_pulse,',
 '    -- wl_total_max_pulse',
-unistr('    ''\041C\0456\043D'' series_name'),
+unistr('    ''\041C\0456\043D'' series_name,'),
+unistr('    to_char(trunc(wl_taken, ''dd''),''YYYY-MM-DD Day'') || round(min(wl_total_min_pulse)) || '' \0443\0434\0430\0440\0456\0432/\0445\0432'' ct'),
 'FROM',
 '    rehab_watch_logs',
 'where wl_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -13648,6 +14438,7 @@ unistr('    ''\041C\0456\043D'' series_name'),
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'WL_TOTAL_MIN_PULSE'
 ,p_items_label_column_name=>'WL_TAKEN'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
@@ -14326,6 +15117,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source_type=>'NATIVE_DISPLAY_SELECTOR'
+,p_required_patch=>wwv_flow_imp.id(16869691178504232)
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'display_region_icons', 'N',
   'include_show_all', 'N',
@@ -14337,12 +15129,10 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Inventory'
 ,p_static_id=>'inventory'
 ,p_title=>unistr('\0417\0430\043B\0438\0448\043A\0438')
-,p_parent_plug_id=>wwv_flow_imp.id(44056290495422946)
 ,p_region_template_options=>'#DEFAULT#:t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc'
 ,p_plug_template=>2102002977963900996
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
@@ -14356,10 +15146,11 @@ wwv_flow_imp_page.create_page_plug(
 '    round(days_planned) days_planned,',
 '    round(prd_dosage_planned) prd_dosage_planned,',
 '    daily_dose,',
-'    round(days_remain) days_remain,days_remain_from_tomorrow,',
+'    round(days_remain) days_remain,',
+'    round(days_remain_from_tomorrow) days_remain_from_tomorrow,',
 '    dr_name,WS_NAME,',
 '    pratr_actual_end,',
-'    pr_planned_end,',
+'    PR_PLANNED_START,pr_planned_end,',
 '    end_date',
 'FROM',
 '    v$rehab_remains'))
@@ -14544,7 +15335,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_column_label=>unistr('\0412 \043D\0430\044F\0432\043D\043E\0441\0442\0456 \0434\043E &P301_END_DATE_CAPT.')
 ,p_column_type=>'DATE'
 ,p_heading_alignment=>'LEFT'
-,p_format_mask=>'YYYY-MON-DD'
+,p_format_mask=>'&APP_DTFMT_DATE.'
 ,p_tz_dependent=>'N'
 ,p_use_as_row_header=>'N'
 ,p_available_clientside=>'N'
@@ -14567,6 +15358,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_column_label=>unistr('\0417\0430\043F\043B\0430\043D\043E\0432\0430\043D\0438\0435 \0437\0430\0432\0435\0440\0448\0435\043D\043D\044F \043F\0435\0440\0456\043E\0434\0443')
 ,p_column_type=>'DATE'
 ,p_heading_alignment=>'LEFT'
+,p_format_mask=>'&APP_DTFMT_DATE.'
 ,p_tz_dependent=>'N'
 ,p_use_as_row_header=>'N'
 ,p_available_clientside=>'N'
@@ -14591,6 +15383,20 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_column_label=>unistr('\0417\0430\043F\043B\0430\043D\043E\0432\0430\043D\0438\0435 \0437\0430\0432\0435\0440\0448\0435\043D\043D\044F')
 ,p_column_type=>'DATE'
 ,p_heading_alignment=>'LEFT'
+,p_format_mask=>'&APP_DTFMT_DATE.'
+,p_tz_dependent=>'N'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(68078740419157005)
+,p_db_column_name=>'PR_PLANNED_START'
+,p_display_order=>180
+,p_column_identifier=>'S'
+,p_column_label=>unistr('\0417\0430\043F\043B\0430\043D\043E\0432\0430\043D\0438\0439 \043F\043E\0447\0430\0442\043E\043A')
+,p_column_type=>'DATE'
+,p_heading_alignment=>'LEFT'
+,p_format_mask=>'&APP_DTFMT_DATE.'
 ,p_tz_dependent=>'N'
 ,p_use_as_row_header=>'N'
 ,p_available_clientside=>'N'
@@ -14613,13 +15419,29 @@ wwv_flow_imp_page.create_worksheet_rpt(
 ,p_report_alias=>'primary'
 ,p_status=>'PUBLIC'
 ,p_is_default=>'Y'
-,p_report_columns=>'WS_NAME:DR_NAME:DA_STORED_AMOUNT:DRU_CONSUMED:BALANCE:DAYS_PLANNED:PRD_DOSAGE_PLANNED:DAILY_DOSE:DAYS_REMAIN:PRATR_ACTUAL_END:PR_PLANNED_END:END_DATE:DAYS_REMAIN_FROM_TOMORROW:DRU_CONSUMED_BEFORE:DRU_CONSUMED_TODAY'
+,p_report_columns=>'WS_NAME:DR_NAME:DA_STORED_AMOUNT:DRU_CONSUMED:BALANCE:DAYS_PLANNED:PRD_DOSAGE_PLANNED:DAILY_DOSE:DAYS_REMAIN:PR_PLANNED_START:PR_PLANNED_END:PRATR_ACTUAL_END:END_DATE:DAYS_REMAIN_FROM_TOMORROW:DRU_CONSUMED_BEFORE:DRU_CONSUMED_TODAY'
 ,p_sort_column_1=>'WS_NAME'
 ,p_sort_direction_1=>'ASC NULLS FIRST'
 ,p_sort_column_2=>'PR_PLANNED_END'
 ,p_sort_direction_2=>'ASC NULLS FIRST'
 ,p_sort_column_3=>'PRATR_ACTUAL_END'
 ,p_sort_direction_3=>'ASC'
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(68078897091157006)
+,p_button_sequence=>20
+,p_button_plug_id=>wwv_flow_imp.id(44056329294422947)
+,p_button_name=>'Edit'
+,p_static_id=>'edit'
+,p_show_as_disabled=>false
+,p_button_action=>'REDIRECT_PAGE'
+,p_button_template_options=>'#DEFAULT#'
+,p_button_template_id=>2350584059425431644
+,p_button_image_alt=>unistr('\0412\0435\0441\0442\0438 \0437\0430\043F\0430\0441\0438')
+,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
+,p_button_redirect_url=>'f?p=&APP_ID.:302:&SESSION.::&DEBUG.:::'
+,p_warn_on_unsaved_changes=>null
+,p_icon_css_classes=>'fa-file-edit'
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(61876413486921426)
@@ -14647,6 +15469,540 @@ unistr('    return ''(\043F\043E\0447\0438\043D\0430\044E\0447\0438 \0437 '' || 
 '    return null;',
 '  end if;',
 'end;'))
+);
+end;
+/
+prompt --application/pages/page_00302
+begin
+wwv_flow_imp_page.create_page(
+ p_id=>302
+,p_name=>'EditInventory'
+,p_alias=>'EDITINVENTORY'
+,p_step_title=>unistr('\0412\0435\0441\0442\0438 \0437\0430\043F\0430\0441\0438')
+,p_autocomplete_on_off=>'OFF'
+,p_step_template=>4073832297226169690
+,p_page_template_options=>'#DEFAULT#'
+,p_protection_level=>'C'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(70063213176283010)
+,p_plug_name=>'Breadcrumb'
+,p_static_id=>'breadcrumb'
+,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>2532939663579242476
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_menu_id=>wwv_flow_imp.id(16870387633504251)
+,p_plug_source_type=>'NATIVE_BREADCRUMB'
+,p_menu_template_id=>4073839682315169711
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(68078926659157007)
+,p_plug_name=>'Storage'
+,p_static_id=>'storage'
+,p_region_template_options=>'#DEFAULT#:t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc'
+,p_plug_template=>2102002977963900996
+,p_plug_display_sequence=>10
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'SELECT',
+'    ds_id,',
+'    ds_te_id,',
+'    ds_name,',
+'    ds_description,',
+'    ds_created,',
+'    ds_updated,',
+'    P2S_IS_OWNER,',
+'    decode(ds_id,:P302_DS_ID_CURR,1,0) curr_ds',
+'FROM',
+'    REHAB_DRUG_STORAGES, REHAB_PATIENT2STORAGES',
+'where P2S_DS_ID = ds_id and P2S_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()'))
+,p_plug_source_type=>'NATIVE_IR'
+,p_prn_content_disposition=>'ATTACHMENT'
+,p_prn_units=>'MILLIMETERS'
+,p_prn_paper_size=>'A4'
+,p_prn_width=>297
+,p_prn_height=>210
+,p_prn_orientation=>'HORIZONTAL'
+,p_prn_page_header_font_color=>'#000000'
+,p_prn_page_header_font_family=>'Helvetica'
+,p_prn_page_header_font_weight=>'normal'
+,p_prn_page_header_font_size=>'12'
+,p_prn_page_footer_font_color=>'#000000'
+,p_prn_page_footer_font_family=>'Helvetica'
+,p_prn_page_footer_font_weight=>'normal'
+,p_prn_page_footer_font_size=>'12'
+,p_prn_header_bg_color=>'#EEEEEE'
+,p_prn_header_font_color=>'#000000'
+,p_prn_header_font_family=>'Helvetica'
+,p_prn_header_font_weight=>'bold'
+,p_prn_header_font_size=>'10'
+,p_prn_body_bg_color=>'#FFFFFF'
+,p_prn_body_font_color=>'#000000'
+,p_prn_body_font_family=>'Helvetica'
+,p_prn_body_font_weight=>'normal'
+,p_prn_body_font_size=>'10'
+,p_prn_border_width=>1
+,p_prn_page_header_alignment=>'CENTER'
+,p_prn_page_footer_alignment=>'CENTER'
+,p_prn_border_color=>'#666666'
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_worksheet(
+ p_id=>wwv_flow_imp.id(68079058931157008)
+,p_pagination_type=>'ROWS_X_TO_Y'
+,p_pagination_display_pos=>'BOTTOM_RIGHT'
+,p_report_list_mode=>'TABS'
+,p_lazy_loading=>false
+,p_show_detail_link=>'C'
+,p_show_notify=>'Y'
+,p_download_formats=>'CSV:HTML:XLSX:PDF'
+,p_enable_mail_download=>'Y'
+,p_detail_link=>'f?p=&APP_ID.:303:&SESSION.::&DEBUG.::P303_DS_ID,P302_DS_ID_CURR:#DS_ID#,#DS_ID#'
+,p_internal_uid=>68079058931157008
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(68079966533157017)
+,p_db_column_name=>'CURR_DS'
+,p_display_order=>80
+,p_column_identifier=>'H'
+,p_column_label=>unistr('\0412\0438\0431\0440\0430\043D\0438\0439 \0441\043A\043B\0430\0434')
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(68079541164157013)
+,p_db_column_name=>'DS_CREATED'
+,p_display_order=>50
+,p_column_identifier=>'E'
+,p_column_label=>unistr('\0421\0442\0432\043E\0440\0435\043D\043E')
+,p_column_type=>'DATE'
+,p_heading_alignment=>'LEFT'
+,p_tz_dependent=>'N'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(68079404644157012)
+,p_db_column_name=>'DS_DESCRIPTION'
+,p_display_order=>40
+,p_column_identifier=>'D'
+,p_column_label=>unistr('\041E\043F\0438\0441')
+,p_column_type=>'STRING'
+,p_heading_alignment=>'LEFT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(68079154802157009)
+,p_db_column_name=>'DS_ID'
+,p_display_order=>10
+,p_column_identifier=>'A'
+,p_column_label=>'ID'
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(68079338772157011)
+,p_db_column_name=>'DS_NAME'
+,p_display_order=>30
+,p_column_identifier=>'C'
+,p_column_label=>unistr('\041D\0430\0437\0432\0430')
+,p_column_link=>'f?p=&APP_ID.:302:&SESSION.::&DEBUG.::P302_DS_ID_CURR:#DS_ID#'
+,p_column_linktext=>'#DS_NAME#'
+,p_column_type=>'STRING'
+,p_heading_alignment=>'LEFT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(68079247594157010)
+,p_db_column_name=>'DS_TE_ID'
+,p_display_order=>20
+,p_column_identifier=>'B'
+,p_column_label=>'Tenant ID'
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(68079616715157014)
+,p_db_column_name=>'DS_UPDATED'
+,p_display_order=>60
+,p_column_identifier=>'F'
+,p_column_label=>unistr('\041E\043D\043E\0432\043B\0435\043D\043E')
+,p_column_type=>'DATE'
+,p_heading_alignment=>'LEFT'
+,p_tz_dependent=>'N'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(68079715241157015)
+,p_db_column_name=>'P2S_IS_OWNER'
+,p_display_order=>70
+,p_column_identifier=>'G'
+,p_column_label=>unistr('\041F\043E\0442\043E\0447\043D\0438\0439 \043F\0430\0446\0456\0454\043D\0442 \0432\043B\0430\0441\043D\0438\043A')
+,p_column_type=>'BOOLEAN'
+,p_heading_alignment=>'LEFT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_rpt(
+ p_id=>wwv_flow_imp.id(70071379625394521)
+,p_application_user=>'APXWS_DEFAULT'
+,p_report_seq=>10
+,p_report_alias=>'primary'
+,p_status=>'PUBLIC'
+,p_is_default=>'Y'
+,p_report_columns=>'DS_NAME:DS_DESCRIPTION:DS_CREATED:DS_UPDATED:P2S_IS_OWNER'
+,p_sort_column_1=>'DS_NAME'
+,p_sort_direction_1=>'ASC'
+);
+wwv_flow_imp_page.create_worksheet_condition(
+ p_id=>wwv_flow_imp.id(70075525987438745)
+,p_report_id=>wwv_flow_imp.id(70071379625394521)
+,p_static_id=>'ir-condition'
+,p_condition_type=>'HIGHLIGHT'
+,p_allow_delete=>'Y'
+,p_column_name=>'CURR_DS'
+,p_operator=>'='
+,p_expr=>'1'
+,p_condition_sql=>' (case when ("CURR_DS" = to_number(#APXWS_EXPR#)) then #APXWS_HL_ID# end) '
+,p_condition_display=>'#APXWS_COL_NAME# = #APXWS_EXPR_NUMBER#  '
+,p_enabled=>'Y'
+,p_highlight_sequence=>10
+,p_row_font_color=>'#4cff00'
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(68079828090157016)
+,p_name=>'P302_DS_ID_CURR'
+,p_item_sequence=>10
+,p_item_plug_id=>wwv_flow_imp.id(68078926659157007)
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+);
+end;
+/
+prompt --application/pages/page_00303
+begin
+wwv_flow_imp_page.create_page(
+ p_id=>303
+,p_name=>'Storage'
+,p_alias=>'STORAGE'
+,p_page_mode=>'MODAL'
+,p_step_title=>'Storage'
+,p_autocomplete_on_off=>'OFF'
+,p_step_template=>2101883943284197310
+,p_page_template_options=>'#DEFAULT#'
+,p_dialog_resizable=>'Y'
+,p_protection_level=>'C'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(70082550152459767)
+,p_plug_name=>'Buttons'
+,p_static_id=>'buttons'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>2127905476394690047
+,p_plug_display_sequence=>20
+,p_plug_display_point=>'REGION_POSITION_03'
+,p_plug_item_display_point=>'ABOVE'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(70076933171459711)
+,p_plug_name=>'Storage'
+,p_static_id=>'storage'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>4502917002193490937
+,p_plug_display_sequence=>10
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'TABLE'
+,p_query_table=>'REHAB_DRUG_STORAGES'
+,p_include_rowid_column=>false
+,p_is_editable=>true
+,p_edit_operations=>'i:u:d'
+,p_lost_update_check_type=>'VALUES'
+,p_plug_source_type=>'NATIVE_FORM'
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(70082950307459768)
+,p_button_sequence=>10
+,p_button_plug_id=>wwv_flow_imp.id(70082550152459767)
+,p_button_name=>'CANCEL'
+,p_static_id=>'cancel'
+,p_show_as_disabled=>false
+,p_button_action=>'DEFINED_BY_DA_ACTION'
+,p_button_template_options=>'#DEFAULT#'
+,p_button_template_id=>4073839297780169708
+,p_button_image_alt=>'Cancel'
+,p_button_position=>'CLOSE'
+,p_warn_on_unsaved_changes=>null
+);
+wwv_flow_imp_page.create_component_da_action(
+ p_id=>wwv_flow_imp.id(70083445224459776)
+,p_button_id=>wwv_flow_imp.id(70082950307459768)
+,p_action_sequence=>10
+,p_action=>'NATIVE_DIALOG_CANCEL'
+,p_static_id=>'native-dialog-cancel'
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(70084771221459784)
+,p_button_sequence=>40
+,p_button_plug_id=>wwv_flow_imp.id(70082550152459767)
+,p_button_name=>'CREATE'
+,p_static_id=>'create'
+,p_show_as_disabled=>false
+,p_button_action=>'SUBMIT'
+,p_button_template_options=>'#DEFAULT#'
+,p_button_template_id=>4073839297780169708
+,p_button_is_hot=>'Y'
+,p_button_image_alt=>'Create'
+,p_button_position=>'NEXT'
+,p_button_condition=>'P303_DS_ID'
+,p_button_condition_type=>'ITEM_IS_NULL'
+,p_database_action=>'INSERT'
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(70083968428459781)
+,p_button_sequence=>20
+,p_button_plug_id=>wwv_flow_imp.id(70082550152459767)
+,p_button_name=>'DELETE'
+,p_static_id=>'delete'
+,p_show_as_disabled=>false
+,p_button_action=>'SUBMIT'
+,p_button_template_options=>'#DEFAULT#'
+,p_button_template_id=>4073839297780169708
+,p_button_image_alt=>'Delete'
+,p_button_position=>'DELETE'
+,p_button_execute_validations=>'N'
+,p_confirm_message=>'&APP_TEXT$DELETE_MSG!RAW.'
+,p_confirm_style=>'danger'
+,p_button_condition=>'P303_DS_ID'
+,p_button_condition_type=>'ITEM_IS_NOT_NULL'
+,p_database_action=>'DELETE'
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(70084344081459783)
+,p_button_sequence=>30
+,p_button_plug_id=>wwv_flow_imp.id(70082550152459767)
+,p_button_name=>'SAVE'
+,p_static_id=>'save'
+,p_show_as_disabled=>false
+,p_button_action=>'SUBMIT'
+,p_button_template_options=>'#DEFAULT#'
+,p_button_template_id=>4073839297780169708
+,p_button_is_hot=>'Y'
+,p_button_image_alt=>'Apply Changes'
+,p_button_position=>'NEXT'
+,p_button_condition=>'P303_DS_ID'
+,p_button_condition_type=>'ITEM_IS_NOT_NULL'
+,p_database_action=>'UPDATE'
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(70079159657459751)
+,p_name=>'P303_DS_CREATED'
+,p_source_data_type=>'TIMESTAMP_TZ'
+,p_is_required=>true
+,p_item_sequence=>50
+,p_item_plug_id=>wwv_flow_imp.id(70076933171459711)
+,p_item_source_plug_id=>wwv_flow_imp.id(70076933171459711)
+,p_prompt=>unistr('\0421\0442\0432\043E\0440\0435\043D\043E')
+,p_source=>'DS_CREATED'
+,p_display_as=>'NATIVE_DATE_PICKER_APEX'
+,p_cSize=>32
+,p_cMaxlength=>255
+,p_read_only_when_type=>'ALWAYS'
+,p_field_template=>1610598484065263269
+,p_item_template_options=>'#DEFAULT#'
+,p_is_persistent=>'N'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'display_as', 'POPUP',
+  'max_date', 'NONE',
+  'min_date', 'NONE',
+  'multiple_months', 'N',
+  'show_time', 'N',
+  'use_defaults', 'Y')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(70078722424459750)
+,p_name=>'P303_DS_DESCRIPTION'
+,p_source_data_type=>'VARCHAR2'
+,p_item_sequence=>40
+,p_item_plug_id=>wwv_flow_imp.id(70076933171459711)
+,p_item_source_plug_id=>wwv_flow_imp.id(70076933171459711)
+,p_prompt=>unistr('\041E\043F\0438\0441')
+,p_source=>'DS_DESCRIPTION'
+,p_display_as=>'NATIVE_TEXTAREA'
+,p_cSize=>60
+,p_cMaxlength=>4000
+,p_cHeight=>4
+,p_field_template=>1610598304472262251
+,p_item_template_options=>'#DEFAULT#'
+,p_is_persistent=>'N'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'auto_height', 'N',
+  'character_counter', 'N',
+  'resizable', 'Y',
+  'trim_spaces', 'BOTH')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(70077201233459716)
+,p_name=>'P303_DS_ID'
+,p_source_data_type=>'NUMBER'
+,p_is_primary_key=>true
+,p_item_sequence=>10
+,p_item_plug_id=>wwv_flow_imp.id(70076933171459711)
+,p_item_source_plug_id=>wwv_flow_imp.id(70076933171459711)
+,p_source=>'DS_ID'
+,p_display_as=>'NATIVE_HIDDEN'
+,p_is_persistent=>'N'
+,p_protection_level=>'S'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(70078343431459748)
+,p_name=>'P303_DS_NAME'
+,p_source_data_type=>'VARCHAR2'
+,p_is_required=>true
+,p_item_sequence=>30
+,p_item_plug_id=>wwv_flow_imp.id(70076933171459711)
+,p_item_source_plug_id=>wwv_flow_imp.id(70076933171459711)
+,p_prompt=>unistr('\041D\0430\0437\0432\0430')
+,p_source=>'DS_NAME'
+,p_display_as=>'NATIVE_TEXT_FIELD'
+,p_cSize=>32
+,p_cMaxlength=>128
+,p_field_template=>1610598484065263269
+,p_item_template_options=>'#DEFAULT#'
+,p_is_persistent=>'N'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'disabled', 'N',
+  'submit_when_enter_pressed', 'N',
+  'subtype', 'TEXT',
+  'trim_spaces', 'BOTH')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(70077697794459726)
+,p_name=>'P303_DS_TE_ID'
+,p_source_data_type=>'NUMBER'
+,p_is_required=>true
+,p_item_sequence=>20
+,p_item_plug_id=>wwv_flow_imp.id(70076933171459711)
+,p_item_source_plug_id=>wwv_flow_imp.id(70076933171459711)
+,p_prompt=>unistr('\041E\0440\0435\043D\0434\0430\0440')
+,p_source=>'DS_TE_ID'
+,p_display_as=>'NATIVE_SELECT_LIST'
+,p_named_lov=>'REHAB_TENANTS.TE_NAME'
+,p_lov_display_null=>'YES'
+,p_read_only_when_type=>'ALWAYS'
+,p_field_template=>1610598484065263269
+,p_item_template_options=>'#DEFAULT#'
+,p_is_persistent=>'N'
+,p_lov_display_extra=>'YES'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'page_action_on_selection', 'NONE')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(70079952806459757)
+,p_name=>'P303_DS_UPDATED'
+,p_source_data_type=>'TIMESTAMP_TZ'
+,p_item_sequence=>60
+,p_item_plug_id=>wwv_flow_imp.id(70076933171459711)
+,p_item_source_plug_id=>wwv_flow_imp.id(70076933171459711)
+,p_prompt=>unistr('\0417\043C\0456\043D\0435\043D\043E')
+,p_source=>'DS_UPDATED'
+,p_display_as=>'NATIVE_DATE_PICKER_APEX'
+,p_cSize=>32
+,p_cMaxlength=>255
+,p_read_only_when_type=>'ALWAYS'
+,p_field_template=>1610598304472262251
+,p_item_template_options=>'#DEFAULT#'
+,p_is_persistent=>'N'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'display_as', 'POPUP',
+  'max_date', 'NONE',
+  'min_date', 'NONE',
+  'multiple_months', 'N',
+  'show_time', 'N',
+  'use_defaults', 'Y')).to_clob
+);
+wwv_flow_imp_page.create_page_validation(
+ p_id=>wwv_flow_imp.id(70079559559459753)
+,p_validation_name=>'P303_DS_CREATED must be timestamp'
+,p_static_id=>'p303-ds-created-must-be-timestamp'
+,p_validation_sequence=>40
+,p_validation=>'P303_DS_CREATED'
+,p_validation_type=>'ITEM_IS_TIMESTAMP'
+,p_error_message=>'#LABEL# must be a valid timestamp.'
+,p_associated_item=>wwv_flow_imp.id(70079159657459751)
+,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
+);
+wwv_flow_imp_page.create_page_validation(
+ p_id=>wwv_flow_imp.id(70080302214459758)
+,p_validation_name=>'P303_DS_UPDATED must be timestamp'
+,p_static_id=>'p303-ds-updated-must-be-timestamp'
+,p_validation_sequence=>50
+,p_validation=>'P303_DS_UPDATED'
+,p_validation_type=>'ITEM_IS_TIMESTAMP'
+,p_error_message=>'#LABEL# must be a valid timestamp.'
+,p_associated_item=>wwv_flow_imp.id(70079952806459757)
+,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(70085934075459796)
+,p_process_sequence=>50
+,p_process_point=>'AFTER_SUBMIT'
+,p_process_type=>'NATIVE_CLOSE_WINDOW'
+,p_process_name=>'Close Dialog'
+,p_static_id=>'close-dialog'
+,p_error_display_location=>'INLINE_IN_NOTIFICATION'
+,p_process_when=>'CREATE,SAVE,DELETE'
+,p_process_when_type=>'REQUEST_IN_CONDITION'
+,p_internal_uid=>70085934075459796
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(70085187341459787)
+,p_process_sequence=>10
+,p_process_point=>'BEFORE_HEADER'
+,p_region_id=>wwv_flow_imp.id(70076933171459711)
+,p_process_type=>'NATIVE_FORM_INIT'
+,p_process_name=>'Initialize form Storage'
+,p_static_id=>'initialize-form-storage'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'current_row_total_item', '',
+  'next_primary_key_items', '',
+  'previous_primary_key_items', '')).to_clob
+,p_internal_uid=>70085187341459787
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(70085563137459794)
+,p_process_sequence=>10
+,p_process_point=>'AFTER_SUBMIT'
+,p_region_id=>wwv_flow_imp.id(70076933171459711)
+,p_process_type=>'NATIVE_FORM_DML'
+,p_process_name=>'Process form Storage'
+,p_static_id=>'process-form-storage'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'lock_row', 'Y',
+  'prevent_lost_updates', 'Y',
+  'return_primary_keys_after_insert', 'Y',
+  'target_type', 'REGION_SOURCE')).to_clob
+,p_error_display_location=>'INLINE_IN_NOTIFICATION'
+,p_internal_uid=>70085563137459794
 );
 end;
 /
@@ -19216,6 +20572,401 @@ unistr('   nvl2(WS_NAME,''\0414\0456\044E\0447\0430 \0440\0435\0447\043E\0432\04
   'start_date_column', 'START_DATE',
   'supplemental_information', '&ADD_INFO.',
   'view_edit_link', 'f?p=&APP_ID.:402:&SESSION.::&DEBUG.:RP,402:P402_PRR_ID_CURR,P402_PR_ID_CURR,P402_PRATR_ID_CURR:&PRR_ID.,&PR_ID.,&PRATR_ID.')).to_clob
+);
+end;
+/
+prompt --application/pages/page_00404
+begin
+wwv_flow_imp_page.create_page(
+ p_id=>404
+,p_name=>'PRCalendar2'
+,p_alias=>'PRCALENDAR2'
+,p_step_title=>unistr('\041A\0430\043B\0435\043D\0434\0430\0440 \043F\0440\0438\0437\043D\0430\0447\0435\043D\043D\044C 2')
+,p_warn_on_unsaved_changes=>'N'
+,p_autocomplete_on_off=>'OFF'
+,p_step_template=>4073832297226169690
+,p_page_template_options=>'#DEFAULT#'
+,p_required_role=>wwv_flow_imp.id(17092736246142129)
+,p_protection_level=>'C'
+,p_page_component_map=>'04'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(69880816021330022)
+,p_plug_name=>'Breadcrumb'
+,p_static_id=>'breadcrumb'
+,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>2532939663579242476
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_menu_id=>wwv_flow_imp.id(16870387633504251)
+,p_plug_source_type=>'NATIVE_BREADCRUMB'
+,p_menu_template_id=>4073839682315169711
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(1513178307059572117)
+,p_plug_name=>'Gantt Chart'
+,p_static_id=>'gantt-chart'
+,p_parent_plug_id=>wwv_flow_imp.id(633249584869065421)
+,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:js-showMaximizeButton:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>20
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source_type=>'NATIVE_JET_CHART'
+);
+wwv_flow_imp_page.create_jet_chart(
+ p_id=>wwv_flow_imp.id(69885026063333637)
+,p_region_id=>wwv_flow_imp.id(1513178307059572117)
+,p_chart_type=>'gantt'
+,p_height=>'400'
+,p_animation_on_display=>'none'
+,p_animation_on_data_change=>'none'
+,p_stack=>'off'
+,p_stack_label=>'off'
+,p_connect_nulls=>'Y'
+,p_sorting=>'label-asc'
+,p_fill_multi_series_gaps=>true
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_show_label=>true
+,p_show_row=>false
+,p_show_start=>true
+,p_show_end=>true
+,p_show_progress=>true
+,p_show_baseline=>false
+,p_legend_position=>'auto'
+,p_overview_rendered=>'off'
+,p_no_data_found_message=>'Select a start and end date, to render the gantt chart'
+,p_horizontal_grid=>'visible'
+,p_vertical_grid=>'visible'
+,p_row_axis_rendered=>'on'
+,p_gantt_axis_position=>'top'
+,p_javascript_code=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'function (options) {',
+'    options.dataFilter = function( data ) {',
+'      ',
+'        // Change message during rendering when no data found i.e. data.series array is empty',
+'        if ( $.isEmptyObject ( data ) ) {  ',
+'            data = $.extend( data, {translations: {labelInvalidData: ''No data found'' } }) ;',
+'        }',
+'        return data;',
+'    };',
+'   return options;',
+'}'))
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(69886708928333642)
+,p_chart_id=>wwv_flow_imp.id(69885026063333637)
+,p_static_id=>'tasks'
+,p_seq=>10
+,p_name=>'Tasks'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select prr_id                                                                           task_id, ',
+'       null                                                                             parent_task_id,',
+'       PRR_PRESCRIPTED_BY_SHORT||'' (''||to_char(PRR_PRESCRIPTED_WHEN,''YYYY-Mon-DD'')||'')'' task_name,',
+'       PRR_PRESCRIPTED_WHEN+0                                                           task_start_date,',
+'       PRR_PRESCRIPTED_WHEN+0                                                           task_end_date,',
+'       1                                                                                status,',
+'       PRR_PRESCRIPTED_WHEN+0                                                           baseline_start,',
+'       PRR_PRESCRIPTED_WHEN+0                                                           baseline_end,',
+'       SYSDATE-30                                                                       GANTT_START,',
+'       SYSDATE+10                                                                       GANTT_END       ',
+'from REHAB_PRESCRIPTORS',
+'where PRR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
+'union all',
+'select PRATR_ID * 1e6                                                                   task_id, ',
+'       PR_PRR_ID                                                                        parent_task_id,',
+'       DR_NAME || nvl2(WS_NAME,'' (''||WS_NAME||'')'', null)                               task_name,',
+'       PRATR_ACTUAL_START+0                                                             task_start_date,',
+'       nvl(PRATR_ACTUAL_END+0,sysdate+365)                                              task_end_date,',
+'       1                                                                                status,',
+'       PRATR_ACTUAL_START+0                                                             baseline_start,',
+'       nvl(PRATR_ACTUAL_END+0,sysdate+365)                                              baseline_end,',
+'       SYSDATE-30                                                                       GANTT_START,',
+'       SYSDATE+10                                                                       GANTT_END  ',
+'from REHAB_PRESCRIPTIONS, ',
+'     REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES, ',
+'     lateral(select unique PRD_DR_ID from REHAB_PRESCRIPTIONS_DETAILS where PRD_PRATR_ID = PRATR_ID),',
+'    REHAB_DRUGS, REHAB_WORKING_SUBSTANCE',
+'where PRATR_PR_ID = PR_ID',
+'and PR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
+'and PRD_DR_ID = DR_ID and WS_ID(+) = DR_WS_ID--and PR_WS_ID is null',
+'-- union all',
+'-- select PR_ID * 1e9                                                                      task_id, ',
+'--        PR_PRR_ID                                                                        parent_task_id,',
+'--        WS_NAME                                                                          task_name,',
+'--        min(PRATR_ACTUAL_START+0) over (partition by PR_ID)                              task_start_date,',
+'--        max(nvl(PRATR_ACTUAL_END+0,sysdate+365)) over (partition by PR_ID)               task_end_date,',
+'--        1                                                                                status,',
+'--        min(PRATR_ACTUAL_START+0) over (partition by PR_ID)                              baseline_start,',
+'--        max(nvl(PRATR_ACTUAL_END+0,sysdate+365)) over (partition by PR_ID)               baseline_end,',
+'--        SYSDATE-30                                                                       GANTT_START,',
+'--        SYSDATE+10                                                                       GANTT_END  ',
+'-- from REHAB_PRESCRIPTIONS, ',
+'--      REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES,',
+'--      REHAB_WORKING_SUBSTANCE',
+'-- where PRATR_PR_ID = PR_ID',
+'-- and PR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
+'-- and PR_WS_ID is not null',
+'-- and WS_ID = PR_WS_ID',
+'-- union all',
+'-- select PRATR_ID * 1e6                                                                   task_id, ',
+'--        PR_ID * 1e9                                                                      parent_task_id,',
+'--        DR_NAME                                                                          task_name,',
+'--        PRATR_ACTUAL_START+0                                                             task_start_date,',
+'--        nvl(PRATR_ACTUAL_END+0,sysdate+365)                                              task_end_date,',
+'--        1                                                                                status,',
+'--        PRATR_ACTUAL_START+0                                                             baseline_start,',
+'--        nvl(PRATR_ACTUAL_END+0,sysdate+365)                                              baseline_end,',
+'--        SYSDATE-30                                                                       GANTT_START,',
+'--        SYSDATE+10                                                                       GANTT_END  ',
+'-- from REHAB_PRESCRIPTIONS, ',
+'--      REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES, ',
+'--      lateral(select unique PRD_DR_ID from REHAB_PRESCRIPTIONS_DETAILS where PRD_PRATR_ID = PRATR_ID),',
+'--     REHAB_DRUGS',
+'-- where PRATR_PR_ID = PR_ID',
+'-- and PR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
+'-- and PRD_DR_ID = DR_ID and PR_WS_ID is not null'))
+,p_ajax_items_to_submit=>'P404_START_DATE,P404_END_DATE'
+,p_items_label_rendered=>true
+,p_gantt_start_date_source=>'DB_COLUMN'
+,p_gantt_start_date_column=>'GANTT_START'
+,p_gantt_end_date_source=>'DB_COLUMN'
+,p_gantt_end_date_column=>'GANTT_END'
+,p_gantt_row_id=>'PARENT_TASK_ID'
+,p_gantt_row_name=>'TASK_NAME'
+,p_gantt_task_id=>'TASK_ID'
+,p_gantt_task_name=>'TASK_NAME'
+,p_gantt_task_start_date=>'TASK_START_DATE'
+,p_gantt_task_end_date=>'TASK_END_DATE'
+,p_gantt_task_css_class=>'u-color-22'
+,p_gantt_baseline_start_column=>'BASELINE_START'
+,p_gantt_baseline_end_column=>'BASELINE_END'
+,p_gantt_baseline_css_class=>'u-color-43'
+,p_gantt_progress_column=>'STATUS'
+,p_gantt_progress_css_class=>'u-color-11'
+,p_gantt_viewport_start_source=>'ITEM'
+,p_gantt_viewport_start_item=>'P404_START_DATE'
+,p_gantt_viewport_end_source=>'ITEM'
+,p_gantt_viewport_end_item=>'P404_END_DATE'
+,p_task_label_position=>'innerStart'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(69885512448333639)
+,p_chart_id=>wwv_flow_imp.id(69885026063333637)
+,p_static_id=>'major'
+,p_axis=>'major'
+,p_is_rendered=>'on'
+,p_baseline_scaling=>'zero'
+,p_major_tick_rendered=>'auto'
+,p_minor_tick_rendered=>'auto'
+,p_tick_label_rendered=>'on'
+,p_axis_scale=>'months'
+,p_zoom_order_seconds=>false
+,p_zoom_order_minutes=>false
+,p_zoom_order_hours=>false
+,p_zoom_order_days=>true
+,p_zoom_order_weeks=>true
+,p_zoom_order_months=>true
+,p_zoom_order_quarters=>true
+,p_zoom_order_years=>false
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(69886171040333640)
+,p_chart_id=>wwv_flow_imp.id(69885026063333637)
+,p_static_id=>'minor'
+,p_axis=>'minor'
+,p_format_type=>'date-medium'
+,p_baseline_scaling=>'zero'
+,p_major_tick_rendered=>'auto'
+,p_minor_tick_rendered=>'auto'
+,p_tick_label_rendered=>'on'
+,p_axis_scale=>'weeks'
+,p_zoom_order_seconds=>false
+,p_zoom_order_minutes=>false
+,p_zoom_order_hours=>false
+,p_zoom_order_days=>true
+,p_zoom_order_weeks=>true
+,p_zoom_order_months=>true
+,p_zoom_order_quarters=>true
+,p_zoom_order_years=>false
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(1838662486667824910)
+,p_plug_name=>'Gantt Controls'
+,p_static_id=>'gantt-controls'
+,p_parent_plug_id=>wwv_flow_imp.id(633249584869065421)
+,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noPadding:t-ButtonRegion--noUI'
+,p_plug_template=>2127905476394690047
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_header=>'To render the gantt chart, select a start and end date.  Any tasks within the date range selected will be rendered on the chart.'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(4581453908508861240)
+,p_plug_name=>'Multiple Tasks Information'
+,p_static_id=>'multiple-tasks-information'
+,p_parent_plug_id=>wwv_flow_imp.id(633249584869065421)
+,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
+,p_plug_template=>2665811232373458102
+,p_plug_display_sequence=>30
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'This example demonstrates how to customize a Gantt chart''s colors, using Universal Theme color css classes, and the setting of the chart start and end dates based upon page items.<p/><p/>',
+'',
+'<strong>Start Date Source Type</strong> - Set this series-level attribute to ''Item'', and select the page item to be used for setting the start date of the gantt chart.  This is a required setting in order to render the chart.<br/>',
+'<strong>End Date Source Type</strong> - Set this series-level attribute to ''Item'', and select the page item to be used for setting the end date of the gantt chart. This is a required setting in order to render the chart.<p/>',
+'',
+'<strong>Task CSS Classes</strong> - Use this series-level attribute to customize the color of tasks bars<br/>',
+'<strong>Progress CSS Classes</strong> - Use this series-level attribute to customize the color of progress bars<br/>',
+'<strong>Baseline CSS Classes</strong> - Use this series-level attribute to customize the color of baseline bars<br/>',
+'',
+'<p>',
+'For more information on the JET Gantt chart options, refer to the Oracle JET <a href="https://www.oracle.com/webfolder/technetwork/jet-800/jsdocs/oj.ojGantt.html" target="_blank">ojGantt API</a>.',
+'</p>',
+'<p>',
+'For more information on Universal Theme Color css classes, refer to the Universal Theme Sample Application <a href="https://apex.oracle.com/pls/apex/f?p=42:6302:::NO:::" target="_blank">Color and Status Modifiers</a> page.'))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(633249584869065421)
+,p_plug_name=>'Multiple Tasks per Row'
+,p_static_id=>'multiple-tasks-per-row'
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>20
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(69882572989333623)
+,p_button_sequence=>50
+,p_button_plug_id=>wwv_flow_imp.id(1838662486667824910)
+,p_button_name=>'P404_GO'
+,p_static_id=>'p404-go'
+,p_button_static_id=>'P3_GO'
+,p_show_as_disabled=>false
+,p_button_action=>'DEFINED_BY_DA'
+,p_button_template_options=>'#DEFAULT#:t-Button--large'
+,p_button_template_id=>4073839297780169708
+,p_button_is_hot=>'Y'
+,p_button_image_alt=>'Go'
+,p_warn_on_unsaved_changes=>null
+,p_button_cattributes=>'style="margin: 8px 0 0 8px;"'
+,p_grid_new_row=>'N'
+,p_grid_new_column=>'Y'
+,p_grid_column_span=>1
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(837441047554978196)
+,p_name=>'P404_END_DATE'
+,p_item_sequence=>40
+,p_item_plug_id=>wwv_flow_imp.id(1838662486667824910)
+,p_prompt=>'End Date'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_DATE_PICKER_APEX'
+,p_cSize=>64
+,p_cMaxlength=>4000
+,p_begin_on_new_line=>'N'
+,p_colspan=>2
+,p_field_template=>1610598484065263269
+,p_item_template_options=>'#DEFAULT#'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'display_as', 'POPUP',
+  'max_date', 'NONE',
+  'min_date', 'NONE',
+  'multiple_months', 'N',
+  'show_time', 'N',
+  'use_defaults', 'Y')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(4581457864584861314)
+,p_name=>'P404_MAX_END_DATE'
+,p_item_sequence=>20
+,p_item_plug_id=>wwv_flow_imp.id(1838662486667824910)
+,p_source=>'select SYSDATE+10 from dual'
+,p_source_type=>'QUERY'
+,p_display_as=>'NATIVE_HIDDEN'
+,p_protection_level=>'S'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(4581457701662861313)
+,p_name=>'P404_MIN_START_DATE'
+,p_item_sequence=>10
+,p_item_plug_id=>wwv_flow_imp.id(1838662486667824910)
+,p_source=>'select SYSDATE-125 from dual'
+,p_source_type=>'QUERY'
+,p_display_as=>'NATIVE_HIDDEN'
+,p_protection_level=>'S'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(1513181818183571066)
+,p_name=>'P404_START_DATE'
+,p_item_sequence=>30
+,p_item_plug_id=>wwv_flow_imp.id(1838662486667824910)
+,p_prompt=>'Start Date'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_DATE_PICKER_APEX'
+,p_cSize=>64
+,p_cMaxlength=>4000
+,p_colspan=>2
+,p_field_template=>1610598484065263269
+,p_item_template_options=>'#DEFAULT#'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'display_as', 'POPUP',
+  'max_date', 'NONE',
+  'min_date', 'NONE',
+  'multiple_months', 'N',
+  'show_time', 'N',
+  'use_defaults', 'Y')).to_clob
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(68078566902157003)
+,p_name=>'RefreshChart'
+,p_static_id=>'refreshchart'
+,p_event_sequence=>10
+,p_triggering_element_type=>'BUTTON'
+,p_triggering_button_id=>wwv_flow_imp.id(69882572989333623)
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'click'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(68078605228157004)
+,p_event_id=>wwv_flow_imp.id(68078566902157003)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_static_id=>'native-refresh'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(1513178307059572117)
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'maintain_pagination', 'N')).to_clob
 );
 end;
 /

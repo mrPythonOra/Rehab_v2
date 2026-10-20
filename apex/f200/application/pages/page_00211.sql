@@ -117,7 +117,8 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    -- real_distance,',
 '    -- real_step_length,',
 '    -- real_speed',
-unistr('    ''\041A\0440\043E\043A\0438'' series_name'),
+unistr('    ''\041A\0440\043E\043A\0438'' series_name,'),
+unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(sum(tr_steps)) || '' \043A\0440\043E\043A\0456\0432'' ct'),
 'FROM',
 '    rehab_trainings',
 'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -127,6 +128,7 @@ unistr('    ''\041A\0440\043E\043A\0438'' series_name'),
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'TR_STEPS'
 ,p_items_label_column_name=>'TR_START'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
@@ -555,7 +557,8 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    -- real_distance,',
 '    -- real_step_length,',
 '    -- real_speed',
-unistr('    ''\0414\0438\0441\0442\0430\043D\0446\0456\044F \043F\043E \0433\0430\0434\0436\0435\0442\0443, \043A\043C'' series_name'),
+unistr('    ''\0414\0438\0441\0442\0430\043D\0446\0456\044F \043F\043E \0433\0430\0434\0436\0435\0442\0443, \043A\043C'' series_name,'),
+unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(sum(tr_distance_length),3) || '' \043A\043C'' ct'),
 'FROM',
 '    rehab_trainings',
 'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -565,6 +568,7 @@ unistr('    ''\0414\0438\0441\0442\0430\043D\0446\0456\044F \043F\043E \0433\043
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'TR_DISTANCE_LENGTH'
 ,p_items_label_column_name=>'TR_START'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
@@ -641,7 +645,8 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    sum(real_distance) real_distance,',
 '    -- real_step_length,',
 '    -- real_speed',
-unistr('    ''\0414\0438\0441\0442\0430\043D\0446\0456\044F \0440\0435\0430\043B\044C\043D\0430, \043A\043C'' series_name'),
+unistr('    ''\0414\0438\0441\0442\0430\043D\0446\0456\044F \0440\0435\0430\043B\044C\043D\0430, \043A\043C'' series_name,'),
+unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(sum(real_distance),3) || '' \043A\043C'' ct'),
 'FROM',
 '    rehab_trainings',
 'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -651,6 +656,7 @@ unistr('    ''\0414\0438\0441\0442\0430\043D\0446\0456\044F \0440\0435\0430\043B
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'REAL_DISTANCE'
 ,p_items_label_column_name=>'TR_START'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
@@ -736,7 +742,7 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_chart_id=>wwv_flow_imp.id(54685932904388109)
 ,p_static_id=>'disnatce'
 ,p_seq=>10
-,p_name=>'Disnatce'
+,p_name=>'Speed'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'SELECT',
@@ -756,7 +762,8 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    -- real_distance,',
 '    -- real_step_length,',
 '    avg(real_speed) real_speed,',
-unistr('    ''\0428\0432\0438\0434\043A\0456\0441\0442\044C, \043A\043C/\0433\043E\0434'' series_name'),
+unistr('    ''\0428\0432\0438\0434\043A\0456\0441\0442\044C, \043A\043C/\0433\043E\0434'' series_name,'),
+unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(avg(real_speed),3) || '' \043A\043C/\0433\043E\0434'' ct'),
 'FROM',
 '    rehab_trainings',
 'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -766,6 +773,7 @@ unistr('    ''\0428\0432\0438\0434\043A\0456\0441\0442\044C, \043A\043C/\0433\04
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'REAL_SPEED'
 ,p_items_label_column_name=>'TR_START'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
@@ -779,7 +787,7 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_chart_id=>wwv_flow_imp.id(54685932904388109)
 ,p_static_id=>'disnatcereal'
 ,p_seq=>20
-,p_name=>'DisnatceReal'
+,p_name=>'StepLength'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'SELECT',
@@ -799,7 +807,8 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    -- sum(real_distance) real_distance,',
 '    avg(real_step_length) real_step_length,',
 '    -- real_speed',
-unistr('    ''\0414\043E\0432\0436\0438\043D\0430 \043A\0440\043E\043A\0443, \043C'' series_name'),
+unistr('    ''\0414\043E\0432\0436\0438\043D\0430 \043A\0440\043E\043A\0443, \043C'' series_name,'),
+unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(avg(real_step_length),3) || '' \043C'' ct'),
 'FROM',
 '    rehab_trainings',
 'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -809,11 +818,12 @@ unistr('    ''\0414\043E\0432\0436\0438\043D\0430 \043A\0440\043E\043A\0443, \04
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'REAL_STEP_LENGTH'
 ,p_items_label_column_name=>'TR_START'
+,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
 ,p_marker_shape=>'auto'
-,p_assigned_to_y2=>'off'
+,p_assigned_to_y2=>'on'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
 );
@@ -847,6 +857,21 @@ wwv_flow_imp_page.create_jet_chart_axis(
 ,p_major_tick_rendered=>'on'
 ,p_minor_tick_rendered=>'auto'
 ,p_tick_label_rendered=>'on'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(68078428757157002)
+,p_chart_id=>wwv_flow_imp.id(54685932904388109)
+,p_static_id=>'y2'
+,p_axis=>'y2'
+,p_is_rendered=>'on'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'min'
+,p_position=>'auto'
+,p_major_tick_rendered=>'on'
+,p_minor_tick_rendered=>'auto'
+,p_tick_label_rendered=>'on'
+,p_split_dual_y=>'auto'
 );
 wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(54856939458705611)
