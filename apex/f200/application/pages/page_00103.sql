@@ -15,7 +15,7 @@ wwv_flow_imp_page.create_page(
  p_id=>103
 ,p_name=>'ConsumationCalendar'
 ,p_alias=>'CONSUMATIONCALENDAR'
-,p_step_title=>'ConsumationCalendar'
+,p_step_title=>unistr('\041A\0430\043B\0435\043D\0434\0430\0440 \0441\043F\043E\0436\0438\0432\0430\043D\043D\044F')
 ,p_autocomplete_on_off=>'OFF'
 ,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
@@ -41,7 +41,8 @@ wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(886836087492535059)
 ,p_plug_name=>'Search'
 ,p_static_id=>'search'
-,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_title=>unistr('\0424\0456\043B\044C\0442\0440\0443\0432\0430\0442\0438')
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
 ,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
@@ -187,13 +188,49 @@ wwv_flow_imp_page.create_page_plug(
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'WITH ',
-'ds as (select unique',
-'           PRATR_ID id,',
-'           PRR_PRESCRIPTED_BY_SHORT ||'' (''||to_char(PRR_PRESCRIPTED_WHEN,''YYYY-Mon-DD'')||'')'' prescriptor,',
-'           DR_NAME||'' (''||DR_TYPE_SHORT||'')'' drug, DR_ID,',
-'--           PRATR_ACTUAL_START start_date,',
-'--           nvl(PRATR_ACTUAL_END,systimestamp + INTERVAL ''10'' YEAR) end_date,',
-'           case ora_hash(dr_id,16) ',
+'unique_dates AS (',
+'    -- 1. Ensure unique dates in case your source table has multiple records per day',
+'select',
+'     DRU_ID, PR_PRR_ID prr_id, DRU_DR_ID DR_ID, trunc(DRU_CONSUMED,''dd'') dt, DRU_ACTUAL_DOSAGE',
+'from REHAB_DRUG_USES, ',
+'     REHAB_PRESCRIPTIONS_DETAILS, REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES, REHAB_PRESCRIPTIONS',
+'where DRU_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
+'  and DRU_PRD_ID = PRD_ID and PRD_PRATR_ID = PRATR_ID and PRATR_PR_ID = PR_ID',
+'),',
+'numbered_dates AS (',
+'    -- 2. Assign a sequential row number ordered by the date',
+'    SELECT ',
+'        prr_id,dr_id,dt,DRU_ID,',
+'        ROW_NUMBER() OVER (partition by prr_id,dr_id ORDER BY dt) AS rn',
+'    FROM (select prr_id,dr_id, dt, min(DRU_ID) DRU_ID from unique_dates group by prr_id,dr_id, dt)',
+'),--select * from numbered_dates order by 1,2,3;--,',
+'grouped_islands AS (',
+'    -- 3. Subtract the row number from the date. ',
+'    -- For consecutive dates, this difference will always yield the exact same constant date.',
+'    SELECT ',
+'        prr_id,dr_id,DRU_ID,',
+'        dt,',
+'        dt - rn AS grp',
+'    FROM numbered_dates',
+'),--select * from grouped_islands order by 1,2,4,3;--',
+'-- 4. Aggregate to find the start and end of each consecutive interval',
+'ints as (',
+'SELECT ',
+'    prr_id p_prr_id,dr_id p_dr_id,min(DRU_ID) DRU_ID,',
+'    MIN(dt) AS interval_start,',
+'    MAX(dt) AS interval_end,',
+'    COUNT(*) AS total_consecutive_days',
+'FROM grouped_islands',
+'GROUP BY prr_id,dr_id,grp)',
+'select',
+'  DRU_ID ID,',
+'  interval_start start_date, interval_end end_date, total_consecutive_days,',
+'  DR_NAME||'' (''||DR_TYPE_SHORT||'')'' drug,',
+'  PRR_PRESCRIPTED_BY_SHORT ||'' (''||to_char(PRR_PRESCRIPTED_WHEN,''YYYY-Mon-DD'')||'') ''||',
+unistr('  nvl2(WS_NAME,''\0414\0456\044E\0447\0430 \0440\0435\0447\043E\0432\0438\043D\0430: ''||WS_NAME||'' '',null)||'),
+unistr('  ''\0422\0440\0438\0432\0430\043B\043E: ''||total_consecutive_days||'' \0434\043D\0456(\0432).''--||CP_NAME '),
+'  add_info,',
+'  case ora_hash(dr_id,16) ',
 '             when 0 then ''apex-cal-red''',
 '             when 1 then ''apex-cal-green''',
 '             when 2 then ''apex-cal-blue''',
@@ -211,53 +248,12 @@ wwv_flow_imp_page.create_page_plug(
 '             when 14 then ''apex-cal-teal''',
 '             when 15 then ''apex-cal-Fuchsia''',
 '             when 16 then ''apex-cal-Salmon''',
-'           end  css_class,WS_NAME,WS_ID,',
-unistr('           --nvl2(WS_NAME,''\0414\0456\044E\0447\0430 \0440\0435\0447\043E\0432\0438\043D\0430: ''||WS_NAME||'' '',null)||''\041F\0440\0438\0439\043C\0430\0442\0438: ''||CP_NAME add_info,'),
-'           prr_id, pr_id, PRATR_ID,CP_NAME',
-'        from REHAB_PRESCRIPTORS, rehab_drugs, REHAB_PRESCRIPTIONS_DETAILS, REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES, REHAB_PRESCRIPTIONS, REHAB_CONSUME_PATTERNS, REHAB_WORKING_SUBSTANCE',
-'        where PRD_DR_ID = DR_ID and PRD_PRATR_ID = PRATR_ID and PRATR_PR_ID = PR_ID',
-'        and PR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() and PRR_ID = PR_PRR_ID and CP_ID = PRATR_CP_ID',
-'        and WS_ID(+) = PR_WS_ID),',
-'unique_dates AS (',
-'    -- 1. Ensure unique dates in case your source table has multiple records per day',
-'select',
-'     PR_PRR_ID prr_id, DRU_DR_ID DR_ID, trunc(DRU_CONSUMED,''dd'') dt, DRU_ACTUAL_DOSAGE',
-'from REHAB_DRUG_USES, ',
-'     REHAB_PRESCRIPTIONS_DETAILS, REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES, REHAB_PRESCRIPTIONS',
-'where DRU_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
-'  and DRU_PRD_ID = PRD_ID and PRD_PRATR_ID = PRATR_ID and PRATR_PR_ID = PR_ID',
-'),',
-'numbered_dates AS (',
-'    -- 2. Assign a sequential row number ordered by the date',
-'    SELECT ',
-'        prr_id,dr_id,dt,',
-'        ROW_NUMBER() OVER (partition by prr_id,dr_id ORDER BY dt) AS rn',
-'    FROM (select unique prr_id,dr_id, dt from unique_dates)',
-'),--select * from numbered_dates order by 1,2,3;--,',
-'grouped_islands AS (',
-'    -- 3. Subtract the row number from the date. ',
-'    -- For consecutive dates, this difference will always yield the exact same constant date.',
-'    SELECT ',
-'        prr_id,dr_id,',
-'        dt,',
-'        dt - rn AS grp',
-'    FROM numbered_dates',
-'),--select * from grouped_islands order by 1,2,4,3;--',
-'-- 4. Aggregate to find the start and end of each consecutive interval',
-'ints as (',
-'SELECT ',
-'    prr_id,dr_id,',
-'    MIN(dt) AS interval_start,',
-'    MAX(dt) AS interval_end,',
-'    COUNT(*) AS total_consecutive_days',
-'FROM grouped_islands',
-'GROUP BY prr_id,dr_id,grp)',
-'select',
-'  ds.*, interval_start start_date, interval_end end_date, total_consecutive_days,',
-unistr('  nvl2(WS_NAME,''\0414\0456\044E\0447\0430 \0440\0435\0447\043E\0432\0438\043D\0430: ''||WS_NAME||'' '',null)||''\0422\0440\0438\0432\0430\043B\043E: ''||total_consecutive_days||'' \0434\043D\0456(\0432). \041F\0440\0438\0439\043C\0430\043B\043E\0441\044C: ''||CP_NAME add_info'),
-'from ds, ints',
-'where ds.prr_id = ints.prr_id and ds.dr_id=ints.dr_id',
-'ORDER BY start_date'))
+'           end  css_class,',
+'    prr_id,dr_id,ws_id',
+'from REHAB_PRESCRIPTORS, REHAB_WORKING_SUBSTANCE, rehab_drugs, ints',
+'where prr_id = ints.p_prr_id and dr_id=ints.p_dr_id and dr_ws_id=ws_id(+)',
+'ORDER BY start_date;',
+''))
 ,p_lazy_loading=>false
 ,p_plug_source_type=>'NATIVE_CSS_CALENDAR'
 ,p_plug_required_role=>wwv_flow_imp.id(17092736246142129)
@@ -266,16 +262,14 @@ unistr('  nvl2(WS_NAME,''\0414\0456\044E\0447\0430 \0440\0435\0447\043E\0432\043
 ' p.endDateExclusive = false;',
 '}'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'additional_calendar_views', 'list:navigation',
+  'additional_calendar_views', 'navigation',
   'calendar_export', 'ICAL',
   'css_class', 'CSS_CLASS',
   'display_column', 'DRUG',
-  'drag_and_drop', 'N',
   'end_date_column', 'END_DATE',
   'event_sorting', 'AUTOMATIC',
   'maximum_events_day', '8',
   'multiple_line_event', 'N',
-  'primary_key_column', 'ID',
   'responsive_list_view', 'Y',
   'show_time', 'N',
   'show_tooltip', 'Y',

@@ -20,6 +20,7 @@ wwv_flow_imp_page.create_page(
 ,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
+,p_page_component_map=>'18'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(70063213176283010)
@@ -52,7 +53,7 @@ wwv_flow_imp_page.create_page_plug(
 '    ds_description,',
 '    ds_created,',
 '    ds_updated,',
-'    P2S_IS_OWNER,',
+unistr('    case when P2S_IS_OWNER then ''\0422\0430\043A'' when not P2S_IS_OWNER then ''\041D\0456''  else ''\041D\0435\0432\0438\0437\043D\0430\0447\0435\043D\043E'' end P2S_IS_OWNER,'),
 '    decode(ds_id,:P302_DS_ID_CURR,1,0) curr_ds',
 'FROM',
 '    REHAB_DRUG_STORAGES, REHAB_PATIENT2STORAGES',
@@ -186,12 +187,12 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_available_clientside=>'N'
 );
 wwv_flow_imp_page.create_worksheet_column(
- p_id=>wwv_flow_imp.id(68079715241157015)
+ p_id=>wwv_flow_imp.id(70893510235852021)
 ,p_db_column_name=>'P2S_IS_OWNER'
-,p_display_order=>70
-,p_column_identifier=>'G'
-,p_column_label=>unistr('\041F\043E\0442\043E\0447\043D\0438\0439 \043F\0430\0446\0456\0454\043D\0442 \0432\043B\0430\0441\043D\0438\043A')
-,p_column_type=>'BOOLEAN'
+,p_display_order=>90
+,p_column_identifier=>'I'
+,p_column_label=>unistr('\0412\043B\0430\0441\043D\0438\043A')
+,p_column_type=>'STRING'
 ,p_heading_alignment=>'LEFT'
 ,p_use_as_row_header=>'N'
 ,p_available_clientside=>'N'
@@ -203,7 +204,7 @@ wwv_flow_imp_page.create_worksheet_rpt(
 ,p_report_alias=>'primary'
 ,p_status=>'PUBLIC'
 ,p_is_default=>'Y'
-,p_report_columns=>'DS_NAME:DS_DESCRIPTION:DS_CREATED:DS_UPDATED:P2S_IS_OWNER'
+,p_report_columns=>'DS_NAME:DS_DESCRIPTION:DS_CREATED:DS_UPDATED'
 ,p_sort_column_1=>'DS_NAME'
 ,p_sort_direction_1=>'ASC'
 );
@@ -222,6 +223,22 @@ wwv_flow_imp_page.create_worksheet_condition(
 ,p_highlight_sequence=>10
 ,p_row_font_color=>'#4cff00'
 );
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(70893437883852020)
+,p_button_sequence=>20
+,p_button_plug_id=>wwv_flow_imp.id(68078926659157007)
+,p_button_name=>'AddStorage'
+,p_static_id=>'addstorage'
+,p_show_as_disabled=>false
+,p_button_action=>'REDIRECT_PAGE'
+,p_button_template_options=>'#DEFAULT#'
+,p_button_template_id=>2350584059425431644
+,p_button_image_alt=>unistr('\0414\043E\0434\0430\0442\0438 \0441\043A\0440\0438\043D\044E \0434\043B\044F \043B\0456\043A\0456\0432')
+,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
+,p_button_redirect_url=>'f?p=&APP_ID.:303:&SESSION.::&DEBUG.:303::'
+,p_warn_on_unsaved_changes=>null
+,p_icon_css_classes=>'fa-plus'
+);
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(68079828090157016)
 ,p_name=>'P302_DS_ID_CURR'
@@ -231,6 +248,31 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_HIDDEN'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'value_protected', 'Y')).to_clob
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(68080003992157018)
+,p_name=>'RefreshAfterClose'
+,p_static_id=>'refreshafterclose'
+,p_event_sequence=>10
+,p_triggering_element_type=>'REGION'
+,p_triggering_region_id=>wwv_flow_imp.id(68078926659157007)
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'apexafterclosecanceldialog'
+,p_required_patch=>wwv_flow_imp.id(16869691178504232)
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(68080119811157019)
+,p_event_id=>wwv_flow_imp.id(68080003992157018)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_static_id=>'native-refresh'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(68078926659157007)
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'maintain_pagination', 'N')).to_clob
 );
 wwv_flow_imp.component_end;
 end;

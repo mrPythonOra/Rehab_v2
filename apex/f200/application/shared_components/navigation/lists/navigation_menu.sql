@@ -15,7 +15,7 @@ wwv_flow_imp_shared.create_list(
  p_id=>wwv_flow_imp.id(16870838765504258)
 ,p_name=>'Navigation Menu'
 ,p_static_id=>'navigation-menu'
-,p_version_scn=>'SH256:fFlArbTCWSUGBaDwvV4AHg8jtr-noSmpjZAQOCKdCyI'
+,p_version_scn=>'SH256:2GSv4iaZoDRAmHgxiRQieh_c4diO0saJGqb7mvaQ6MM'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(17056773995505539)
@@ -46,7 +46,7 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_icon=>'fa-toolbox'
 ,p_parent_list_item_id=>wwv_flow_imp.id(29857217938894290)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'302'
+,p_list_item_current_for_pages=>'302,303'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(16885212315504474)
@@ -64,7 +64,6 @@ wwv_flow_imp_shared.create_list_item(
 ,p_static_id=>'inputpills'
 ,p_list_item_link_target=>'f?p=&APP_ID.:101:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-medication-pill'
-,p_parent_list_item_id=>wwv_flow_imp.id(16885212315504474)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'101'
 );
@@ -126,8 +125,9 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_display_sequence=>230
 ,p_list_item_link_text=>unistr('\041A\0430\043B\0435\043D\0434\0430\0440 \043F\0440\0438\0437\043D\0430\0447\0435\043D\043D\044C 2')
 ,p_static_id=>unistr('\043A\0430\043B\0435\043D\0434\0430\0440-\043F\0440\0438\0437\043D\0430\0447\0435\043D\043D\044C-2')
-,p_list_item_link_target=>'f?p=&APP_ID.:404:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_link_target=>'f?p=&APP_ID.:404:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-gantt-chart'
+,p_list_item_disp_cond_type=>'NEVER'
 ,p_parent_list_item_id=>wwv_flow_imp.id(56455649121460212)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'404'

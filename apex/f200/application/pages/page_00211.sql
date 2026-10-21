@@ -485,7 +485,7 @@ wwv_flow_imp_page.create_worksheet_rpt(
 ,p_status=>'PUBLIC'
 ,p_is_default=>'Y'
 ,p_display_rows=>10
-,p_report_columns=>'TR_TYPE:TR_START:TR_END:TR_DISTANCE_LENGTH:TR_STEPS:TR_PULSE_AVG:TR_PULSE_MIN:TR_PULSE_MAX:TR_DESCR:REAL_DISTANCE:REAL_STEP_LENGTH:REAL_SPEED'
+,p_report_columns=>'TR_TYPE:TR_START:TR_END:TR_DISTANCE_LENGTH:REAL_DISTANCE:REAL_SPEED:TR_STEPS:REAL_STEP_LENGTH:TR_PULSE_AVG:TR_PULSE_MIN:TR_PULSE_MAX:TR_DESCR'
 ,p_sort_column_1=>'TR_START'
 ,p_sort_direction_1=>'DESC'
 ,p_break_on=>'TR_TYPE'
@@ -887,7 +887,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
 ,p_button_redirect_url=>'f?p=&APP_ID.:212:&SESSION.::&DEBUG.::P212_TR_ID:'
 ,p_warn_on_unsaved_changes=>null
-,p_icon_css_classes=>'fa-clipboard-new'
+,p_icon_css_classes=>'fa-plus'
 ,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
 );
 wwv_flow_imp.component_end;

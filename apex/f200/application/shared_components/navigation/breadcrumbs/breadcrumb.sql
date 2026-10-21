@@ -101,6 +101,14 @@ wwv_flow_imp_shared.create_menu_option(
 ,p_page_id=>402
 );
 wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(70921632294611456)
+,p_parent_id=>wwv_flow_imp.id(70063704943283017)
+,p_short_name=>unistr('\0421\043A\0440\0438\043D\044F \0434\043B\044F \043B\0456\043A\0456\0432')
+,p_static_id=>'storage'
+,p_link=>'f?p=&APP_ID.:303:&SESSION.::&DEBUG.:::'
+,p_page_id=>303
+);
+wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(29852904301571877)
 ,p_parent_id=>wwv_flow_imp.id(16870554490504254)
 ,p_short_name=>unistr('\0422\0440\0435\043D\0443\0432\0430\043D\043D\044F')

@@ -13,8 +13,8 @@ wwv_flow_imp.component_begin (
 );
 wwv_flow_imp_page.create_page(
  p_id=>104
-,p_name=>'ConsumeMedications'
-,p_alias=>'CONSUMEMEDICATIONS'
+,p_name=>'SortMedications'
+,p_alias=>'SORTMEDICATIONS'
 ,p_step_title=>unistr('\0421\043E\0440\0442\0443\0432\0430\043D\043D\044F \043C\0435\0434\0456\043A\0430\043C\0435\043D\0442\0456\0432')
 ,p_autocomplete_on_off=>'OFF'
 ,p_step_template=>4073832297226169690
@@ -80,7 +80,7 @@ wwv_flow_imp_page.create_report_columns(
  p_id=>wwv_flow_imp.id(68057565541740603)
 ,p_query_column_id=>8
 ,p_column_alias=>'APP_PAGE'
-,p_column_display_sequence=>80
+,p_column_display_sequence=>100
 ,p_hidden_column=>'Y'
 ,p_derived_column=>'N'
 );
@@ -88,7 +88,7 @@ wwv_flow_imp_page.create_report_columns(
  p_id=>wwv_flow_imp.id(68057362930740601)
 ,p_query_column_id=>6
 ,p_column_alias=>'BAGECOL'
-,p_column_display_sequence=>60
+,p_column_display_sequence=>80
 ,p_hidden_column=>'Y'
 ,p_derived_column=>'N'
 );
@@ -96,7 +96,7 @@ wwv_flow_imp_page.create_report_columns(
  p_id=>wwv_flow_imp.id(68057476486740602)
 ,p_query_column_id=>7
 ,p_column_alias=>'BAGELABEL'
-,p_column_display_sequence=>70
+,p_column_display_sequence=>90
 ,p_hidden_column=>'Y'
 ,p_derived_column=>'N'
 );
@@ -104,7 +104,7 @@ wwv_flow_imp_page.create_report_columns(
  p_id=>wwv_flow_imp.id(68058072928740608)
 ,p_query_column_id=>13
 ,p_column_alias=>'CPTR_ID'
-,p_column_display_sequence=>130
+,p_column_display_sequence=>150
 ,p_hidden_column=>'Y'
 ,p_derived_column=>'N'
 );
@@ -112,7 +112,7 @@ wwv_flow_imp_page.create_report_columns(
  p_id=>wwv_flow_imp.id(65080438553556949)
 ,p_query_column_id=>4
 ,p_column_alias=>'DATA1'
-,p_column_display_sequence=>40
+,p_column_display_sequence=>60
 ,p_hidden_column=>'Y'
 ,p_display_as=>'WITHOUT_MODIFICATION'
 ,p_derived_column=>'N'
@@ -121,7 +121,7 @@ wwv_flow_imp_page.create_report_columns(
  p_id=>wwv_flow_imp.id(65080563028556950)
 ,p_query_column_id=>5
 ,p_column_alias=>'DATA2'
-,p_column_display_sequence=>50
+,p_column_display_sequence=>70
 ,p_column_heading=>unistr('\041E\043F\0438\0441')
 ,p_heading_alignment=>'LEFT'
 ,p_disable_sort_column=>'N'
@@ -133,7 +133,7 @@ wwv_flow_imp_page.create_report_columns(
  p_id=>wwv_flow_imp.id(68058585407740613)
 ,p_query_column_id=>16
 ,p_column_alias=>'DOWN'
-,p_column_display_sequence=>160
+,p_column_display_sequence=>30
 ,p_column_heading=>unistr('\0412\043D\0438\0437')
 ,p_column_link=>'f?p=&APP_ID.:104:&SESSION.::&DEBUG.::P104_SORTDIR,P104_PRD_ID:DOWN,#PRD_ID#'
 ,p_column_linktext=>'#DOWN#'
@@ -147,7 +147,7 @@ wwv_flow_imp_page.create_report_columns(
  p_id=>wwv_flow_imp.id(68057681441740604)
 ,p_query_column_id=>9
 ,p_column_alias=>'DRU_ID'
-,p_column_display_sequence=>90
+,p_column_display_sequence=>110
 ,p_hidden_column=>'Y'
 ,p_derived_column=>'N'
 );
@@ -155,7 +155,7 @@ wwv_flow_imp_page.create_report_columns(
  p_id=>wwv_flow_imp.id(68057787389740605)
 ,p_query_column_id=>10
 ,p_column_alias=>'DR_ID'
-,p_column_display_sequence=>100
+,p_column_display_sequence=>120
 ,p_hidden_column=>'Y'
 ,p_derived_column=>'N'
 );
@@ -171,7 +171,7 @@ wwv_flow_imp_page.create_report_columns(
  p_id=>wwv_flow_imp.id(65080285835556947)
 ,p_query_column_id=>2
 ,p_column_alias=>'MAINLABEL'
-,p_column_display_sequence=>20
+,p_column_display_sequence=>40
 ,p_column_heading=>unistr('\041C\0435\0434\0456\043A\0430\043C\0435\043D\0442')
 ,p_heading_alignment=>'LEFT'
 ,p_disable_sort_column=>'N'
@@ -182,7 +182,7 @@ wwv_flow_imp_page.create_report_columns(
  p_id=>wwv_flow_imp.id(68057926409740607)
 ,p_query_column_id=>12
 ,p_column_alias=>'PRD_ID'
-,p_column_display_sequence=>120
+,p_column_display_sequence=>140
 ,p_hidden_column=>'Y'
 ,p_derived_column=>'N'
 );
@@ -190,7 +190,7 @@ wwv_flow_imp_page.create_report_columns(
  p_id=>wwv_flow_imp.id(68057880731740606)
 ,p_query_column_id=>11
 ,p_column_alias=>'PR_ID'
-,p_column_display_sequence=>110
+,p_column_display_sequence=>130
 ,p_hidden_column=>'Y'
 ,p_derived_column=>'N'
 );
@@ -198,7 +198,7 @@ wwv_flow_imp_page.create_report_columns(
  p_id=>wwv_flow_imp.id(65080384804556948)
 ,p_query_column_id=>3
 ,p_column_alias=>'SUBLABEL'
-,p_column_display_sequence=>30
+,p_column_display_sequence=>50
 ,p_column_heading=>unistr('\0421\043F\043E\0441\0456\0431 \0441\043F\043E\0436\0438\0432\0430\043D\043D\044F')
 ,p_heading_alignment=>'LEFT'
 ,p_disable_sort_column=>'N'
@@ -210,7 +210,7 @@ wwv_flow_imp_page.create_report_columns(
  p_id=>wwv_flow_imp.id(68058459989740612)
 ,p_query_column_id=>15
 ,p_column_alias=>'UP'
-,p_column_display_sequence=>150
+,p_column_display_sequence=>20
 ,p_column_heading=>unistr('\0412\0433\043E\0440\0443')
 ,p_column_link=>'f?p=&APP_ID.:104:&SESSION.::&DEBUG.::P104_SORTDIR,P104_PRD_ID:UP,#PRD_ID#'
 ,p_column_linktext=>'#UP#'
@@ -245,8 +245,6 @@ wwv_flow_imp_page.create_page_item(
 ,p_name=>'P104_TIME_PERIOD_ID'
 ,p_item_sequence=>10
 ,p_item_plug_id=>wwv_flow_imp.id(112106234804160769)
-,p_item_default=>'select min(TP_ID) from V$REHAB_TIME_PERIODS_AVAILABLE where systimestamp between TP_START_TIME_DT_CURR and TP_END_TIME_DT_CURR'
-,p_item_default_type=>'SQL_QUERY'
 ,p_prompt=>'Time Period Id'
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_RADIOGROUP'
@@ -260,8 +258,25 @@ wwv_flow_imp_page.create_page_item(
   'page_action_on_selection', 'SUBMIT')).to_clob
 );
 wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(68058902018740617)
+ p_id=>wwv_flow_imp.id(68080206062157020)
 ,p_process_sequence=>10
+,p_process_point=>'BEFORE_HEADER'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'Init'
+,p_static_id=>'init'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'begin',
+'  if :P104_TIME_PERIOD_ID is null then',
+'    select min(TP_ID) into :P104_TIME_PERIOD_ID',
+'      from V$REHAB_TIME_PERIODS_AVAILABLE where systimestamp between TP_START_TIME_DT_CURR and TP_END_TIME_DT_CURR;',
+'  end if;',
+'end;'))
+,p_process_clob_language=>'PLSQL'
+,p_internal_uid=>68080206062157020
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(68058902018740617)
+,p_process_sequence=>20
 ,p_process_point=>'BEFORE_HEADER'
 ,p_process_type=>'NATIVE_PLSQL'
 ,p_process_name=>'Sort'

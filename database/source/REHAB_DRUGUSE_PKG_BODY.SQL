@@ -159,6 +159,7 @@
     l_min       pls_integer;
     l_max       pls_integer;
   begin
+    --REHAB_LOGGING_PKG.logmsg($$PLSQL_UNIT, $$PLSQL_LINE,'p_tp_id: "%p", p_prd_id: "%p", p_dir: "%p".',p_tp_id,p_prd_id,p_dir);
     for i in (select PRD_ID, rownum rn from
              (select d.PRD_ID
                 from V$REHAB_CONSUME_DATA d, V$REHAB_TIME_PERIODS tp
@@ -171,6 +172,7 @@
       l_id(i.PRD_ID) := i.rn*10;
       if l_min is null then l_min := i.rn*10; end if;
       l_max := i.rn*10;
+      --REHAB_LOGGING_PKG.logmsg($$PLSQL_UNIT, $$PLSQL_LINE,'l_min: %p,l_max: %p',l_min,l_max);
     end loop;
 
     if p_dir = 'UP' and l_id(p_prd_id) = l_min or p_dir = 'DOWN' and l_id(p_prd_id) = l_max then

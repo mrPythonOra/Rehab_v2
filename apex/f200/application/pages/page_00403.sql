@@ -41,7 +41,8 @@ wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(819556582986688847)
 ,p_plug_name=>'Search'
 ,p_static_id=>'search'
-,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_title=>unistr('\0424\0456\043B\044C\0442\0440\0443\0432\0430\0442\0438')
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
 ,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
@@ -226,7 +227,7 @@ unistr('   nvl2(WS_NAME,''\0414\0456\044E\0447\0430 \0440\0435\0447\043E\0432\04
 ' p.endDateExclusive = false;',
 '}'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'additional_calendar_views', 'list:navigation',
+  'additional_calendar_views', 'navigation',
   'calendar_export', 'ICAL',
   'css_class', 'CSS_CLASS',
   'display_column', 'DRUG',
