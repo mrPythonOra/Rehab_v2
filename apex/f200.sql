@@ -33,7 +33,7 @@ prompt APPLICATION 200 - Rehabilitation 2.0
 -- Application Export:
 --   Application:     200
 --   Name:            Rehabilitation 2.0
---   Date and Time:   15:32 Wednesday October 21, 2026
+--   Date and Time:   16:49 Wednesday October 21, 2026
 --   Exported By:     REHAB_V2
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -136,7 +136,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_04=>'YYYY-MM-DD HH24:MI:SS'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>2461288113614
-,p_version_scn=>'50679846508039'
+,p_version_scn=>'50679858178685'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -9579,8 +9579,8 @@ prompt --application/pages/page_00101
 begin
 wwv_flow_imp_page.create_page(
  p_id=>101
-,p_name=>'ConsumeMedications'
-,p_alias=>'CONSMED'
+,p_name=>'MedicationsToConsume'
+,p_alias=>'MEDTOCONSUME'
 ,p_step_title=>unistr('\041F\0440\0438\0439\043E\043C \0442\0430\0431\043B\0435\0442\043E\043A')
 ,p_autocomplete_on_off=>'OFF'
 ,p_step_template=>4073832297226169690

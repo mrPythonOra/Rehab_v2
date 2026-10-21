@@ -13,8 +13,8 @@ wwv_flow_imp.component_begin (
 );
 wwv_flow_imp_page.create_page(
  p_id=>101
-,p_name=>'ConsumeMedications'
-,p_alias=>'CONSMED'
+,p_name=>'MedicationsToConsume'
+,p_alias=>'MEDTOCONSUME'
 ,p_step_title=>unistr('\041F\0440\0438\0439\043E\043C \0442\0430\0431\043B\0435\0442\043E\043A')
 ,p_autocomplete_on_off=>'OFF'
 ,p_step_template=>4073832297226169690

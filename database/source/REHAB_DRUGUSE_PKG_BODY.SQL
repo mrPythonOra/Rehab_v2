@@ -48,7 +48,9 @@
                  and (CPTR_START_TIME_DT_GDT >= TP_START_TIME_DT_GDT and CPTR_START_TIME_DT_GDT < TP_END_TIME_DT_GDT or
                       CPTR_END_TIME_DT_GDT   >= TP_START_TIME_DT_GDT and CPTR_END_TIME_DT_GDT   < TP_END_TIME_DT_GDT)
                  and d.PRD_DR_ID = r.DR_ID(+)
-               order by case when p_sortbyconsumed then decode(d.DRU_CONSUMED,null,-1e6,PRD_SORT_ORDER) else PRD_SORT_ORDER end nulls last)
+               order by --case when p_sortbyconsumed then decode(d.DRU_CONSUMED,null,-1e6,PRD_SORT_ORDER) else PRD_SORT_ORDER end nulls last
+                        case when p_sortbyconsumed then d.DRU_CONSUMED else systimestamp end nulls first,PRD_SORT_ORDER
+               )
     loop
         pipe row (rehab_druguse_dashboard_rec(
            id        => i.PRD_ID,           --     id           number,
@@ -90,7 +92,7 @@
            bagelabel => '', --bagelabel    VARCHAR2(4000),
            app_page  => null,           -- app_page     number,
            dru_id    => i.DRU_ID,
-           dr_id     => i.PR_DR_ID,           -- dr_id        number,
+           dr_id     => i.PRD_DR_ID,           -- dr_id        number,
            pr_id     => i.PR_ID,           -- pr_id        number,
            prd_id    => i.PRD_ID,           -- prr_id       number,
            cptr_id   => i.PRD_CPTR_ID,           -- cptr_id      number,
@@ -109,7 +111,7 @@
   is
   begin
     INSERT INTO rehab_drug_uses
-       (dru_id,
+       (  dru_id,
           dru_prd_id,  dru_pr_id,
           dru_pat_id,
           dru_cptr_id,  dru_dr_id,
