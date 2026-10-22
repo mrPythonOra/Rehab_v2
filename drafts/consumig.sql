@@ -406,6 +406,15 @@ fa-minus-square-o
 fa-remove
 fa-person-running-fast
 
+fa-trash-o  del
+fa-plus     add
+fa-table-plus create n add
+fa-envelope-plus create n close
+fa-plus create
+fa-save save
+fa-save-as save n close
+fa-person-running-fast cancel
+
 declare
   l_time_int number;
 begin

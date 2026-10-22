@@ -113,7 +113,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_condition=>':P303_DS_ID is not null and :P303_P2S_IS_OWNER = ''TRUE'''
 ,p_button_condition2=>'PLSQL'
 ,p_button_condition_type=>'EXPRESSION'
-,p_icon_css_classes=>'fa-minus-square-o'
+,p_icon_css_classes=>'fa-trash-o'
 ,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
 ,p_database_action=>'DELETE'
 );

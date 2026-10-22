@@ -65,7 +65,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_data_type=>'NUMBER'
 ,p_item_sequence=>30
 ,p_item_plug_id=>wwv_flow_imp.id(886836087492535059)
-,p_prompt=>unistr('\041C\0435\0434\0456\043A\0430\043C\0435\043D\0442')
+,p_prompt=>unistr('\041C\0435\0434\0438\043A\0430\043C\0435\043D\0442')
 ,p_source=>'DR_ID'
 ,p_source_type=>'FACET_COLUMN'
 ,p_display_as=>'NATIVE_CHECKBOX'

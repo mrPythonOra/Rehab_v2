@@ -244,6 +244,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_column_linktext=>'#MT_TAKEN#'
 ,p_column_type=>'DATE'
 ,p_heading_alignment=>'LEFT'
+,p_format_mask=>'&APP_DTFMT_SHORT_T.'
 ,p_tz_dependent=>'N'
 ,p_use_as_row_header=>'N'
 ,p_available_clientside=>'N'

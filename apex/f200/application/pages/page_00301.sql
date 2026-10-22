@@ -251,7 +251,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_db_column_name=>'DR_NAME'
 ,p_display_order=>110
 ,p_column_identifier=>'J'
-,p_column_label=>unistr('\041D\0430\0437\0432\0430 \043C\0435\0434\0456\043A\0430\043C\0435\043D\0442\0443')
+,p_column_label=>unistr('\041D\0430\0437\0432\0430 \043C\0435\0434\0438\043A\0430\043C\0435\043D\0442\0443')
 ,p_column_type=>'STRING'
 ,p_heading_alignment=>'LEFT'
 ,p_use_as_row_header=>'N'

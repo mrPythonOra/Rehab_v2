@@ -64,9 +64,11 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_03=>'YYYY-Mon-DD'
 ,p_substitution_string_04=>'APP_DTFMT_FULL_T'
 ,p_substitution_value_04=>'YYYY-MM-DD HH24:MI:SS'
+,p_substitution_string_05=>'APP_DTFMT_MON_T'
+,p_substitution_value_05=>'YYYY-Mon-DD HH24:MI'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>2461288113614
-,p_version_scn=>'50679858178685'
+,p_version_scn=>'50680060832940'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'

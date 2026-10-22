@@ -56,7 +56,7 @@ wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(180336723635976294)
 ,p_plug_name=>'Details'
 ,p_static_id=>'details'
-,p_title=>unistr('\041C\0435\0434\0456\043A\0430\043C\0435\043D\0442\0438 \0432 \043F\0440\0438\0437\043D\0430\0447\0435\043D\043D\0456')
+,p_title=>unistr('\041C\0435\0434\0438\043A\0430\043C\0435\043D\0442\0438 \0432 \043F\0440\0438\0437\043D\0430\0447\0435\043D\043D\0456')
 ,p_parent_plug_id=>wwv_flow_imp.id(180337818539976305)
 ,p_region_template_options=>'#DEFAULT#:t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc:margin-top-lg'
 ,p_plug_template=>2102002977963900996
@@ -159,7 +159,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_db_column_name=>'PR_DR_ID'
 ,p_display_order=>30
 ,p_column_identifier=>'C'
-,p_column_label=>unistr('\041C\0435\0434\0456\043A\0430\043C\0435\043D\0442')
+,p_column_label=>unistr('\041C\0435\0434\0438\043A\0430\043C\0435\043D\0442')
 ,p_column_type=>'NUMBER'
 ,p_display_text_as=>'LOV_ESCAPE_SC'
 ,p_heading_alignment=>'RIGHT'

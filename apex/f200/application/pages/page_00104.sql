@@ -172,7 +172,7 @@ wwv_flow_imp_page.create_report_columns(
 ,p_query_column_id=>2
 ,p_column_alias=>'MAINLABEL'
 ,p_column_display_sequence=>40
-,p_column_heading=>unistr('\041C\0435\0434\0456\043A\0430\043C\0435\043D\0442')
+,p_column_heading=>unistr('\041C\0435\0434\0438\043A\0430\043C\0435\043D\0442')
 ,p_heading_alignment=>'LEFT'
 ,p_disable_sort_column=>'N'
 ,p_derived_column=>'N'
