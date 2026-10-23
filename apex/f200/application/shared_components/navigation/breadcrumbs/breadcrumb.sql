@@ -56,6 +56,14 @@ wwv_flow_imp_shared.create_menu_option(
 ,p_page_id=>222
 );
 wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(73129671037751507)
+,p_parent_id=>wwv_flow_imp.id(29858227656894296)
+,p_short_name=>unistr('\0412\0438\0442\0440\0430\0442\0438')
+,p_static_id=>'expences'
+,p_link=>'f?p=&APP_ID.:305:&SESSION.::&DEBUG.:::'
+,p_page_id=>305
+);
+wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(16870554490504254)
 ,p_short_name=>unistr('\0414\043E\043C\0456\0432\043A\0430')
 ,p_static_id=>'home'

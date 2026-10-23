@@ -435,3 +435,21 @@ end;
 /
 
 select substr(:a1,1,instr(:a1,':')-1),substr(:a1,instr(:a1,':')+1);
+
+alter TABLE REHAB_DRUG_ACCOUNTINGS modify
+   (
+    DA_ORDER_TYPE number not null);
+update REHAB_DRUG_ACCOUNTINGS set DA_ORDER_TYPE = null;
+
+create table REHAB_ORDER_TYPES
+   (OT_ID NUMBER,
+    OT_NAME VARCHAR2(128) NOT NULL ENABLE,
+    OT_DESCRIPTION VARCHAR2(4000)
+   );
+insert into REHAB_ORDER_TYPES (OT_ID, OT_NAME, OT_DESCRIPTION) values (1, 'Залишки', 'Внесення існуючих залишків ліків у сховищі');
+insert into REHAB_ORDER_TYPES (OT_ID, OT_NAME, OT_DESCRIPTION) values (2, 'Закупівля', 'Закупівля ліків для сховища');
+insert into REHAB_ORDER_TYPES (OT_ID, OT_NAME, OT_DESCRIPTION) values (3, 'Переміщення', 'Переміщення ліків між сховищами');
+alter table REHAB_ORDER_TYPES add constraint PK_REHAB_ORDER_TYPES primary key (OT_ID);
+alter TABLE REHAB_DRUG_ACCOUNTINGS add constraint FK_REHAB_DRUG_ACCOUNTINGS_ORDER_TYPE FOREIGN KEY (DA_ORDER_TYPE)
+    REFERENCES REHAB_ORDER_TYPES (OT_ID) ENABLE;
+select to_char(trunc(sysdate,'IW'))

@@ -57,6 +57,7 @@
         delete from REHAB_PATIENTS;commit;
         delete from REHAB_TENANTS;commit;
         delete from REHAB_TIME_PERIODS;commit;
+        delete from REHAB_ORDER_TYPES; commit;
         --delete from apex_stored_states;commit;
         delete from REHAB_CONFIGS;commit;
         commit;
@@ -563,14 +564,18 @@ execute immediate 'drop INDEX if exists IDX_UQ_REHAB_PRESCRIPTIONS_PRR_WS_DR';
         from reabilitation.patient2storage;
         commit;
         --******************************************************************************
+        insert into REHAB_ORDER_TYPES (OT_ID, OT_NAME, OT_DESCRIPTION) values (1, 'Залишки', 'Внесення існуючих залишків ліків у сховищі');
+        insert into REHAB_ORDER_TYPES (OT_ID, OT_NAME, OT_DESCRIPTION) values (2, 'Закупівля', 'Закупівля ліків для сховища');
+        insert into REHAB_ORDER_TYPES (OT_ID, OT_NAME, OT_DESCRIPTION) values (3, 'Переміщення', 'Переміщення ліків між сховищами');
+        --******************************************************************************
         --prompt rehab_drug_accountings
         insert into REHAB_DRUG_ACCOUNTINGS
          (da_id, DA_DS_ID, DA_DR_ID,   DA_ORDER_TYPE, DA_QUANTITY, DA_ENTIRY_WEIGHT, DA_COST, DA_PURCHASED, DA_CHECK_POINT_DT, DA_PRR_ID, DA_PR_ID, DA_PRATR_ID, DA_WS_ID, DA_BEST_BEFORE)
         select
           da_id, DA_DS_ID, DA_DRUG_ID,
-          case DA_ORDER_TYPE when 'Remaining' then 'Залишок'
-                             when 'Purchasing' then 'Закупка'
-                             else 'N/A' end DA_ORDER_TYPE,
+          case DA_ORDER_TYPE when 'Remaining' then 1
+                             when 'Purchasing' then 2
+                             else 0 end DA_ORDER_TYPE,
           DA_QUANTITY, DA_ENTIRY_WEIGHT, DA_COST, DA_PURCHASED, CHECK_POINT_DT,    DA_PRR_ID,    PR_ID,    PRATR_ID, PR_WS_ID, DA_BEST_BEFORE
         from reabilitation.drug_accounting a, REHAB_PRESCRIPTIONS p, REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES r
         where a.DA_PRR_ID = p.PR_PRR_ID and a.DA_DRUG_ID=p.PR_DR_ID and p.PR_ID=r.PRATR_PR_ID_ORIG order by 1;

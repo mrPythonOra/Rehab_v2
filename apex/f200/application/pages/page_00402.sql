@@ -151,11 +151,14 @@ wwv_flow_imp_page.create_page_plug(
 );
 wwv_flow_imp_page.create_worksheet(
  p_id=>wwv_flow_imp.id(61134913501437915)
+,p_allow_save_rpt_public=>'Y'
 ,p_pagination_type=>'ROWS_X_TO_Y'
 ,p_pagination_display_pos=>'BOTTOM_RIGHT'
+,p_show_display_row_count=>'Y'
 ,p_report_list_mode=>'TABS'
 ,p_lazy_loading=>false
 ,p_show_detail_link=>'C'
+,p_show_rows_per_page=>'N'
 ,p_show_notify=>'Y'
 ,p_download_formats=>'CSV:HTML:XLSX:PDF'
 ,p_enable_mail_download=>'Y'
@@ -406,9 +409,12 @@ wwv_flow_imp_page.create_page_plug(
 );
 wwv_flow_imp_page.create_worksheet(
  p_id=>wwv_flow_imp.id(61097811857189545)
+,p_allow_save_rpt_public=>'Y'
+,p_show_display_row_count=>'Y'
 ,p_report_list_mode=>'TABS'
 ,p_lazy_loading=>false
 ,p_show_detail_link=>'C'
+,p_show_rows_per_page=>'N'
 ,p_show_notify=>'Y'
 ,p_download_formats=>'CSV:HTML:XLSX:PDF'
 ,p_enable_mail_download=>'Y'
@@ -633,7 +639,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_name=>'AddTimeRange'
 ,p_static_id=>'addtimerange'
 ,p_show_as_disabled=>false
-,p_button_action=>'DEFINED_BY_DA'
+,p_button_action=>'DEFINED_BY_DA_ACTION'
 ,p_button_template_options=>'#DEFAULT#'
 ,p_button_template_id=>2350584059425431644
 ,p_button_image_alt=>unistr('\0414\043E\0434\0430\0442\0438 \043F\0435\0440\0456\043E\0434 \0447\0430\0441\0443 \043F\0440\0438\0439\043E\043C\0443')
@@ -642,6 +648,108 @@ wwv_flow_imp_page.create_page_button(
 ,p_icon_css_classes=>'fa-plus'
 ,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
 );
+wwv_flow_imp_page.create_component_da_action(
+ p_id=>wwv_flow_imp.id(64503261245921021)
+,p_button_id=>wwv_flow_imp.id(64502024511921009)
+,p_action_sequence=>110
+,p_name=>'HideDelTimeRangeButton'
+,p_action=>'NATIVE_HIDE'
+,p_static_id=>'hidedelprescriptionbutton'
+,p_affected_elements_type=>'BUTTON'
+,p_affected_button_id=>wwv_flow_imp.id(64504283510921031)
+);
+wwv_flow_imp_page.create_component_da_action(
+ p_id=>wwv_flow_imp.id(64503191669921020)
+,p_button_id=>wwv_flow_imp.id(64502024511921009)
+,p_action_sequence=>100
+,p_name=>'HideMyself'
+,p_action=>'NATIVE_HIDE'
+,p_static_id=>'native-hide'
+,p_affected_elements_type=>'BUTTON'
+,p_affected_button_id=>wwv_flow_imp.id(64502024511921009)
+);
+wwv_flow_imp_page.create_component_da_action(
+ p_id=>wwv_flow_imp.id(64502864804921017)
+,p_button_id=>wwv_flow_imp.id(64502024511921009)
+,p_action_sequence=>70
+,p_name=>'HideTimeRangeGrid'
+,p_action=>'NATIVE_HIDE'
+,p_static_id=>'native-refresh_1'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(61096464024189531)
+,p_build_option_id=>wwv_flow_imp.id(16869691178504232)
+);
+wwv_flow_imp_page.create_component_da_action(
+ p_id=>wwv_flow_imp.id(64502959034921018)
+,p_button_id=>wwv_flow_imp.id(64502024511921009)
+,p_action_sequence=>80
+,p_name=>'HideTimeRangeForm'
+,p_action=>'NATIVE_HIDE'
+,p_static_id=>'native-refresh_1_1'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(61094799122189514)
+,p_build_option_id=>wwv_flow_imp.id(16869691178504232)
+);
+wwv_flow_imp_page.create_component_da_action(
+ p_id=>wwv_flow_imp.id(64503016351921019)
+,p_button_id=>wwv_flow_imp.id(64502024511921009)
+,p_action_sequence=>90
+,p_name=>'HideDetailForm'
+,p_action=>'NATIVE_HIDE'
+,p_static_id=>'native-refresh_1_1_1'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(61095538974189522)
+);
+wwv_flow_imp_page.create_component_da_action(
+ p_id=>wwv_flow_imp.id(64502261556921011)
+,p_button_id=>wwv_flow_imp.id(64502024511921009)
+,p_action_sequence=>10
+,p_name=>'SetNullTimeRangeForm'
+,p_action=>'NATIVE_SET_VALUE'
+,p_static_id=>'native-set-value'
+,p_affected_elements_type=>'ITEM'
+,p_affected_elements=>'P402_PRATR_ID,P402_PRATR_PR_ID,P402_PRATR_CP_ID,P402_PRATR_ACTUAL_START,P402_PRATR_ACTUAL_END,P402_PRATR_NOTES'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'suppress_change_event', 'N',
+  'type', 'STATIC_ASSIGNMENT')).to_clob
+,p_stop_execution_on_error=>true
+,p_wait_for_result=>true
+);
+wwv_flow_imp_page.create_component_da_action(
+ p_id=>wwv_flow_imp.id(64502742289921016)
+,p_button_id=>wwv_flow_imp.id(64502024511921009)
+,p_action_sequence=>60
+,p_name=>'ShowTimeRangeForm'
+,p_action=>'NATIVE_SHOW'
+,p_static_id=>'refreshprescriptionform_1'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(61094799122189514)
+);
+wwv_flow_imp_page.create_component_da_action(
+ p_id=>wwv_flow_imp.id(64502333886921012)
+,p_button_id=>wwv_flow_imp.id(64502024511921009)
+,p_action_sequence=>20
+,p_name=>'SetNullCurrVars'
+,p_action=>'NATIVE_SET_VALUE'
+,p_static_id=>'setnullcurrvars'
+,p_affected_elements_type=>'ITEM'
+,p_affected_elements=>'P402_PRATR_ID_CURR,P402_PRD_ID_CURR'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'suppress_change_event', 'N',
+  'type', 'STATIC_ASSIGNMENT')).to_clob
+,p_stop_execution_on_error=>true
+,p_wait_for_result=>true
+);
+wwv_flow_imp_page.create_component_da_action(
+ p_id=>wwv_flow_imp.id(64503345536921022)
+,p_button_id=>wwv_flow_imp.id(64502024511921009)
+,p_action_sequence=>120
+,p_name=>'ShowCancelAddTimeRangeButton'
+,p_action=>'NATIVE_SHOW'
+,p_static_id=>'showcanceladdprescription'
+,p_affected_elements_type=>'BUTTON'
+,p_affected_button_id=>wwv_flow_imp.id(64504464768921033)
+);
 wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(64505228134921041)
 ,p_button_sequence=>50
@@ -649,7 +757,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_name=>'AddDetail'
 ,p_static_id=>'addtimerange_1'
 ,p_show_as_disabled=>false
-,p_button_action=>'DEFINED_BY_DA'
+,p_button_action=>'DEFINED_BY_DA_ACTION'
 ,p_button_template_options=>'#DEFAULT#'
 ,p_button_template_id=>2350584059425431644
 ,p_button_image_alt=>unistr('\0414\043E\0434\0430\0442\0438 \0434\0435\0442\0430\043B\0456')
@@ -659,6 +767,109 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_condition_type=>'ITEM_IS_NOT_NULL'
 ,p_icon_css_classes=>'fa-plus'
 ,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
+);
+wwv_flow_imp_page.create_component_da_action(
+ p_id=>wwv_flow_imp.id(64506140554921050)
+,p_button_id=>wwv_flow_imp.id(64505228134921041)
+,p_action_sequence=>80
+,p_name=>'HideDelDetailButton'
+,p_action=>'NATIVE_HIDE'
+,p_static_id=>'hidedelprescriptionbutton'
+,p_affected_elements_type=>'BUTTON'
+,p_affected_button_id=>wwv_flow_imp.id(65075993748556904)
+);
+wwv_flow_imp_page.create_component_da_action(
+ p_id=>wwv_flow_imp.id(64506045636921049)
+,p_button_id=>wwv_flow_imp.id(64505228134921041)
+,p_action_sequence=>70
+,p_name=>'HideMyself'
+,p_action=>'NATIVE_HIDE'
+,p_static_id=>'native-hide'
+,p_affected_elements_type=>'BUTTON'
+,p_affected_button_id=>wwv_flow_imp.id(64505228134921041)
+);
+wwv_flow_imp_page.create_component_da_action(
+ p_id=>wwv_flow_imp.id(64505780706921046)
+,p_button_id=>wwv_flow_imp.id(64505228134921041)
+,p_action_sequence=>40
+,p_name=>'HideTimeRangeGrid'
+,p_action=>'NATIVE_HIDE'
+,p_static_id=>'native-refresh_1'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(61096464024189531)
+,p_build_option_id=>wwv_flow_imp.id(16869691178504232)
+);
+wwv_flow_imp_page.create_component_da_action(
+ p_id=>wwv_flow_imp.id(64505856215921047)
+,p_button_id=>wwv_flow_imp.id(64505228134921041)
+,p_action_sequence=>50
+,p_name=>'HideTimeRangeForm'
+,p_action=>'NATIVE_HIDE'
+,p_static_id=>'native-refresh_1_1'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(61094799122189514)
+,p_build_option_id=>wwv_flow_imp.id(16869691178504232)
+);
+wwv_flow_imp_page.create_component_da_action(
+ p_id=>wwv_flow_imp.id(64505911562921048)
+,p_button_id=>wwv_flow_imp.id(64505228134921041)
+,p_action_sequence=>60
+,p_name=>'HideDetailForm'
+,p_action=>'NATIVE_HIDE'
+,p_static_id=>'native-refresh_1_1_1'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(61095538974189522)
+,p_build_option_id=>wwv_flow_imp.id(16869691178504232)
+);
+wwv_flow_imp_page.create_component_da_action(
+ p_id=>wwv_flow_imp.id(64505423778921043)
+,p_button_id=>wwv_flow_imp.id(64505228134921041)
+,p_action_sequence=>10
+,p_name=>'SetNullDetailForm'
+,p_action=>'NATIVE_SET_VALUE'
+,p_static_id=>'native-set-value'
+,p_affected_elements_type=>'ITEM'
+,p_affected_elements=>'P402_PRD_ID,P402_PRD_PRATR_ID,P402_PRD_CPTR_ID,P402_PRD_DR_ID,P402_PRD_DOSAGE,P402_PRD_SORT_ORDER,P402_PRD_NOTES'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'suppress_change_event', 'N',
+  'type', 'STATIC_ASSIGNMENT')).to_clob
+,p_stop_execution_on_error=>true
+,p_wait_for_result=>true
+);
+wwv_flow_imp_page.create_component_da_action(
+ p_id=>wwv_flow_imp.id(64505654625921045)
+,p_button_id=>wwv_flow_imp.id(64505228134921041)
+,p_action_sequence=>30
+,p_name=>'ShowDetailForm'
+,p_action=>'NATIVE_SHOW'
+,p_static_id=>'refreshprescriptionform_1'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(61095538974189522)
+);
+wwv_flow_imp_page.create_component_da_action(
+ p_id=>wwv_flow_imp.id(64505595726921044)
+,p_button_id=>wwv_flow_imp.id(64505228134921041)
+,p_action_sequence=>20
+,p_name=>'SetNullCurrVars'
+,p_action=>'NATIVE_SET_VALUE'
+,p_static_id=>'setnullcurrvars'
+,p_affected_elements_type=>'ITEM'
+,p_affected_elements=>'P402_PRD_ID_CURR'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'suppress_change_event', 'N',
+  'type', 'STATIC_ASSIGNMENT')).to_clob
+,p_stop_execution_on_error=>true
+,p_wait_for_result=>true
+);
+wwv_flow_imp_page.create_component_da_action(
+ p_id=>wwv_flow_imp.id(65075699622556901)
+,p_button_id=>wwv_flow_imp.id(64505228134921041)
+,p_action_sequence=>90
+,p_name=>'ShowCancelAddDetailButton'
+,p_action=>'NATIVE_SHOW'
+,p_static_id=>'showcanceladdprescription'
+,p_affected_elements_type=>'BUTTON'
+,p_affected_button_id=>wwv_flow_imp.id(65076021184556905)
 );
 wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(56502751549899878)
@@ -1104,7 +1315,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_name=>'DelPrescription1'
 ,p_static_id=>'update-salary'
 ,p_show_as_disabled=>false
-,p_button_action=>'DEFINED_BY_DA'
+,p_button_action=>'DEFINED_BY_DA_ACTION'
 ,p_button_template_options=>'#DEFAULT#'
 ,p_button_template_id=>2350584059425431644
 ,p_button_image_alt=>unistr('\0412\0438\0434\0430\043B\0438\0442\0438')
@@ -1114,6 +1325,107 @@ wwv_flow_imp_page.create_page_button(
 ,p_icon_css_classes=>'fa-minus-square-o'
 ,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
 ,p_required_patch=>wwv_flow_imp.id(16869691178504232)
+);
+wwv_flow_imp_page.create_component_da_action(
+ p_id=>wwv_flow_imp.id(61877765759921439)
+,p_button_id=>wwv_flow_imp.id(63284212209376376)
+,p_action_sequence=>10
+,p_name=>'DelPrescription'
+,p_action=>'NATIVE_EXECUTE_PLSQL_CODE'
+,p_static_id=>'delprescription'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'items_to_return', 'P402_PR_ID,P402_PR_ID_CURR,P402_PRATR_ID,P402_PRATR_ID_CURR,P402_PRD_ID,P402_PRD_ID_CURR',
+  'items_to_submit', 'P402_PR_ID,P402_PR_ID_CURR,P402_PRATR_ID,P402_PRATR_ID_CURR,P402_PRD_ID,P402_PRD_ID_CURR',
+  'language', 'PLSQL',
+  'plsql_code', wwv_flow_string.join(wwv_flow_t_varchar2(
+    'begin',
+    'raise_application_error(-20000,'':P402_PR_ID_CURR: ''||:P402_PR_ID_CURR||''; :P402_PR_ID: ''||:P402_PR_ID);',
+    'REHAB_PRESCRIPTIONS_PKG.delete_PRESCRIPTION ( ',
+    '    P_PR_ID => :P402_PR_ID_CURR) ; ',
+    '--   :P402_PR_ID := null; ',
+    '--   :P402_PR_ID_CURR := null;',
+    '--   :P402_PRATR_ID_CURR := null;',
+    '--   :P402_PRATR_ID := null;',
+    '--   :P402_PRD_ID_CURR := null;',
+    '--   :P402_PRD_ID := null;  ',
+    '      if :P402_PR_ID_CURR is null then',
+    '          begin',
+    '            select PR_ID into :P402_PR_ID_CURR from REHAB_PRESCRIPTIONS where PR_PRR_ID = :P402_PRR_ID_CURR and rownum = 1;',
+    '          exception',
+    '            when no_data_found then :P402_PR_ID_CURR:=null;',
+    '          end;',
+    '      end if;',
+    '      if :P402_PRATR_ID_CURR is null then',
+    '          begin',
+    '            select PRATR_ID into :P402_PRATR_ID_CURR from REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES where PRATR_PR_ID = :P402_PR_ID_CURR and rownum = 1;',
+    '          exception',
+    '            when no_data_found then :P402_PRATR_ID_CURR:=null;',
+    '          end;  ',
+    '      end if;    ',
+    '      if :P402_PRD_ID_CURR is null then',
+    '          begin',
+    '            select PRD_ID into :P402_PRD_ID_CURR from REHAB_PRESCRIPTIONS_DETAILS where PRD_PRATR_ID = :P402_PRATR_ID_CURR and rownum = 1;',
+    '          exception',
+    '            when no_data_found then :P402_PRD_ID_CURR:=null;',
+    '          end;  ',
+    '      end if;',
+    '      :P402_PR_ID := :P402_PR_ID_CURR;',
+    '      :P402_PRATR_ID := :P402_PRATR_ID_CURR;',
+    '      :P402_PRD_ID := :P402_PRD_ID_CURR;',
+    'end;')),
+  'show_processing', 'N',
+  'suppress_change_event', 'N')).to_clob
+,p_stop_execution_on_error=>true
+,p_wait_for_result=>true
+,p_build_option_id=>wwv_flow_imp.id(16869691178504232)
+);
+wwv_flow_imp_page.create_component_da_action(
+ p_id=>wwv_flow_imp.id(61877914668921441)
+,p_button_id=>wwv_flow_imp.id(63284212209376376)
+,p_action_sequence=>40
+,p_action=>'NATIVE_ALERT'
+,p_static_id=>'native-alert'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'message', unistr('\041F\0440\0438\0437\043D\0430\0447\0435\043D\043D\044F \0432\0438\0434\0430\043B\0435\043D\043E'),
+  'style', 'information',
+  'title', unistr('\0412\0438\0434\0430\043B\0435\043D\043E'))).to_clob
+,p_build_option_id=>wwv_flow_imp.id(16869691178504232)
+);
+wwv_flow_imp_page.create_component_da_action(
+ p_id=>wwv_flow_imp.id(61877848257921440)
+,p_button_id=>wwv_flow_imp.id(63284212209376376)
+,p_action_sequence=>20
+,p_name=>'RefreshPrescriptionGrid'
+,p_action=>'NATIVE_REFRESH'
+,p_static_id=>'native-refresh'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(56472053796627442)
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'maintain_pagination', 'N')).to_clob
+,p_build_option_id=>wwv_flow_imp.id(16869691178504232)
+);
+wwv_flow_imp_page.create_component_da_action(
+ p_id=>wwv_flow_imp.id(61878479056921446)
+,p_button_id=>wwv_flow_imp.id(63284212209376376)
+,p_action_sequence=>30
+,p_name=>'RefreshPrescriptionForm'
+,p_action=>'NATIVE_REFRESH'
+,p_static_id=>'native-refresh_1'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(56470421749627426)
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'maintain_pagination', 'N')).to_clob
+,p_build_option_id=>wwv_flow_imp.id(16869691178504232)
+);
+wwv_flow_imp_page.create_component_da_action(
+ p_id=>wwv_flow_imp.id(63858233329868149)
+,p_button_id=>wwv_flow_imp.id(63284212209376376)
+,p_action_sequence=>50
+,p_name=>'Submit'
+,p_action=>'NATIVE_SUBMIT_PAGE'
+,p_static_id=>'submit'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'show_processing', 'N')).to_clob
 );
 wwv_flow_imp_page.create_page_branch(
  p_id=>wwv_flow_imp.id(56504408598899885)
@@ -2002,127 +2314,6 @@ wwv_flow_imp_page.create_page_validation(
 ,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
 );
 wwv_flow_imp_page.create_page_da_event(
- p_id=>wwv_flow_imp.id(61877624145921438)
-,p_name=>'DelPrescription'
-,p_static_id=>'delprescription'
-,p_event_sequence=>10
-,p_triggering_element_type=>'BUTTON'
-,p_triggering_button_id=>wwv_flow_imp.id(63284212209376376)
-,p_bind_type=>'bind'
-,p_execution_type=>'IMMEDIATE'
-,p_bind_event_type=>'click'
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(61877765759921439)
-,p_event_id=>wwv_flow_imp.id(61877624145921438)
-,p_event_result=>'TRUE'
-,p_action_sequence=>10
-,p_execute_on_page_init=>'N'
-,p_name=>'DelPrescription'
-,p_static_id=>'delprescription'
-,p_action=>'NATIVE_EXECUTE_PLSQL_CODE'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'items_to_return', 'P402_PR_ID,P402_PR_ID_CURR,P402_PRATR_ID,P402_PRATR_ID_CURR,P402_PRD_ID,P402_PRD_ID_CURR',
-  'items_to_submit', 'P402_PR_ID,P402_PR_ID_CURR,P402_PRATR_ID,P402_PRATR_ID_CURR,P402_PRD_ID,P402_PRD_ID_CURR',
-  'language', 'PLSQL',
-  'plsql_code', wwv_flow_string.join(wwv_flow_t_varchar2(
-    'begin',
-    'raise_application_error(-20000,'':P402_PR_ID_CURR: ''||:P402_PR_ID_CURR||''; :P402_PR_ID: ''||:P402_PR_ID);',
-    'REHAB_PRESCRIPTIONS_PKG.delete_PRESCRIPTION ( ',
-    '    P_PR_ID => :P402_PR_ID_CURR) ; ',
-    '--   :P402_PR_ID := null; ',
-    '--   :P402_PR_ID_CURR := null;',
-    '--   :P402_PRATR_ID_CURR := null;',
-    '--   :P402_PRATR_ID := null;',
-    '--   :P402_PRD_ID_CURR := null;',
-    '--   :P402_PRD_ID := null;  ',
-    '      if :P402_PR_ID_CURR is null then',
-    '          begin',
-    '            select PR_ID into :P402_PR_ID_CURR from REHAB_PRESCRIPTIONS where PR_PRR_ID = :P402_PRR_ID_CURR and rownum = 1;',
-    '          exception',
-    '            when no_data_found then :P402_PR_ID_CURR:=null;',
-    '          end;',
-    '      end if;',
-    '      if :P402_PRATR_ID_CURR is null then',
-    '          begin',
-    '            select PRATR_ID into :P402_PRATR_ID_CURR from REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES where PRATR_PR_ID = :P402_PR_ID_CURR and rownum = 1;',
-    '          exception',
-    '            when no_data_found then :P402_PRATR_ID_CURR:=null;',
-    '          end;  ',
-    '      end if;    ',
-    '      if :P402_PRD_ID_CURR is null then',
-    '          begin',
-    '            select PRD_ID into :P402_PRD_ID_CURR from REHAB_PRESCRIPTIONS_DETAILS where PRD_PRATR_ID = :P402_PRATR_ID_CURR and rownum = 1;',
-    '          exception',
-    '            when no_data_found then :P402_PRD_ID_CURR:=null;',
-    '          end;  ',
-    '      end if;',
-    '      :P402_PR_ID := :P402_PR_ID_CURR;',
-    '      :P402_PRATR_ID := :P402_PRATR_ID_CURR;',
-    '      :P402_PRD_ID := :P402_PRD_ID_CURR;',
-    'end;')),
-  'show_processing', 'N',
-  'suppress_change_event', 'N')).to_clob
-,p_wait_for_result=>'Y'
-,p_build_option_id=>wwv_flow_imp.id(16869691178504232)
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(61877914668921441)
-,p_event_id=>wwv_flow_imp.id(61877624145921438)
-,p_event_result=>'TRUE'
-,p_action_sequence=>40
-,p_execute_on_page_init=>'N'
-,p_static_id=>'native-alert'
-,p_action=>'NATIVE_ALERT'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'message', unistr('\041F\0440\0438\0437\043D\0430\0447\0435\043D\043D\044F \0432\0438\0434\0430\043B\0435\043D\043E'),
-  'style', 'information',
-  'title', unistr('\0412\0438\0434\0430\043B\0435\043D\043E'))).to_clob
-,p_build_option_id=>wwv_flow_imp.id(16869691178504232)
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(61877848257921440)
-,p_event_id=>wwv_flow_imp.id(61877624145921438)
-,p_event_result=>'TRUE'
-,p_action_sequence=>20
-,p_execute_on_page_init=>'N'
-,p_name=>'RefreshPrescriptionGrid'
-,p_static_id=>'native-refresh'
-,p_action=>'NATIVE_REFRESH'
-,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(56472053796627442)
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'maintain_pagination', 'N')).to_clob
-,p_build_option_id=>wwv_flow_imp.id(16869691178504232)
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(61878479056921446)
-,p_event_id=>wwv_flow_imp.id(61877624145921438)
-,p_event_result=>'TRUE'
-,p_action_sequence=>30
-,p_execute_on_page_init=>'N'
-,p_name=>'RefreshPrescriptionForm'
-,p_static_id=>'native-refresh_1'
-,p_action=>'NATIVE_REFRESH'
-,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(56470421749627426)
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'maintain_pagination', 'N')).to_clob
-,p_build_option_id=>wwv_flow_imp.id(16869691178504232)
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(63858233329868149)
-,p_event_id=>wwv_flow_imp.id(61877624145921438)
-,p_event_result=>'TRUE'
-,p_action_sequence=>50
-,p_execute_on_page_init=>'N'
-,p_name=>'Submit'
-,p_static_id=>'submit'
-,p_action=>'NATIVE_SUBMIT_PAGE'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'show_processing', 'N')).to_clob
-);
-wwv_flow_imp_page.create_page_da_event(
  p_id=>wwv_flow_imp.id(65077418490556919)
 ,p_name=>'Disable Drug'
 ,p_static_id=>'disable-drug'
@@ -2696,265 +2887,6 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_affected_region_id=>wwv_flow_imp.id(56470421749627426)
 ,p_server_condition_type=>'ITEM_IS_NULL'
 ,p_server_condition_expr1=>'P402_PR_ID_CURR'
-);
-wwv_flow_imp_page.create_page_da_event(
- p_id=>wwv_flow_imp.id(64502122569921010)
-,p_name=>'SetFormToAddTimeRange'
-,p_static_id=>'new_3'
-,p_event_sequence=>30
-,p_triggering_element_type=>'BUTTON'
-,p_triggering_button_id=>wwv_flow_imp.id(64502024511921009)
-,p_bind_type=>'bind'
-,p_execution_type=>'IMMEDIATE'
-,p_bind_event_type=>'click'
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(64503261245921021)
-,p_event_id=>wwv_flow_imp.id(64502122569921010)
-,p_event_result=>'TRUE'
-,p_action_sequence=>110
-,p_execute_on_page_init=>'N'
-,p_name=>'HideDelTimeRangeButton'
-,p_static_id=>'hidedelprescriptionbutton'
-,p_action=>'NATIVE_HIDE'
-,p_affected_elements_type=>'BUTTON'
-,p_affected_button_id=>wwv_flow_imp.id(64504283510921031)
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(64503191669921020)
-,p_event_id=>wwv_flow_imp.id(64502122569921010)
-,p_event_result=>'TRUE'
-,p_action_sequence=>100
-,p_execute_on_page_init=>'N'
-,p_name=>'HideMyself'
-,p_static_id=>'native-hide'
-,p_action=>'NATIVE_HIDE'
-,p_affected_elements_type=>'BUTTON'
-,p_affected_button_id=>wwv_flow_imp.id(64502024511921009)
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(64502864804921017)
-,p_event_id=>wwv_flow_imp.id(64502122569921010)
-,p_event_result=>'TRUE'
-,p_action_sequence=>70
-,p_execute_on_page_init=>'N'
-,p_name=>'HideTimeRangeGrid'
-,p_static_id=>'native-refresh_1'
-,p_action=>'NATIVE_HIDE'
-,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(61096464024189531)
-,p_build_option_id=>wwv_flow_imp.id(16869691178504232)
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(64502959034921018)
-,p_event_id=>wwv_flow_imp.id(64502122569921010)
-,p_event_result=>'TRUE'
-,p_action_sequence=>80
-,p_execute_on_page_init=>'N'
-,p_name=>'HideTimeRangeForm'
-,p_static_id=>'native-refresh_1_1'
-,p_action=>'NATIVE_HIDE'
-,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(61094799122189514)
-,p_build_option_id=>wwv_flow_imp.id(16869691178504232)
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(64503016351921019)
-,p_event_id=>wwv_flow_imp.id(64502122569921010)
-,p_event_result=>'TRUE'
-,p_action_sequence=>90
-,p_execute_on_page_init=>'N'
-,p_name=>'HideDetailForm'
-,p_static_id=>'native-refresh_1_1_1'
-,p_action=>'NATIVE_HIDE'
-,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(61095538974189522)
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(64502261556921011)
-,p_event_id=>wwv_flow_imp.id(64502122569921010)
-,p_event_result=>'TRUE'
-,p_action_sequence=>10
-,p_execute_on_page_init=>'N'
-,p_name=>'SetNullTimeRangeForm'
-,p_static_id=>'native-set-value'
-,p_action=>'NATIVE_SET_VALUE'
-,p_affected_elements_type=>'ITEM'
-,p_affected_elements=>'P402_PRATR_ID,P402_PRATR_PR_ID,P402_PRATR_CP_ID,P402_PRATR_ACTUAL_START,P402_PRATR_ACTUAL_END,P402_PRATR_NOTES'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'suppress_change_event', 'N',
-  'type', 'STATIC_ASSIGNMENT')).to_clob
-,p_wait_for_result=>'Y'
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(64502742289921016)
-,p_event_id=>wwv_flow_imp.id(64502122569921010)
-,p_event_result=>'TRUE'
-,p_action_sequence=>60
-,p_execute_on_page_init=>'N'
-,p_name=>'ShowTimeRangeForm'
-,p_static_id=>'refreshprescriptionform_1'
-,p_action=>'NATIVE_SHOW'
-,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(61094799122189514)
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(64502333886921012)
-,p_event_id=>wwv_flow_imp.id(64502122569921010)
-,p_event_result=>'TRUE'
-,p_action_sequence=>20
-,p_execute_on_page_init=>'N'
-,p_name=>'SetNullCurrVars'
-,p_static_id=>'setnullcurrvars'
-,p_action=>'NATIVE_SET_VALUE'
-,p_affected_elements_type=>'ITEM'
-,p_affected_elements=>'P402_PRATR_ID_CURR,P402_PRD_ID_CURR'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'suppress_change_event', 'N',
-  'type', 'STATIC_ASSIGNMENT')).to_clob
-,p_wait_for_result=>'Y'
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(64503345536921022)
-,p_event_id=>wwv_flow_imp.id(64502122569921010)
-,p_event_result=>'TRUE'
-,p_action_sequence=>120
-,p_execute_on_page_init=>'N'
-,p_name=>'ShowCancelAddTimeRangeButton'
-,p_static_id=>'showcanceladdprescription'
-,p_action=>'NATIVE_SHOW'
-,p_affected_elements_type=>'BUTTON'
-,p_affected_button_id=>wwv_flow_imp.id(64504464768921033)
-);
-wwv_flow_imp_page.create_page_da_event(
- p_id=>wwv_flow_imp.id(64505363032921042)
-,p_name=>'SetFormToAddTimeRange'
-,p_static_id=>'new_3_1'
-,p_event_sequence=>40
-,p_triggering_element_type=>'BUTTON'
-,p_triggering_button_id=>wwv_flow_imp.id(64505228134921041)
-,p_bind_type=>'bind'
-,p_execution_type=>'IMMEDIATE'
-,p_bind_event_type=>'click'
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(64506140554921050)
-,p_event_id=>wwv_flow_imp.id(64505363032921042)
-,p_event_result=>'TRUE'
-,p_action_sequence=>80
-,p_execute_on_page_init=>'N'
-,p_name=>'HideDelDetailButton'
-,p_static_id=>'hidedelprescriptionbutton'
-,p_action=>'NATIVE_HIDE'
-,p_affected_elements_type=>'BUTTON'
-,p_affected_button_id=>wwv_flow_imp.id(65075993748556904)
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(64506045636921049)
-,p_event_id=>wwv_flow_imp.id(64505363032921042)
-,p_event_result=>'TRUE'
-,p_action_sequence=>70
-,p_execute_on_page_init=>'N'
-,p_name=>'HideMyself'
-,p_static_id=>'native-hide'
-,p_action=>'NATIVE_HIDE'
-,p_affected_elements_type=>'BUTTON'
-,p_affected_button_id=>wwv_flow_imp.id(64505228134921041)
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(64505780706921046)
-,p_event_id=>wwv_flow_imp.id(64505363032921042)
-,p_event_result=>'TRUE'
-,p_action_sequence=>40
-,p_execute_on_page_init=>'N'
-,p_name=>'HideTimeRangeGrid'
-,p_static_id=>'native-refresh_1'
-,p_action=>'NATIVE_HIDE'
-,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(61096464024189531)
-,p_build_option_id=>wwv_flow_imp.id(16869691178504232)
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(64505856215921047)
-,p_event_id=>wwv_flow_imp.id(64505363032921042)
-,p_event_result=>'TRUE'
-,p_action_sequence=>50
-,p_execute_on_page_init=>'N'
-,p_name=>'HideTimeRangeForm'
-,p_static_id=>'native-refresh_1_1'
-,p_action=>'NATIVE_HIDE'
-,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(61094799122189514)
-,p_build_option_id=>wwv_flow_imp.id(16869691178504232)
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(64505911562921048)
-,p_event_id=>wwv_flow_imp.id(64505363032921042)
-,p_event_result=>'TRUE'
-,p_action_sequence=>60
-,p_execute_on_page_init=>'N'
-,p_name=>'HideDetailForm'
-,p_static_id=>'native-refresh_1_1_1'
-,p_action=>'NATIVE_HIDE'
-,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(61095538974189522)
-,p_build_option_id=>wwv_flow_imp.id(16869691178504232)
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(64505423778921043)
-,p_event_id=>wwv_flow_imp.id(64505363032921042)
-,p_event_result=>'TRUE'
-,p_action_sequence=>10
-,p_execute_on_page_init=>'N'
-,p_name=>'SetNullDetailForm'
-,p_static_id=>'native-set-value'
-,p_action=>'NATIVE_SET_VALUE'
-,p_affected_elements_type=>'ITEM'
-,p_affected_elements=>'P402_PRD_ID,P402_PRD_PRATR_ID,P402_PRD_CPTR_ID,P402_PRD_DR_ID,P402_PRD_DOSAGE,P402_PRD_SORT_ORDER,P402_PRD_NOTES'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'suppress_change_event', 'N',
-  'type', 'STATIC_ASSIGNMENT')).to_clob
-,p_wait_for_result=>'Y'
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(64505654625921045)
-,p_event_id=>wwv_flow_imp.id(64505363032921042)
-,p_event_result=>'TRUE'
-,p_action_sequence=>30
-,p_execute_on_page_init=>'N'
-,p_name=>'ShowDetailForm'
-,p_static_id=>'refreshprescriptionform_1'
-,p_action=>'NATIVE_SHOW'
-,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(61095538974189522)
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(64505595726921044)
-,p_event_id=>wwv_flow_imp.id(64505363032921042)
-,p_event_result=>'TRUE'
-,p_action_sequence=>20
-,p_execute_on_page_init=>'N'
-,p_name=>'SetNullCurrVars'
-,p_static_id=>'setnullcurrvars'
-,p_action=>'NATIVE_SET_VALUE'
-,p_affected_elements_type=>'ITEM'
-,p_affected_elements=>'P402_PRD_ID_CURR'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'suppress_change_event', 'N',
-  'type', 'STATIC_ASSIGNMENT')).to_clob
-,p_wait_for_result=>'Y'
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(65075699622556901)
-,p_event_id=>wwv_flow_imp.id(64505363032921042)
-,p_event_result=>'TRUE'
-,p_action_sequence=>90
-,p_execute_on_page_init=>'N'
-,p_name=>'ShowCancelAddDetailButton'
-,p_static_id=>'showcanceladdprescription'
-,p_action=>'NATIVE_SHOW'
-,p_affected_elements_type=>'BUTTON'
-,p_affected_button_id=>wwv_flow_imp.id(65076021184556905)
 );
 wwv_flow_imp_page.create_page_da_event(
  p_id=>wwv_flow_imp.id(63854523110868112)

@@ -20,7 +20,7 @@ wwv_flow_imp_page.create_page(
 ,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
-,p_page_component_map=>'18'
+,p_page_component_map=>'22'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(70063213176283010)
@@ -46,6 +46,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_item_display_point=>'BELOW'
 ,p_location=>null
 ,p_plug_source_type=>'NATIVE_DISPLAY_SELECTOR'
+,p_required_patch=>wwv_flow_imp.id(16869691178504232)
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'display_region_icons', 'N',
   'include_show_all', 'N',
@@ -132,11 +133,14 @@ wwv_flow_imp_page.create_page_plug(
 );
 wwv_flow_imp_page.create_worksheet(
  p_id=>wwv_flow_imp.id(116160544857662840)
+,p_allow_save_rpt_public=>'Y'
 ,p_pagination_type=>'ROWS_X_TO_Y_OF_Z'
 ,p_pagination_display_pos=>'TOP_AND_BOTTOM_RIGHT'
+,p_show_display_row_count=>'Y'
 ,p_report_list_mode=>'TABS'
 ,p_lazy_loading=>false
 ,p_show_detail_link=>'N'
+,p_show_rows_per_page=>'N'
 ,p_show_notify=>'Y'
 ,p_download_formats=>'CSV:HTML:XLSX:PDF'
 ,p_enable_mail_download=>'Y'
@@ -375,16 +379,31 @@ wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(72111063434258201)
 ,p_plug_name=>'Remains'
 ,p_static_id=>'remains'
-,p_parent_plug_id=>wwv_flow_imp.id(72115880373258249)
 ,p_region_template_options=>'#DEFAULT#:t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc'
 ,p_plug_template=>2102002977963900996
 ,p_plug_display_sequence=>40
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
-,p_query_type=>'TABLE'
-,p_query_table=>'REHAB_DRUG_ACCOUNTINGS'
-,p_query_where=>':P302_DS_ID_CURR is null or DA_DS_ID=:P302_DS_ID_CURR'
-,p_include_rowid_column=>false
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select DA_ID,',
+'       DA_DS_ID,',
+'       DA_DR_ID,',
+'       DA_PRR_ID,',
+'       DA_PR_ID,',
+'       DA_WS_ID,',
+'       DA_PRATR_ID,',
+'       DA_ORDER_TYPE,',
+'       DA_QUANTITY,',
+'       DA_ENTIRY_WEIGHT,',
+'       DA_COST,',
+'       DA_PURCHASED,',
+'       DA_CHECK_POINT_DT,',
+'       DA_BEST_BEFORE',
+'  from REHAB_DRUG_ACCOUNTINGS',
+' where (:P302_DS_ID_CURR is null or DA_DS_ID=:P302_DS_ID_CURR) ',
+'  and DA_DS_ID in (select P2S_DS_ID from REHAB_PATIENT2STORAGES where P2S_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT())',
+''))
 ,p_plug_source_type=>'NATIVE_IR'
 ,p_prn_content_disposition=>'ATTACHMENT'
 ,p_prn_units=>'MILLIMETERS'
@@ -418,11 +437,14 @@ wwv_flow_imp_page.create_page_plug(
 );
 wwv_flow_imp_page.create_worksheet(
  p_id=>wwv_flow_imp.id(72111180076258202)
+,p_allow_save_rpt_public=>'Y'
 ,p_pagination_type=>'ROWS_X_TO_Y_OF_Z'
 ,p_pagination_display_pos=>'TOP_AND_BOTTOM_RIGHT'
+,p_show_display_row_count=>'Y'
 ,p_report_list_mode=>'TABS'
 ,p_lazy_loading=>false
 ,p_show_detail_link=>'C'
+,p_show_rows_per_page=>'N'
 ,p_show_notify=>'Y'
 ,p_download_formats=>'CSV:HTML:XLSX:PDF'
 ,p_enable_mail_download=>'Y'
@@ -517,13 +539,17 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_use_as_row_header=>'N'
 );
 wwv_flow_imp_page.create_worksheet_column(
- p_id=>wwv_flow_imp.id(72111915449258210)
+ p_id=>wwv_flow_imp.id(73053724472651216)
 ,p_db_column_name=>'DA_ORDER_TYPE'
-,p_display_order=>80
-,p_column_identifier=>'H'
+,p_display_order=>150
+,p_column_identifier=>'O'
 ,p_column_label=>unistr('\0422\0438\043F \043F\0440\0438\0445\043E\0434\0443')
-,p_column_type=>'STRING'
-,p_heading_alignment=>'LEFT'
+,p_column_type=>'NUMBER'
+,p_display_text_as=>'LOV_ESCAPE_SC'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_rpt_named_lov=>wwv_flow_imp.id(73069402169783245)
+,p_rpt_show_filter_lov=>'1'
 ,p_use_as_row_header=>'N'
 ,p_available_clientside=>'N'
 );
@@ -613,7 +639,7 @@ wwv_flow_imp_page.create_worksheet_rpt(
 ,p_report_alias=>'primary'
 ,p_status=>'PUBLIC'
 ,p_is_default=>'Y'
-,p_report_columns=>'DA_WS_ID:DA_DR_ID:DA_PRR_ID:DA_ORDER_TYPE:DA_QUANTITY:DA_ENTIRY_WEIGHT:DA_COST:DA_PURCHASED:DA_CHECK_POINT_DT:DA_BEST_BEFORE'
+,p_report_columns=>'DA_PRR_ID:DA_WS_ID:DA_ORDER_TYPE:DA_DR_ID:DA_QUANTITY:DA_ENTIRY_WEIGHT:DA_COST:DA_PURCHASED:DA_CHECK_POINT_DT:DA_BEST_BEFORE'
 ,p_sort_column_1=>'DA_PURCHASED'
 ,p_sort_direction_1=>'DESC'
 ,p_break_on=>'DA_PRR_ID:DA_WS_ID'
@@ -630,10 +656,25 @@ wwv_flow_imp_page.create_report_region(
 ,p_component_template_options=>'#DEFAULT#:t-Report--altRowsDefault:t-Report--rowHighlight'
 ,p_new_grid_row=>false
 ,p_source_type=>'NATIVE_SQL_REPORT'
-,p_query_type=>'TABLE'
-,p_query_table=>'REHAB_DRUG_ACCOUNTINGS'
-,p_query_where=>':P302_DS_ID_CURR is null or DA_DS_ID=:P302_DS_ID_CURR'
-,p_include_rowid_column=>false
+,p_query_type=>'SQL'
+,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select DA_ID,',
+'       DA_DS_ID,',
+'       DA_DR_ID,',
+'       DA_PRR_ID,',
+'       DA_PR_ID,',
+'       DA_WS_ID,',
+'       DA_PRATR_ID,',
+'       DA_ORDER_TYPE,',
+'       DA_QUANTITY,',
+'       DA_ENTIRY_WEIGHT,',
+'       DA_COST,',
+'       DA_PURCHASED,',
+'       DA_CHECK_POINT_DT,',
+'       DA_BEST_BEFORE',
+'  from REHAB_DRUG_ACCOUNTINGS',
+' where (:P302_DS_ID_CURR is null or DA_DS_ID=:P302_DS_ID_CURR) ',
+'  and DA_DS_ID in (select P2S_DS_ID from REHAB_PATIENT2STORAGES where P2S_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT())'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
 ,p_query_row_template=>2540130677583398057
@@ -737,6 +778,8 @@ wwv_flow_imp_page.create_report_columns(
 ,p_column_heading=>unistr('\0422\0438\043F \043F\0440\0438\0445\043E\0434\0443')
 ,p_heading_alignment=>'LEFT'
 ,p_disable_sort_column=>'N'
+,p_display_as=>'TEXT_FROM_LOV_ESC'
+,p_named_lov=>wwv_flow_imp.id(73069402169783245)
 ,p_derived_column=>'N'
 ,p_include_in_export=>'Y'
 );
@@ -963,6 +1006,7 @@ wwv_flow_imp_page.create_page_plug(
 '    ds_created,',
 '    ds_updated,',
 unistr('    case when P2S_IS_OWNER then ''\0422\0430\043A'' when not P2S_IS_OWNER then ''\041D\0456''  else ''\041D\0435\0432\0438\0437\043D\0430\0447\0435\043D\043E'' end P2S_IS_OWNER,'),
+'    P2S_IS_OWNER P2S_IS_OWNER_RAW,',
 '    decode(ds_id,:P302_DS_ID_CURR,1,0) curr_ds',
 'FROM',
 '    REHAB_DRUG_STORAGES, REHAB_PATIENT2STORAGES',
@@ -1000,11 +1044,14 @@ unistr('    case when P2S_IS_OWNER then ''\0422\0430\043A'' when not P2S_IS_OWNE
 );
 wwv_flow_imp_page.create_worksheet(
  p_id=>wwv_flow_imp.id(68079058931157008)
+,p_allow_save_rpt_public=>'Y'
 ,p_pagination_type=>'ROWS_X_TO_Y'
 ,p_pagination_display_pos=>'BOTTOM_RIGHT'
+,p_show_display_row_count=>'Y'
 ,p_report_list_mode=>'TABS'
 ,p_lazy_loading=>false
 ,p_show_detail_link=>'C'
+,p_show_rows_per_page=>'N'
 ,p_show_notify=>'Y'
 ,p_download_formats=>'CSV:HTML:XLSX:PDF'
 ,p_enable_mail_download=>'Y'
@@ -1064,7 +1111,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_display_order=>30
 ,p_column_identifier=>'C'
 ,p_column_label=>unistr('\041D\0430\0437\0432\0430')
-,p_column_link=>'f?p=&APP_ID.:302:&SESSION.::&DEBUG.::P302_DS_ID_CURR:#DS_ID#'
+,p_column_link=>'f?p=&APP_ID.:302:&SESSION.::&DEBUG.::P302_DS_ID_CURR,P302_IS_OWNER:#DS_ID#,#P2S_IS_OWNER_RAW#'
 ,p_column_linktext=>'#DS_NAME#'
 ,p_column_type=>'STRING'
 ,p_heading_alignment=>'LEFT'
@@ -1102,6 +1149,17 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_column_identifier=>'I'
 ,p_column_label=>unistr('\0412\043B\0430\0441\043D\0438\043A')
 ,p_column_type=>'STRING'
+,p_heading_alignment=>'LEFT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(73055104453651230)
+,p_db_column_name=>'P2S_IS_OWNER_RAW'
+,p_display_order=>100
+,p_column_identifier=>'J'
+,p_column_label=>'P2s Is Owner Raw'
+,p_column_type=>'BOOLEAN'
 ,p_heading_alignment=>'LEFT'
 ,p_use_as_row_header=>'N'
 ,p_available_clientside=>'N'
@@ -1148,6 +1206,26 @@ wwv_flow_imp_page.create_page_button(
 ,p_warn_on_unsaved_changes=>null
 ,p_icon_css_classes=>'fa-plus'
 );
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(73118422040591451)
+,p_button_sequence=>10
+,p_button_plug_id=>wwv_flow_imp.id(72111063434258201)
+,p_button_name=>'CreateNew'
+,p_static_id=>'createnew'
+,p_show_as_disabled=>false
+,p_button_action=>'REDIRECT_PAGE'
+,p_button_template_options=>'#DEFAULT#'
+,p_button_template_id=>2350584059425431644
+,p_button_image_alt=>unistr('\0421\0442\0432\043E\0440\0438\0442\0438 \043D\043E\0432\0438\0439 \0437\0430\043F\0438\0441')
+,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
+,p_button_redirect_url=>'f?p=&APP_ID.:304:&SESSION.::&DEBUG.::P304_DA_ID,P304_DA_DS_ID:,&P302_DS_ID_CURR.'
+,p_warn_on_unsaved_changes=>null
+,p_button_condition=>':P302_DS_ID_CURR is not null and :P302_IS_OWNER = ''TRUE'''
+,p_button_condition2=>'PLSQL'
+,p_button_condition_type=>'EXPRESSION'
+,p_icon_css_classes=>'fa-plus'
+,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
+);
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(68079828090157016)
 ,p_name=>'P302_DS_ID_CURR'
@@ -1163,6 +1241,16 @@ wwv_flow_imp_page.create_page_item(
 ,p_name=>'P302_END_DATE_CAPT'
 ,p_item_sequence=>10
 ,p_item_plug_id=>wwv_flow_imp.id(116160466964662839)
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(73055060328651229)
+,p_name=>'P302_IS_OWNER'
+,p_item_sequence=>20
+,p_item_plug_id=>wwv_flow_imp.id(68078926659157007)
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_HIDDEN'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
