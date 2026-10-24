@@ -17,4 +17,4 @@ define TRG_SCHEMA=REHABILITATION
 define TRG_CRED_NAME=REHAB_BACKUP
 define TRG_IMP_LOG_FILE="rehab_import_cloud.log"
 
-define POST_ACTIONS="rehab_v1_post.sql"
+define POST_ACTIONS="/home/opc/rehab_backup_restore/rehab_v1_post.sql"

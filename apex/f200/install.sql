@@ -13,6 +13,7 @@ prompt --install
 @@application/shared_components/navigation/lists/navigation_menu.sql
 @@application/shared_components/navigation/lists/user_settings.sql
 @@application/shared_components/navigation/listentry.sql
+@@application/shared_components/files/20260329_133354_jpg.sql
 @@application/shared_components/files/icons_app_icon_144_rounded_png.sql
 @@application/shared_components/files/icons_app_icon_192_png.sql
 @@application/shared_components/files/icons_app_icon_256_rounded_png.sql
@@ -83,6 +84,7 @@ prompt --install
 @@application/pages/page_00102.sql
 @@application/pages/page_00103.sql
 @@application/pages/page_00104.sql
+@@application/pages/page_00105.sql
 @@application/pages/page_00201.sql
 @@application/pages/page_00202.sql
 @@application/pages/page_00211.sql
@@ -119,6 +121,7 @@ prompt --install
 @@application/pages/page_10044.sql
 @@application/pages/page_10050.sql
 @@application/pages/page_10051.sql
+@@application/pages/page_10500.sql
 @@application/pages/page_20000.sql
 @@application/pages/page_20010.sql
 @@application/deployment/definition.sql

@@ -1,17 +1,22 @@
-spool /home/opc/rehab_backup_restore/rehab_backup_restore.log
+set verify off
+
+spool /home/opc/rehab_backup_restore/rehab_v2_backup_restore.log
 prompt =========================================
 prompt Backup ==================================
 prompt =========================================
+
+@&1.
 
 set cloudconfig &SRC_WALLET_NAME.
 conn &SRC_CONNECT_STRING.
 
 variable LOG_ID NUMBER;
 variable IMPORT_STATUS VARCHAR2(128);
+variable FILENAME varchar2(1000);
 
 -- Setup the backup log table to track export and import operations
 CREATE TABLE if NOT EXISTS BACKUP_REHAB_V2_LOG 
-  (	LOG_ID NUMBER GENERATED ALWAYS AS IDENTITY NOT NULL ENABLE, 
+  ( LOG_ID NUMBER GENERATED ALWAYS AS IDENTITY NOT NULL ENABLE, 
     TERMINAL VARCHAR2(1000 BYTE), 
     TS_START TIMESTAMP (6) WITH TIME ZONE DEFAULT systimestamp, 
     TS_END TIMESTAMP (6) WITH TIME ZONE, 
@@ -20,7 +25,7 @@ CREATE TABLE if NOT EXISTS BACKUP_REHAB_V2_LOG
     FILENAME VARCHAR2(4000 BYTE), 
     ERRORMSG VARCHAR2(4000 BYTE), 
     FILE_STATUS VARCHAR2(100 BYTE) DEFAULT 'ON STORAGE', 
-  CONSTRAINT PK_BACKUP_REHAB_LOG PRIMARY KEY (LOG_ID);
+    CONSTRAINT PK_BACKUP_REHAB_V2_LOG PRIMARY KEY (LOG_ID));
 grant select on BACKUP_REHAB_V2_LOG to &SRC_SCHEMA.;
 create or replace synonym &SRC_SCHEMA..BACKUP_REHAB_V2_LOG for BACKUP_REHAB_V2_LOG;
 
@@ -42,10 +47,12 @@ DECLARE
   l_log_id BACKUP_REHAB_LOG.log_id%type;
 BEGIN
 
-  dump_file_uri := replace(dump_file_uri, '<DT>', to_char(sysdate, 'YYYYMMDD'));
+  dump_file_uri := replace(dump_file_uri, '<DT>', to_char(sysdate, 'YYYYMMDDHH24MI'));
   
+  :FILENAME := dump_file_uri;
+
   INSERT INTO BACKUP_REHAB_V2_LOG (log_id, ts_start, FILENAME, terminal) 
-    VALUES ( default, default, dump_file_uri, userenv('TERMINAL')) returning log_id into l_log_id;
+    VALUES ( default, default, dump_file_uri, SYS_CONTEXT ('USERENV', 'OS_USER')||'@'||SYS_CONTEXT ('USERENV', 'HOST')) returning log_id into l_log_id;
   commit;
 
   :LOG_ID := l_log_id;
@@ -177,7 +184,7 @@ conn &TRG_CONNECT_STRING.
 
 -- Setup the backup log table to track export and import operations
 CREATE TABLE if NOT EXISTS BACKUP_REHAB_V2_LOG 
-  (	LOG_ID NUMBER GENERATED ALWAYS AS IDENTITY NOT NULL ENABLE, 
+  ( LOG_ID NUMBER GENERATED ALWAYS AS IDENTITY NOT NULL ENABLE, 
     TERMINAL VARCHAR2(1000 BYTE), 
     TS_START TIMESTAMP (6) WITH TIME ZONE DEFAULT systimestamp, 
     TS_END TIMESTAMP (6) WITH TIME ZONE, 
@@ -186,16 +193,16 @@ CREATE TABLE if NOT EXISTS BACKUP_REHAB_V2_LOG
     FILENAME VARCHAR2(4000 BYTE), 
     ERRORMSG VARCHAR2(4000 BYTE), 
     FILE_STATUS VARCHAR2(100 BYTE) DEFAULT 'ON STORAGE', 
-  CONSTRAINT PK_BACKUP_REHAB_LOG PRIMARY KEY (LOG_ID);
-grant select on BACKUP_REHAB_V2_LOG to &TRG_SCHEMA.;
-create or replace synonym &TRG_SCHEMA..BACKUP_REHAB_V2_LOG for BACKUP_REHAB_V2_LOG;
+    CONSTRAINT PK_BACKUP_REHAB_V2_LOG PRIMARY KEY (LOG_ID));
+--grant select on BACKUP_REHAB_V2_LOG to &TRG_SCHEMA.;
+--create or replace synonym &TRG_SCHEMA..BACKUP_REHAB_V2_LOG for BACKUP_REHAB_V2_LOG;
 
 prompt Cleaning up schema ======================
 set serveroutput on
 BEGIN
   -- Drop existing package specs and bodies in the target schema
   FOR r IN (
-    SELECT object_name, object_type 
+    SELECT owner, object_name, object_type 
     FROM all_objects 
     WHERE owner = '&TRG_SCHEMA.' 
       AND object_type IN ('PACKAGE', 'PACKAGE BODY', 'PROCEDURE', 'FUNCTION', 'VIEW', 'SEQUENCE', 'SYNONYM')
@@ -222,10 +229,12 @@ declare
   
   l_log_id restore_rehab_log.log_id%type;
 BEGIN
-  dump_file_uri := replace(dump_file_uri, '<DT>', to_char(sysdate, 'YYYYMMDD'));
-  
+  --dump_file_uri := replace(dump_file_uri, '<DT>', to_char(sysdate, 'YYYYMMDD'));
+
+  dump_file_uri := :FILENAME;
+
   INSERT INTO BACKUP_REHAB_V2_LOG (log_id, ts_start, FILENAME, terminal) 
-    VALUES ( default, default, dump_file_uri, userenv('TERMINAL')) returning log_id into l_log_id;
+    VALUES ( default, default, dump_file_uri, SYS_CONTEXT ('USERENV', 'OS_USER')||'@'||SYS_CONTEXT ('USERENV', 'HOST')) returning log_id into l_log_id;
   commit;
   
   -- 1. Open a new Schema-level Import job
@@ -282,7 +291,7 @@ BEGIN
 EXCEPTION
   WHEN OTHERS THEN
     -- Safeguard to prevent job lock states if the block fails prematurely
-    update RESTORE_REHAB_LOG set STATUS = 'FAILED', TS_END = systimestamp, ERRORMSG = DBMS_UTILITY.FORMAT_ERROR_STACK where log_id = l_log_id;
+    update BACKUP_REHAB_V2_LOG set IMPORT_STATUS = 'FAILED', TS_END = systimestamp, ERRORMSG = DBMS_UTILITY.FORMAT_ERROR_STACK where log_id = l_log_id;
     commit;    
     IF hdl IS NOT NULL THEN
        DBMS_DATAPUMP.DETACH(handle => hdl);
@@ -291,16 +300,20 @@ EXCEPTION
 END;
 /
 
+grant select on BACKUP_REHAB_V2_LOG to &TRG_SCHEMA.;
+create or replace synonym &TRG_SCHEMA..BACKUP_REHAB_V2_LOG for BACKUP_REHAB_V2_LOG;
+
 prompt Schema post_actions ======================
 @&POST_ACTIONS.
 
-select * from RESTORE_REHAB_LOG order by log_id;
+select * from BACKUP_REHAB_V2_LOG order by log_id;
 
 set cloudconfig &SRC_WALLET_NAME.
 conn &SRC_CONNECT_STRING.
 
 update BACKUP_REHAB_V2_LOG set IMPORT_STATUS = :IMPORT_STATUS where log_id = :LOG_ID;
 commit;
+disc
 
 spool OFF
 

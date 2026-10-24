@@ -19,6 +19,14 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'OFF'
+,p_inline_css=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'body.t-PageBody--login {',
+'    background-image: url(''#APP_FILES#20260329_133354.jpg'');',
+'    background-size: cover;',
+'    background-position: center center;',
+'    background-repeat: no-repeat;',
+'    background-attachment: fixed;',
+'}'))
 ,p_step_template=>2102634289808461002
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'

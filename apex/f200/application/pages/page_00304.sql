@@ -92,8 +92,9 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_template_id=>2350584059425431644
 ,p_button_image_alt=>unistr('\0417\0431\0435\0440\0456\0433\0442\0438')
 ,p_button_position=>'CLOSE'
-,p_button_condition=>'P304_DA_ID'
-,p_button_condition_type=>'ITEM_IS_NULL'
+,p_button_condition=>':P304_DA_ID is null and :P304_IS_OWNER = ''TRUE'''
+,p_button_condition2=>'PLSQL'
+,p_button_condition_type=>'EXPRESSION'
 ,p_icon_css_classes=>'fa-plus'
 ,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
 ,p_database_action=>'INSERT'
@@ -113,8 +114,9 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_execute_validations=>'N'
 ,p_confirm_message=>unistr('\041F\0456\0434\0442\0432\0435\0440\0434\0456\0442\044C \0432\0438\0434\0430\043B\0435\043D\043D\044F \0437\0430\043F\0438\0441\0443 \043F\0440\043E \043C\0435\0434\0438\043A\0430\043C\0435\043D\0442 \0432 \0441\043A\0440\0438\043D\0456')
 ,p_confirm_style=>'danger'
-,p_button_condition=>'P304_DA_ID'
-,p_button_condition_type=>'ITEM_IS_NOT_NULL'
+,p_button_condition=>':P304_DA_ID is not null and :P304_IS_OWNER = ''TRUE'''
+,p_button_condition2=>'PLSQL'
+,p_button_condition_type=>'EXPRESSION'
 ,p_icon_css_classes=>'fa-trash-o'
 ,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
 ,p_database_action=>'DELETE'
@@ -131,8 +133,9 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_template_id=>2350584059425431644
 ,p_button_image_alt=>unistr('\0417\0431\0435\0440\0456\0433\0442\0438')
 ,p_button_position=>'CLOSE'
-,p_button_condition=>'P304_DA_ID'
-,p_button_condition_type=>'ITEM_IS_NOT_NULL'
+,p_button_condition=>':P304_DA_ID is not null and :P304_IS_OWNER = ''TRUE'''
+,p_button_condition2=>'PLSQL'
+,p_button_condition_type=>'EXPRESSION'
 ,p_icon_css_classes=>'fa-save'
 ,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
 ,p_database_action=>'UPDATE'
@@ -439,6 +442,16 @@ wwv_flow_imp_page.create_page_item(
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'page_action_on_selection', 'NONE')).to_clob
 );
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(73057119600651250)
+,p_name=>'P304_IS_OWNER'
+,p_item_sequence=>150
+,p_item_plug_id=>wwv_flow_imp.id(72112610582258217)
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+);
 wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(73054819804651227)
 ,p_process_sequence=>10
@@ -471,6 +484,25 @@ wwv_flow_imp_page.create_page_process(
   'target_type', 'REGION_SOURCE')).to_clob
 ,p_error_display_location=>'INLINE_IN_NOTIFICATION'
 ,p_internal_uid=>73054709828651226
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(74064489082385801)
+,p_process_sequence=>20
+,p_process_point=>'BEFORE_HEADER'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'Init'
+,p_static_id=>'init'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'begin',
+'null; ',
+'    select ',
+'        P2S_IS_OWNER into :P304_IS_OWNER',
+'    FROM',
+'        REHAB_PATIENT2STORAGES',
+'    where P2S_DS_ID = :P304_DA_DS_ID and P2S_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT();',
+'end;'))
+,p_process_clob_language=>'PLSQL'
+,p_internal_uid=>74064489082385801
 );
 wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(73052293625651201)

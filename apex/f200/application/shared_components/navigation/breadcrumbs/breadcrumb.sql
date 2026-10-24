@@ -24,6 +24,14 @@ wwv_flow_imp_shared.create_menu_option(
 ,p_page_id=>10000
 );
 wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(74075671479466155)
+,p_parent_id=>wwv_flow_imp.id(29457611096221950)
+,p_short_name=>unistr('\0417\0431\0438\0440\0430\043D\043D\044F \0442\0430\0431\043B\0435\0442\043E\043A')
+,p_static_id=>'assemblymedications'
+,p_link=>'f?p=&APP_ID.:105:&SESSION.::&DEBUG.:::'
+,p_page_id=>105
+);
+wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(70063704943283017)
 ,p_parent_id=>wwv_flow_imp.id(29858227656894296)
 ,p_short_name=>unistr('\0412\0435\0441\0442\0438 \0437\0430\043F\0430\0441\0438')

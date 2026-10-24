@@ -79,7 +79,9 @@
                                 REHAB_UI_REPORTS_PKG.clr(case when i.DAYS_PLANNED is null
                                      then case when i.DAYS_REMAIN >= to_number(REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT')) then 'lime' else 'yellow' end
                                      else case when i.DAYS_REMAIN >= i.DAYS_PLANNED then 'lime' else 'yellow' end
-                                     end, round(i.DAYS_REMAIN)||' дні(в)')||' до '||to_char(i.end_date, 'YYYY-Mon-DD')||'. Заплановано'||case when i.PR_PLANNED_END is null then ': без обмеження дати' else ' до: ' || to_char(i.PR_PLANNED_END, 'YYYY-Mon-DD') end
+                                     end, round(i.DAYS_REMAIN)||' дні(в)')||' до '||to_char(i.end_date, 'YYYY-Mon-DD')||
+                                     '. Заплановано'||case when i.PR_PLANNED_END is null then ': без обмеження дати' else ' до: ' || to_char(i.PR_PLANNED_END, 'YYYY-Mon-DD') end ||
+                                     case when i.PRATR_ACTUAL_END is not null and (i.PR_PLANNED_END is null or trunc(i.PR_PLANNED_END)<>trunc(i.PRATR_ACTUAL_END)) then '. Період до: ' || to_char(i.PRATR_ACTUAL_END, 'YYYY-Mon-DD') else null end
 --                                case when i.DAYS_PLANNED is null
 --                                     then '<span style="color: '||case when i.DAYS_REMAIN >= to_number(REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT')) then 'lime' else 'yellow' end||';"> '
 --                                     else '<span style="color: '||case when i.DAYS_REMAIN >= i.DAYS_PLANNED then 'lime' else 'yellow' end||';"> '
@@ -101,6 +103,60 @@
     end loop;
     RETURN;
   END druguse_dashboard_ref;
+
+  function druguse_assembly_ref(p_tp_id REHAB_TIME_PERIODS.TP_ID%type, p_days_ahead number default 7) return rehab_druguse_dashboard_tab pipelined
+  is
+    l_img blob;
+    l_img2 blob;
+  BEGIN
+    for i in (select d.*, r.BALANCE, r.DAYS_PLANNED, r.DAYS_REMAIN, r.DA_STORED_AMOUNT, r.end_date
+                from V$REHAB_CONSUME_DATA d, V$REHAB_TIME_PERIODS tp, V$REHAB_REMAINS r
+               where tp.TP_ID = p_tp_id
+                 and (CPTR_START_TIME_DT_GDT >= TP_START_TIME_DT_GDT and CPTR_START_TIME_DT_GDT < TP_END_TIME_DT_GDT or
+                      CPTR_END_TIME_DT_GDT   >= TP_START_TIME_DT_GDT and CPTR_END_TIME_DT_GDT   < TP_END_TIME_DT_GDT)
+                 and d.PRD_DR_ID = r.DR_ID(+)
+               order by PRD_SORT_ORDER
+               )
+    loop
+        pipe row (rehab_druguse_dashboard_rec(
+           id        => i.PRD_ID,           --     id           number,
+           mainlabel => i.DR_NAME,      --     mainlabel    VARCHAR2(4000),
+           sublabel  => '<b>'||UNISTR('\2710')||'</b> '||i.PRD_DOSAGE|| ' мг ' ||i.CPTR_START_TIME_STR||'-'||i.CPTR_END_TIME_STR||' '||i.DR_WHEN2CONSUME||
+                        nvl2(i.PRD_NOTES,'<br>'||i.PRD_NOTES,null),  --     sublabel     varchar2(4000),
+           data1     => case when i.PRATR_ACTUAL_END is null or trunc(i.PRATR_ACTUAL_END)>trunc(systimestamp at time zone SESSIONTIMEZONE)+p_days_ahead
+                               then 'Набирати на '||p_days_ahead||' днів'
+                               else 'Період завершується раніше: '||to_char(i.PRATR_ACTUAL_END, 'YYYY-Mon-DD Day') end,
+--                         nvl2(i.DRU_CONSUMED,REHAB_UI_REPORTS_PKG.clr('lime',UNISTR('\D83C\DF23'))||to_char(i.DRU_CONSUMED at time zone SESSIONTIMEZONE,'YYYY-Mon-DD HH24:MI')||
+--                                            REHAB_UI_REPORTS_PKG.clr(case when i.DRU_ACTUAL_DOSAGE = i.PRD_DOSAGE then 'lime' else 'yellow' end,' '||i.DRU_ACTUAL_DOSAGE||' мг'),--||
+--                                            --UNISTR('\D83D\DDD2')||' "'||i.CPTR_NAME||'; '||i.CPTR_START_TIME_STR||'-'||i.CPTR_END_TIME_STR||'"',
+--                                            REHAB_UI_REPORTS_PKG.clr('yellow',UNISTR('\D83C\DF27')||' Не прийнято')),     --     data1        VARCHAR2(4000),
+           data2     => REHAB_UI_REPORTS_PKG.clr('lime',UNISTR('\2762'))||' '||
+                         nvl(i.DR_USE_CASE,i.DR_TYPE_SHORT)||
+                         nvl2(i.PR_NOTES,'<br>'||REHAB_UI_REPORTS_PKG.clr('lime',UNISTR('\D83D\DD8E'))||' '||i.PR_NOTES,null)||
+                         nvl2(i.PRATR_NOTES,'<br>'||REHAB_UI_REPORTS_PKG.clr('lime',UNISTR('\D83D\DDB9'))||' '||i.PRATR_NOTES,null)||
+                        case when i.DA_STORED_AMOUNT is not null then
+                        '<br>'||REHAB_UI_REPORTS_PKG.clr('lime',UNISTR('\D83D\DDC4'))||' Залишок на: '||
+                                REHAB_UI_REPORTS_PKG.clr(case when i.DAYS_PLANNED is null
+                                     then case when i.DAYS_REMAIN >= to_number(REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT')) then 'lime' else 'yellow' end
+                                     else case when i.DAYS_REMAIN >= i.DAYS_PLANNED then 'lime' else 'yellow' end
+                                     end, round(i.DAYS_REMAIN)||' дні(в)')||' до '||to_char(i.end_date, 'YYYY-Mon-DD')||
+                                     '. Заплановано'||case when i.PR_PLANNED_END is null then ': без обмеження дати' else ' до: ' || to_char(i.PR_PLANNED_END, 'YYYY-Mon-DD') end ||
+                                     case when i.PRATR_ACTUAL_END is not null and (i.PR_PLANNED_END is null or trunc(i.PR_PLANNED_END)<>trunc(i.PRATR_ACTUAL_END)) then '. Період до: ' || to_char(i.PRATR_ACTUAL_END, 'YYYY-Mon-DD') else null end
+                        else '<br>Інформація по залишкам відсутня' end
+           ,     --     data2        VARCHAR2(4000),
+           bagecol   => '',   --bagecol      VARCHAR2(4000),
+           bagelabel => '', --bagelabel    VARCHAR2(4000),
+           app_page  => null,           -- app_page     number,
+           dru_id    => i.DRU_ID,
+           dr_id     => i.PRD_DR_ID,           -- dr_id        number,
+           pr_id     => i.PR_ID,           -- pr_id        number,
+           prd_id    => i.PRD_ID,           -- prr_id       number,
+           cptr_id   => i.PRD_CPTR_ID,           -- cptr_id      number,
+           drug_img  => i.DR_ITEM_IMAGE1        -- drug_img     blob
+        ));
+    end loop;
+    RETURN;
+  END druguse_assembly_ref;
 
   procedure consume_drug(p_dru_prd_id REHAB_DRUG_USES.dru_prd_id%type,
                          P_DRU_PR_ID REHAB_DRUG_USES.DRU_PR_ID%type,

@@ -904,7 +904,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_hide_and_show_behavior=>'withRescale'
 ,p_hover_behavior=>'dim'
 ,p_stack=>'off'
-,p_connect_nulls=>'Y'
+,p_connect_nulls=>'N'
 ,p_sorting=>'label-asc'
 ,p_fill_multi_series_gaps=>true
 ,p_zoom_and_scroll=>'off'
@@ -925,29 +925,23 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'SELECT',
-'    -- tr_id,',
-'    -- tr_type,',
-'    -- tr_pat_id,',
-'     trunc(tr_start, ''IW'') tr_start,',
-'    -- tr_end,',
-'    -- sum(tr_distance_length) tr_distance_length,',
-'    -- sum(tr_steps) tr_steps,',
-'    -- tr_pulse_avg,',
-'    -- tr_pulse_min,',
-'    -- tr_pulse_max,',
-'    -- tr_descr,',
-'    -- tr_img1,',
-'    -- tr_img2,',
-'    -- real_distance,',
-'    -- real_step_length,',
-'    --avg(real_speed) real_speed,',
+'    trunc(tr_start, ''IW'') tr_start,',
 '    round(avg(tr_distance_length*0.8944/( (tr_end+0) -  (tr_start+0))/24),3) calc_speed,',
 unistr('    ''\041E\0431\0447\0438\0441\043B\0435\043D\0430 \0448\0432\0438\0434\043A\0456\0441\0442\044C, \043A\043C/\0433\043E\0434'' series_name,'),
 unistr('    to_char(trunc(tr_start, ''IW''),''YYYY-MM-DD "\0422\0438\0436\0434\0435\043D\044C" IW'') || '' '' || round(avg(tr_distance_length*0.8944/( (tr_end+0) -  (tr_start+0))/24),3) || '' \043A\043C/\0433\043E\0434'' ct'),
 'FROM',
 '    rehab_trainings',
 'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
-'  --and trunc(TR_START) between REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par(''DBAGG_TRAI'') - 1 and REHAB_CONTEXT_PKG.getGLOBAL_DATE()',
+'group by trunc(tr_start, ''IW'')',
+'union all',
+'SELECT',
+'    trunc(tr_start, ''IW'') tr_start,',
+'    avg(REAL_SPEED) calc_speed,',
+unistr('    ''\0420\0435\0430\043B\044C\043D\0430 \0448\0432\0438\0434\043A\0456\0441\0442\044C, \043A\043C/\0433\043E\0434'' series_name,'),
+unistr('    to_char(trunc(tr_start, ''IW''),''YYYY-MM-DD "\0422\0438\0436\0434\0435\043D\044C" IW'') || '' '' || round(avg(tr_distance_length*0.8944/( (tr_end+0) -  (tr_start+0))/24),3) || '' \043A\043C/\0433\043E\0434'' ct'),
+'FROM',
+'    rehab_trainings',
+'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT() and REAL_SPEED is not null',
 'group by trunc(tr_start, ''IW'')',
 'order by tr_start'))
 ,p_series_name_column_name=>'SERIES_NAME'
@@ -1013,7 +1007,7 @@ wwv_flow_imp_page.create_jet_chart_series(
 '        REGR_INTERCEPT(calc_speed, case_id) OVER (), ',
 '        2',
 '    ) AS TREND_VALUE,',
-unistr('    ''\0422\0440\0435\043D\0434\043E\0432\0430 \0448\0432\0438\0434\043A\0456\0441\0442\044C, \043A\043C/\0433\043E\0434'' series_name'),
+unistr('    ''\0422\0440\0435\043D\0434\043E\0432\0430 \043E\0431\0447\0438\0441\043B\0435\043D\0430, \043A\043C/\0433\043E\0434'' series_name'),
 'FROM',
 '(select tr_start, case_id, avg(calc_speed) calc_speed',
 '   from',
@@ -1022,6 +1016,24 @@ unistr('    ''\0422\0440\0435\043D\0434\043E\0432\0430 \0448\0432\0438\0434\043A
 '            tr_distance_length*0.8944/( (tr_end+0) -  (tr_start+0))/24 calc_speed',
 '       from rehab_trainings',
 '      where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT())',
+'group by tr_start, case_id)',
+'union all',
+'SELECT',
+'    tr_start,',
+'    ROUND(',
+'        REGR_SLOPE(REAL_SPEED, case_id) OVER () * case_id + ',
+'        REGR_INTERCEPT(REAL_SPEED, case_id) OVER (), ',
+'        2',
+'    ) AS TREND_VALUE,',
+unistr('    ''\0422\0440\0435\043D\0434\043E\0432\0430 \0440\0435\0430\043B\044C\043D\0430, \043A\043C/\0433\043E\0434'' series_name'),
+'FROM',
+'(select tr_start, case_id, avg(REAL_SPEED) REAL_SPEED',
+'   from',
+'    (select trunc(tr_start, ''IW'') tr_start,',
+'            to_number(to_char(trunc(tr_start, ''IW''),''IW'')) case_id,',
+'            REAL_SPEED',
+'       from rehab_trainings',
+'      where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT() and REAL_SPEED is not null)',
 'group by tr_start, case_id)',
 'order by tr_start'))
 ,p_series_name_column_name=>'SERIES_NAME'

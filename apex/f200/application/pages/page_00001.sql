@@ -200,6 +200,8 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_execute_validations=>'N'
 ,p_icon_css_classes=>'fa-refresh'
 ,p_grid_new_row=>'Y'
+,p_security_scheme=>wwv_flow_imp.id(16876685804504387)
+,p_required_patch=>wwv_flow_imp.id(16869691178504232)
 );
 wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(44051712164422901)
