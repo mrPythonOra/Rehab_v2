@@ -1,3 +1,85 @@
 1. +remains which considers today's consumation
 2. +renohealth disapeared from consuming drugs
 3. probably prev/next to deal with a few records with the same date time
+
+
+// Retrieve the series array from the chart - using the 'option' API
+var series = apex.region("lineChartLabels").call( "option", "series" );
+
+// Set the labelPosition property for the series items
+for ( i = 0; i < series.length; i++ ) {
+    for ( j = 0; j < series[ i ].items.length; j++ ) {
+        series[ i ].items[ j ].labelPosition = "none";    
+    }
+}
+
+// Invoke the refresh method to update the DOM
+apex.region("lineChartLabels").widget().ojChart('refresh');
+
+
+// Retrieve the series array from the chart - using the 'option' API
+var series = apex.region("lineChartLabels").call( "option", "series" );
+
+// Set the labelPosition property for the series items
+for ( i = 0; i < series.length; i++ ) {
+    for ( j = 0; j < series[ i ].items.length; j++ ) {
+        series[ i ].items[ j ].labelPosition = "aboveMarker";
+        // Set item[].label attribute to the value to be rendered as the label
+        series[ i ].items[ j ].label = series[ i ].items[ j ].value;
+    }
+}
+
+// Invoke the refresh method to update the DOM
+apex.region("lineChartLabels").widget().ojChart('refresh');
+
+
+
+
+// Retrieve the series array from the chart - using the 'option' API
+var series = apex.region("SmallChart4").call( "option", "series" );
+
+// Set the labelPosition property for the series items
+for ( i = 0; i < series.length; i++ ) {
+    for ( j = 0; j < series[ i ].items.length; j++ ) {
+        series[ i ].items[ j ].labelPosition = "aboveMarker";
+        // Set item[].label attribute to the value to be rendered as the label
+        series[ i ].items[ j ].label = series[ i ].items[ j ].value;
+    }
+}
+
+// Invoke the refresh method to update the DOM
+apex.region("SmallChart4").widget().ojChart('refresh');
+
+
+//////////////////////////////////////////////////
+var $chart = apex.region("SmallChart2").widget();
+
+// 1. Retrieve the series array
+var series = $chart.ojChart( "option", "series" );
+
+// 2. Find and modify only that specific series
+for (var i = 0; i < series.length; i++) {
+    if ((series[i].name === "Дистанція по гаджету, км")||(series[i].name === "Дистанція по гаджету 2, км")||(series[i].name === "Дистанція реальна, км")) {
+        for (var j = 0; j < series[i].items.length; j++) {
+            series[i].items[j].labelPosition = "aboveMarker";
+            series[i].items[j].label = series[i].items[j].value;
+        }
+        //break; // Exit loop once found
+    }
+}
+
+// Invoke the refresh method to update the DOM
+apex.region("SmallChart2").widget().ojChart('refresh');
+--------------
+// Retrieve the series array from the chart - using the 'option' API
+var series = apex.region("SmallChart1").call( "option", "series" );
+
+// Set the labelPosition property for the series items
+for ( i = 0; i < series.length; i++ ) {
+    for ( j = 0; j < series[ i ].items.length; j++ ) {
+        series[ i ].items[ j ].labelPosition = "none";    
+    }
+}
+
+// Invoke the refresh method to update the DOM
+apex.region("SmallChart1").widget().ojChart('refresh');

@@ -58,6 +58,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'SmallChart1'
 ,p_static_id=>'new'
 ,p_title=>unistr('\041A\0440\043E\043A\0438')
+,p_region_name=>'SmallChart1'
 ,p_parent_plug_id=>wwv_flow_imp.id(54685120764388101)
 ,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
@@ -72,7 +73,6 @@ wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(51856847569079147)
 ,p_region_id=>wwv_flow_imp.id(51854984649079128)
 ,p_chart_type=>'line'
-,p_title=>unistr('\041A\0440\043E\043A\0438')
 ,p_height=>'300'
 ,p_animation_on_display=>'auto'
 ,p_animation_on_data_change=>'auto'
@@ -101,22 +101,8 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'SELECT',
-'    -- tr_id,',
-'    -- tr_type,',
-'    -- tr_pat_id,',
 '     trunc(tr_start, ''dd'') tr_start,',
-'    -- tr_end,',
-'    -- tr_distance_length,',
 '     sum(tr_steps) tr_steps,',
-'    -- tr_pulse_avg,',
-'    -- tr_pulse_min,',
-'    -- tr_pulse_max,',
-'    -- tr_descr,',
-'    -- tr_img1,',
-'    -- tr_img2,',
-'    -- real_distance,',
-'    -- real_step_length,',
-'    -- real_speed',
 unistr('    ''\041A\0440\043E\043A\0438'' series_name,'),
 unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(sum(tr_steps)) || '' \043A\0440\043E\043A\0456\0432'' ct'),
 'FROM',
@@ -134,8 +120,7 @@ unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(sum(tr_
 ,p_marker_rendered=>'auto'
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
-,p_items_label_rendered=>true
-,p_items_label_position=>'auto'
+,p_items_label_rendered=>false
 );
 wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(58057265737597021)
@@ -146,22 +131,7 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'SELECT',
-'    -- tr_id,',
-'    -- tr_type,',
-'    -- tr_pat_id,',
 '     trunc(tr_start, ''dd'') tr_start,',
-'    -- tr_end,',
-'    -- tr_distance_length,',
-'    -- sum(tr_steps) tr_steps,',
-'    -- tr_pulse_avg,',
-'    -- tr_pulse_min,',
-'    -- tr_pulse_max,',
-'    -- tr_descr,',
-'    -- tr_img1,',
-'    -- tr_img2,',
-'    -- real_distance,',
-'    -- real_step_length,',
-'    -- real_speed',
 '    to_number(REHAB_CONFIG_PKG.get_config_par(''DBTRG_TRAINSTEPS'')) steps_trg,',
 unistr('    ''\041C\0435\0442\0430'' series_name'),
 'FROM',
@@ -238,9 +208,10 @@ wwv_flow_imp_page.create_page_plug(
 '    tr_descr,',
 '    tr_img1,',
 '    tr_img2,',
-'    real_distance,',
-'    real_step_length,',
-'    real_speed',
+'    tr_real_distance,',
+'    tr_real_step_length,',
+'    tr_real_speed,',
+'    tr_dev2_distance',
 'FROM',
 '    rehab_trainings',
 'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT();'))
@@ -291,42 +262,6 @@ wwv_flow_imp_page.create_worksheet(
 ,p_internal_uid=>51855125522079130
 );
 wwv_flow_imp_page.create_worksheet_column(
- p_id=>wwv_flow_imp.id(51856528837079144)
-,p_db_column_name=>'REAL_DISTANCE'
-,p_display_order=>140
-,p_column_identifier=>'N'
-,p_column_label=>unistr('\0420\0435\0430\043B\044C\043D\0430 \0434\0456\0441\0442\0430\043D\0446\0456\044F, \043A\043C')
-,p_column_type=>'NUMBER'
-,p_heading_alignment=>'RIGHT'
-,p_column_alignment=>'RIGHT'
-,p_use_as_row_header=>'N'
-,p_available_clientside=>'N'
-);
-wwv_flow_imp_page.create_worksheet_column(
- p_id=>wwv_flow_imp.id(51856768021079146)
-,p_db_column_name=>'REAL_SPEED'
-,p_display_order=>160
-,p_column_identifier=>'P'
-,p_column_label=>unistr('\0420\0435\0430\043B\044C\043D\0430 \0448\0432\0438\0434\043A\0456\0441\0442\044C')
-,p_column_type=>'NUMBER'
-,p_heading_alignment=>'RIGHT'
-,p_column_alignment=>'RIGHT'
-,p_use_as_row_header=>'N'
-,p_available_clientside=>'N'
-);
-wwv_flow_imp_page.create_worksheet_column(
- p_id=>wwv_flow_imp.id(51856674524079145)
-,p_db_column_name=>'REAL_STEP_LENGTH'
-,p_display_order=>150
-,p_column_identifier=>'O'
-,p_column_label=>unistr('\0420\0435\0430\043B\044C\043D\0430 \0434\043E\0432\0436\0438\043D\0430 \043A\0440\043E\043A\0443')
-,p_column_type=>'NUMBER'
-,p_heading_alignment=>'RIGHT'
-,p_column_alignment=>'RIGHT'
-,p_use_as_row_header=>'N'
-,p_available_clientside=>'N'
-);
-wwv_flow_imp_page.create_worksheet_column(
  p_id=>wwv_flow_imp.id(51856298768079141)
 ,p_db_column_name=>'TR_DESCR'
 ,p_display_order=>110
@@ -334,6 +269,18 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_column_label=>unistr('\041E\043F\0438\0441')
 ,p_column_type=>'STRING'
 ,p_heading_alignment=>'LEFT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(74065083820385807)
+,p_db_column_name=>'TR_DEV2_DISTANCE'
+,p_display_order=>170
+,p_column_identifier=>'T'
+,p_column_label=>unistr('\0414\0438\0441\0442\0430\043D\0446\0456\044F \043F\043E \0456\043D\0448\043E\043C\0443 \0434\0435\0432\0430\0439\0441\0443')
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
 ,p_use_as_row_header=>'N'
 ,p_available_clientside=>'N'
 );
@@ -357,6 +304,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_column_label=>unistr('\0417\0430\0432\0435\0440\0448\0435\043D\043D\044F')
 ,p_column_type=>'DATE'
 ,p_heading_alignment=>'LEFT'
+,p_format_mask=>'&APP_DTFMT_SHORT_T.'
 ,p_tz_dependent=>'N'
 ,p_use_as_row_header=>'N'
 ,p_available_clientside=>'N'
@@ -442,6 +390,42 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_available_clientside=>'N'
 );
 wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(74064791070385804)
+,p_db_column_name=>'TR_REAL_DISTANCE'
+,p_display_order=>140
+,p_column_identifier=>'Q'
+,p_column_label=>unistr('\0420\0435\0430\043B\044C\043D\0430 \0434\0438\0441\0442\0430\043D\0446\0456\044F, \043A\043C')
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(74064984987385806)
+,p_db_column_name=>'TR_REAL_SPEED'
+,p_display_order=>160
+,p_column_identifier=>'S'
+,p_column_label=>unistr('\0420\0435\0430\043B\044C\043D\0430 \0448\0432\0438\0434\043A\0456\0441\0442\044C, \043A\043C/\0433')
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(74064848622385805)
+,p_db_column_name=>'TR_REAL_STEP_LENGTH'
+,p_display_order=>150
+,p_column_identifier=>'R'
+,p_column_label=>unistr('\0420\0435\0430\043B\044C\043D\0430 \0434\043E\0432\0436\0438\043D\0430 \043A\0440\043E\043A\0443, \043C')
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
  p_id=>wwv_flow_imp.id(51855575199079134)
 ,p_db_column_name=>'TR_START'
 ,p_display_order=>40
@@ -487,17 +471,43 @@ wwv_flow_imp_page.create_worksheet_rpt(
 ,p_status=>'PUBLIC'
 ,p_is_default=>'Y'
 ,p_display_rows=>10
-,p_report_columns=>'TR_TYPE:TR_START:TR_END:TR_DISTANCE_LENGTH:REAL_DISTANCE:REAL_SPEED:TR_STEPS:REAL_STEP_LENGTH:TR_PULSE_AVG:TR_PULSE_MIN:TR_PULSE_MAX:TR_DESCR'
+,p_report_columns=>'TR_TYPE:TR_START:TR_DISTANCE_LENGTH:TR_REAL_DISTANCE:TR_DEV2_DISTANCE:TR_STEPS:TR_REAL_STEP_LENGTH:TR_REAL_SPEED:APXWS_CC_001:APXWS_CC_002:TR_PULSE_AVG:TR_PULSE_MIN:TR_PULSE_MAX'
 ,p_sort_column_1=>'TR_START'
 ,p_sort_direction_1=>'DESC'
 ,p_break_on=>'TR_TYPE'
 ,p_break_enabled_on=>'TR_TYPE'
+,p_chart_type=>'line'
+,p_chart_label_column=>'TR_START'
+,p_chart_value_column=>'APXWS_CC_001'
+,p_chart_sorting=>'LABEL_ASC'
+,p_chart_orientation=>'vertical'
+);
+wwv_flow_imp_page.create_worksheet_computation(
+ p_id=>wwv_flow_imp.id(75467803662200167)
+,p_report_id=>wwv_flow_imp.id(54672124009720299)
+,p_db_column_name=>'APXWS_CC_001'
+,p_column_identifier=>'C01'
+,p_computation_expr=>'round(F*0.8944/( (E+0) -  (D+0))/24,3)'
+,p_column_type=>'NUMBER'
+,p_column_label=>unistr('\0421\0435\0440\0435\0434\043D\044F \0448\0432\0438\0434\043A\0456\0441\0442\044C (\043E\0431\0447\0438\0441\043B\0435\043D\0430)')
+,p_report_label=>unistr('\0421\0435\0440\0435\0434\043D\044F \0448\0432\0438\0434\043A\0456\0441\0442\044C (\043E\0431\0447\0438\0441\043B\0435\043D\0430)')
+);
+wwv_flow_imp_page.create_worksheet_computation(
+ p_id=>wwv_flow_imp.id(75468285066200168)
+,p_report_id=>wwv_flow_imp.id(54672124009720299)
+,p_db_column_name=>'APXWS_CC_002'
+,p_column_identifier=>'C02'
+,p_computation_expr=>'(100*round(1-(F*0.8944/( (E+0) -  (D+0))/24)/ S,3))||''%'''
+,p_column_type=>'STRING'
+,p_column_label=>unistr('\041F\043E\0445\0438\0431\043A\0430')
+,p_report_label=>unistr('\041F\043E\0445\0438\0431\043A\0430')
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(54685244439388102)
 ,p_plug_name=>'SmallChart2'
 ,p_static_id=>'smallchart2'
 ,p_title=>unistr('\0414\0438\0441\0442\0430\043D\0446\0456\044F')
+,p_region_name=>'SmallChart2'
 ,p_parent_plug_id=>wwv_flow_imp.id(54685120764388101)
 ,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
@@ -512,7 +522,6 @@ wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(54685370112388103)
 ,p_region_id=>wwv_flow_imp.id(54685244439388102)
 ,p_chart_type=>'line'
-,p_title=>unistr('\041A\0440\043E\043A\0438')
 ,p_height=>'300'
 ,p_animation_on_display=>'auto'
 ,p_animation_on_data_change=>'auto'
@@ -543,23 +552,9 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'SELECT',
-'    -- tr_id,',
-'    -- tr_type,',
-'    -- tr_pat_id,',
 '     trunc(tr_start, ''dd'') tr_start,',
-'    -- tr_end,',
 '     sum(tr_distance_length) tr_distance_length,',
-'    -- sum(tr_steps) tr_steps,',
-'    -- tr_pulse_avg,',
-'    -- tr_pulse_min,',
-'    -- tr_pulse_max,',
-'    -- tr_descr,',
-'    -- tr_img1,',
-'    -- tr_img2,',
-'    -- real_distance,',
-'    -- real_step_length,',
-'    -- real_speed',
-unistr('    ''\0414\0438\0441\0442\0430\043D\0446\0456\044F \043F\043E \0433\0430\0434\0436\0435\0442\0443, \043A\043C'' series_name,'),
+unistr('    ''\041F\043E \0433\0430\0434\0436\0435\0442\0443 1, \043A\043C'' series_name,'),
 unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(sum(tr_distance_length),3) || '' \043A\043C'' ct'),
 'FROM',
 '    rehab_trainings',
@@ -576,34 +571,18 @@ unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(sum(tr_
 ,p_marker_rendered=>'auto'
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
-,p_items_label_rendered=>true
-,p_items_label_position=>'auto'
+,p_items_label_rendered=>false
 );
 wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(58057390293597022)
 ,p_chart_id=>wwv_flow_imp.id(54685370112388103)
 ,p_static_id=>'disnatce-trg'
-,p_seq=>30
+,p_seq=>40
 ,p_name=>'Disnatce_TRG'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'SELECT',
-'    -- tr_id,',
-'    -- tr_type,',
-'    -- tr_pat_id,',
 '     trunc(tr_start, ''dd'') tr_start,',
-'    -- tr_end,',
-'    -- sum(tr_distance_length) tr_distance_length,',
-'    -- sum(tr_steps) tr_steps,',
-'    -- tr_pulse_avg,',
-'    -- tr_pulse_min,',
-'    -- tr_pulse_max,',
-'    -- tr_descr,',
-'    -- tr_img1,',
-'    -- tr_img2,',
-'    -- sum(real_distance) real_distance,',
-'    -- real_step_length,',
-'    -- real_speed',
 '    to_number(REHAB_CONFIG_PKG.get_config_par(''DBTRG_TRAINDIST'')) distance_trg,',
 unistr('    ''\041C\0435\0442\0430'' series_name'),
 'FROM',
@@ -623,32 +602,18 @@ unistr('    ''\041C\0435\0442\0430'' series_name'),
 ,p_items_label_rendered=>false
 );
 wwv_flow_imp_page.create_jet_chart_series(
- p_id=>wwv_flow_imp.id(54685750469388107)
+ p_id=>wwv_flow_imp.id(74066680544385823)
 ,p_chart_id=>wwv_flow_imp.id(54685370112388103)
-,p_static_id=>'disnatcereal'
+,p_static_id=>'disnatce2'
 ,p_seq=>20
-,p_name=>'DisnatceReal'
+,p_name=>'Disnatce2'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'SELECT',
-'    -- tr_id,',
-'    -- tr_type,',
-'    -- tr_pat_id,',
 '     trunc(tr_start, ''dd'') tr_start,',
-'    -- tr_end,',
-'    -- sum(tr_distance_length) tr_distance_length,',
-'    -- sum(tr_steps) tr_steps,',
-'    -- tr_pulse_avg,',
-'    -- tr_pulse_min,',
-'    -- tr_pulse_max,',
-'    -- tr_descr,',
-'    -- tr_img1,',
-'    -- tr_img2,',
-'    sum(real_distance) real_distance,',
-'    -- real_step_length,',
-'    -- real_speed',
-unistr('    ''\0414\0438\0441\0442\0430\043D\0446\0456\044F \0440\0435\0430\043B\044C\043D\0430, \043A\043C'' series_name,'),
-unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(sum(real_distance),3) || '' \043A\043C'' ct'),
+'     sum(tr_dev2_distance) tr_dev2_distance,',
+unistr('    ''\041F\043E \0433\0430\0434\0436\0435\0442\0443 2, \043A\043C'' series_name,'),
+unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(sum(tr_dev2_distance),3) || '' \043A\043C'' ct'),
 'FROM',
 '    rehab_trainings',
 'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -656,7 +621,7 @@ unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(sum(rea
 'group by trunc(tr_start, ''dd'')',
 'order by tr_start'))
 ,p_series_name_column_name=>'SERIES_NAME'
-,p_items_value_column_name=>'REAL_DISTANCE'
+,p_items_value_column_name=>'TR_DEV2_DISTANCE'
 ,p_items_label_column_name=>'TR_START'
 ,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
@@ -664,8 +629,37 @@ unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(sum(rea
 ,p_marker_rendered=>'auto'
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
-,p_items_label_rendered=>true
-,p_items_label_position=>'auto'
+,p_items_label_rendered=>false
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(54685750469388107)
+,p_chart_id=>wwv_flow_imp.id(54685370112388103)
+,p_static_id=>'disnatcereal'
+,p_seq=>30
+,p_name=>'DisnatceReal'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'SELECT',
+'     trunc(tr_start, ''dd'') tr_start,',
+'    sum(tr_real_distance) tr_real_distance,',
+unistr('    ''\0420\0435\0430\043B\044C\043D\0430, \043A\043C'' series_name,'),
+unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(sum(tr_real_distance),3) || '' \043A\043C'' ct'),
+'FROM',
+'    rehab_trainings',
+'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
+'  and trunc(TR_START) between REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par(''DBAGG_TRAI'') - 1 and REHAB_CONTEXT_PKG.getGLOBAL_DATE()',
+'group by trunc(tr_start, ''dd'')',
+'order by tr_start'))
+,p_series_name_column_name=>'SERIES_NAME'
+,p_items_value_column_name=>'TR_REAL_DISTANCE'
+,p_items_label_column_name=>'TR_START'
+,p_items_short_desc_column_name=>'CT'
+,p_line_style=>'solid'
+,p_line_type=>'curved'
+,p_marker_rendered=>'auto'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
 );
 wwv_flow_imp_page.create_jet_chart_axis(
  p_id=>wwv_flow_imp.id(54685529471388105)
@@ -702,7 +696,8 @@ wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(54685835637388108)
 ,p_plug_name=>'SmallChart3'
 ,p_static_id=>'smallchart3'
-,p_title=>unistr('\0428\0432\0438\0434\043A\0456\0441\0442\044C')
+,p_title=>unistr('\0420\0435\0430\043B\044C\043D\0430 \0448\0432\0438\0434\043A\0456\0441\0442\044C/\043A\0440\043E\043A')
+,p_region_name=>'SmallChart3'
 ,p_parent_plug_id=>wwv_flow_imp.id(54685120764388101)
 ,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
@@ -717,7 +712,6 @@ wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(54685932904388109)
 ,p_region_id=>wwv_flow_imp.id(54685835637388108)
 ,p_chart_type=>'line'
-,p_title=>unistr('\041A\0440\043E\043A\0438')
 ,p_height=>'300'
 ,p_animation_on_display=>'auto'
 ,p_animation_on_data_change=>'auto'
@@ -744,28 +738,14 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_chart_id=>wwv_flow_imp.id(54685932904388109)
 ,p_static_id=>'disnatce'
 ,p_seq=>10
-,p_name=>'Speed'
+,p_name=>'RealSpeed'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'SELECT',
-'    -- tr_id,',
-'    -- tr_type,',
-'    -- tr_pat_id,',
 '     trunc(tr_start, ''dd'') tr_start,',
-'    -- tr_end,',
-'    -- sum(tr_distance_length) tr_distance_length,',
-'    -- sum(tr_steps) tr_steps,',
-'    -- tr_pulse_avg,',
-'    -- tr_pulse_min,',
-'    -- tr_pulse_max,',
-'    -- tr_descr,',
-'    -- tr_img1,',
-'    -- tr_img2,',
-'    -- real_distance,',
-'    -- real_step_length,',
-'    avg(real_speed) real_speed,',
+'    avg(tr_real_speed) tr_real_speed,',
 unistr('    ''\0428\0432\0438\0434\043A\0456\0441\0442\044C, \043A\043C/\0433\043E\0434'' series_name,'),
-unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(avg(real_speed),3) || '' \043A\043C/\0433\043E\0434'' ct'),
+unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(avg(tr_real_speed),3) || '' \043A\043C/\0433\043E\0434'' ct'),
 'FROM',
 '    rehab_trainings',
 'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -773,7 +753,7 @@ unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(avg(rea
 'group by trunc(tr_start, ''dd'')',
 'order by tr_start'))
 ,p_series_name_column_name=>'SERIES_NAME'
-,p_items_value_column_name=>'REAL_SPEED'
+,p_items_value_column_name=>'TR_REAL_SPEED'
 ,p_items_label_column_name=>'TR_START'
 ,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
@@ -781,8 +761,7 @@ unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(avg(rea
 ,p_marker_rendered=>'auto'
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
-,p_items_label_rendered=>true
-,p_items_label_position=>'auto'
+,p_items_label_rendered=>false
 );
 wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(54686108031388111)
@@ -793,24 +772,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'SELECT',
-'    -- tr_id,',
-'    -- tr_type,',
-'    -- tr_pat_id,',
-'     trunc(tr_start, ''dd'') tr_start,',
-'    -- tr_end,',
-'    -- sum(tr_distance_length) tr_distance_length,',
-'    -- sum(tr_steps) tr_steps,',
-'    -- tr_pulse_avg,',
-'    -- tr_pulse_min,',
-'    -- tr_pulse_max,',
-'    -- tr_descr,',
-'    -- tr_img1,',
-'    -- tr_img2,',
-'    -- sum(real_distance) real_distance,',
-'    avg(real_step_length) real_step_length,',
-'    -- real_speed',
+'    trunc(tr_start, ''dd'') tr_start,',
+'    avg(tr_real_step_length) real_step_length,',
 unistr('    ''\0414\043E\0432\0436\0438\043D\0430 \043A\0440\043E\043A\0443, \043C'' series_name,'),
-unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(avg(real_step_length),3) || '' \043C'' ct'),
+unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(avg(tr_real_step_length),3) || '' \043C'' ct'),
 'FROM',
 '    rehab_trainings',
 'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -826,8 +791,7 @@ unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(avg(rea
 ,p_marker_rendered=>'auto'
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'on'
-,p_items_label_rendered=>true
-,p_items_label_position=>'auto'
+,p_items_label_rendered=>false
 );
 wwv_flow_imp_page.create_jet_chart_axis(
  p_id=>wwv_flow_imp.id(54686299481388112)
@@ -879,7 +843,8 @@ wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(73053837465651217)
 ,p_plug_name=>'SmallChart4'
 ,p_static_id=>'smallchart4'
-,p_title=>unistr('\041E\0431\0447\0438\0441\043B\0435\043D\0430 \0448\0432\0438\0434\043A\0456\0441\0442\044C')
+,p_title=>unistr('\0428\0432\0438\0434\043A\0456\0441\0442\044C')
+,p_region_name=>'SmallChart4'
 ,p_parent_plug_id=>wwv_flow_imp.id(54685120764388101)
 ,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
@@ -894,8 +859,7 @@ wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(73053991205651218)
 ,p_region_id=>wwv_flow_imp.id(73053837465651217)
 ,p_chart_type=>'line'
-,p_title=>unistr('\041A\0440\043E\043A\0438')
-,p_height=>'300'
+,p_height=>'350'
 ,p_animation_on_display=>'auto'
 ,p_animation_on_data_change=>'auto'
 ,p_orientation=>'vertical'
@@ -919,15 +883,15 @@ wwv_flow_imp_page.create_jet_chart(
 wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(73054028826651219)
 ,p_chart_id=>wwv_flow_imp.id(73053991205651218)
-,p_static_id=>'disnatce'
+,p_static_id=>'calcspeed'
 ,p_seq=>10
-,p_name=>'Speed'
+,p_name=>'CalcSpeed'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'SELECT',
 '    trunc(tr_start, ''IW'') tr_start,',
 '    round(avg(tr_distance_length*0.8944/( (tr_end+0) -  (tr_start+0))/24),3) calc_speed,',
-unistr('    ''\041E\0431\0447\0438\0441\043B\0435\043D\0430 \0448\0432\0438\0434\043A\0456\0441\0442\044C, \043A\043C/\0433\043E\0434'' series_name,'),
+unistr('    ''\041E\0431\0447\0438\0441\043B\0435\043D\0430, \043A\043C/\0433\043E\0434'' series_name,'),
 unistr('    to_char(trunc(tr_start, ''IW''),''YYYY-MM-DD "\0422\0438\0436\0434\0435\043D\044C" IW'') || '' '' || round(avg(tr_distance_length*0.8944/( (tr_end+0) -  (tr_start+0))/24),3) || '' \043A\043C/\0433\043E\0434'' ct'),
 'FROM',
 '    rehab_trainings',
@@ -936,12 +900,12 @@ unistr('    to_char(trunc(tr_start, ''IW''),''YYYY-MM-DD "\0422\0438\0436\0434\0
 'union all',
 'SELECT',
 '    trunc(tr_start, ''IW'') tr_start,',
-'    avg(REAL_SPEED) calc_speed,',
-unistr('    ''\0420\0435\0430\043B\044C\043D\0430 \0448\0432\0438\0434\043A\0456\0441\0442\044C, \043A\043C/\0433\043E\0434'' series_name,'),
+'    avg(tr_REAL_SPEED) calc_speed,',
+unistr('    ''\0420\0435\0430\043B\044C\043D\0430, \043A\043C/\0433\043E\0434'' series_name,'),
 unistr('    to_char(trunc(tr_start, ''IW''),''YYYY-MM-DD "\0422\0438\0436\0434\0435\043D\044C" IW'') || '' '' || round(avg(tr_distance_length*0.8944/( (tr_end+0) -  (tr_start+0))/24),3) || '' \043A\043C/\0433\043E\0434'' ct'),
 'FROM',
 '    rehab_trainings',
-'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT() and REAL_SPEED is not null',
+'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT() and tr_REAL_SPEED is not null',
 'group by trunc(tr_start, ''IW'')',
 'order by tr_start'))
 ,p_series_name_column_name=>'SERIES_NAME'
@@ -953,8 +917,7 @@ unistr('    to_char(trunc(tr_start, ''IW''),''YYYY-MM-DD "\0422\0438\0436\0434\0
 ,p_marker_rendered=>'auto'
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
-,p_items_label_rendered=>true
-,p_items_label_position=>'auto'
+,p_items_label_rendered=>false
 );
 wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(73054584214651224)
@@ -1027,13 +990,13 @@ unistr('    ''\0422\0440\0435\043D\0434\043E\0432\0430 \043E\0431\0447\0438\0441
 '    ) AS TREND_VALUE,',
 unistr('    ''\0422\0440\0435\043D\0434\043E\0432\0430 \0440\0435\0430\043B\044C\043D\0430, \043A\043C/\0433\043E\0434'' series_name'),
 'FROM',
-'(select tr_start, case_id, avg(REAL_SPEED) REAL_SPEED',
+'(select tr_start, case_id, avg(tr_REAL_SPEED) REAL_SPEED',
 '   from',
 '    (select trunc(tr_start, ''IW'') tr_start,',
 '            to_number(to_char(trunc(tr_start, ''IW''),''IW'')) case_id,',
-'            REAL_SPEED',
+'            tr_REAL_SPEED',
 '       from rehab_trainings',
-'      where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT() and REAL_SPEED is not null)',
+'      where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT() and tr_REAL_SPEED is not null)',
 'group by tr_start, case_id)',
 'order by tr_start'))
 ,p_series_name_column_name=>'SERIES_NAME'
@@ -1108,6 +1071,266 @@ wwv_flow_imp_page.create_page_button(
 ,p_warn_on_unsaved_changes=>null
 ,p_icon_css_classes=>'fa-plus'
 ,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(74066335253385820)
+,p_button_sequence=>20
+,p_button_plug_id=>wwv_flow_imp.id(54685120764388101)
+,p_button_name=>'HideLabels4'
+,p_static_id=>'hidelabels4'
+,p_show_as_disabled=>false
+,p_button_action=>'DEFINED_BY_DA'
+,p_button_template_options=>'#DEFAULT#'
+,p_button_template_id=>4073839297780169708
+,p_button_image_alt=>unistr('\0421\0445\043E\0432\0430\0442\0438')
+,p_button_position=>'BOTTOM'
+,p_button_alignment=>'RIGHT'
+,p_warn_on_unsaved_changes=>null
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(74065987706385816)
+,p_button_sequence=>10
+,p_button_plug_id=>wwv_flow_imp.id(54685120764388101)
+,p_button_name=>'ShowLabels4'
+,p_static_id=>'new'
+,p_show_as_disabled=>false
+,p_button_action=>'DEFINED_BY_DA'
+,p_button_template_options=>'#DEFAULT#'
+,p_button_template_id=>4073839297780169708
+,p_button_image_alt=>unistr('\041F\043E\043A\0430\0437\0430\0442\0438')
+,p_button_position=>'BOTTOM'
+,p_button_alignment=>'RIGHT'
+,p_warn_on_unsaved_changes=>null
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(74066464018385821)
+,p_name=>'Hide'
+,p_static_id=>'hide'
+,p_event_sequence=>20
+,p_triggering_element_type=>'BUTTON'
+,p_triggering_button_id=>wwv_flow_imp.id(74066335253385820)
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'click'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(74066500634385822)
+,p_event_id=>wwv_flow_imp.id(74066464018385821)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_static_id=>'native-javascript-code'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
+    '// Retrieve the series array from the chart - using the ''option'' API',
+    'var series = apex.region("SmallChart1").call( "option", "series" );',
+    '',
+    '// Set the labelPosition property for the series items',
+    'for ( i = 0; i < series.length; i++ ) {',
+    '    for ( j = 0; j < series[ i ].items.length; j++ ) {',
+    '        series[ i ].items[ j ].labelPosition = "none";    ',
+    '    }',
+    '}',
+    '',
+    '// Invoke the refresh method to update the DOM',
+    'apex.region("SmallChart1").widget().ojChart(''refresh'');')))).to_clob
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(74066717409385824)
+,p_event_id=>wwv_flow_imp.id(74066464018385821)
+,p_event_result=>'TRUE'
+,p_action_sequence=>20
+,p_execute_on_page_init=>'N'
+,p_static_id=>'native-javascript-code_1'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
+    '// Retrieve the series array from the chart - using the ''option'' API',
+    'var series = apex.region("SmallChart2").call( "option", "series" );',
+    '',
+    '// Set the labelPosition property for the series items',
+    'for ( i = 0; i < series.length; i++ ) {',
+    '    for ( j = 0; j < series[ i ].items.length; j++ ) {',
+    '        series[ i ].items[ j ].labelPosition = "none";    ',
+    '    }',
+    '}',
+    '',
+    '// Invoke the refresh method to update the DOM',
+    'apex.region("SmallChart2").widget().ojChart(''refresh'');')))).to_clob
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(74066818480385825)
+,p_event_id=>wwv_flow_imp.id(74066464018385821)
+,p_event_result=>'TRUE'
+,p_action_sequence=>30
+,p_execute_on_page_init=>'N'
+,p_static_id=>'native-javascript-code_1_1'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
+    '// Retrieve the series array from the chart - using the ''option'' API',
+    'var series = apex.region("SmallChart3").call( "option", "series" );',
+    '',
+    '// Set the labelPosition property for the series items',
+    'for ( i = 0; i < series.length; i++ ) {',
+    '    for ( j = 0; j < series[ i ].items.length; j++ ) {',
+    '        series[ i ].items[ j ].labelPosition = "none";    ',
+    '    }',
+    '}',
+    '',
+    '// Invoke the refresh method to update the DOM',
+    'apex.region("SmallChart3").widget().ojChart(''refresh'');')))).to_clob
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(74066950185385826)
+,p_event_id=>wwv_flow_imp.id(74066464018385821)
+,p_event_result=>'TRUE'
+,p_action_sequence=>40
+,p_execute_on_page_init=>'N'
+,p_static_id=>'native-javascript-code_1_1_1'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
+    '// Retrieve the series array from the chart - using the ''option'' API',
+    'var series = apex.region("SmallChart4").call( "option", "series" );',
+    '',
+    '// Set the labelPosition property for the series items',
+    'for ( i = 0; i < series.length; i++ ) {',
+    '    for ( j = 0; j < series[ i ].items.length; j++ ) {',
+    '        series[ i ].items[ j ].labelPosition = "none";    ',
+    '    }',
+    '}',
+    '',
+    '// Invoke the refresh method to update the DOM',
+    'apex.region("SmallChart4").widget().ojChart(''refresh'');')))).to_clob
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(74066177553385818)
+,p_name=>'Show'
+,p_static_id=>'new'
+,p_event_sequence=>10
+,p_triggering_element_type=>'BUTTON'
+,p_triggering_button_id=>wwv_flow_imp.id(74065987706385816)
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'click'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(74066232845385819)
+,p_event_id=>wwv_flow_imp.id(74066177553385818)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_static_id=>'native-javascript-code'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
+    'var $chart = apex.region("SmallChart1").widget();',
+    '',
+    '// 1. Retrieve the series array',
+    'var series = $chart.ojChart( "option", "series" );',
+    '',
+    '// 2. Find and modify only that specific series',
+    'for (var i = 0; i < series.length; i++) {',
+    unistr('    if (series[i].name === "\041A\0440\043E\043A\0438") {'),
+    '        for (var j = 0; j < series[i].items.length; j++) {',
+    '            series[i].items[j].labelPosition = "aboveMarker";',
+    '            series[i].items[j].label = series[i].items[j].value;',
+    '        }',
+    '        //break; // Exit loop once found',
+    '    }',
+    '}',
+    '',
+    '// Invoke the refresh method to update the DOM',
+    'apex.region("SmallChart1").widget().ojChart(''refresh'');')))).to_clob
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(74067079355385827)
+,p_event_id=>wwv_flow_imp.id(74066177553385818)
+,p_event_result=>'TRUE'
+,p_action_sequence=>20
+,p_execute_on_page_init=>'N'
+,p_static_id=>'native-javascript-code_1'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
+    'var $chart = apex.region("SmallChart2").widget();',
+    '',
+    '// 1. Retrieve the series array',
+    'var series = $chart.ojChart( "option", "series" );',
+    '',
+    '// 2. Find and modify only that specific series',
+    'for (var i = 0; i < series.length; i++) {',
+    unistr('    if ((series[i].name === "\041F\043E \0433\0430\0434\0436\0435\0442\0443 1, \043A\043C")||(series[i].name === "\041F\043E \0433\0430\0434\0436\0435\0442\0443 2, \043A\043C")||(series[i].name === "\0420\0435\0430\043B\044C\043D\0430, \043A\043C")) {'),
+    '        for (var j = 0; j < series[i].items.length; j++) {',
+    '            series[i].items[j].labelPosition = "aboveMarker";',
+    '            series[i].items[j].label = series[i].items[j].value;',
+    '        }',
+    '        //break; // Exit loop once found',
+    '    }',
+    '}',
+    '',
+    '// Invoke the refresh method to update the DOM',
+    'apex.region("SmallChart2").widget().ojChart(''refresh'');')))).to_clob
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(74067150312385828)
+,p_event_id=>wwv_flow_imp.id(74066177553385818)
+,p_event_result=>'TRUE'
+,p_action_sequence=>30
+,p_execute_on_page_init=>'N'
+,p_static_id=>'native-javascript-code_1_1'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
+    'var $chart = apex.region("SmallChart3").widget();',
+    '',
+    '// 1. Retrieve the series array',
+    'var series = $chart.ojChart( "option", "series" );',
+    '',
+    '// 2. Find and modify only that specific series',
+    'for (var i = 0; i < series.length; i++) {',
+    unistr('    if ((series[i].name === "\0428\0432\0438\0434\043A\0456\0441\0442\044C, \043A\043C/\0433\043E\0434")||(series[i].name === "\0414\043E\0432\0436\0438\043D\0430 \043A\0440\043E\043A\0443, \043C")) {'),
+    '        for (var j = 0; j < series[i].items.length; j++) {',
+    '            series[i].items[j].labelPosition = "aboveMarker";',
+    '            series[i].items[j].label = series[i].items[j].value;',
+    '        }',
+    '        //break; // Exit loop once found',
+    '    }',
+    '}',
+    '',
+    '// Invoke the refresh method to update the DOM',
+    'apex.region("SmallChart3").widget().ojChart(''refresh'');')))).to_clob
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(74067240512385829)
+,p_event_id=>wwv_flow_imp.id(74066177553385818)
+,p_event_result=>'TRUE'
+,p_action_sequence=>40
+,p_execute_on_page_init=>'N'
+,p_static_id=>'native-javascript-code_1_1_1'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
+    'var $chart = apex.region("SmallChart4").widget();',
+    '',
+    '// 1. Retrieve the series array',
+    'var series = $chart.ojChart( "option", "series" );',
+    '',
+    '// 2. Find and modify only that specific series',
+    'for (var i = 0; i < series.length; i++) {',
+    unistr('    if ((series[i].name === "\041E\0431\0447\0438\0441\043B\0435\043D\0430, \043A\043C/\0433\043E\0434")||(series[i].name === "\0420\0435\0430\043B\044C\043D\0430, \043A\043C/\0433\043E\0434")) {'),
+    '        for (var j = 0; j < series[i].items.length; j++) {',
+    '            series[i].items[j].labelPosition = "aboveMarker";',
+    '            series[i].items[j].label = series[i].items[j].value;',
+    '        }',
+    '        //break; // Exit loop once found',
+    '    }',
+    '}',
+    '',
+    '// Invoke the refresh method to update the DOM',
+    'apex.region("SmallChart4").widget().ojChart(''refresh'');')))).to_clob
 );
 wwv_flow_imp.component_end;
 end;

@@ -239,7 +239,6 @@ wwv_flow_imp_page.create_page_process(
 ,p_process_when_button_id=>wwv_flow_imp.id(44055059040422934)
 ,p_process_when=>'P102_DRU_ID'
 ,p_process_when_type=>'ITEM_IS_NULL'
-,p_process_success_message=>unistr('\0406\043D\0444\043E\0440\043C\0430\0446\0456\044E \0437\0431\0435\0440\0435\0436\0435\043D\043E')
 ,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
 ,p_internal_uid=>50426655767451531
 );
@@ -268,7 +267,6 @@ wwv_flow_imp_page.create_page_process(
 ,p_process_when_button_id=>wwv_flow_imp.id(44056024922422944)
 ,p_process_when=>'P102_DRU_ID'
 ,p_process_when_type=>'ITEM_IS_NULL'
-,p_process_success_message=>unistr('\0406\043D\0444\043E\0440\043C\0430\0446\0456\044E \0437\0431\0435\0440\0435\0436\0435\043D\043E')
 ,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
 ,p_internal_uid=>44056187697422945
 );

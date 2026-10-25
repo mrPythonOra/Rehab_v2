@@ -101,7 +101,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_position=>'CLOSE'
 ,p_button_condition=>'P202_MT_ID'
 ,p_button_condition_type=>'ITEM_IS_NULL'
-,p_icon_css_classes=>'fa-plus'
+,p_icon_css_classes=>'fa-save'
 ,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
 ,p_database_action=>'INSERT'
 );

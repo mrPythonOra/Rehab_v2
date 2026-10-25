@@ -1215,9 +1215,10 @@ CREATE TABLE REHAB_TRAININGS
     TR_DESCR VARCHAR2(4000),
     TR_IMG1 BLOB,
     TR_IMG2 BLOB,
-    real_distance number,
-    real_step_length number,
-    real_speed number
+    tr_real_distance number,
+    tr_real_step_length number,
+    tr_real_speed number,
+    tr_dev2_distance number
    ) SEGMENT CREATION IMMEDIATE
    PCTUSED 40 INITRANS 10 MAXTRANS 255
  NOCOMPRESS  LOGGING;

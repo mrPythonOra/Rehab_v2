@@ -309,6 +309,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'SmallChart1'
 ,p_static_id=>'smallchart1'
 ,p_title=>unistr('\0422\0438\0441\043A')
+,p_region_name=>'SmallChart1'
 ,p_parent_plug_id=>wwv_flow_imp.id(109387487319870668)
 ,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
@@ -355,8 +356,8 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    -- mt_pat_id,',
 '    to_char(trunc(mt_taken, ''dd''),''YYYY-MM-DD'') mt_taken,',
 unistr('    -- decode(mt_pressure_lr, ''L'', ''\041B\0456\0432\0430'', ''R'', ''\041F\0440\0430\0432\0430'') mt_pressure_lr,'),
-'    avg(mt_pressure_sys) mt_pressure_sys,',
-'    avg(mt_pressure_dia) mt_pressure_dia,',
+'    round(avg(mt_pressure_sys)) mt_pressure_sys,',
+'    round(avg(mt_pressure_dia)) mt_pressure_dia,',
 '    --avg(mt_pulse) mt_pulse,',
 '    -- mt_temperature,',
 '    -- mt_sugar,',
@@ -384,8 +385,7 @@ unistr('    -- ''\041C\0435\0436\0430 SYS'' sys_minmax_name'),
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
 ,p_marker_shape=>'auto'
-,p_items_label_rendered=>true
-,p_items_label_position=>'auto'
+,p_items_label_rendered=>false
 );
 wwv_flow_imp_page.create_jet_chart_axis(
  p_id=>wwv_flow_imp.id(54709727076482626)
@@ -423,6 +423,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'SmallChart3'
 ,p_static_id=>'smallchart2'
 ,p_title=>unistr('\0412\0430\0433\0430')
+,p_region_name=>'SmallChart3'
 ,p_parent_plug_id=>wwv_flow_imp.id(109387487319870668)
 ,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
@@ -498,8 +499,7 @@ unistr('    to_char(trunc(mt_taken, ''dd''),''YYYY-MM-DD Day'') || round(avg(mt_
 ,p_marker_rendered=>'auto'
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
-,p_items_label_rendered=>true
-,p_items_label_position=>'auto'
+,p_items_label_rendered=>false
 );
 wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(58057121096597020)
@@ -617,6 +617,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'SmallChart2'
 ,p_static_id=>'smallchart2_1'
 ,p_title=>unistr('\041F\0443\043B\044C\0441')
+,p_region_name=>'SmallChart2'
 ,p_parent_plug_id=>wwv_flow_imp.id(109387487319870668)
 ,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
@@ -692,8 +693,7 @@ unistr('    to_char(trunc(mt_taken, ''dd''),''YYYY-MM-DD Day'') || round(avg(mt_
 ,p_marker_rendered=>'auto'
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
-,p_items_label_rendered=>true
-,p_items_label_position=>'outsideBarEdge'
+,p_items_label_rendered=>false
 );
 wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(58056963858597018)
@@ -807,6 +807,21 @@ wwv_flow_imp_page.create_jet_chart_axis(
 ,p_tick_label_rendered=>'on'
 );
 wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(74067409378385831)
+,p_button_sequence=>60
+,p_button_plug_id=>wwv_flow_imp.id(109387487319870668)
+,p_button_name=>'Hide'
+,p_static_id=>'hide'
+,p_show_as_disabled=>false
+,p_button_action=>'DEFINED_BY_DA'
+,p_button_template_options=>'#DEFAULT#'
+,p_button_template_id=>4073839297780169708
+,p_button_image_alt=>unistr('\0421\0445\043E\0432\0430\0442\0438')
+,p_button_position=>'BOTTOM'
+,p_button_alignment=>'RIGHT'
+,p_warn_on_unsaved_changes=>null
+);
+wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(54792138283080111)
 ,p_button_sequence=>10
 ,p_button_plug_id=>wwv_flow_imp.id(54686406553388114)
@@ -822,6 +837,203 @@ wwv_flow_imp_page.create_page_button(
 ,p_warn_on_unsaved_changes=>null
 ,p_icon_css_classes=>'fa-plus'
 ,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(74067385141385830)
+,p_button_sequence=>50
+,p_button_plug_id=>wwv_flow_imp.id(109387487319870668)
+,p_button_name=>'Show'
+,p_static_id=>'show'
+,p_show_as_disabled=>false
+,p_button_action=>'DEFINED_BY_DA'
+,p_button_template_options=>'#DEFAULT#'
+,p_button_template_id=>4073839297780169708
+,p_button_image_alt=>unistr('\041F\043E\043A\0430\0437\0430\0442\0438')
+,p_button_position=>'BOTTOM'
+,p_button_alignment=>'RIGHT'
+,p_warn_on_unsaved_changes=>null
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(74067598794385832)
+,p_name=>'Show'
+,p_static_id=>'show'
+,p_event_sequence=>10
+,p_triggering_element_type=>'BUTTON'
+,p_triggering_button_id=>wwv_flow_imp.id(74067385141385830)
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'click'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(74067628755385833)
+,p_event_id=>wwv_flow_imp.id(74067598794385832)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_static_id=>'native-javascript-code'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
+    'var $chart = apex.region("SmallChart1").widget();',
+    '',
+    '// 1. Retrieve the series array',
+    'var series = $chart.ojChart( "option", "series" );',
+    '',
+    '// 2. Find and modify only that specific series',
+    'for (var i = 0; i < series.length; i++) {',
+    '    //console.log(series[i].name);',
+    unistr('    if (series[i].name === "\0422\0438\0441\043A") {'),
+    '        //console.log(series[i].name);',
+    '        for (var j = 0; j < series[i].items.length; j++) {',
+    '            //console.log(series[i].name);',
+    '            series[i].items[j].labelPosition = "aboveMarker";',
+    '            //series[i].items[j].label = series[i].items[j].value;',
+    '            series[i].items[j].label = series[i].items[j].high + " / " + series[i].items[j].low;',
+    '        }      ',
+    '        //break; // Exit loop once found',
+    '    }',
+    '}',
+    '',
+    '// Invoke the refresh method to update the DOM',
+    'apex.region("SmallChart1").widget().ojChart(''refresh'');')))).to_clob
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(74067741000385834)
+,p_event_id=>wwv_flow_imp.id(74067598794385832)
+,p_event_result=>'TRUE'
+,p_action_sequence=>20
+,p_execute_on_page_init=>'N'
+,p_static_id=>'native-javascript-code_1'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
+    'var $chart = apex.region("SmallChart2").widget();',
+    '',
+    '// 1. Retrieve the series array',
+    'var series = $chart.ojChart( "option", "series" );',
+    '',
+    '// 2. Find and modify only that specific series',
+    'for (var i = 0; i < series.length; i++) {',
+    unistr('    if (series[i].name === "\041F\0443\043B\044C\0441") {'),
+    '        for (var j = 0; j < series[i].items.length; j++) {',
+    '            series[i].items[j].labelPosition = "aboveMarker";',
+    '            series[i].items[j].label = series[i].items[j].value;',
+    '        }',
+    '        //break; // Exit loop once found',
+    '    }',
+    '}',
+    '',
+    '// Invoke the refresh method to update the DOM',
+    'apex.region("SmallChart2").widget().ojChart(''refresh'');')))).to_clob
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(74067880461385835)
+,p_event_id=>wwv_flow_imp.id(74067598794385832)
+,p_event_result=>'TRUE'
+,p_action_sequence=>30
+,p_execute_on_page_init=>'N'
+,p_static_id=>'native-javascript-code_1_1'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
+    'var $chart = apex.region("SmallChart3").widget();',
+    '',
+    '// 1. Retrieve the series array',
+    'var series = $chart.ojChart( "option", "series" );',
+    '',
+    '// 2. Find and modify only that specific series',
+    'for (var i = 0; i < series.length; i++) {',
+    unistr('    if (series[i].name === "\0412\0430\0433\0430") {'),
+    '        for (var j = 0; j < series[i].items.length; j++) {',
+    '            series[i].items[j].labelPosition = "aboveMarker";',
+    '            series[i].items[j].label = series[i].items[j].value;',
+    '        }',
+    '        //break; // Exit loop once found',
+    '    }',
+    '}',
+    '',
+    '// Invoke the refresh method to update the DOM',
+    'apex.region("SmallChart3").widget().ojChart(''refresh'');')))).to_clob
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(74068137284385838)
+,p_name=>'Show'
+,p_static_id=>'show_1'
+,p_event_sequence=>20
+,p_triggering_element_type=>'BUTTON'
+,p_triggering_button_id=>wwv_flow_imp.id(74067409378385831)
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'click'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(74068294717385839)
+,p_event_id=>wwv_flow_imp.id(74068137284385838)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_static_id=>'native-javascript-code'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
+    '// Retrieve the series array from the chart - using the ''option'' API',
+    'var series = apex.region("SmallChart1").call( "option", "series" );',
+    '',
+    '// Set the labelPosition property for the series items',
+    'for ( i = 0; i < series.length; i++ ) {',
+    '    for ( j = 0; j < series[ i ].items.length; j++ ) {',
+    '        series[ i ].items[ j ].labelPosition = "none";    ',
+    '    }',
+    '}',
+    '',
+    '// Invoke the refresh method to update the DOM',
+    'apex.region("SmallChart1").widget().ojChart(''refresh'');')))).to_clob
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(74068313578385840)
+,p_event_id=>wwv_flow_imp.id(74068137284385838)
+,p_event_result=>'TRUE'
+,p_action_sequence=>20
+,p_execute_on_page_init=>'N'
+,p_static_id=>'native-javascript-code_1'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
+    '// Retrieve the series array from the chart - using the ''option'' API',
+    'var series = apex.region("SmallChart2").call( "option", "series" );',
+    '',
+    '// Set the labelPosition property for the series items',
+    'for ( i = 0; i < series.length; i++ ) {',
+    '    for ( j = 0; j < series[ i ].items.length; j++ ) {',
+    '        series[ i ].items[ j ].labelPosition = "none";    ',
+    '    }',
+    '}',
+    '',
+    '// Invoke the refresh method to update the DOM',
+    'apex.region("SmallChart2").widget().ojChart(''refresh'');')))).to_clob
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(74068406077385841)
+,p_event_id=>wwv_flow_imp.id(74068137284385838)
+,p_event_result=>'TRUE'
+,p_action_sequence=>30
+,p_execute_on_page_init=>'N'
+,p_static_id=>'native-javascript-code_1_1'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
+    '// Retrieve the series array from the chart - using the ''option'' API',
+    'var series = apex.region("SmallChart3").call( "option", "series" );',
+    '',
+    '// Set the labelPosition property for the series items',
+    'for ( i = 0; i < series.length; i++ ) {',
+    '    for ( j = 0; j < series[ i ].items.length; j++ ) {',
+    '        series[ i ].items[ j ].labelPosition = "none";    ',
+    '    }',
+    '}',
+    '',
+    '// Invoke the refresh method to update the DOM',
+    'apex.region("SmallChart3").widget().ojChart(''refresh'');')))).to_clob
 );
 wwv_flow_imp.component_end;
 end;
