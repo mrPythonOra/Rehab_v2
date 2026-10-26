@@ -55,7 +55,7 @@ wwv_flow_imp_page.create_page_plug(
 );
 wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(70871617233708416)
-,p_button_sequence=>90
+,p_button_sequence=>100
 ,p_button_plug_id=>wwv_flow_imp.id(54822092958591088)
 ,p_button_name=>'ADD'
 ,p_static_id=>'add'
@@ -67,7 +67,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_position=>'CLOSE'
 ,p_button_condition=>'P212_TR_ID'
 ,p_button_condition_type=>'ITEM_IS_NOT_NULL'
-,p_icon_css_classes=>'fa-plus'
+,p_icon_css_classes=>'fa-file-new'
 ,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
 );
 wwv_flow_imp_page.create_page_button(
@@ -87,7 +87,7 @@ wwv_flow_imp_page.create_page_button(
 );
 wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(54835567474591151)
-,p_button_sequence=>50
+,p_button_sequence=>60
 ,p_button_plug_id=>wwv_flow_imp.id(54822092958591088)
 ,p_button_name=>'CREATE'
 ,p_static_id=>'create'
@@ -95,17 +95,17 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
 ,p_button_template_id=>2350584059425431644
-,p_button_image_alt=>unistr('\0421\0442\0432\043E\0440\0438\0442\0438')
+,p_button_image_alt=>unistr('\0417\0431\0435\0440\0456\0433\0442\0438')
 ,p_button_position=>'CLOSE'
 ,p_button_condition=>'P212_TR_ID'
 ,p_button_condition_type=>'ITEM_IS_NULL'
-,p_icon_css_classes=>'fa-save'
+,p_icon_css_classes=>'fa-file-check'
 ,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
 ,p_database_action=>'INSERT'
 );
 wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(70871228154707202)
-,p_button_sequence=>80
+,p_button_sequence=>90
 ,p_button_plug_id=>wwv_flow_imp.id(54822092958591088)
 ,p_button_name=>'CREATE_N_ADD'
 ,p_static_id=>'create-n-add'
@@ -114,17 +114,17 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_template_options=>'#DEFAULT#'
 ,p_button_template_id=>2350584059425431644
 ,p_button_is_hot=>'Y'
-,p_button_image_alt=>unistr('\0421\0442\0432\043E\0440\0438\0442\0438 \0456 \0434\043E\0434\0430\0442\0438')
+,p_button_image_alt=>unistr('\0417\0431\0435\0440\0456\0433\0442\0438 \0456 \0434\043E\0434\0430\0442\0438')
 ,p_button_position=>'CLOSE'
 ,p_button_condition=>'P212_TR_ID'
 ,p_button_condition_type=>'ITEM_IS_NULL'
-,p_icon_css_classes=>'fa-table-plus'
+,p_icon_css_classes=>'fa-file-new'
 ,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
 ,p_database_action=>'INSERT'
 );
 wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(68081676169157034)
-,p_button_sequence=>60
+,p_button_sequence=>70
 ,p_button_plug_id=>wwv_flow_imp.id(54822092958591088)
 ,p_button_name=>'CREATE_N_CLOSE'
 ,p_static_id=>'create-n-close'
@@ -132,11 +132,11 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
 ,p_button_template_id=>2350584059425431644
-,p_button_image_alt=>unistr('\0421\0442\0432\043E\0440\0438\0442\0438 \0456 \0437\0430\043A\0440\0438\0442\0438')
+,p_button_image_alt=>unistr('\0417\0431\0435\0440\0456\0433\0442\0438 \0456 \0437\0430\043A\0440\0438\0442\0438')
 ,p_button_position=>'CLOSE'
 ,p_button_condition=>'P212_TR_ID'
 ,p_button_condition_type=>'ITEM_IS_NULL'
-,p_icon_css_classes=>'fa-envelope-plus'
+,p_icon_css_classes=>'fa-file-arrow-down'
 ,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
 ,p_database_action=>'INSERT'
 );
@@ -246,13 +246,13 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_position=>'CLOSE'
 ,p_button_condition=>'P212_TR_ID'
 ,p_button_condition_type=>'ITEM_IS_NOT_NULL'
-,p_icon_css_classes=>'fa-save'
+,p_icon_css_classes=>'fa-file-check'
 ,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
 ,p_database_action=>'UPDATE'
 );
 wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(70870849216705936)
-,p_button_sequence=>70
+,p_button_sequence=>50
 ,p_button_plug_id=>wwv_flow_imp.id(54822092958591088)
 ,p_button_name=>'SAVE_N_CLOSE'
 ,p_static_id=>'save-n-close'
@@ -265,7 +265,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_position=>'CLOSE'
 ,p_button_condition=>'P212_TR_ID'
 ,p_button_condition_type=>'ITEM_IS_NOT_NULL'
-,p_icon_css_classes=>'fa-save-as'
+,p_icon_css_classes=>'fa-file-arrow-down'
 ,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
 ,p_database_action=>'UPDATE'
 );

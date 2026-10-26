@@ -448,7 +448,7 @@ wwv_flow_imp_page.create_worksheet(
 ,p_show_notify=>'Y'
 ,p_download_formats=>'CSV:HTML:XLSX:PDF'
 ,p_enable_mail_download=>'Y'
-,p_detail_link=>'f?p=&APP_ID.:304:&SESSION.::&DEBUG.::P304_DA_ID:#DA_ID#'
+,p_detail_link=>'f?p=&APP_ID.:304:&SESSION.::&DEBUG.::P304_DA_ID,P304_MOVE_QUANTITY,P304_TARGET_STORAGE,P304_VALIDATE_MSG:#DA_ID#,,,'
 ,p_internal_uid=>72111180076258202
 );
 wwv_flow_imp_page.create_worksheet_column(

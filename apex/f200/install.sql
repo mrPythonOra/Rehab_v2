@@ -50,6 +50,8 @@ prompt --install
 @@application/shared_components/user_interface/lovs/rehab_drugs_dr_name_1.sql
 @@application/shared_components/user_interface/lovs/rehab_order_types.sql
 @@application/shared_components/user_interface/lovs/rehab_patients_pat_name.sql
+@@application/shared_components/user_interface/lovs/rehab_prescriptions.sql
+@@application/shared_components/user_interface/lovs/rehab_prescriptions_activity_time_ranges.sql
 @@application/shared_components/user_interface/lovs/rehab_prescriptions_activity_time_ranges_pratr_notes.sql
 @@application/shared_components/user_interface/lovs/rehab_prescriptions_pr_notes.sql
 @@application/shared_components/user_interface/lovs/rehab_prescriptors.sql

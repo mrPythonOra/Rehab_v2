@@ -323,7 +323,7 @@ wwv_flow_imp_page.create_page_plug(
 wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(54709206434482624)
 ,p_region_id=>wwv_flow_imp.id(106557351204561695)
-,p_chart_type=>'range'
+,p_chart_type=>'line'
 ,p_title=>unistr('\041A\0440\043E\043A\0438')
 ,p_height=>'300'
 ,p_animation_on_display=>'auto'
@@ -333,6 +333,8 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_data_cursor_behavior=>'auto'
 ,p_hide_and_show_behavior=>'withRescale'
 ,p_hover_behavior=>'dim'
+,p_stack=>'off'
+,p_connect_nulls=>'Y'
 ,p_sorting=>'label-asc'
 ,p_fill_multi_series_gaps=>true
 ,p_zoom_and_scroll=>'off'
@@ -352,39 +354,42 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'SELECT',
-'    -- mt_id,',
-'    -- mt_pat_id,',
 '    to_char(trunc(mt_taken, ''dd''),''YYYY-MM-DD'') mt_taken,',
-unistr('    -- decode(mt_pressure_lr, ''L'', ''\041B\0456\0432\0430'', ''R'', ''\041F\0440\0430\0432\0430'') mt_pressure_lr,'),
-'    round(avg(mt_pressure_sys)) mt_pressure_sys,',
-'    round(avg(mt_pressure_dia)) mt_pressure_dia,',
-'    --avg(mt_pulse) mt_pulse,',
-'    -- mt_temperature,',
-'    -- mt_sugar,',
-'    -- mt_oxigenation,',
-'    -- mt_weight,',
-'    -- mt_descr',
-unistr('    ''\0422\0438\0441\043A'' series_name,'),
-'    to_char(trunc(mt_taken, ''dd''),''YYYY-MM-DD Day'') || round(avg(mt_pressure_sys)) || ''/'' || round(avg(mt_pressure_dia)) ct,',
+'    round(avg(mt_pressure_sys)) mt_pressure,',
+'    --round(avg(mt_pressure_dia)) mt_pressure_dia,',
+unistr('    ''\0422\0438\0441\043A SYS'' series_name,'),
+unistr('    --''\0422\0438\0441\043A DIA'' series_name2,'),
+'    to_char(trunc(mt_taken, ''dd''),''YYYY-MM-DD Day'') || '' '' ||  round(avg(mt_pressure_sys)) || ''/'' || round(avg(mt_pressure_dia)) ct,',
 '    ''custom column'' cc',
-'    -- REHAB_CONFIG_PKG.get_config_par(''DBTRG_PSYS_MIN'') sys_min,',
-'    -- REHAB_CONFIG_PKG.get_config_par(''DBTRG_PSYS_MAX'') sys_max,',
-unistr('    -- ''\041C\0435\0436\0430 SYS'' sys_minmax_name'),
+'  FROM',
+'    rehab_measurements',
+' where MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
+'   and trunc(MT_TAKEN) between REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par(''DBAGG_MEAS'') - 1 and REHAB_CONTEXT_PKG.getGLOBAL_DATE()',
+' group by trunc(mt_taken, ''dd'')',
+'union all',
+'SELECT',
+'    to_char(trunc(mt_taken, ''dd''),''YYYY-MM-DD'') mt_taken,',
+'    --round(avg(mt_pressure_sys)) mt_pressure_sys,',
+'    round(avg(mt_pressure_dia)) mt_pressure,',
+unistr('    --''\0422\0438\0441\043A SYS'' series_name1,'),
+unistr('    ''\0422\0438\0441\043A DIA'' series_name,'),
+'    to_char(trunc(mt_taken, ''dd''),''YYYY-MM-DD Day'') || '' '' || round(avg(mt_pressure_sys)) || ''/'' || round(avg(mt_pressure_dia)) ct,',
+'    ''custom column'' cc',
 '  FROM',
 '    rehab_measurements',
 ' where MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
 '   and trunc(MT_TAKEN) between REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par(''DBAGG_MEAS'') - 1 and REHAB_CONTEXT_PKG.getGLOBAL_DATE()',
 ' group by trunc(mt_taken, ''dd'')',
 'order by mt_taken'))
-,p_series_type=>'areaRange'
 ,p_series_name_column_name=>'SERIES_NAME'
-,p_items_low_column_name=>'MT_PRESSURE_DIA'
-,p_items_high_column_name=>'MT_PRESSURE_SYS'
+,p_items_value_column_name=>'MT_PRESSURE'
 ,p_items_label_column_name=>'MT_TAKEN'
 ,p_items_short_desc_column_name=>'CT'
+,p_line_style=>'solid'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
 ,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -882,13 +887,13 @@ wwv_flow_imp_page.create_page_da_action(
     '// 2. Find and modify only that specific series',
     'for (var i = 0; i < series.length; i++) {',
     '    //console.log(series[i].name);',
-    unistr('    if (series[i].name === "\0422\0438\0441\043A") {'),
+    unistr('    if ((series[i].name === "\0422\0438\0441\043A SYS")||(series[i].name === "\0422\0438\0441\043A DIA")) {'),
     '        //console.log(series[i].name);',
     '        for (var j = 0; j < series[i].items.length; j++) {',
     '            //console.log(series[i].name);',
     '            series[i].items[j].labelPosition = "aboveMarker";',
-    '            //series[i].items[j].label = series[i].items[j].value;',
-    '            series[i].items[j].label = series[i].items[j].high + " / " + series[i].items[j].low;',
+    '            series[i].items[j].label = series[i].items[j].value;',
+    '            //series[i].items[j].label = series[i].items[j].high + " / " + series[i].items[j].low;',
     '        }      ',
     '        //break; // Exit loop once found',
     '    }',

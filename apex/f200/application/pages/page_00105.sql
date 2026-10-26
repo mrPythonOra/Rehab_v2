@@ -113,8 +113,6 @@ wwv_flow_imp_page.create_page_item(
 ,p_name=>'P105_TIME_PERIOD_ID'
 ,p_item_sequence=>20
 ,p_item_plug_id=>wwv_flow_imp.id(118124816923888979)
-,p_item_default=>'select min(TP_ID) from V$REHAB_TIME_PERIODS_AVAILABLE where systimestamp between TP_START_TIME_DT_CURR and TP_END_TIME_DT_CURR'
-,p_item_default_type=>'SQL_QUERY'
 ,p_prompt=>'Time Period Id'
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_RADIOGROUP'
@@ -126,6 +124,23 @@ wwv_flow_imp_page.create_page_item(
   'execute_validations', 'Y',
   'number_of_columns', '10',
   'page_action_on_selection', 'SUBMIT')).to_clob
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(75523012817989303)
+,p_process_sequence=>10
+,p_process_point=>'BEFORE_HEADER'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'Init'
+,p_static_id=>'init'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'begin',
+'    if :P105_TIME_PERIOD_ID is null then',
+'        select min(TP_ID) into :P105_TIME_PERIOD_ID',
+'        from V$REHAB_TIME_PERIODS_AVAILABLE where systimestamp at time zone SESSIONTIMEZONE between TP_START_TIME_DT_CURR and TP_END_TIME_DT_CURR;',
+'    end if;',
+'end;'))
+,p_process_clob_language=>'PLSQL'
+,p_internal_uid=>75523012817989303
 );
 wwv_flow_imp.component_end;
 end;

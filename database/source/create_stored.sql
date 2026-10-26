@@ -13,6 +13,8 @@ show errors
 show errors
 @@REHAB_DRUGUSE_PKG_SPEC.SQL
 show errors
+@@REHAB_DRUG_STORAGE_PKG_SPEC.SQL
+show errors
 @@REHAB_LOGGING_PKG_SPEC.SQL
 show errors
 @@REHAB_MIGRATE_PKG_SPEC.SQL
@@ -26,6 +28,8 @@ show errors
 @@REHAB_CONTEXT_PKG_BODY.SQL
 show errors
 @@REHAB_DRUGUSE_PKG_BODY.SQL
+show errors
+@@REHAB_DRUG_STORAGE_PKG_BODY.SQL
 show errors
 @@REHAB_LOGGING_PKG_BODY.SQL
 show errors

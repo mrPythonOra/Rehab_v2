@@ -15,14 +15,14 @@ wwv_flow_imp_shared.create_list(
  p_id=>wwv_flow_imp.id(16870838765504258)
 ,p_name=>'Navigation Menu'
 ,p_static_id=>'navigation-menu'
-,p_version_scn=>'SH256:2k5DkiCiExWDrkLA3UsKf5BcQDvwZpL3Z1cFSKjC5q8'
+,p_version_scn=>'SH256:Czc7I0o75kKL38txjIkuEAJR6Omk_P35h1d-pMswMD0'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(17056773995505539)
 ,p_list_item_display_sequence=>10000
-,p_list_item_link_text=>'Administration'
+,p_list_item_link_text=>unistr('\0410\0434\043C\0456\043D\0456\0441\0442\0440\0443\0432\0430\043D\043D\044F')
 ,p_static_id=>'administration'
-,p_list_item_link_target=>'f?p=&APP_ID.:10000:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_link_target=>'f?p=&APP_ID.:10000:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-user-wrench'
 ,p_security_scheme=>wwv_flow_imp.id(16876685804504387)
 ,p_list_item_current_type=>'TARGET_PAGE'
@@ -30,9 +30,10 @@ wwv_flow_imp_shared.create_list_item(
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(68053015826737877)
 ,p_list_item_display_sequence=>220
-,p_list_item_link_text=>unistr('\0421\043E\0440\0442\0443\0432\0430\0442\0438')
+,p_list_item_link_text=>unistr('\0421\043E\0440\0442\0443\0432\0430\0442\0438 \043B\0456\043A\0438')
 ,p_static_id=>'consumemedications'
 ,p_list_item_link_target=>'f?p=&APP_ID.:104:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-sort-alpha-asc'
 ,p_parent_list_item_id=>wwv_flow_imp.id(29456772809221898)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'104'
@@ -71,7 +72,7 @@ wwv_flow_imp_shared.create_list_item(
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(29456772809221898)
 ,p_list_item_display_sequence=>20
-,p_list_item_link_text=>unistr('\041F\0440\0438\0439\043E\043C \0442\0430\0431\043B\0435\0442\043E\043A')
+,p_list_item_link_text=>unistr('\041F\0440\0438\0439\043E\043C \043B\0456\043A\0456\0432')
 ,p_static_id=>'inputpills'
 ,p_list_item_link_target=>'f?p=&APP_ID.:101:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-medication-pill'
@@ -84,7 +85,7 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_link_text=>unistr('\0417\0430\043F\0430\0441\0438')
 ,p_static_id=>'inventory'
 ,p_list_item_link_target=>'f?p=&APP_ID.:301:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-medication-pill-bottle'
+,p_list_item_icon=>'fa-medkit'
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'301'
 );
@@ -105,7 +106,7 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_link_text=>unistr('\041F\0440\0438\0437\043D\0430\0447\0435\043D\043D\044F')
 ,p_static_id=>'prescriptor'
 ,p_list_item_link_target=>'f?p=&APP_ID.:401:&SESSION.::&DEBUG.::::'
-,p_list_item_icon=>'fa-user-md'
+,p_list_item_icon=>'fa-prescription-sheet'
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'401,402,403,401'
 );
@@ -136,17 +137,19 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_display_sequence=>260
 ,p_list_item_link_text=>unistr('\0410\0440\0445\0456\0432\0443\0432\0430\043D\043D\044F \0456 \0432\0456\0434\043D\043E\0432\043B\0435\043D\043D\044F')
 ,p_static_id=>unistr('\0430\0440\0445\0456\0432\0443\0432\0430\043D\043D\044F-\0456-\0432\0456\0434\043D\043E\0432\043B\0435\043D\043D\044F')
-,p_list_item_link_target=>'f?p=&APP_ID.:10500:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_link_target=>'f?p=&APP_ID.:10500:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-database-play'
+,p_parent_list_item_id=>wwv_flow_imp.id(17056773995505539)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'10500'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(74071533053466069)
 ,p_list_item_display_sequence=>270
-,p_list_item_link_text=>unistr('\0417\0431\0438\0440\0430\043D\043D\044F \0442\0430\0431\043B\0435\0442\043E\043A')
+,p_list_item_link_text=>unistr('\0417\0431\0438\0440\0430\043D\043D\044F \043C\0435\0434\0438\043A\0430\043C\0435\043D\0442\0456\0432')
 ,p_static_id=>unistr('\0437\0431\0438\0440\0430\043D\043D\044F-\0442\0430\0431\043B\0435\0442\043E\043A')
-,p_list_item_link_target=>'f?p=&APP_ID.:105:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_link_target=>'f?p=&APP_ID.:105:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-medication-pill-bottle'
 ,p_parent_list_item_id=>wwv_flow_imp.id(29456772809221898)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'105'
@@ -178,7 +181,8 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_display_sequence=>210
 ,p_list_item_link_text=>unistr('\041A\0430\043B\0435\043D\0434\0430\0440 \043F\0440\0438\0439\043E\043C\0443')
 ,p_static_id=>unistr('\043A\0430\043B\0435\043D\0434\0430\0440-\043F\0440\0438\0439\043E\043C\0443')
-,p_list_item_link_target=>'f?p=&APP_ID.:103:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_link_target=>'f?p=&APP_ID.:103:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-calendar-today'
 ,p_parent_list_item_id=>wwv_flow_imp.id(29456772809221898)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'103'

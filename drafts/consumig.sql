@@ -408,13 +408,22 @@ fa-person-running-fast
 
 fa-trash-o  del
 fa-plus     add
-fa-table-plus create n add
-fa-envelope-plus create n close
-fa-plus create
-fa-save save
-fa-save-as save n close
+fa-table-plus     create n add
+fa-envelope-plus  create n close fa-save-as
+fa-plus           create         fa-save
+fa-save           save
+fa-save-as        save n close
 fa-person-running-fast cancel
-
+------------------------------------------------
+CANCEL          fa-person-running-fast  Закрити
+SAVE            fa-file-check           Зберігти
+SAVE_N_CLOSE    fa-file-arrow-down      Зберігти і закрити
+CREATE          fa-file-check           Зберігти
+CREATE_N_CLOSE  fa-file-arrow-down      Зберігти і закрити
+CREATE_N_ADD    fa-file-new             Зберігти і додати
+ADD             fa-file-new             Додати
+DELETE          fa-trash-o              Видалити
+------------------------------------------------
 declare
   l_time_int number;
 begin
