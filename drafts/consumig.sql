@@ -304,6 +304,14 @@ begin
 end;
 /
 
+select d.*, r.BALANCE, r.DAYS_PLANNED, r.DAYS_REMAIN, r.DA_STORED_AMOUNT, r.end_date
+                from V$REHAB_CONSUME_DATA d, V$REHAB_TIME_PERIODS tp, V$REHAB_REMAINS r
+               where tp.TP_ID = p_tp_id 
+                 and (CPTR_START_TIME_DT_GDT >= TP_START_TIME_DT_GDT and CPTR_START_TIME_DT_GDT < TP_END_TIME_DT_GDT or 
+                      CPTR_END_TIME_DT_GDT   >= TP_START_TIME_DT_GDT and CPTR_END_TIME_DT_GDT   < TP_END_TIME_DT_GDT)
+                 and d.PRD_DR_ID = r.DR_ID(+)
+;
+
 WITH 
 unique_dates AS (
     -- 1. Ensure unique dates in case your source table has multiple records per day
