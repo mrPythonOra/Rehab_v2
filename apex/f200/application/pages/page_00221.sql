@@ -384,7 +384,7 @@ unistr('    ''\041C\0435\0442\0430'' series_name'),
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'DISTANCE_TRG'
 ,p_items_label_column_name=>'WL_TAKEN'
-,p_line_style=>'solid'
+,p_line_style=>'dotted'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
 ,p_marker_shape=>'auto'

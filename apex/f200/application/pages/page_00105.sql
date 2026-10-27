@@ -90,6 +90,34 @@ wwv_flow_imp_page.create_card(
 ,p_media_adv_formatting=>false
 ,p_pk1_column_name=>'ID'
 );
+wwv_flow_imp_page.create_card_action(
+ p_id=>wwv_flow_imp.id(77065040788873112)
+,p_card_id=>wwv_flow_imp.id(74073541341466124)
+,p_action_type=>'BUTTON'
+,p_position=>'PRIMARY'
+,p_display_sequence=>10
+,p_label=>unistr('\0414\043E \043F\0440\0438\0437\043D\0430\0447\0435\043D\044C')
+,p_static_id=>'action'
+,p_link_target_type=>'REDIRECT_PAGE'
+,p_link_target=>'f?p=&APP_ID.:402:&SESSION.::&DEBUG.::P402_PR_ID_CURR,P402_PRATR_ID_CURR,P402_PRD_ID_CURR,P402_PRR_ID_CURR:&PR_ID.,&PRATR_ID.,&PRD_ID.,&PRR_ID.'
+,p_button_display_type=>'ICON'
+,p_icon_css_classes=>'fa-prescription-sheet'
+,p_is_hot=>false
+);
+wwv_flow_imp_page.create_card_action(
+ p_id=>wwv_flow_imp.id(77065429764873116)
+,p_card_id=>wwv_flow_imp.id(74073541341466124)
+,p_action_type=>'BUTTON'
+,p_position=>'PRIMARY'
+,p_display_sequence=>20
+,p_label=>unistr('\041C\0435\0434\0438\043A\0430\043C\0435\043D\0442')
+,p_static_id=>'action_1'
+,p_link_target_type=>'REDIRECT_PAGE'
+,p_link_target=>'f?p=&APP_ID.:121:&SESSION.::&DEBUG.::P121_DR_ID:&DR_ID.'
+,p_button_display_type=>'ICON'
+,p_icon_css_classes=>'fa-medication-pill'
+,p_is_hot=>false
+);
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(74064631216385803)
 ,p_name=>'P105_DAYS_AHEAD'

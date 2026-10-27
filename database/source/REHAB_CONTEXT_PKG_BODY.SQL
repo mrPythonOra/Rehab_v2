@@ -161,7 +161,7 @@
   function getGLOBAL_DATE_TRUNC return date  is begin return trunc(getGLOBAL_DATE); end;
   function getGLOBAL_DATE_TSTZ return timestamp with time zone is
   begin
-    return to_timestamp_tz(coalesce(v('GLOBAL_DATE'),gCurrentDate,to_char(systimestamp at time zone SESSIONTIMEZONE,'YYYY-MM-DD'))||'235959 '||sessiontimezone,'YYYYMMDDHH24:MI TZR');
+    return to_timestamp_tz(coalesce(v('GLOBAL_DATE'),gCurrentDate,to_char(systimestamp at time zone SESSIONTIMEZONE,'YYYY-MM-DD'))||'235959 '||sessiontimezone,'YYYY-MM-DDHH24MISS TZR');
   end;
 --  to_timestamp_tz(to_char(systimestamp at time zone SESSIONTIMEZONE,'YYYYMMDD')||CPTR_START_TIME_STR||' '||sessiontimezone,'YYYYMMDDHH24:MI TZR')
   function getAPEX_USER return varchar2 is begin return SYS_CONTEXT(gNameSpace, gAPEX_USER); end;

@@ -24,12 +24,36 @@ wwv_flow_imp_shared.create_menu_option(
 ,p_page_id=>10000
 );
 wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(77178666191444193)
+,p_parent_id=>wwv_flow_imp.id(77177318248444188)
+,p_short_name=>'Allergic'
+,p_static_id=>'allergic'
+,p_link=>'f?p=&APP_ID.:502:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>502
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(77177318248444188)
+,p_parent_id=>wwv_flow_imp.id(16870554490504254)
+,p_short_name=>'Allergics'
+,p_static_id=>'allergics'
+,p_link=>'f?p=&APP_ID.:501:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>501
+);
+wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(74075671479466155)
 ,p_parent_id=>wwv_flow_imp.id(29457611096221950)
 ,p_short_name=>unistr('\0417\0431\0438\0440\0430\043D\043D\044F \0442\0430\0431\043B\0435\0442\043E\043A')
 ,p_static_id=>'assemblymedications'
 ,p_link=>'f?p=&APP_ID.:105:&SESSION.::&DEBUG.:::'
 ,p_page_id=>105
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(77092807063748283)
+,p_parent_id=>wwv_flow_imp.id(29457611096221950)
+,p_short_name=>unistr('\041C\0435\0434\0438\043A\0430\043C\0435\043D\0442\0438')
+,p_static_id=>'drugs'
+,p_link=>'f?p=&APP_ID.:120:&SESSION.::&DEBUG.:::'
+,p_page_id=>120
 );
 wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(70063704943283017)
@@ -70,6 +94,22 @@ wwv_flow_imp_shared.create_menu_option(
 ,p_static_id=>'expences'
 ,p_link=>'f?p=&APP_ID.:305:&SESSION.::&DEBUG.:::'
 ,p_page_id=>305
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(77274368315833200)
+,p_parent_id=>wwv_flow_imp.id(77273010719833195)
+,p_short_name=>'FormPAT'
+,p_static_id=>'formpat'
+,p_link=>'f?p=&APP_ID.:708:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>708
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(77253656545824455)
+,p_parent_id=>wwv_flow_imp.id(77252317281824450)
+,p_short_name=>'FormTenant'
+,p_static_id=>'formtenant'
+,p_link=>'f?p=&APP_ID.:706:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>706
 );
 wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(16870554490504254)
@@ -125,6 +165,70 @@ wwv_flow_imp_shared.create_menu_option(
 ,p_page_id=>402
 );
 wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(77204135082766952)
+,p_parent_id=>wwv_flow_imp.id(17057737346505548)
+,p_short_name=>'REHAB_CONFIGS'
+,p_static_id=>'rehab-configs'
+,p_link=>'f?p=&APP_ID.:701:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>701
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(77210235982777145)
+,p_parent_id=>wwv_flow_imp.id(17057737346505548)
+,p_short_name=>'REHAB_CONSUME_PATTERNS'
+,p_static_id=>'rehab-consume-patterns'
+,p_link=>'f?p=&APP_ID.:702:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>702
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(77215805368783084)
+,p_parent_id=>wwv_flow_imp.id(77210235982777145)
+,p_short_name=>'REHAB_CONSUME_TIME_RANGES'
+,p_static_id=>'rehab-consume-time-ranges'
+,p_link=>'f?p=&APP_ID.:703:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>703
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(77110449323814429)
+,p_parent_id=>wwv_flow_imp.id(77092807063748283)
+,p_short_name=>'&P121_TITLE.'
+,p_static_id=>'rehab-drugs'
+,p_link=>'f?p=&APP_ID.:121:&SESSION.::&DEBUG.:::'
+,p_page_id=>121
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(77226105570797929)
+,p_parent_id=>wwv_flow_imp.id(17057737346505548)
+,p_short_name=>'REHAB_LOG'
+,p_static_id=>'rehab-log'
+,p_link=>'f?p=&APP_ID.:704:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>704
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(77273010719833195)
+,p_parent_id=>wwv_flow_imp.id(17057737346505548)
+,p_short_name=>'REHAB_PATIENTS'
+,p_static_id=>'rehab-patients'
+,p_link=>'f?p=&APP_ID.:707:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>707
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(77252317281824450)
+,p_parent_id=>wwv_flow_imp.id(17057737346505548)
+,p_short_name=>'REHAB_TENANTS'
+,p_static_id=>'rehab-tenants'
+,p_link=>'f?p=&APP_ID.:705:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>705
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(77240755438812188)
+,p_parent_id=>wwv_flow_imp.id(29457611096221950)
+,p_short_name=>'REHAB_WORKING_SUBSTANCE'
+,p_static_id=>'rehab-working-substance'
+,p_link=>'f?p=&APP_ID.:106:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>106
+);
+wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(70921632294611456)
 ,p_parent_id=>wwv_flow_imp.id(70063704943283017)
 ,p_short_name=>unistr('\0421\043A\0440\0438\043D\044F \0434\043B\044F \043B\0456\043A\0456\0432')
@@ -147,6 +251,22 @@ wwv_flow_imp_shared.create_menu_option(
 ,p_static_id=>'watchlogs'
 ,p_link=>'f?p=&APP_ID.:221:&SESSION.::&DEBUG.:::'
 ,p_page_id=>221
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(77242047849812192)
+,p_parent_id=>wwv_flow_imp.id(77240755438812188)
+,p_short_name=>'WS_FORM'
+,p_static_id=>'ws-form'
+,p_link=>'f?p=&APP_ID.:107:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>107
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(77310295277875732)
+,p_parent_id=>wwv_flow_imp.id(16870554490504254)
+,p_short_name=>unistr('\0410\043D\0430\043B\0456\0442\0438\043A\0430')
+,p_static_id=>unistr('\0430\043D\0430\043B\0456\0442\0438\043A\0430')
+,p_link=>'f?p=&APP_ID.:32:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>32
 );
 wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(69881324977330029)

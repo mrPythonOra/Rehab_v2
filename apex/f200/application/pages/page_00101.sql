@@ -98,13 +98,41 @@ wwv_flow_imp_page.create_card_action(
 ,p_link_target_type=>'REDIRECT_PAGE'
 ,p_link_target=>'f?p=&APP_ID.:102:&SESSION.::&DEBUG.::P102_DRU_PRD_ID,P102_DRU_PR_ID,P102_DRU_CPTR_ID,P102_DRU_DR_ID,P102_DRU_ID:&PRD_ID.,&PR_ID.,&CPTR_ID.,&DR_ID.,&DRU_ID.'
 ,p_button_display_type=>'ICON'
-,p_icon_css_classes=>'fa-plus'
+,p_icon_css_classes=>'fa-file-new'
 ,p_is_hot=>false
 ,p_condition_type=>'EXPRESSION'
 ,p_condition_expr1=>'''&DRU_ID.'' is null'
 ,p_condition_expr2=>'PLSQL'
 ,p_exec_cond_for_each_row=>true
 ,p_authorization_scheme=>wwv_flow_imp.id(17092171236131578)
+);
+wwv_flow_imp_page.create_card_action(
+ p_id=>wwv_flow_imp.id(77064938201873111)
+,p_card_id=>wwv_flow_imp.id(44052063181422904)
+,p_action_type=>'BUTTON'
+,p_position=>'PRIMARY'
+,p_display_sequence=>30
+,p_label=>unistr('\0414\043E \043F\0440\0438\0437\043D\0430\0447\0435\043D\044C')
+,p_static_id=>'action_1'
+,p_link_target_type=>'REDIRECT_PAGE'
+,p_link_target=>'f?p=&APP_ID.:402:&SESSION.::&DEBUG.::P402_PR_ID_CURR,P402_PRR_ID_CURR,P402_PRATR_ID_CURR,P402_PRD_ID_CURR:&PR_ID.,&PRR_ID.,&PRATR_ID.,&PRD_ID.'
+,p_button_display_type=>'ICON'
+,p_icon_css_classes=>'fa-prescription-sheet'
+,p_is_hot=>false
+);
+wwv_flow_imp_page.create_card_action(
+ p_id=>wwv_flow_imp.id(77065320079873115)
+,p_card_id=>wwv_flow_imp.id(44052063181422904)
+,p_action_type=>'BUTTON'
+,p_position=>'PRIMARY'
+,p_display_sequence=>40
+,p_label=>unistr('\041C\0435\0434\0438\043A\0430\043C\0435\043D\0442')
+,p_static_id=>'action_2'
+,p_link_target_type=>'REDIRECT_PAGE'
+,p_link_target=>'f?p=&APP_ID.:121:&SESSION.::&DEBUG.::P121_DR_ID:&DR_ID.'
+,p_button_display_type=>'ICON'
+,p_icon_css_classes=>'fa-medication-pill'
+,p_is_hot=>false
 );
 wwv_flow_imp_page.create_card_action(
  p_id=>wwv_flow_imp.id(44054912955422933)

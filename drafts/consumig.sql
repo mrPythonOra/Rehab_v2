@@ -1,3 +1,4 @@
+drop TYPE rehab_druguse_dashboard_tab;
 create or replace TYPE rehab_druguse_dashboard_rec AS OBJECT (
     id           number,
     mainlabel    VARCHAR2(4000),
@@ -9,7 +10,9 @@ create or replace TYPE rehab_druguse_dashboard_rec AS OBJECT (
     app_page     number,
     dru_id       number,
     dr_id        number,
+    prr_id       number,
     pr_id        number,
+    pratr_id     number,
     prd_id       number,
     cptr_id      number,
     drug_img     blob
@@ -112,7 +115,7 @@ where x.CPTR_CP_ID = y.CP_ID;
 create or replace view V$REHAB_CONSUME_DATA as
 select *
 from REHAB_PRESCRIPTIONS_DETAILS d, 
-     REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES as of period for REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES_period REHAB_CONTEXT_PKG.getGLOBAL_DATE() 
+     REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES as of period for REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES_period REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC() 
      tr,
      REHAB_PRESCRIPTIONS p,
      REHAB_DRUG_USES du,
@@ -186,7 +189,7 @@ union all
 select * from REHAB_TIME_PERIODS
 where TP_TE_ID is null and TP_PAT_ID is null and not exists (select 1 from REHAB_TIME_PERIODS where TP_PAT_ID = 5 or TP_TE_ID = 1);
 
-
+select REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ();
 select pa.* from V$REHAB_TIME_PERIODS_AVAILABLE pa
 where exists (select 1 from V$REHAB_CONSUME_DATA d where 
                   CPTR_START_TIME_DT_GDT > TP_START_TIME_DT_GDT and CPTR_START_TIME_DT_GDT <= TP_END_TIME_DT_GDT or 
@@ -198,7 +201,13 @@ from V$REHAB_CONSUME_DATA d, V$REHAB_TIME_PERIODS tp
                 where tp.TP_ID = 3 
                   and (CPTR_START_TIME_DT_GDT >= TP_START_TIME_DT_GDT and CPTR_START_TIME_DT_GDT < TP_END_TIME_DT_GDT or 
                       CPTR_END_TIME_DT_GDT   >= TP_START_TIME_DT_GDT and CPTR_END_TIME_DT_GDT   < TP_END_TIME_DT_GDT);
-                      
+alter session set nls_territory='Ukraine';
+select count(*) max_value, 
+       count(DRU_CONSUMED) value,
+       count(DRU_CONSUMED) || ' з '|| count(*) ||' добових медікаментів спожито' tip1,
+       'Спожито таблеток' label
+from V$REHAB_CONSUME_DATA
+;
 DECLARE
   P_DRU_PRD_ID NUMBER;
   P_DRU_PR_ID NUMBER;

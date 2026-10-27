@@ -15,7 +15,7 @@ wwv_flow_imp_shared.create_list(
  p_id=>wwv_flow_imp.id(16870838765504258)
 ,p_name=>'Navigation Menu'
 ,p_static_id=>'navigation-menu'
-,p_version_scn=>'SH256:Czc7I0o75kKL38txjIkuEAJR6Omk_P35h1d-pMswMD0'
+,p_version_scn=>'SH256:5lZJJH7y6SSHopSx-q87UMEgLj2-lZddIS5ZxQU4XLw'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(17056773995505539)
@@ -28,6 +28,16 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(77167944254443928)
+,p_list_item_display_sequence=>290
+,p_list_item_link_text=>unistr('\0410\043B\0435\0440\0433\0456\0457')
+,p_static_id=>'allergics'
+,p_list_item_link_target=>'f?p=&APP_ID.:501:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-soccer-ball-o'
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'501,502'
+);
+wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(68053015826737877)
 ,p_list_item_display_sequence=>220
 ,p_list_item_link_text=>unistr('\0421\043E\0440\0442\0443\0432\0430\0442\0438 \043B\0456\043A\0438')
@@ -37,6 +47,17 @@ wwv_flow_imp_shared.create_list_item(
 ,p_parent_list_item_id=>wwv_flow_imp.id(29456772809221898)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'104'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(77091857949748211)
+,p_list_item_display_sequence=>280
+,p_list_item_link_text=>unistr('\041C\0435\0434\0438\043A\0430\043C\0435\043D\0442')
+,p_static_id=>'drugs'
+,p_list_item_link_target=>'f?p=&APP_ID.:120:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-medication-pill'
+,p_parent_list_item_id=>wwv_flow_imp.id(29456772809221898)
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'120'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(70062816257282955)
@@ -111,6 +132,72 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_current_for_pages=>'401,402,403,401'
 );
 wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(77203133461766942)
+,p_list_item_display_sequence=>300
+,p_list_item_link_text=>'REHAB_CONFIGS'
+,p_static_id=>'rehab-configs'
+,p_list_item_link_target=>'f?p=&APP_ID.:701:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_icon=>'fa-ai-sparkle-generate-list'
+,p_parent_list_item_id=>wwv_flow_imp.id(17056773995505539)
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'701'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(77209224516777139)
+,p_list_item_display_sequence=>310
+,p_list_item_link_text=>'REHAB_CONSUME_PATTERNS'
+,p_static_id=>'rehab-consume-patterns'
+,p_list_item_link_target=>'f?p=&APP_ID.:702:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_icon=>'fa-clock-o'
+,p_parent_list_item_id=>wwv_flow_imp.id(17056773995505539)
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'702'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(77225119930797921)
+,p_list_item_display_sequence=>320
+,p_list_item_link_text=>'REHAB_LOG'
+,p_static_id=>'rehab-log'
+,p_list_item_link_target=>'f?p=&APP_ID.:704:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_icon=>'fa-list-alt'
+,p_parent_list_item_id=>wwv_flow_imp.id(17056773995505539)
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'704'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(77266211391832983)
+,p_list_item_display_sequence=>350
+,p_list_item_link_text=>'REHAB_PATIENTS'
+,p_static_id=>'rehab-patients'
+,p_list_item_link_target=>'f?p=&APP_ID.:707:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_icon=>'fa-user'
+,p_parent_list_item_id=>wwv_flow_imp.id(17056773995505539)
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'707,708'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(77248765763824269)
+,p_list_item_display_sequence=>340
+,p_list_item_link_text=>'REHAB_TENANTS'
+,p_static_id=>'rehab-tenants'
+,p_list_item_link_target=>'f?p=&APP_ID.:705:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_icon=>'fa-ai-sparkle-token'
+,p_parent_list_item_id=>wwv_flow_imp.id(17056773995505539)
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'705,706'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(77236763515812006)
+,p_list_item_display_sequence=>330
+,p_list_item_link_text=>'REHAB_WORKING_SUBSTANCE'
+,p_static_id=>'rehab-working-substance'
+,p_list_item_link_target=>'f?p=&APP_ID.:106:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_icon=>'fa-vial'
+,p_parent_list_item_id=>wwv_flow_imp.id(29456772809221898)
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'106,107'
+);
+wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(29851988464571853)
 ,p_list_item_display_sequence=>40
 ,p_list_item_link_text=>unistr('\0422\0440\0435\043D\0443\0432\0430\043D\043D\044F')
@@ -131,6 +218,15 @@ wwv_flow_imp_shared.create_list_item(
 ,p_parent_list_item_id=>wwv_flow_imp.id(16885212315504474)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'221,222'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(77275988773875592)
+,p_list_item_display_sequence=>360
+,p_list_item_link_text=>unistr('\0410\043D\0430\043B\0456\0442\0438\043A\0430')
+,p_static_id=>unistr('\0430\043D\0430\043B\0456\0442\0438\043A\0430')
+,p_list_item_link_target=>'f?p=&APP_ID.:32:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'32'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(74054281421048542)

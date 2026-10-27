@@ -448,7 +448,7 @@ wwv_flow_imp_page.create_worksheet(
 ,p_show_notify=>'Y'
 ,p_download_formats=>'CSV:HTML:XLSX:PDF'
 ,p_enable_mail_download=>'Y'
-,p_detail_link=>'f?p=&APP_ID.:304:&SESSION.::&DEBUG.::P304_DA_ID,P304_MOVE_QUANTITY,P304_TARGET_STORAGE,P304_VALIDATE_MSG:#DA_ID#,,,'
+,p_detail_link=>'f?p=&APP_ID.:304:&SESSION.::&DEBUG.::P304_DA_ID,P304_MOVE_QUANTITY,P304_TARGET_STORAGE,P304_VALIDATE_MSG,P304_DA_PRATR_ID_ASS,P304_DA_PR_ID_ASS,P304_DA_PRR_ID_ASS:#DA_ID#,,,,,,'
 ,p_internal_uid=>72111180076258202
 );
 wwv_flow_imp_page.create_worksheet_column(
@@ -1204,7 +1204,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
 ,p_button_redirect_url=>'f?p=&APP_ID.:303:&SESSION.::&DEBUG.:303::'
 ,p_warn_on_unsaved_changes=>null
-,p_icon_css_classes=>'fa-plus'
+,p_icon_css_classes=>'fa-file-new'
 );
 wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(73118422040591451)
@@ -1223,7 +1223,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_condition=>':P302_DS_ID_CURR is not null and :P302_IS_OWNER = ''TRUE'''
 ,p_button_condition2=>'PLSQL'
 ,p_button_condition_type=>'EXPRESSION'
-,p_icon_css_classes=>'fa-plus'
+,p_icon_css_classes=>'fa-file-new'
 ,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
 );
 wwv_flow_imp_page.create_page_item(

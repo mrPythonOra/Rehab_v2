@@ -79,6 +79,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
 ,p_data_cursor_behavior=>'auto'
+,p_hide_and_show_behavior=>'withRescale'
 ,p_hover_behavior=>'dim'
 ,p_stack=>'off'
 ,p_connect_nulls=>'Y'
@@ -89,7 +90,8 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_show_series_name=>true
 ,p_show_group_name=>true
 ,p_show_value=>true
-,p_legend_rendered=>'off'
+,p_legend_rendered=>'on'
+,p_legend_position=>'top'
 ,p_time_axis_type=>'enabled'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -143,7 +145,7 @@ unistr('    ''\041C\0435\0442\0430'' series_name'),
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'STEPS_TRG'
 ,p_items_label_column_name=>'TR_START'
-,p_line_style=>'solid'
+,p_line_style=>'dotted'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
 ,p_marker_shape=>'auto'
@@ -594,7 +596,7 @@ unistr('    ''\041C\0435\0442\0430'' series_name'),
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'DISTANCE_TRG'
 ,p_items_label_column_name=>'TR_START'
-,p_line_style=>'solid'
+,p_line_style=>'dotted'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
 ,p_marker_shape=>'auto'
@@ -1002,7 +1004,7 @@ unistr('    ''\0422\0440\0435\043D\0434\043E\0432\0430 \0440\0435\0430\043B\044C
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'TREND_VALUE'
 ,p_items_label_column_name=>'TR_START'
-,p_line_style=>'solid'
+,p_line_style=>'dashed'
 ,p_line_type=>'curved'
 ,p_marker_rendered=>'auto'
 ,p_marker_shape=>'auto'

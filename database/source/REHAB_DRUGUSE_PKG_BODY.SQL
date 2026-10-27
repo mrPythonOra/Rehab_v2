@@ -66,10 +66,10 @@
 --                                     end
 --                        else '<br>Інформація по залишкам відсутня' end ||
                         nvl2(i.PRD_NOTES,'<br>'||i.PRD_NOTES,null),  --     sublabel     varchar2(4000),
-           data1     => nvl2(i.DRU_CONSUMED,REHAB_UI_REPORTS_PKG.clr('lime',UNISTR('\D83C\DF23'))||to_char(i.DRU_CONSUMED at time zone SESSIONTIMEZONE,'YYYY-Mon-DD HH24:MI')||
+           data1     => nvl2(i.DRU_CONSUMED,REHAB_UI_REPORTS_PKG.clr('lime','Спожито '||UNISTR('\D83C\DF23'))||to_char(i.DRU_CONSUMED at time zone SESSIONTIMEZONE,'YYYY-Mon-DD HH24:MI')||
                                             REHAB_UI_REPORTS_PKG.clr(case when i.DRU_ACTUAL_DOSAGE = i.PRD_DOSAGE then 'lime' else 'yellow' end,' '||i.DRU_ACTUAL_DOSAGE||' мг'),--||
                                             --UNISTR('\D83D\DDD2')||' "'||i.CPTR_NAME||'; '||i.CPTR_START_TIME_STR||'-'||i.CPTR_END_TIME_STR||'"',
-                                            REHAB_UI_REPORTS_PKG.clr('yellow',UNISTR('\D83C\DF27')||' Не прийнято')),     --     data1        VARCHAR2(4000),
+                                            REHAB_UI_REPORTS_PKG.clr('yellow',UNISTR('\D83C\DF27')||' Не спожито')),
            data2     => REHAB_UI_REPORTS_PKG.clr('lime',UNISTR('\2762'))||' '||
                          nvl(i.DR_USE_CASE,i.DR_TYPE_SHORT)||
                          nvl2(i.PR_NOTES,'<br>'||REHAB_UI_REPORTS_PKG.clr('lime',UNISTR('\D83D\DD8E'))||' '||i.PR_NOTES,null)||
@@ -95,7 +95,9 @@
            app_page  => null,           -- app_page     number,
            dru_id    => i.DRU_ID,
            dr_id     => i.PRD_DR_ID,           -- dr_id        number,
+           prr_id    => i.PR_PRR_ID,
            pr_id     => i.PR_ID,           -- pr_id        number,
+           pratr_id  => i.PRATR_ID,
            prd_id    => i.PRD_ID,           -- prr_id       number,
            cptr_id   => i.PRD_CPTR_ID,           -- cptr_id      number,
            drug_img  => i.DR_ITEM_IMAGE1        -- drug_img     blob
@@ -149,7 +151,9 @@
            app_page  => null,           -- app_page     number,
            dru_id    => i.DRU_ID,
            dr_id     => i.PRD_DR_ID,           -- dr_id        number,
+           prr_id    => i.PR_PRR_ID,
            pr_id     => i.PR_ID,           -- pr_id        number,
+           pratr_id  => i.PRATR_ID,
            prd_id    => i.PRD_ID,           -- prr_id       number,
            cptr_id   => i.PRD_CPTR_ID,           -- cptr_id      number,
            drug_img  => i.DR_ITEM_IMAGE1        -- drug_img     blob

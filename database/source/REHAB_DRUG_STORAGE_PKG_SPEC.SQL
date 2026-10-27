@@ -14,6 +14,13 @@
                                    p_ds_id_trg      REHAB_DRUG_ACCOUNTINGS.DA_DS_ID%TYPE,
                                    p_move_quantity  number);
 
+  procedure assign_pr(P_DA_ID REHAB_DRUG_ACCOUNTINGS.DA_ID%type,
+                      P_PRR_ID REHAB_PRESCRIPTORS.PRR_ID%type,
+                      P_PR_ID REHAB_PRESCRIPTIONS.PR_ID%type,
+                      P_PRATR_ID REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES.PRATR_ID%type);
+
+  procedure remove_assign_pr(P_DA_ID REHAB_DRUG_ACCOUNTINGS.DA_ID%type);
+
 END REHAB_DRUG_STORAGE_PKG;
 /
 

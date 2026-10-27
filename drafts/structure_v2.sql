@@ -1297,6 +1297,24 @@ create index IDX_REHAB_MEASUREMENTS_PAT_TAKEN on rehab_measurements(mt_pat_id, S
 create index IDX_REHAB_TRAININGS_PAT_START on REHAB_TRAININGS(TR_PAT_ID, SYS_EXTRACT_UTC(TR_START), TR_ID);
 create index IDX_REHAB_WATCH_LOGS_PAT_TAKEN  on REHAB_WATCH_LOGS(WL_PAT_ID, SYS_EXTRACT_UTC(WL_TAKEN), WL_ID);
 --******************************************************************************
+drop table rehab_allergic_triggers;
+create table rehab_allergic_triggers (
+at_id number,
+at_pat_id number,
+at_ts timestamp with time zone,
+at_type varchar2(512),
+at_name varchar2(512),
+at_amount number,
+at_description varchar2(4000));
+
+ALTER TABLE rehab_allergic_triggers ADD CONSTRAINT PK_rehab_allergic_triggers PRIMARY KEY (at_id)
+  USING INDEX;
+
+ALTER TABLE rehab_allergic_triggers ADD CONSTRAINT FK_rehab_allergic_triggers_PAT FOREIGN KEY (at_pat_id)
+	  REFERENCES REHAB_PATIENTS (PAT_ID) ENABLE;
+      
+CREATE SEQUENCE  SQ_rehab_allergic_triggers;
+--******************************************************************************
 -- CREATE OR REPLACE FORCE EDITIONABLE VIEW V$REHAB_TIME_PERIODS
 -- AS 
 -- select  x.*,

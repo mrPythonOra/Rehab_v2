@@ -39,16 +39,43 @@
                 p_ds_id_trg, i.da_dr_id, i.da_prr_id, i.da_pr_id, i.da_ws_id, i.da_pratr_id,
                 cotMovement,   round(p_move_quantity/i.da_entiry_weight,3), i.da_entiry_weight, round(i.da_cost*(p_move_quantity/(i.da_quantity*i.da_entiry_weight)),3),
                 i.da_purchased, i.da_check_point_dt, i.da_best_before);
-        update rehab_drug_accountings set
-          da_quantity = da_quantity - round(p_move_quantity/i.da_entiry_weight,3),
-          da_cost = da_cost - round(i.da_cost*(p_move_quantity/(i.da_quantity*i.da_entiry_weight)),3)
-        where DA_ID = p_DA_ID;
+        if l_available_quantity_mg = p_move_quantity then
+            delete from rehab_drug_accountings
+             where DA_ID = p_DA_ID;
+        else
+            update rehab_drug_accountings set
+              da_quantity = da_quantity - round(p_move_quantity/i.da_entiry_weight,3),
+              da_cost = da_cost - round(i.da_cost*(p_move_quantity/(i.da_quantity*i.da_entiry_weight)),3)
+            where DA_ID = p_DA_ID;
+        end if;
       end loop;
     else
       raise_application_error(-20100,'Недостатньо медикаменту, занесено: '||l_available_quantity_mg||' мг.');
     end if;
   END move_drug_to_storage;
 
+  procedure assign_pr(P_DA_ID REHAB_DRUG_ACCOUNTINGS.DA_ID%type,
+                      P_PRR_ID REHAB_PRESCRIPTORS.PRR_ID%type,
+                      P_PR_ID REHAB_PRESCRIPTIONS.PR_ID%type,
+                      P_PRATR_ID REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES.PRATR_ID%type)
+  is
+  begin
+    update REHAB_DRUG_ACCOUNTINGS set
+      DA_PRR_ID = P_PRR_ID,
+      DA_PR_ID = P_PR_ID,
+      DA_PRATR_ID = P_PRATR_ID
+    where DA_ID = P_DA_ID;
+  end;
+
+  procedure remove_assign_pr(P_DA_ID REHAB_DRUG_ACCOUNTINGS.DA_ID%type)
+  is
+  begin
+    update REHAB_DRUG_ACCOUNTINGS set
+      DA_PRR_ID = null,
+      DA_PR_ID = null,
+      DA_PRATR_ID = null
+    where DA_ID = P_DA_ID;
+  end;
 END REHAB_DRUG_STORAGE_PKG;
 /
 

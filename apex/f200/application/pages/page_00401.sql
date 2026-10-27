@@ -567,7 +567,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
 ,p_button_redirect_url=>'f?p=&APP_ID.:402:&SESSION.::&DEBUG.:402:P402_PRR_ID,P402_PRD_ID_CURR:,'
 ,p_warn_on_unsaved_changes=>null
-,p_icon_css_classes=>'fa-plus'
+,p_icon_css_classes=>'fa-file-new'
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(180348249180976392)
