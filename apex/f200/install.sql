@@ -37,6 +37,7 @@ prompt --install
 @@application/shared_components/navigation/tabs/standard.sql
 @@application/shared_components/navigation/tabs/parent.sql
 @@application/shared_components/user_interface/lovs/access_roles.sql
+@@application/shared_components/user_interface/lovs/app_state_storage_list.sql
 @@application/shared_components/user_interface/lovs/boolean.sql
 @@application/shared_components/user_interface/lovs/email_username_format.sql
 @@application/shared_components/user_interface/lovs/feedback_rating.sql
@@ -48,7 +49,6 @@ prompt --install
 @@application/shared_components/user_interface/lovs/rehab_consume_time_ranges_available.sql
 @@application/shared_components/user_interface/lovs/rehab_drug_storages.sql
 @@application/shared_components/user_interface/lovs/rehab_drugs_dr_name.sql
-@@application/shared_components/user_interface/lovs/rehab_drugs_dr_name_1.sql
 @@application/shared_components/user_interface/lovs/rehab_order_types.sql
 @@application/shared_components/user_interface/lovs/rehab_patients_pat_name.sql
 @@application/shared_components/user_interface/lovs/rehab_prescriptions.sql
@@ -110,6 +110,7 @@ prompt --install
 @@application/pages/page_00404.sql
 @@application/pages/page_00501.sql
 @@application/pages/page_00502.sql
+@@application/pages/page_00601.sql
 @@application/pages/page_00701.sql
 @@application/pages/page_00702.sql
 @@application/pages/page_00703.sql

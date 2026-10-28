@@ -15,7 +15,7 @@ wwv_flow_imp_shared.create_list(
  p_id=>wwv_flow_imp.id(16870838765504258)
 ,p_name=>'Navigation Menu'
 ,p_static_id=>'navigation-menu'
-,p_version_scn=>'SH256:5lZJJH7y6SSHopSx-q87UMEgLj2-lZddIS5ZxQU4XLw'
+,p_version_scn=>'SH256:sp-2NggYZsr7AEs8hDG-5GpCW536E26EVRIQ0_wG-24'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(17056773995505539)
@@ -189,9 +189,9 @@ wwv_flow_imp_shared.create_list_item(
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(77236763515812006)
 ,p_list_item_display_sequence=>330
-,p_list_item_link_text=>'REHAB_WORKING_SUBSTANCE'
+,p_list_item_link_text=>unistr('\0414\0456\044E\0447\0456 \0440\0435\0447\043E\0432\0438\043D\0438')
 ,p_static_id=>'rehab-working-substance'
-,p_list_item_link_target=>'f?p=&APP_ID.:106:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_link_target=>'f?p=&APP_ID.:106:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-vial'
 ,p_parent_list_item_id=>wwv_flow_imp.id(29456772809221898)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
@@ -224,9 +224,9 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_display_sequence=>360
 ,p_list_item_link_text=>unistr('\0410\043D\0430\043B\0456\0442\0438\043A\0430')
 ,p_static_id=>unistr('\0430\043D\0430\043B\0456\0442\0438\043A\0430')
-,p_list_item_link_target=>'f?p=&APP_ID.:32:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_link_target=>'f?p=&APP_ID.:601:&SESSION.::&DEBUG.::::'
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'32'
+,p_list_item_current_for_pages=>'601'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(74054281421048542)

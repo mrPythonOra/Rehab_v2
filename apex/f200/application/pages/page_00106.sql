@@ -13,9 +13,9 @@ wwv_flow_imp.component_begin (
 );
 wwv_flow_imp_page.create_page(
  p_id=>106
-,p_name=>'REHAB_WORKING_SUBSTANCE'
-,p_alias=>'REHAB-WORKING-SUBSTANCE'
-,p_step_title=>'REHAB_WORKING_SUBSTANCE'
+,p_name=>'Working Substances'
+,p_alias=>'WORKINGSUBSTANCES'
+,p_step_title=>unistr('\0414\0456\044E\0447\0456 \0440\0435\0447\043E\0432\0438\043D\0438')
 ,p_autocomplete_on_off=>'OFF'
 ,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
@@ -82,8 +82,8 @@ wwv_flow_imp_page.create_worksheet(
  p_id=>wwv_flow_imp.id(77237207543812167)
 ,p_max_row_count_message=>'The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.'
 ,p_no_data_found_message=>'No data found.'
-,p_pagination_type=>'ROWS_X_TO_Y'
-,p_pagination_display_pos=>'BOTTOM_RIGHT'
+,p_pagination_type=>'ROWS_X_TO_Y_OF_Z'
+,p_pagination_display_pos=>'TOP_AND_BOTTOM_RIGHT'
 ,p_report_list_mode=>'TABS'
 ,p_lazy_loading=>false
 ,p_show_detail_link=>'C'
@@ -99,7 +99,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_db_column_name=>'WS_DESCR'
 ,p_display_order=>4
 ,p_column_identifier=>'D'
-,p_column_label=>'Ws Descr'
+,p_column_label=>unistr('\041E\043F\0438\0441')
 ,p_column_type=>'STRING'
 ,p_heading_alignment=>'LEFT'
 ,p_use_as_row_header=>'N'
@@ -120,7 +120,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_db_column_name=>'WS_NAME'
 ,p_display_order=>3
 ,p_column_identifier=>'C'
-,p_column_label=>'Ws Name'
+,p_column_label=>unistr('\041D\0430\0437\0432\0430')
 ,p_column_type=>'STRING'
 ,p_heading_alignment=>'LEFT'
 ,p_use_as_row_header=>'N'
@@ -131,7 +131,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_db_column_name=>'WS_TE_ID'
 ,p_display_order=>2
 ,p_column_identifier=>'B'
-,p_column_label=>'Ws Te'
+,p_column_label=>unistr('\041E\0440\0435\043D\0434\0430\0440')
 ,p_column_type=>'STRING'
 ,p_display_text_as=>'LOV_ESCAPE_SC'
 ,p_heading_alignment=>'LEFT'
@@ -158,11 +158,13 @@ wwv_flow_imp_page.create_page_button(
 ,p_show_as_disabled=>false
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>2350584059425431644
 ,p_button_is_hot=>'Y'
-,p_button_image_alt=>'Create'
+,p_button_image_alt=>unistr('\0421\0442\0432\043E\0440\0438\0442\0438')
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
 ,p_button_redirect_url=>'f?p=&APP_ID.:107:&APP_SESSION.::&DEBUG.:107::'
+,p_icon_css_classes=>'fa-file-new'
+,p_security_scheme=>wwv_flow_imp.id(17092171236131578)
 );
 wwv_flow_imp.component_end;
 end;

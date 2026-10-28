@@ -38,7 +38,6 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_display_condition_type=>'EXPRESSION'
 ,p_plug_display_when_condition=>':P32_CHARTS2SHOW like ''%AVGM%'''
 ,p_plug_display_when_cond2=>'PLSQL'
-,p_required_patch=>wwv_flow_imp.id(16869691178504232)
 );
 wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(77282017451875642)
@@ -69,23 +68,22 @@ wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(77283770385875656)
 ,p_chart_id=>wwv_flow_imp.id(77282017451875642)
 ,p_static_id=>'dia-avg'
-,p_seq=>70
+,p_seq=>90
 ,p_name=>'Dia Avg'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select ''Pressure Dia Avg'' nm,',
-'       trunc(TAKEN,''dd'') TAKEN, ',
-'       avg(PRESSURE_DIA) PRESSURE_DIA',
-' from MEASUREMENT',
-'where PRESSURE_DIA is not null and pat_id in (select pat_id from PATIENTS where apex_user=v(''APP_USER''))',
-'and trunc(TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
+unistr('select ''\0422\0438\0441\043A Dia \0441\0435\0440\0435\0440\0434\043D\0456\0439'' nm,'),
+'       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
+'       avg(MT_PRESSURE_DIA) MT_PRESSURE_DIA',
+' from REHAB_MEASUREMENTS',
+'where MT_PRESSURE_DIA is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
 '--and pressure_lr=''R''',
-'group by trunc(TAKEN,''dd'')',
-'order by taken'))
-,p_series_type=>'line'
+'group by trunc(MT_TAKEN,''dd'')',
+'order by MT_TAKEN'))
 ,p_series_name_column_name=>'NM'
-,p_items_value_column_name=>'PRESSURE_DIA'
-,p_items_label_column_name=>'TAKEN'
+,p_items_value_column_name=>'MT_PRESSURE_DIA'
+,p_items_label_column_name=>'MT_TAKEN'
 ,p_line_style=>'solid'
 ,p_line_type=>'auto'
 ,p_marker_rendered=>'on'
@@ -101,23 +99,22 @@ wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(77284311968875660)
 ,p_chart_id=>wwv_flow_imp.id(77282017451875642)
 ,p_static_id=>'dia-left'
-,p_seq=>50
+,p_seq=>70
 ,p_name=>'Dia Left'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select ''Pressure Dia Left'' nm,',
-'       trunc(TAKEN,''dd'') TAKEN, ',
-'       avg(PRESSURE_DIA) PRESSURE_DIA',
-' from MEASUREMENT',
-'where PRESSURE_DIA is not null and pat_id in (select pat_id from PATIENTS where apex_user=v(''APP_USER''))',
-'and trunc(TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
-'and pressure_lr=''L''',
-'group by trunc(TAKEN,''dd'')',
-'order by taken'))
-,p_series_type=>'line'
+unistr('select ''\0422\0438\0441\043A Dia \043B\0456\0432\0430'' nm,'),
+'       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
+'       avg(MT_PRESSURE_DIA) MT_PRESSURE_DIA',
+' from REHAB_MEASUREMENTS',
+'where MT_PRESSURE_DIA is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
+'and MT_PRESSURE_LR=''L''',
+'group by trunc(MT_TAKEN,''dd'')',
+'order by MT_TAKEN'))
 ,p_series_name_column_name=>'NM'
-,p_items_value_column_name=>'PRESSURE_DIA'
-,p_items_label_column_name=>'TAKEN'
+,p_items_value_column_name=>'MT_PRESSURE_DIA'
+,p_items_label_column_name=>'MT_TAKEN'
 ,p_line_style=>'solid'
 ,p_line_type=>'auto'
 ,p_marker_rendered=>'on'
@@ -133,23 +130,22 @@ wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(77284993315875662)
 ,p_chart_id=>wwv_flow_imp.id(77282017451875642)
 ,p_static_id=>'dia-right'
-,p_seq=>60
+,p_seq=>80
 ,p_name=>'Dia Right'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select ''Pressure Dia Right'' nm,',
-'       trunc(TAKEN,''dd'') TAKEN, ',
-'       avg(PRESSURE_DIA) PRESSURE_DIA',
-' from MEASUREMENT',
-'where PRESSURE_DIA is not null and pat_id in (select pat_id from PATIENTS where apex_user=v(''APP_USER''))',
-'and trunc(TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
-'and pressure_lr=''R''',
-'group by trunc(TAKEN,''dd'')',
-'order by taken'))
-,p_series_type=>'line'
+unistr('select ''\0422\0438\0441\043A Dia \043F\0440\0430\0432\0430'' nm,'),
+'       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
+'       avg(MT_PRESSURE_DIA) MT_PRESSURE_DIA',
+' from REHAB_MEASUREMENTS',
+'where MT_PRESSURE_DIA is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
+'and MT_PRESSURE_LR=''R''',
+'group by trunc(MT_TAKEN,''dd'')',
+'order by MT_TAKEN'))
 ,p_series_name_column_name=>'NM'
-,p_items_value_column_name=>'PRESSURE_DIA'
-,p_items_label_column_name=>'TAKEN'
+,p_items_value_column_name=>'MT_PRESSURE_DIA'
+,p_items_label_column_name=>'MT_TAKEN'
 ,p_line_style=>'solid'
 ,p_line_type=>'auto'
 ,p_marker_rendered=>'on'
@@ -162,25 +158,54 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_display_when_condition2=>'PLSQL'
 );
 wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(77067845369873140)
+,p_chart_id=>wwv_flow_imp.id(77282017451875642)
+,p_static_id=>'oxigenation'
+,p_seq=>130
+,p_name=>'Oxigenation'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+unistr('select ''\0412\0430\0433\0430'' nm,'),
+'       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
+'       avg(MT_OXIGENATION) MT_OXIGENATION',
+' from REHAB_MEASUREMENTS',
+'where MT_OXIGENATION is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
+'group by trunc(MT_TAKEN,''dd'')',
+'order by MT_TAKEN'))
+,p_series_name_column_name=>'NM'
+,p_items_value_column_name=>'MT_OXIGENATION'
+,p_items_label_column_name=>'MT_TAKEN'
+,p_line_style=>'solid'
+,p_line_type=>'auto'
+,p_marker_rendered=>'on'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>true
+,p_items_label_position=>'aboveMarker'
+,p_display_when_cond_type=>'EXPRESSION'
+,p_display_when_condition=>':P32_AVGMEASUR like ''%OXI%'''
+,p_display_when_condition2=>'PLSQL'
+);
+wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(77285506509875664)
 ,p_chart_id=>wwv_flow_imp.id(77282017451875642)
 ,p_static_id=>'pulse'
-,p_seq=>10
+,p_seq=>30
 ,p_name=>'Pulse'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select ''Pulse'' nm,',
-'       trunc(TAKEN,''dd'') TAKEN, ',
-'       avg(PULSE) PULSE',
-' from MEASUREMENT',
-'where PULSE is not null and pat_id in (select pat_id from PATIENTS where apex_user=v(''APP_USER''))',
-'and trunc(TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
-'group by trunc(TAKEN,''dd'')',
-'order by taken'))
-,p_series_type=>'line'
+unistr('select ''\041F\0443\043B\044C\0441'' nm,'),
+'       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
+'       avg(MT_PULSE) MT_PULSE',
+' from REHAB_MEASUREMENTS',
+'where MT_PULSE is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
+'group by trunc(MT_TAKEN,''dd'')',
+'order by MT_TAKEN'))
 ,p_series_name_column_name=>'NM'
-,p_items_value_column_name=>'PULSE'
-,p_items_label_column_name=>'TAKEN'
+,p_items_value_column_name=>'MT_PULSE'
+,p_items_label_column_name=>'MT_TAKEN'
 ,p_line_style=>'solid'
 ,p_line_type=>'auto'
 ,p_marker_rendered=>'on'
@@ -193,26 +218,55 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_display_when_condition2=>'PLSQL'
 );
 wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(77067767235873139)
+,p_chart_id=>wwv_flow_imp.id(77282017451875642)
+,p_static_id=>'sugar'
+,p_seq=>120
+,p_name=>'Sugar'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+unistr('select ''\0412\0430\0433\0430'' nm,'),
+'       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
+'       avg(MT_SUGAR) MT_SUGAR',
+' from REHAB_MEASUREMENTS',
+'where MT_SUGAR is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
+'group by trunc(MT_TAKEN,''dd'')',
+'order by MT_TAKEN'))
+,p_series_name_column_name=>'NM'
+,p_items_value_column_name=>'MT_SUGAR'
+,p_items_label_column_name=>'MT_TAKEN'
+,p_line_style=>'solid'
+,p_line_type=>'auto'
+,p_marker_rendered=>'on'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>true
+,p_items_label_position=>'aboveMarker'
+,p_display_when_cond_type=>'EXPRESSION'
+,p_display_when_condition=>':P32_AVGMEASUR like ''%SUG%'''
+,p_display_when_condition2=>'PLSQL'
+);
+wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(77286171765875665)
 ,p_chart_id=>wwv_flow_imp.id(77282017451875642)
 ,p_static_id=>'syst-avg'
-,p_seq=>40
+,p_seq=>60
 ,p_name=>'Syst Avg'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select ''Pressure SYS Avg'' nm,',
-'       trunc(TAKEN,''dd'') TAKEN, ',
-'       avg(PRESSURE_SYS) PRESSURE_SYS',
-' from MEASUREMENT',
-'where PRESSURE_SYS is not null and pat_id in (select pat_id from PATIENTS where apex_user=v(''APP_USER''))',
-'and trunc(TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
+unistr('select ''\0422\0438\0441\043A SYS \0441\0435\0440\0435\0440\0434\043D\0456\0439'' nm,'),
+'       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
+'       avg(MT_PRESSURE_SYS) MT_PRESSURE_SYS',
+' from REHAB_MEASUREMENTS',
+'where MT_PRESSURE_SYS is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
 '--and pressure_lr=''R''',
-'group by trunc(TAKEN,''dd'')',
-'order by taken'))
-,p_series_type=>'line'
+'group by trunc(MT_TAKEN,''dd'')',
+'order by MT_TAKEN'))
 ,p_series_name_column_name=>'NM'
-,p_items_value_column_name=>'PRESSURE_SYS'
-,p_items_label_column_name=>'TAKEN'
+,p_items_value_column_name=>'MT_PRESSURE_SYS'
+,p_items_label_column_name=>'MT_TAKEN'
 ,p_line_style=>'solid'
 ,p_line_type=>'auto'
 ,p_marker_rendered=>'on'
@@ -228,23 +282,22 @@ wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(77286725377875667)
 ,p_chart_id=>wwv_flow_imp.id(77282017451875642)
 ,p_static_id=>'syst-left'
-,p_seq=>20
+,p_seq=>40
 ,p_name=>'Syst Left'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select ''Pressure SYS Left'' nm,',
-'       trunc(TAKEN,''dd'') TAKEN, ',
-'       avg(PRESSURE_SYS) PRESSURE_SYS',
-' from MEASUREMENT',
-'where PRESSURE_SYS is not null and pat_id in (select pat_id from PATIENTS where apex_user=v(''APP_USER''))',
-'and trunc(TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
-'and pressure_lr=''L''',
-'group by trunc(TAKEN,''dd'')',
-'order by taken'))
-,p_series_type=>'line'
+unistr('select ''\0422\0438\0441\043A SYS \043B\0456\0432\0430'' nm,'),
+'       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
+'       avg(MT_PRESSURE_SYS) MT_PRESSURE_SYS',
+' from REHAB_MEASUREMENTS',
+'where MT_PRESSURE_SYS is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
+'and MT_PRESSURE_LR=''L''',
+'group by trunc(MT_TAKEN,''dd'')',
+'order by MT_TAKEN'))
 ,p_series_name_column_name=>'NM'
-,p_items_value_column_name=>'PRESSURE_SYS'
-,p_items_label_column_name=>'TAKEN'
+,p_items_value_column_name=>'MT_PRESSURE_SYS'
+,p_items_label_column_name=>'MT_TAKEN'
 ,p_line_style=>'solid'
 ,p_line_type=>'auto'
 ,p_marker_rendered=>'on'
@@ -260,23 +313,22 @@ wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(77287337889875668)
 ,p_chart_id=>wwv_flow_imp.id(77282017451875642)
 ,p_static_id=>'syst-right'
-,p_seq=>30
+,p_seq=>50
 ,p_name=>'Syst Right'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select ''Pressure SYS Right'' nm,',
-'       trunc(TAKEN,''dd'') TAKEN, ',
-'       avg(PRESSURE_SYS) PRESSURE_SYS',
-' from MEASUREMENT',
-'where PRESSURE_SYS is not null and pat_id in (select pat_id from PATIENTS where apex_user=v(''APP_USER''))',
-'and trunc(TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
-'and pressure_lr=''R''',
-'group by trunc(TAKEN,''dd'')',
-'order by taken'))
-,p_series_type=>'line'
+unistr('select ''\0422\0438\0441\043A SYS \043F\0440\0430\0432\0430'' nm,'),
+'       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
+'       avg(MT_PRESSURE_SYS) MT_PRESSURE_SYS',
+' from REHAB_MEASUREMENTS',
+'where MT_PRESSURE_SYS is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
+'and MT_PRESSURE_LR=''R''',
+'group by trunc(MT_TAKEN,''dd'')',
+'order by MT_TAKEN'))
 ,p_series_name_column_name=>'NM'
-,p_items_value_column_name=>'PRESSURE_SYS'
-,p_items_label_column_name=>'TAKEN'
+,p_items_value_column_name=>'MT_PRESSURE_SYS'
+,p_items_label_column_name=>'MT_TAKEN'
 ,p_line_style=>'solid'
 ,p_line_type=>'auto'
 ,p_marker_rendered=>'on'
@@ -289,25 +341,144 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_display_when_condition2=>'PLSQL'
 );
 wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(77067675365873138)
+,p_chart_id=>wwv_flow_imp.id(77282017451875642)
+,p_static_id=>'temperature'
+,p_seq=>110
+,p_name=>'Temperature'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+unistr('select ''\0412\0430\0433\0430'' nm,'),
+'       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
+'       avg(MT_TEMPERATURE) MT_TEMPERATURE',
+' from REHAB_MEASUREMENTS',
+'where MT_TEMPERATURE is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
+'group by trunc(MT_TAKEN,''dd'')',
+'order by MT_TAKEN'))
+,p_series_name_column_name=>'NM'
+,p_items_value_column_name=>'MT_TEMPERATURE'
+,p_items_label_column_name=>'MT_TAKEN'
+,p_line_style=>'solid'
+,p_line_type=>'auto'
+,p_marker_rendered=>'on'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>true
+,p_items_label_position=>'aboveMarker'
+,p_display_when_cond_type=>'EXPRESSION'
+,p_display_when_condition=>':P32_AVGMEASUR like ''%TEMP%'''
+,p_display_when_condition2=>'PLSQL'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(77068222353873144)
+,p_chart_id=>wwv_flow_imp.id(77282017451875642)
+,p_static_id=>'tot-avg-pulse'
+,p_seq=>200
+,p_name=>'Tot Avg Pulse'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+unistr('select ''\0421\0435\0440\0435\0434\043D\0456\0439 \0434\043E\0431\043E\0432\0438\0439 \043F\0443\043B\044C\0441'' nm,'),
+'       trunc(WL_TAKEN,''dd'') WL_TAKEN, ',
+'       avg(WL_TOTAL_AVG_PULSE) WL_TOTAL_AVG_PULSE',
+' from REHAB_WATCH_LOGS',
+'where WL_TOTAL_AVG_PULSE is not null and WL_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
+'and trunc(WL_TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
+'group by trunc(WL_TAKEN,''dd'')',
+'order by WL_TAKEN'))
+,p_series_name_column_name=>'NM'
+,p_items_value_column_name=>'WL_TOTAL_AVG_PULSE'
+,p_items_label_column_name=>'WL_TAKEN'
+,p_line_style=>'solid'
+,p_line_type=>'auto'
+,p_marker_rendered=>'on'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>true
+,p_items_label_position=>'aboveMarker'
+,p_display_when_cond_type=>'EXPRESSION'
+,p_display_when_condition=>':P32_AVGMEASUR like ''%TAP%'''
+,p_display_when_condition2=>'PLSQL'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(77068176437873143)
+,p_chart_id=>wwv_flow_imp.id(77282017451875642)
+,p_static_id=>'tot-max-pulse'
+,p_seq=>190
+,p_name=>'Tot Max Pulse'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+unistr('select ''\041C\0430\043A\0441\0438\043C\0430\043B\044C\043D\0438\0439 \0434\043E\0431\043E\0432\0438\0439 \043F\0443\043B\044C\0441'' nm,'),
+'       trunc(WL_TAKEN,''dd'') WL_TAKEN, ',
+'       avg(WL_TOTAL_MAX_PULSE) WL_TOTAL_MAX_PULSE',
+' from REHAB_WATCH_LOGS',
+'where WL_TOTAL_MAX_PULSE is not null and WL_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
+'and trunc(WL_TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
+'group by trunc(WL_TAKEN,''dd'')',
+'order by WL_TAKEN'))
+,p_series_name_column_name=>'NM'
+,p_items_value_column_name=>'WL_TOTAL_MAX_PULSE'
+,p_items_label_column_name=>'WL_TAKEN'
+,p_line_style=>'solid'
+,p_line_type=>'auto'
+,p_marker_rendered=>'on'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>true
+,p_items_label_position=>'aboveMarker'
+,p_display_when_cond_type=>'EXPRESSION'
+,p_display_when_condition=>':P32_AVGMEASUR like ''%TMIP%'''
+,p_display_when_condition2=>'PLSQL'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(77068095915873142)
+,p_chart_id=>wwv_flow_imp.id(77282017451875642)
+,p_static_id=>'tot-min-pulse'
+,p_seq=>180
+,p_name=>'Tot Min Pulse'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+unistr('select ''\041C\0456\043D\0456\043C\0430\043B\044C\043D\0438\0439 \0434\043E\0431\043E\0432\0438\0439 \043F\0443\043B\044C\0441'' nm,'),
+'       trunc(WL_TAKEN,''dd'') WL_TAKEN, ',
+'       avg(WL_TOTAL_MIN_PULSE) WL_TOTAL_MIN_PULSE',
+' from REHAB_WATCH_LOGS',
+'where WL_TOTAL_MIN_PULSE is not null and WL_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
+'and trunc(WL_TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
+'group by trunc(WL_TAKEN,''dd'')',
+'order by WL_TAKEN'))
+,p_series_name_column_name=>'NM'
+,p_items_value_column_name=>'WL_TOTAL_MIN_PULSE'
+,p_items_label_column_name=>'WL_TAKEN'
+,p_line_style=>'solid'
+,p_line_type=>'auto'
+,p_marker_rendered=>'on'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>true
+,p_items_label_position=>'aboveMarker'
+,p_display_when_cond_type=>'EXPRESSION'
+,p_display_when_condition=>':P32_AVGMEASUR like ''%TMAP%'''
+,p_display_when_condition2=>'PLSQL'
+);
+wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(77287917485875670)
 ,p_chart_id=>wwv_flow_imp.id(77282017451875642)
 ,p_static_id=>'weight'
-,p_seq=>80
+,p_seq=>100
 ,p_name=>'Weight'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select ''WEIGHT'' nm,',
-'       trunc(TAKEN,''dd'') TAKEN, ',
-'       avg(WEIGHT) WEIGHT',
-' from MEASUREMENT',
-'where WEIGHT is not null and pat_id in (select pat_id from PATIENTS where apex_user=v(''APP_USER''))',
-'and trunc(TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
-'group by trunc(TAKEN,''dd'')',
-'order by taken'))
-,p_series_type=>'line'
+unistr('select ''\0412\0430\0433\0430'' nm,'),
+'       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
+'       avg(MT_WEIGHT) MT_WEIGHT',
+' from REHAB_MEASUREMENTS',
+'where MT_WEIGHT is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
+'group by trunc(MT_TAKEN,''dd'')',
+'order by MT_TAKEN'))
 ,p_series_name_column_name=>'NM'
-,p_items_value_column_name=>'WEIGHT'
-,p_items_label_column_name=>'TAKEN'
+,p_items_value_column_name=>'MT_WEIGHT'
+,p_items_label_column_name=>'MT_TAKEN'
 ,p_line_style=>'solid'
 ,p_line_type=>'auto'
 ,p_marker_rendered=>'on'
@@ -320,25 +491,24 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_display_when_condition2=>'PLSQL'
 );
 wwv_flow_imp_page.create_jet_chart_series(
- p_id=>wwv_flow_imp.id(77288572033875672)
+ p_id=>wwv_flow_imp.id(77067916421873141)
 ,p_chart_id=>wwv_flow_imp.id(77282017451875642)
-,p_static_id=>'wl-avg-pulse'
-,p_seq=>110
-,p_name=>'WL Avg Pulse'
+,p_static_id=>'wl-avg-calm'
+,p_seq=>170
+,p_name=>'Calm Avg pulse'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select ''Night avg Pulse'' nm,',
-'       trunc(TAKEN,''dd'') TAKEN, ',
-'       avg(WL_NIGHT_AVG_PULSE) NIGHT_AVG_PULSE',
-' from WATCH_LOG',
-'where WL_NIGHT_AVG_PULSE is not null and pat_id in (select pat_id from PATIENTS where apex_user=v(''APP_USER''))',
-'and trunc(TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
-'group by trunc(TAKEN,''dd'')',
-'order by taken'))
-,p_series_type=>'line'
+unistr('select ''\0421\0435\0440\0435\0434\043D\0456\0439 \043F\0443\043B\044C\0441 \0441\043F\043E\043A\043E\044E'' nm,'),
+'       trunc(WL_TAKEN,''dd'') WL_TAKEN, ',
+'       avg(WL_CALM_AVG_PULSE) WL_CALM_AVG_PULSE',
+' from REHAB_WATCH_LOGS',
+'where WL_CALM_AVG_PULSE is not null and WL_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
+'and trunc(WL_TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
+'group by trunc(WL_TAKEN,''dd'')',
+'order by WL_TAKEN'))
 ,p_series_name_column_name=>'NM'
-,p_items_value_column_name=>'NIGHT_AVG_PULSE'
-,p_items_label_column_name=>'TAKEN'
+,p_items_value_column_name=>'WL_CALM_AVG_PULSE'
+,p_items_label_column_name=>'WL_TAKEN'
 ,p_line_style=>'solid'
 ,p_line_type=>'auto'
 ,p_marker_rendered=>'on'
@@ -347,29 +517,58 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'aboveMarker'
 ,p_display_when_cond_type=>'EXPRESSION'
-,p_display_when_condition=>':P32_AVGMEASUR like ''%AVP%'''
+,p_display_when_condition=>':P32_AVGMEASUR like ''%CAVP%'''
+,p_display_when_condition2=>'PLSQL'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(77288572033875672)
+,p_chart_id=>wwv_flow_imp.id(77282017451875642)
+,p_static_id=>'wl-avg-pulse'
+,p_seq=>160
+,p_name=>'Night Avg Pulse'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+unistr('select ''\041D\0456\0447\043D\0438\0439 \043F\0443\043B\044C\0441 \0441\0435\0440\0435\0440\0434\043D\0456\0439'' nm,'),
+'       trunc(WL_TAKEN,''dd'') WL_TAKEN, ',
+'       avg(WL_NIGHT_AVG_PULSE) WL_NIGHT_AVG_PULSE',
+' from REHAB_WATCH_LOGS',
+'where WL_NIGHT_AVG_PULSE is not null and WL_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
+'and trunc(WL_TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
+'group by trunc(WL_TAKEN,''dd'')',
+'order by WL_TAKEN'))
+,p_series_name_column_name=>'NM'
+,p_items_value_column_name=>'WL_NIGHT_AVG_PULSE'
+,p_items_label_column_name=>'WL_TAKEN'
+,p_line_style=>'solid'
+,p_line_type=>'auto'
+,p_marker_rendered=>'on'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>true
+,p_items_label_position=>'aboveMarker'
+,p_display_when_cond_type=>'EXPRESSION'
+,p_display_when_condition=>':P32_AVGMEASUR like ''%NAVP%'''
 ,p_display_when_condition2=>'PLSQL'
 );
 wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(77289160102875673)
 ,p_chart_id=>wwv_flow_imp.id(77282017451875642)
 ,p_static_id=>'wl-max-pulse'
-,p_seq=>100
-,p_name=>'WL Max Pulse'
+,p_seq=>150
+,p_name=>'Night Max Pulse'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select ''Night max Pulse'' nm,',
-'       trunc(TAKEN,''dd'') TAKEN, ',
-'       avg(NIGHT_MAX_PULSE) NIGHT_MAX_PULSE',
-' from WATCH_LOG',
-'where NIGHT_MAX_PULSE is not null and pat_id in (select pat_id from PATIENTS where apex_user=v(''APP_USER''))',
-'and trunc(TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
-'group by trunc(TAKEN,''dd'')',
-'order by taken'))
-,p_series_type=>'line'
+unistr('select ''\041D\0456\0447\043D\0438\0439 \043F\0443\043B\044C\0441 \043C\0430\043A\0441\0438\043C\0443\043C'' nm,'),
+'       trunc(WL_TAKEN,''dd'') WL_TAKEN, ',
+'       avg(WL_NIGHT_MAX_PULSE) WL_NIGHT_MAX_PULSE',
+' from REHAB_WATCH_LOGS',
+'where WL_NIGHT_MAX_PULSE is not null and WL_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
+'and trunc(WL_TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
+'group by trunc(WL_TAKEN,''dd'')',
+'order by WL_TAKEN'))
 ,p_series_name_column_name=>'NM'
-,p_items_value_column_name=>'NIGHT_MAX_PULSE'
-,p_items_label_column_name=>'TAKEN'
+,p_items_value_column_name=>'WL_NIGHT_MAX_PULSE'
+,p_items_label_column_name=>'WL_TAKEN'
 ,p_line_style=>'solid'
 ,p_line_type=>'auto'
 ,p_marker_rendered=>'on'
@@ -378,29 +577,28 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'aboveMarker'
 ,p_display_when_cond_type=>'EXPRESSION'
-,p_display_when_condition=>':P32_AVGMEASUR like ''%MAP%'''
+,p_display_when_condition=>':P32_AVGMEASUR like ''%NMAP%'''
 ,p_display_when_condition2=>'PLSQL'
 );
 wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(77289727597875675)
 ,p_chart_id=>wwv_flow_imp.id(77282017451875642)
 ,p_static_id=>'wl-min-pulse'
-,p_seq=>90
-,p_name=>'WL Min Pulse'
+,p_seq=>140
+,p_name=>'Night Min Pulse'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select ''Night min Pulse'' nm,',
-'       trunc(TAKEN,''dd'') TAKEN, ',
-'       avg(NIGHT_MIN_PULSE) NIGHT_MIN_PULSE',
-' from WATCH_LOG',
-'where NIGHT_MIN_PULSE is not null and pat_id in (select pat_id from PATIENTS where apex_user=v(''APP_USER''))',
-'and trunc(TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
-'group by trunc(TAKEN,''dd'')',
-'order by taken'))
-,p_series_type=>'line'
+unistr('select ''\041D\0456\0447\043D\0438\0439 \043F\0443\043B\044C\0441 \043C\0456\043D\0456\043C\0443\043C'' nm,'),
+'       trunc(WL_TAKEN,''dd'') WL_TAKEN, ',
+'       avg(WL_NIGHT_MIN_PULSE) WL_NIGHT_MIN_PULSE',
+' from REHAB_WATCH_LOGS',
+'where WL_NIGHT_MIN_PULSE is not null and WL_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
+'and trunc(WL_TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
+'group by trunc(WL_TAKEN,''dd'')',
+'order by WL_TAKEN'))
 ,p_series_name_column_name=>'NM'
-,p_items_value_column_name=>'NIGHT_MIN_PULSE'
-,p_items_label_column_name=>'TAKEN'
+,p_items_value_column_name=>'WL_NIGHT_MIN_PULSE'
+,p_items_label_column_name=>'WL_TAKEN'
 ,p_line_style=>'solid'
 ,p_line_type=>'auto'
 ,p_marker_rendered=>'on'
@@ -409,7 +607,7 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'aboveMarker'
 ,p_display_when_cond_type=>'EXPRESSION'
-,p_display_when_condition=>':P32_AVGMEASUR like ''%MIP%'''
+,p_display_when_condition=>':P32_AVGMEASUR like ''%NMIP%'''
 ,p_display_when_condition2=>'PLSQL'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -433,9 +631,9 @@ wwv_flow_imp_page.create_jet_chart_axis(
 ,p_static_id=>'y'
 ,p_axis=>'y'
 ,p_is_rendered=>'on'
-,p_title=>'Average'
+,p_title=>unistr('\0421\0435\0440\0435\0434\043D\0456 \0437\043D\0430\0447\0435\043D\043D\044F')
 ,p_format_type=>'decimal'
-,p_decimal_places=>1
+,p_decimal_places=>0
 ,p_format_scaling=>'none'
 ,p_scaling=>'linear'
 ,p_baseline_scaling=>'min'
@@ -462,6 +660,7 @@ wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(249070424960953491)
 ,p_plug_name=>'Charts'
 ,p_static_id=>'charts'
+,p_title=>unistr('\0414\0456\0430\0433\0440\0430\043C\0438')
 ,p_parent_plug_id=>wwv_flow_imp.id(249070256334953490)
 ,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
 ,p_plug_template=>4073835273271169698
@@ -889,6 +1088,7 @@ wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(249040851354668339)
 ,p_plug_name=>'Measurements'
 ,p_static_id=>'measurements'
+,p_title=>unistr('\0412\0438\043C\0456\0440\0438')
 ,p_parent_plug_id=>wwv_flow_imp.id(249070424960953491)
 ,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
 ,p_escape_on_http_output=>'N'
@@ -934,24 +1134,23 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_name=>'Dia Avg'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select ''Pressure Dia Avg'' nm,',
-'       trunc(TAKEN,''dd'') TAKEN, ',
-'       PRESSURE_DIA',
-' from MEASUREMENT',
-'where PRESSURE_DIA is not null and pat_id in (select pat_id from PATIENTS where apex_user=v(''APP_USER''))',
-'and trunc(TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
-'and pressure_lr=''R''',
-'order by taken'))
+unistr('select ''\0422\0438\0441\043A Dia \0441\0435\0440\0435\0434\043D\0456\0439'' nm,'),
+'       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
+'       MT_PRESSURE_DIA',
+' from REHAB_MEASUREMENTS',
+'where MT_PRESSURE_DIA is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
+'--and pressure_lr=''R''',
+'order by MT_TAKEN'))
 ,p_series_type=>'boxPlot'
 ,p_series_name_column_name=>'NM'
-,p_items_value_column_name=>'PRESSURE_DIA'
-,p_items_label_column_name=>'TAKEN'
+,p_items_value_column_name=>'MT_PRESSURE_DIA'
+,p_items_label_column_name=>'MT_TAKEN'
 ,p_marker_rendered=>'auto'
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_required_patch=>wwv_flow_imp.id(16869691178504232)
 ,p_display_when_cond_type=>'EXPRESSION'
 ,p_display_when_condition=>':P32_MEASUR like ''%DIA-A%'''
 ,p_display_when_condition2=>'PLSQL'
@@ -964,25 +1163,24 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_name=>'Dia Left'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select ''Pressure Dia Left'' nm,',
-'       trunc(TAKEN,''dd'') TAKEN, ',
-'       PRESSURE_DIA',
-' from MEASUREMENT',
-'where PRESSURE_DIA is not null',
-'and pat_id in (select pat_id from PATIENTS where apex_user=v(''APP_USER''))',
-'and trunc(TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
-'and pressure_lr=''L''',
-'order by taken'))
+unistr('select ''\0422\0438\0441\043A Dia \043B\0456\0432\0430'' nm,'),
+'       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
+'       MT_PRESSURE_DIA',
+' from REHAB_MEASUREMENTS',
+'where MT_PRESSURE_DIA is not null and',
+'MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
+'and MT_PRESSURE_LR=''L''',
+'order by MT_TAKEN'))
 ,p_series_type=>'boxPlot'
 ,p_series_name_column_name=>'NM'
-,p_items_value_column_name=>'PRESSURE_DIA'
-,p_items_label_column_name=>'TAKEN'
+,p_items_value_column_name=>'MT_PRESSURE_DIA'
+,p_items_label_column_name=>'MT_TAKEN'
 ,p_marker_rendered=>'auto'
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_required_patch=>wwv_flow_imp.id(16869691178504232)
 ,p_display_when_cond_type=>'EXPRESSION'
 ,p_display_when_condition=>':P32_MEASUR like ''%DIA#%'''
 ,p_display_when_condition2=>'PLSQL'
@@ -995,24 +1193,23 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_name=>'Dia Right'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select ''Pressure Dia Right'' nm,',
-'       trunc(TAKEN,''dd'') TAKEN, ',
-'       PRESSURE_DIA',
-' from MEASUREMENT',
-'where PRESSURE_DIA is not null and pat_id in (select pat_id from PATIENTS where apex_user=v(''APP_USER''))',
-'and trunc(TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
-'and pressure_lr=''R''',
-'order by taken'))
+unistr('select ''\0422\0438\0441\043A Dia \043F\0440\0430\0432\0430'' nm,'),
+'       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
+'       MT_PRESSURE_DIA',
+' from REHAB_MEASUREMENTS',
+'where MT_PRESSURE_DIA is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
+'and MT_PRESSURE_LR=''R''',
+'order by MT_TAKEN'))
 ,p_series_type=>'boxPlot'
 ,p_series_name_column_name=>'NM'
-,p_items_value_column_name=>'PRESSURE_DIA'
-,p_items_label_column_name=>'TAKEN'
+,p_items_value_column_name=>'MT_PRESSURE_DIA'
+,p_items_label_column_name=>'MT_TAKEN'
 ,p_marker_rendered=>'auto'
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_required_patch=>wwv_flow_imp.id(16869691178504232)
 ,p_display_when_cond_type=>'EXPRESSION'
 ,p_display_when_condition=>':P32_MEASUR like ''%DIA#%'''
 ,p_display_when_condition2=>'PLSQL'
@@ -1025,7 +1222,7 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_name=>'Pulse'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select ''Pulse'' nm,',
+unistr('select ''\041F\0443\043B\044C\0441'' nm,'),
 '       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
 '       MT_PULSE',
 ' from REHAB_MEASUREMENTS',
@@ -1053,24 +1250,23 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_name=>'Syst Avg'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select ''Pressure SYS Avg'' nm,',
-'       trunc(TAKEN,''dd'') TAKEN, ',
-'       PRESSURE_SYS',
-' from MEASUREMENT',
-'where PRESSURE_SYS is not null and pat_id in (select pat_id from PATIENTS where apex_user=v(''APP_USER''))',
-'and trunc(TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
-'and pressure_lr=''R''',
-'order by taken'))
+unistr('select ''\0422\0438\0441\043A SYS \0441\0435\0440\0435\0434\043D\0456\0439'' nm,'),
+'       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
+'       MT_PRESSURE_SYS',
+' from REHAB_MEASUREMENTS',
+'where MT_PRESSURE_SYS is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
+'--and pressure_lr=''R''',
+'order by MT_TAKEN'))
 ,p_series_type=>'boxPlot'
 ,p_series_name_column_name=>'NM'
-,p_items_value_column_name=>'PRESSURE_SYS'
-,p_items_label_column_name=>'TAKEN'
+,p_items_value_column_name=>'MT_PRESSURE_SYS'
+,p_items_label_column_name=>'MT_TAKEN'
 ,p_marker_rendered=>'auto'
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_required_patch=>wwv_flow_imp.id(16869691178504232)
 ,p_display_when_cond_type=>'EXPRESSION'
 ,p_display_when_condition=>':P32_MEASUR like ''%SYST-A%'''
 ,p_display_when_condition2=>'PLSQL'
@@ -1083,7 +1279,7 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_name=>'Syst Left'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select ''Pressure SYS Left'' nm,',
+unistr('select ''\0422\0438\0441\043A SYS \043B\0456\0432\0430'' nm,'),
 '       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
 '       MT_PRESSURE_SYS',
 ' from REHAB_MEASUREMENTS',
@@ -1112,24 +1308,23 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_name=>'Syst Right'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select ''Pressure SYS Right'' nm,',
-'       trunc(TAKEN,''dd'') TAKEN, ',
-'       PRESSURE_SYS',
-' from MEASUREMENT',
-'where PRESSURE_SYS is not null and pat_id in (select pat_id from PATIENTS where apex_user=v(''APP_USER''))',
-'and trunc(TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
-'and pressure_lr=''R''',
-'order by taken'))
+unistr('select ''\0422\0438\0441\043A SYS \043F\0440\0430\0432\0430'' nm,'),
+'       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
+'       MT_PRESSURE_SYS',
+' from REHAB_MEASUREMENTS',
+'where MT_PRESSURE_SYS is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P32_START,''YYYY-MON-DD'') and to_date(:P32_END,''YYYY-MON-DD'')',
+'and MT_PRESSURE_LR=''R''',
+'order by MT_TAKEN'))
 ,p_series_type=>'boxPlot'
 ,p_series_name_column_name=>'NM'
-,p_items_value_column_name=>'PRESSURE_SYS'
-,p_items_label_column_name=>'TAKEN'
+,p_items_value_column_name=>'MT_PRESSURE_SYS'
+,p_items_label_column_name=>'MT_TAKEN'
 ,p_marker_rendered=>'auto'
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_required_patch=>wwv_flow_imp.id(16869691178504232)
 ,p_display_when_cond_type=>'EXPRESSION'
 ,p_display_when_condition=>':P32_MEASUR like ''%SYST#%'''
 ,p_display_when_condition2=>'PLSQL'
@@ -1155,7 +1350,7 @@ wwv_flow_imp_page.create_jet_chart_axis(
 ,p_static_id=>'y'
 ,p_axis=>'y'
 ,p_is_rendered=>'on'
-,p_title=>'Meaure'
+,p_title=>unistr('\0412\0438\043C\0456\0440')
 ,p_format_type=>'decimal'
 ,p_decimal_places=>0
 ,p_format_scaling=>'none'
@@ -1170,6 +1365,7 @@ wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(245424219924051114)
 ,p_plug_name=>'Parameters'
 ,p_static_id=>'parameters'
+,p_title=>unistr('\0424\0456\043B\044C\0442\0440\0438')
 ,p_parent_plug_id=>wwv_flow_imp.id(249070256334953490)
 ,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
 ,p_plug_template=>4073835273271169698
@@ -1516,7 +1712,8 @@ wwv_flow_imp_page.create_page_item(
 ,p_prompt=>'Avg measurements'
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_SELECT_MANY'
-,p_lov=>'STATIC:Pulse;PULSE,Pressure SYS;SYST#,Pressure DIA;DIA#,Pressure SYS Avg;SYST-A,Pressure DIA Avg;DIA-A,Weight;WEI,Night Min Pulse;MIP,Night Max Pulse;MAP,Night Avg Pulse;AVP'
+,p_lov=>unistr('STATIC2:\041F\0443\043B\044C\0441;PULSE,\0422\0438\0441\043A SYS;SYST#,\0422\0438\0441\043A DIA;DIA#,\0422\0438\0441\043A SYS \0441\0435\0440\0435\0434\043D\0456\0439;SYST-A,\0422\0438\0441\043A DIA \0441\0435\0440\0435\0434\043D\0456\0439;DIA-A,\0412\0430\0433\0430;WEI,\041F\0443\043B\044C\0441 \043D\0456\0447\043D\0438\0439 \043C\0456\043D\0456\043C\0443\043C;NMIP,\041F\0443\043B\044C\0441 \043D\0456\0447\043D\0438\0439  \043C\0430\043A\0441\0456\043C\0443\043C;NMAP,\041F\0443\043B\044C\0441 \043D\0456\0447\043D\0438\0439  \0441\0435\0440\0435\0434\043D\0456\0439 ;NAVP,\0421\0435\0440\0435\0434\043D\0456\0439 \043F\0443\043B\044C\0441 \0441\043F\043E\043A\043E\044E;CAVP,\041C\0456\043D\0456\043C\0430\043B\044C\043D\0438\0439 \0434\043E\0431\043E\0432\0438\0439 \043F\0443\043B\044C\0441;TMIP,\041C\0430')
+||unistr('\043A\0441\0438\043C\0430\043B\044C\043D\0438\0439 \0434\043E\0431\043E\0432\0438\0439 \043F\0443\043B\044C\0441;TMAP,\0421\0435\0440\0435\0434\043D\0456\0439 \0434\043E\0431\043E\0432\0438\0439 \043F\0443\043B\044C\0441;TAP,\041A\0438\0441\0435\043D\044C;OXI,\0422\0435\043C\043F\0435\0440\0430\0442\0443\0430;TEMP,\0426\0443\043A\043E\0440;SUG')
 ,p_cSize=>30
 ,p_display_when=>':P32_CHARTS2SHOW like ''%AVGM%'''
 ,p_display_when2=>'PLSQL'
@@ -1674,14 +1871,16 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_plug_id=>wwv_flow_imp.id(245424219924051114)
 ,p_prompt=>'View'
 ,p_source_type=>'ALWAYS_NULL'
-,p_display_as=>'NATIVE_TEXT_FIELD'
-,p_cHeight=>1
+,p_display_as=>'NATIVE_SELECT_ONE'
+,p_named_lov=>'APP_STATE_STORAGE_LIST'
 ,p_field_template=>1610598304472262251
 ,p_item_template_options=>'#DEFAULT#'
-,p_lov_display_extra=>'NO'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'execute_validations', 'Y',
-  'page_action_on_selection', 'SUBMIT')).to_clob
+  'case_sensitive', 'N',
+  'fetch_on_search', 'N',
+  'infinite_scroll', 'Y',
+  'match_type', 'CONTAINS',
+  'min_chars', '0')).to_clob
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(249074412614953539)

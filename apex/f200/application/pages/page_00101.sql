@@ -161,7 +161,21 @@ wwv_flow_imp_page.create_page_item(
 ,p_prompt=>'Time Period Id'
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_RADIOGROUP'
-,p_named_lov=>'GD_CONSUMING_TIME_PERIODS'
+,p_lov=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select d, r from (',
+'select',
+'  TP_NAME || '' '' || count(DRU_ID) ||''/''|| count(PRD_ID) d,',
+'  TP_ID r,',
+'  min(TP_START_TIME_DT_GDT) a1',
+'from (',
+'select TP_NAME,',
+'       TP_ID,',
+'       PRD_ID, DRU_ID, TP_START_TIME_DT_GDT',
+'  from V$REHAB_TIME_PERIODS_AVAILABLE, V$REHAB_CONSUME_DATA',
+'where (CPTR_START_TIME_DT_GDT >= TP_START_TIME_DT_GDT and CPTR_START_TIME_DT_GDT < TP_END_TIME_DT_GDT or ',
+'                      CPTR_END_TIME_DT_GDT   >= TP_START_TIME_DT_GDT and CPTR_END_TIME_DT_GDT   < TP_END_TIME_DT_GDT) )',
+'group by TP_NAME, TP_ID',
+'order by a1)'))
 ,p_field_template=>2042262243893469891
 ,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--radioButtonGroup'
 ,p_lov_display_extra=>'NO'

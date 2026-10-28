@@ -187,6 +187,20 @@ wwv_flow_imp_page.create_page_button(
 ,p_grid_new_row=>'Y'
 );
 wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(78156446854597718)
+,p_button_sequence=>10
+,p_button_plug_id=>wwv_flow_imp.id(15482726476527635)
+,p_button_name=>'Push'
+,p_static_id=>'push'
+,p_show_as_disabled=>false
+,p_button_action=>'SUBMIT'
+,p_button_template_options=>'#DEFAULT#'
+,p_button_template_id=>4073839297780169708
+,p_button_image_alt=>'Push'
+,p_grid_new_row=>'Y'
+,p_required_patch=>wwv_flow_imp.id(16869691178504232)
+);
+wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(44051886786422902)
 ,p_button_sequence=>20
 ,p_button_plug_id=>wwv_flow_imp.id(15480456892527612)
@@ -202,6 +216,28 @@ wwv_flow_imp_page.create_page_button(
 ,p_grid_new_row=>'Y'
 ,p_security_scheme=>wwv_flow_imp.id(16876685804504387)
 ,p_required_patch=>wwv_flow_imp.id(16869691178504232)
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(78156371335597717)
+,p_process_sequence=>20
+,p_process_point=>'AFTER_SUBMIT'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'Push'
+,p_static_id=>'push'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'BEGIN',
+'    apex_pwa.send_push_notification (',
+'        p_application_id => 200,             -- Your Application ID',
+'        p_user_name      => ''YURI'',         -- Recipient username',
+'        p_title          => ''Order Update'',  -- Notification Title',
+'        p_body           => ''Your order 123 has been shipped.'', -- Notification Body',
+'        p_target_url     => ''f?p=100:2:::::''   -- Optional: Page to open on click',
+'    );',
+'END;'))
+,p_process_clob_language=>'PLSQL'
+,p_error_display_location=>'INLINE_IN_NOTIFICATION'
+,p_process_when_button_id=>wwv_flow_imp.id(78156446854597718)
+,p_internal_uid=>78156371335597717
 );
 wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(44051712164422901)

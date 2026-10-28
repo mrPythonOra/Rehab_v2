@@ -313,6 +313,14 @@ begin
 end;
 /
 
+select 'Pulse' nm,
+       trunc(MT_TAKEN,'dd') MT_TAKEN, 
+       MT_PULSE
+ from REHAB_MEASUREMENTS
+where MT_PULSE is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() 
+and trunc(MT_TAKEN,'dd') between to_date(:P32_START,'YYYY-MM-DD') and to_date(:P32_END,'YYYY-MM-DD')
+order by MT_TAKEN
+;
 select d.*, r.BALANCE, r.DAYS_PLANNED, r.DAYS_REMAIN, r.DA_STORED_AMOUNT, r.end_date
                 from V$REHAB_CONSUME_DATA d, V$REHAB_TIME_PERIODS tp, V$REHAB_REMAINS r
                where tp.TP_ID = p_tp_id 
@@ -479,3 +487,11 @@ alter table REHAB_ORDER_TYPES add constraint PK_REHAB_ORDER_TYPES primary key (O
 alter TABLE REHAB_DRUG_ACCOUNTINGS add constraint FK_REHAB_DRUG_ACCOUNTINGS_ORDER_TYPE FOREIGN KEY (DA_ORDER_TYPE)
     REFERENCES REHAB_ORDER_TYPES (OT_ID) ENABLE;
 select to_char(trunc(sysdate,'IW'))
+;
+
+select
+  STORAGE_NAME || ' (' || to_char(STORAGE_UPDATED at time zone SESSIONTIMEZONE,'YYYY-MON-DD HH24:MI TZH:TZM') ||')' d,
+  STORAGE_ID r
+from APEX_STORED_STATES
+where APP_USER = REHAB_CONTEXT_PKG.getCURR_APEX_USER() and APP_PAGE = v('APP_PAGE_ID')
+order by 1;
