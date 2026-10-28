@@ -37,6 +37,8 @@ begin
     REHAB_CONTEXT_PKG.set_current_date(sysdate);
 end;
 /
+
+select to_char(to_date(to_char(trunc(REHAB_CONTEXT_PKG.getGLOBAL_DATE()),'YYYYMMDD')||to_char(systimestamp at time zone SESSIONTIMEZONE,'HH24MISS'),'YYYYMMDDHH24MISS'),'&APP_DTFMT_SHORT_T.');
 select
   TP_NAME || ' ' || count(PRD_ID) ||'/'|| count(DRU_ID) d,
   TP_ID r,

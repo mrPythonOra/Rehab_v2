@@ -154,6 +154,23 @@ wwv_flow_imp_page.create_card_action(
 ,p_authorization_scheme=>wwv_flow_imp.id(17092171236131578)
 );
 wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(78156624157597720)
+,p_name=>'P101_DATE'
+,p_item_sequence=>30
+,p_item_plug_id=>wwv_flow_imp.id(44053518107422919)
+,p_prompt=>'Date'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_TEXT_FIELD'
+,p_cSize=>30
+,p_field_template=>1610598304472262251
+,p_item_template_options=>'#DEFAULT#'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'disabled', 'N',
+  'submit_when_enter_pressed', 'N',
+  'subtype', 'TEXT',
+  'trim_spaces', 'BOTH')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(44053638287422920)
 ,p_name=>'P101_TIME_PERIOD_ID'
 ,p_item_sequence=>10

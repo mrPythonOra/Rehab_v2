@@ -2011,6 +2011,11 @@ wwv_flow_imp_page.create_page_item(
 ,p_lov_display_null=>'YES'
 ,p_cHeight=>1
 ,p_begin_on_new_line=>'N'
+,p_read_only_when=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select 1 from',
+'REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES, REHAB_PRESCRIPTIONS_DETAILS',
+'where PRD_PRATR_ID = PRATR_ID and PRATR_PR_ID = :P402_PR_ID and PRD_DR_ID is not null'))
+,p_read_only_when_type=>'EXISTS'
 ,p_field_template=>1610598304472262251
 ,p_item_template_options=>'#DEFAULT#'
 ,p_is_persistent=>'N'
@@ -2150,6 +2155,11 @@ wwv_flow_imp_page.create_page_item(
 ,p_named_lov=>'REHAB_WORKING_SUBSTANCE.WS_NAME'
 ,p_lov_display_null=>'YES'
 ,p_cHeight=>1
+,p_read_only_when=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select 1 from',
+'REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES, REHAB_PRESCRIPTIONS_DETAILS',
+'where PRD_PRATR_ID = PRATR_ID and PRATR_PR_ID = :P402_PR_ID and PRD_DR_ID is not null'))
+,p_read_only_when_type=>'EXISTS'
 ,p_field_template=>1610598304472262251
 ,p_item_template_options=>'#DEFAULT#'
 ,p_is_persistent=>'N'
@@ -2406,6 +2416,7 @@ wwv_flow_imp_page.create_page_da_event(
 ,p_bind_type=>'bind'
 ,p_execution_type=>'IMMEDIATE'
 ,p_bind_event_type=>'apexafterrefresh'
+,p_required_patch=>wwv_flow_imp.id(16869691178504232)
 );
 wwv_flow_imp_page.create_page_da_action(
  p_id=>wwv_flow_imp.id(65079500262556940)

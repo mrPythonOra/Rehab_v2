@@ -71,7 +71,7 @@
          and PR_WS_ID = (select DR_WS_ID from REHAB_DRUGS where DR_ID = p_PRD_DR_ID);
       if l_cnt1 + l_cnt2 != 1 then
          raise_application_error(-20102,case when l_cnt1 = 0 then 'Not ' else null end ||'Found DR assignement; '||
-                                        case when l_cnt2 = 0 then 'Not ' else null end ||'Found WS assignement');
+                                        case when l_cnt2 = 0 then 'Not ' else null end ||'Found WS assignement'||chr(10)||'PRATR_ID: '||p_PRD_PRATR_ID||'; DR_ID: '||p_PRD_DR_ID);
       end if;
     end;
 
@@ -244,7 +244,7 @@
         end loop;
     exception
       when others then --raise_application_error(-20000,'Exception happened in REHAB_PRESCRIPTIONS_PKG.update_PRESCRIPTION'||chr(10)||sqlerrm);
-        REHAB_LOGGING_PKG.lognraise($$PLSQL_UNIT, $$PLSQL_LINE, sqlerrm);
+        REHAB_LOGGING_PKG.lognraise($$PLSQL_UNIT, $$PLSQL_LINE, sqlerrm||'; p_PR_DR_ID: '||p_PR_DR_ID||'; p_PR_WS_ID: '||p_PR_WS_ID);
     end;
     -- del
     procedure delete_PRESCRIPTION (

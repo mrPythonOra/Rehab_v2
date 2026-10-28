@@ -75,10 +75,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 unistr('select ''\0422\0438\0441\043A Dia \0441\0435\0440\0435\0440\0434\043D\0456\0439'' nm,'),
 '       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
 '       avg(MT_PRESSURE_DIA) MT_PRESSURE_DIA,',
-unistr('       ''\0422\0438\0441\043A Dia \0441\0435\0440\0435\0440\0434\043D\0456\0439: '' ||round(avg(MT_PRESSURE_DIA))||'' ''|| to_char(trunc(MT_TAKEN,''dd''),''Day YYYY-Mon-DD'') ct'),
+unistr('       ''\0422\0438\0441\043A Dia \0441\0435\0440\0435\0440\0434\043D\0456\0439: '' ||round(avg(MT_PRESSURE_DIA))||'' ''|| to_char(trunc(MT_TAKEN,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
 ' from REHAB_MEASUREMENTS',
 'where MT_PRESSURE_DIA is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 '--and pressure_lr=''R''',
 'group by trunc(MT_TAKEN,''dd'')',
 'order by MT_TAKEN'))
@@ -106,10 +106,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 unistr('select ''\0422\0438\0441\043A Dia \043B\0456\0432\0430'' nm,'),
 '       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
 '       avg(MT_PRESSURE_DIA) MT_PRESSURE_DIA,',
-unistr('       ''\0422\0438\0441\043A Dia \043B\0456\0432\0430: '' ||round(avg(MT_PRESSURE_DIA))||'' ''|| to_char(trunc(MT_TAKEN,''dd''),''Day YYYY-Mon-DD'') ct'),
+unistr('       ''\0422\0438\0441\043A Dia \043B\0456\0432\0430: '' ||round(avg(MT_PRESSURE_DIA))||'' ''|| to_char(trunc(MT_TAKEN,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
 ' from REHAB_MEASUREMENTS',
 'where MT_PRESSURE_DIA is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'and MT_PRESSURE_LR=''L''',
 'group by trunc(MT_TAKEN,''dd'')',
 'order by MT_TAKEN'))
@@ -137,10 +137,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 unistr('select ''\0422\0438\0441\043A Dia \043F\0440\0430\0432\0430'' nm,'),
 '       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
 '       avg(MT_PRESSURE_DIA) MT_PRESSURE_DIA,',
-unistr('       ''\0422\0438\0441\043A Dia \043F\0440\0430\0432\0430: '' ||round(avg(MT_PRESSURE_DIA))||'' ''|| to_char(trunc(MT_TAKEN,''dd''),''Day YYYY-Mon-DD'') ct'),
+unistr('       ''\0422\0438\0441\043A Dia \043F\0440\0430\0432\0430: '' ||round(avg(MT_PRESSURE_DIA))||'' ''|| to_char(trunc(MT_TAKEN,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
 ' from REHAB_MEASUREMENTS',
 'where MT_PRESSURE_DIA is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'and MT_PRESSURE_LR=''R''',
 'group by trunc(MT_TAKEN,''dd'')',
 'order by MT_TAKEN'))
@@ -158,35 +158,6 @@ unistr('       ''\0422\0438\0441\043A Dia \043F\0440\0430\0432\0430: '' ||round(
 ,p_display_when_condition2=>'PLSQL'
 );
 wwv_flow_imp_page.create_jet_chart_series(
- p_id=>wwv_flow_imp.id(78110383026343330)
-,p_chart_id=>wwv_flow_imp.id(78100967575343297)
-,p_static_id=>'oxigenation'
-,p_seq=>130
-,p_name=>'Oxigenation'
-,p_data_source_type=>'SQL'
-,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-unistr('select ''\0412\0430\0433\0430'' nm,'),
-'       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
-'       avg(MT_OXIGENATION) MT_OXIGENATION',
-' from REHAB_MEASUREMENTS',
-'where MT_OXIGENATION is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
-'group by trunc(MT_TAKEN,''dd'')',
-'order by MT_TAKEN'))
-,p_series_name_column_name=>'NM'
-,p_items_value_column_name=>'MT_OXIGENATION'
-,p_items_label_column_name=>'MT_TAKEN'
-,p_line_style=>'solid'
-,p_line_type=>'curved'
-,p_marker_rendered=>'off'
-,p_assigned_to_y2=>'off'
-,p_items_label_rendered=>false
-,p_required_patch=>wwv_flow_imp.id(16869691178504232)
-,p_display_when_cond_type=>'EXPRESSION'
-,p_display_when_condition=>':P601_AVGMEASUR like ''%OXI%'''
-,p_display_when_condition2=>'PLSQL'
-);
-wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(78104342082343313)
 ,p_chart_id=>wwv_flow_imp.id(78100967575343297)
 ,p_static_id=>'pulse'
@@ -197,10 +168,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 unistr('select ''\041F\0443\043B\044C\0441'' nm,'),
 '       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
 '       avg(MT_PULSE) MT_PULSE,',
-unistr('       ''\041F\0443\043B\044C\0441: '' ||round(avg(MT_PULSE))||'' ''|| to_char(trunc(MT_TAKEN,''dd''),''Day YYYY-Mon-DD'') ct'),
+unistr('       ''\041F\0443\043B\044C\0441: '' ||round(avg(MT_PULSE))||'' ''|| to_char(trunc(MT_TAKEN,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
 ' from REHAB_MEASUREMENTS',
 'where MT_PULSE is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'group by trunc(MT_TAKEN,''dd'')',
 'order by MT_TAKEN'))
 ,p_series_name_column_name=>'NM'
@@ -217,35 +188,6 @@ unistr('       ''\041F\0443\043B\044C\0441: '' ||round(avg(MT_PULSE))||'' ''|| t
 ,p_display_when_condition2=>'PLSQL'
 );
 wwv_flow_imp_page.create_jet_chart_series(
- p_id=>wwv_flow_imp.id(78109763793343328)
-,p_chart_id=>wwv_flow_imp.id(78100967575343297)
-,p_static_id=>'sugar'
-,p_seq=>120
-,p_name=>'Sugar'
-,p_data_source_type=>'SQL'
-,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-unistr('select ''\0412\0430\0433\0430'' nm,'),
-'       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
-'       avg(MT_SUGAR) MT_SUGAR',
-' from REHAB_MEASUREMENTS',
-'where MT_SUGAR is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
-'group by trunc(MT_TAKEN,''dd'')',
-'order by MT_TAKEN'))
-,p_series_name_column_name=>'NM'
-,p_items_value_column_name=>'MT_SUGAR'
-,p_items_label_column_name=>'MT_TAKEN'
-,p_line_style=>'solid'
-,p_line_type=>'curved'
-,p_marker_rendered=>'off'
-,p_assigned_to_y2=>'off'
-,p_items_label_rendered=>false
-,p_required_patch=>wwv_flow_imp.id(16869691178504232)
-,p_display_when_cond_type=>'EXPRESSION'
-,p_display_when_condition=>':P601_AVGMEASUR like ''%SUG%'''
-,p_display_when_condition2=>'PLSQL'
-);
-wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(78104971464343315)
 ,p_chart_id=>wwv_flow_imp.id(78100967575343297)
 ,p_static_id=>'syst-avg'
@@ -256,10 +198,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 unistr('select ''\0422\0438\0441\043A SYS \0441\0435\0440\0435\0440\0434\043D\0456\0439'' nm,'),
 '       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
 '       avg(MT_PRESSURE_SYS) MT_PRESSURE_SYS,',
-unistr('       ''\0422\0438\0441\043A SYS \0441\0435\0440\0435\0440\0434\043D\0456\0439: '' ||round(avg(MT_PRESSURE_SYS))||'' ''|| to_char(trunc(MT_TAKEN,''dd''),''Day YYYY-Mon-DD'') ct'),
+unistr('       ''\0422\0438\0441\043A SYS \0441\0435\0440\0435\0440\0434\043D\0456\0439: '' ||round(avg(MT_PRESSURE_SYS))||'' ''|| to_char(trunc(MT_TAKEN,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
 ' from REHAB_MEASUREMENTS',
 'where MT_PRESSURE_SYS is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 '--and pressure_lr=''R''',
 'group by trunc(MT_TAKEN,''dd'')',
 'order by MT_TAKEN'))
@@ -287,10 +229,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 unistr('select ''\0422\0438\0441\043A SYS \043B\0456\0432\0430'' nm,'),
 '       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
 '       avg(MT_PRESSURE_SYS) MT_PRESSURE_SYS,',
-unistr('       ''\0422\0438\0441\043A SYS \043B\0456\0432\0430: '' ||round(avg(MT_PRESSURE_SYS))||'' ''|| to_char(trunc(MT_TAKEN,''dd''),''Day YYYY-Mon-DD'') ct'),
+unistr('       ''\0422\0438\0441\043A SYS \043B\0456\0432\0430: '' ||round(avg(MT_PRESSURE_SYS))||'' ''|| to_char(trunc(MT_TAKEN,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
 ' from REHAB_MEASUREMENTS',
 'where MT_PRESSURE_SYS is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'and MT_PRESSURE_LR=''L''',
 'group by trunc(MT_TAKEN,''dd'')',
 'order by MT_TAKEN'))
@@ -318,10 +260,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 unistr('select ''\0422\0438\0441\043A SYS \043F\0440\0430\0432\0430'' nm,'),
 '       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
 '       avg(MT_PRESSURE_SYS) MT_PRESSURE_SYS,',
-unistr('       ''\0422\0438\0441\043A SYS \043F\0440\0430\0432\0430: '' ||round(avg(MT_PRESSURE_SYS))||'' ''|| to_char(trunc(MT_TAKEN,''dd''),''Day YYYY-Mon-DD'') ct'),
+unistr('       ''\0422\0438\0441\043A SYS \043F\0440\0430\0432\0430: '' ||round(avg(MT_PRESSURE_SYS))||'' ''|| to_char(trunc(MT_TAKEN,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
 ' from REHAB_MEASUREMENTS',
 'where MT_PRESSURE_SYS is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'and MT_PRESSURE_LR=''R''',
 'group by trunc(MT_TAKEN,''dd'')',
 'order by MT_TAKEN'))
@@ -339,35 +281,6 @@ unistr('       ''\0422\0438\0441\043A SYS \043F\0440\0430\0432\0430: '' ||round(
 ,p_display_when_condition2=>'PLSQL'
 );
 wwv_flow_imp_page.create_jet_chart_series(
- p_id=>wwv_flow_imp.id(78109188224343327)
-,p_chart_id=>wwv_flow_imp.id(78100967575343297)
-,p_static_id=>'temperature'
-,p_seq=>110
-,p_name=>'Temperature'
-,p_data_source_type=>'SQL'
-,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-unistr('select ''\0412\0430\0433\0430'' nm,'),
-'       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
-'       avg(MT_TEMPERATURE) MT_TEMPERATURE',
-' from REHAB_MEASUREMENTS',
-'where MT_TEMPERATURE is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
-'group by trunc(MT_TAKEN,''dd'')',
-'order by MT_TAKEN'))
-,p_series_name_column_name=>'NM'
-,p_items_value_column_name=>'MT_TEMPERATURE'
-,p_items_label_column_name=>'MT_TAKEN'
-,p_line_style=>'solid'
-,p_line_type=>'curved'
-,p_marker_rendered=>'off'
-,p_assigned_to_y2=>'off'
-,p_items_label_rendered=>false
-,p_required_patch=>wwv_flow_imp.id(16869691178504232)
-,p_display_when_cond_type=>'EXPRESSION'
-,p_display_when_condition=>':P601_AVGMEASUR like ''%TEMP%'''
-,p_display_when_condition2=>'PLSQL'
-);
-wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(78112115238343335)
 ,p_chart_id=>wwv_flow_imp.id(78100967575343297)
 ,p_static_id=>'tot-avg-pulse'
@@ -378,10 +291,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 unistr('select ''\0421\0435\0440\0435\0434\043D\0456\0439 \0434\043E\0431\043E\0432\0438\0439 \043F\0443\043B\044C\0441'' nm,'),
 '       trunc(WL_TAKEN,''dd'') WL_TAKEN, ',
 '       avg(WL_TOTAL_AVG_PULSE) WL_TOTAL_AVG_PULSE,',
-unistr('       ''\0421\0435\0440\0435\0434\043D\0456\0439 \0434\043E\0431\043E\0432\0438\0439 \043F\0443\043B\044C\0441: '' ||round(avg(WL_TOTAL_AVG_PULSE))||'' ''|| to_char(trunc(WL_TAKEN,''dd''),''Day YYYY-Mon-DD'') ct'),
+unistr('       ''\0421\0435\0440\0435\0434\043D\0456\0439 \0434\043E\0431\043E\0432\0438\0439 \043F\0443\043B\044C\0441: '' ||round(avg(WL_TOTAL_AVG_PULSE))||'' ''|| to_char(trunc(WL_TAKEN,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
 ' from REHAB_WATCH_LOGS',
 'where WL_TOTAL_AVG_PULSE is not null and WL_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(WL_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(WL_TAKEN,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'group by trunc(WL_TAKEN,''dd'')',
 'order by WL_TAKEN'))
 ,p_series_name_column_name=>'NM'
@@ -408,10 +321,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 unistr('select ''\041C\0430\043A\0441\0438\043C\0430\043B\044C\043D\0438\0439 \0434\043E\0431\043E\0432\0438\0439 \043F\0443\043B\044C\0441'' nm,'),
 '       trunc(WL_TAKEN,''dd'') WL_TAKEN, ',
 '       avg(WL_TOTAL_MAX_PULSE) WL_TOTAL_MAX_PULSE,',
-unistr('       ''\041C\0430\043A\0441\0438\043C\0430\043B\044C\043D\0438\0439 \0434\043E\0431\043E\0432\0438\0439 \043F\0443\043B\044C\0441: '' ||round(avg(WL_TOTAL_MAX_PULSE))||'' ''|| to_char(trunc(WL_TAKEN,''dd''),''Day YYYY-Mon-DD'') ct'),
+unistr('       ''\041C\0430\043A\0441\0438\043C\0430\043B\044C\043D\0438\0439 \0434\043E\0431\043E\0432\0438\0439 \043F\0443\043B\044C\0441: '' ||round(avg(WL_TOTAL_MAX_PULSE))||'' ''|| to_char(trunc(WL_TAKEN,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
 ' from REHAB_WATCH_LOGS',
 'where WL_TOTAL_MAX_PULSE is not null and WL_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(WL_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(WL_TAKEN,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'group by trunc(WL_TAKEN,''dd'')',
 'order by WL_TAKEN'))
 ,p_series_name_column_name=>'NM'
@@ -438,10 +351,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 unistr('select ''\041C\0456\043D\0456\043C\0430\043B\044C\043D\0438\0439 \0434\043E\0431\043E\0432\0438\0439 \043F\0443\043B\044C\0441'' nm,'),
 '       trunc(WL_TAKEN,''dd'') WL_TAKEN, ',
 '       avg(WL_TOTAL_MIN_PULSE) WL_TOTAL_MIN_PULSE,',
-unistr('       ''\041C\0456\043D\0456\043C\0430\043B\044C\043D\0438\0439 \0434\043E\0431\043E\0432\0438\0439 \043F\0443\043B\044C\0441: '' ||round(avg(WL_TOTAL_MIN_PULSE))||'' ''|| to_char(trunc(WL_TAKEN,''dd''),''Day YYYY-Mon-DD'') ct'),
+unistr('       ''\041C\0456\043D\0456\043C\0430\043B\044C\043D\0438\0439 \0434\043E\0431\043E\0432\0438\0439 \043F\0443\043B\044C\0441: '' ||round(avg(WL_TOTAL_MIN_PULSE))||'' ''|| to_char(trunc(WL_TAKEN,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
 ' from REHAB_WATCH_LOGS',
 'where WL_TOTAL_MIN_PULSE is not null and WL_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(WL_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(WL_TAKEN,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'group by trunc(WL_TAKEN,''dd'')',
 'order by WL_TAKEN'))
 ,p_series_name_column_name=>'NM'
@@ -468,10 +381,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 unistr('select ''\0421\0435\0440\0435\0434\043D\0456\0439 \0442\0440\0435\043D\0443\0432\0430\043B\044C\043D\0438\0439 \043F\0443\043B\044C\0441'' nm,'),
 '       trunc(TR_START,''dd'') TR_START, ',
 '       avg(TR_PULSE_AVG) TR_PULSE_AVG,',
-unistr('       ''\0421\0435\0440\0435\0434\043D\0456\0439 \0442\0440\0435\043D\0443\0432\0430\043B\044C\043D\0438\0439 \043F\0443\043B\044C\0441: '' ||round(avg(TR_PULSE_AVG))||'' ''|| to_char(trunc(TR_START,''dd''),''Day YYYY-Mon-DD'') ct'),
+unistr('       ''\0421\0435\0440\0435\0434\043D\0456\0439 \0442\0440\0435\043D\0443\0432\0430\043B\044C\043D\0438\0439 \043F\0443\043B\044C\0441: '' ||round(avg(TR_PULSE_AVG))||'' ''|| to_char(trunc(TR_START,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
 ' from REHAB_TRAININGS',
 'where TR_PULSE_AVG is not null and TR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(TR_START,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(TR_START,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'group by trunc(TR_START,''dd'')',
 'order by TR_START'))
 ,p_series_name_column_name=>'NM'
@@ -498,10 +411,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 unistr('select ''\041C\0430\043A\0441\0438\043C\0430\043B\044C\043D\0438\0439 \0442\0440\0435\043D\0443\0432\0430\043B\044C\043D\0438\0439 \043F\0443\043B\044C\0441'' nm,'),
 '       trunc(TR_START,''dd'') TR_START, ',
 '       avg(TR_PULSE_MAX) TR_PULSE_MAX,',
-unistr('       ''\041C\0430\043A\0441\0438\043C\0430\043B\044C\043D\0438\0439 \0442\0440\0435\043D\0443\0432\0430\043B\044C\043D\0438\0439 \043F\0443\043B\044C\0441: '' ||round(avg(TR_PULSE_MAX))||'' ''|| to_char(trunc(TR_START,''dd''),''Day YYYY-Mon-DD'') ct'),
+unistr('       ''\041C\0430\043A\0441\0438\043C\0430\043B\044C\043D\0438\0439 \0442\0440\0435\043D\0443\0432\0430\043B\044C\043D\0438\0439 \043F\0443\043B\044C\0441: '' ||round(avg(TR_PULSE_MAX))||'' ''|| to_char(trunc(TR_START,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
 ' from REHAB_TRAININGS',
 'where TR_PULSE_MAX is not null and TR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(TR_START,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(TR_START,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'group by trunc(TR_START,''dd'')',
 'order by TR_START'))
 ,p_series_name_column_name=>'NM'
@@ -528,10 +441,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 unistr('select ''\041C\0456\043D\0456\043C\0430\043B\044C\043D\0438\0439 \0442\0440\0435\043D\0443\0432\0430\043B\044C\043D\0438\0439 \043F\0443\043B\044C\0441'' nm,'),
 '       trunc(TR_START,''dd'') TR_START, ',
 '       avg(TR_PULSE_MIN) TR_PULSE_MIN,',
-unistr('       ''\041C\0456\043D\0456\043C\0430\043B\044C\043D\0438\0439 \0442\0440\0435\043D\0443\0432\0430\043B\044C\043D\0438\0439 \043F\0443\043B\044C\0441: '' ||round(avg(TR_PULSE_MIN))||'' ''|| to_char(trunc(TR_START,''dd''),''Day YYYY-Mon-DD'') ct'),
+unistr('       ''\041C\0456\043D\0456\043C\0430\043B\044C\043D\0438\0439 \0442\0440\0435\043D\0443\0432\0430\043B\044C\043D\0438\0439 \043F\0443\043B\044C\0441: '' ||round(avg(TR_PULSE_MIN))||'' ''|| to_char(trunc(TR_START,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
 ' from REHAB_TRAININGS',
 'where TR_PULSE_MIN is not null and TR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(TR_START,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(TR_START,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'group by trunc(TR_START,''dd'')',
 'order by TR_START'))
 ,p_series_name_column_name=>'NM'
@@ -548,35 +461,6 @@ unistr('       ''\041C\0456\043D\0456\043C\0430\043B\044C\043D\0438\0439 \0442\0
 ,p_display_when_condition2=>'PLSQL'
 );
 wwv_flow_imp_page.create_jet_chart_series(
- p_id=>wwv_flow_imp.id(78106713095343320)
-,p_chart_id=>wwv_flow_imp.id(78100967575343297)
-,p_static_id=>'weight'
-,p_seq=>100
-,p_name=>'Weight'
-,p_data_source_type=>'SQL'
-,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-unistr('select ''\0412\0430\0433\0430'' nm,'),
-'       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
-'       avg(MT_WEIGHT) MT_WEIGHT',
-' from REHAB_MEASUREMENTS',
-'where MT_WEIGHT is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
-'group by trunc(MT_TAKEN,''dd'')',
-'order by MT_TAKEN'))
-,p_series_name_column_name=>'NM'
-,p_items_value_column_name=>'MT_WEIGHT'
-,p_items_label_column_name=>'MT_TAKEN'
-,p_line_style=>'solid'
-,p_line_type=>'curved'
-,p_marker_rendered=>'off'
-,p_assigned_to_y2=>'off'
-,p_items_label_rendered=>false
-,p_required_patch=>wwv_flow_imp.id(16869691178504232)
-,p_display_when_cond_type=>'EXPRESSION'
-,p_display_when_condition=>':P601_AVGMEASUR like ''%WEI%'''
-,p_display_when_condition2=>'PLSQL'
-);
-wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(78110953043343331)
 ,p_chart_id=>wwv_flow_imp.id(78100967575343297)
 ,p_static_id=>'wl-avg-calm'
@@ -587,10 +471,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 unistr('select ''\0421\0435\0440\0435\0434\043D\0456\0439 \043F\0443\043B\044C\0441 \0441\043F\043E\043A\043E\044E'' nm,'),
 '       trunc(WL_TAKEN,''dd'') WL_TAKEN, ',
 '       avg(WL_CALM_AVG_PULSE) WL_CALM_AVG_PULSE,',
-unistr('       ''\0421\0435\0440\0435\0434\043D\0456\0439 \043F\0443\043B\044C\0441 \0441\043F\043E\043A\043E\044E: '' ||round(avg(WL_CALM_AVG_PULSE))||'' ''|| to_char(trunc(WL_TAKEN,''dd''),''Day YYYY-Mon-DD'') ct'),
+unistr('       ''\0421\0435\0440\0435\0434\043D\0456\0439 \043F\0443\043B\044C\0441 \0441\043F\043E\043A\043E\044E: '' ||round(avg(WL_CALM_AVG_PULSE))||'' ''|| to_char(trunc(WL_TAKEN,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
 ' from REHAB_WATCH_LOGS',
 'where WL_CALM_AVG_PULSE is not null and WL_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(WL_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(WL_TAKEN,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'group by trunc(WL_TAKEN,''dd'')',
 'order by WL_TAKEN'))
 ,p_series_name_column_name=>'NM'
@@ -617,10 +501,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 unistr('select ''\041D\0456\0447\043D\0438\0439 \043F\0443\043B\044C\0441 \0441\0435\0440\0435\0440\0434\043D\0456\0439'' nm,'),
 '       trunc(WL_TAKEN,''dd'') WL_TAKEN, ',
 '       avg(WL_NIGHT_AVG_PULSE) WL_NIGHT_AVG_PULSE,',
-unistr('       ''\041D\0456\0447\043D\0438\0439 \043F\0443\043B\044C\0441 \043C\0456\043D\0456\043C\0443\043C: '' ||round(avg(WL_NIGHT_AVG_PULSE))||'' ''|| to_char(trunc(WL_TAKEN,''dd''),''Day YYYY-Mon-DD'') ct'),
+unistr('       ''\041D\0456\0447\043D\0438\0439 \043F\0443\043B\044C\0441 \043C\0456\043D\0456\043C\0443\043C: '' ||round(avg(WL_NIGHT_AVG_PULSE))||'' ''|| to_char(trunc(WL_TAKEN,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
 ' from REHAB_WATCH_LOGS',
 'where WL_NIGHT_AVG_PULSE is not null and WL_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(WL_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(WL_TAKEN,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'group by trunc(WL_TAKEN,''dd'')',
 'order by WL_TAKEN'))
 ,p_series_name_column_name=>'NM'
@@ -647,10 +531,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 unistr('select ''\041D\0456\0447\043D\0438\0439 \043F\0443\043B\044C\0441 \043C\0430\043A\0441\0438\043C\0443\043C'' nm,'),
 '       trunc(WL_TAKEN,''dd'') WL_TAKEN, ',
 '       avg(WL_NIGHT_MAX_PULSE) WL_NIGHT_MAX_PULSE,',
-unistr('       ''\041D\0456\0447\043D\0438\0439 \043F\0443\043B\044C\0441 \043C\0456\043D\0456\043C\0443\043C: '' ||round(avg(WL_NIGHT_MAX_PULSE))||'' ''|| to_char(trunc(WL_TAKEN,''dd''),''Day YYYY-Mon-DD'') ct'),
+unistr('       ''\041D\0456\0447\043D\0438\0439 \043F\0443\043B\044C\0441 \043C\0456\043D\0456\043C\0443\043C: '' ||round(avg(WL_NIGHT_MAX_PULSE))||'' ''|| to_char(trunc(WL_TAKEN,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
 ' from REHAB_WATCH_LOGS',
 'where WL_NIGHT_MAX_PULSE is not null and WL_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(WL_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(WL_TAKEN,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'group by trunc(WL_TAKEN,''dd'')',
 'order by WL_TAKEN'))
 ,p_series_name_column_name=>'NM'
@@ -676,10 +560,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 unistr('select ''\041D\0456\0447\043D\0438\0439 \043F\0443\043B\044C\0441 \043C\0456\043D\0456\043C\0443\043C'' nm,'),
 '       trunc(WL_TAKEN,''dd'') WL_TAKEN, ',
 '       avg(WL_NIGHT_MIN_PULSE) WL_NIGHT_MIN_PULSE,',
-unistr('       ''\041D\0456\0447\043D\0438\0439 \043F\0443\043B\044C\0441 \043C\0456\043D\0456\043C\0443\043C: '' ||round(avg(WL_NIGHT_MIN_PULSE))||'' ''|| to_char(trunc(WL_TAKEN,''dd''),''Day YYYY-Mon-DD'') ct'),
+unistr('       ''\041D\0456\0447\043D\0438\0439 \043F\0443\043B\044C\0441 \043C\0456\043D\0456\043C\0443\043C: '' ||round(avg(WL_NIGHT_MIN_PULSE))||'' ''|| to_char(trunc(WL_TAKEN,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
 ' from REHAB_WATCH_LOGS',
 'where WL_NIGHT_MIN_PULSE is not null and WL_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(WL_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(WL_TAKEN,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'group by trunc(WL_TAKEN,''dd'')',
 'order by WL_TAKEN'))
 ,p_series_name_column_name=>'NM'
@@ -809,12 +693,12 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_name=>'Drug 1'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'with dates as (select trunc(to_date(:P601_START,''YYYY-MON-DD'') + level - 1,''DD'') dd',
+'with dates as (select trunc(to_date(:P601_START,''&APP_DTFMT_DATE.'') + level - 1,''DD'') dd',
 'from dual ',
-'connect by level <= to_date(:P601_END,''YYYY-MON-DD'') - to_date(:P601_START,''YYYY-MON-DD'')),',
+'connect by level <= to_date(:P601_END,''&APP_DTFMT_DATE.'') - to_date(:P601_START,''&APP_DTFMT_DATE.'')),',
 'dr_data1 as ',
 '(select unique ',
-'        d.DR_NAME||'' - ''||PRR_PRESCRIPTED_BY_SHORT||'' (''||to_char(PRR_PRESCRIPTED_WHEN,''YYYY-MON-DD'')||'')'' nm,',
+'        d.DR_NAME||'' - ''||PRR_PRESCRIPTED_BY_SHORT||'' (''||to_char(PRR_PRESCRIPTED_WHEN,''&APP_DTFMT_DATE.'')||'')'' nm,',
 '        pr.pr_id, PRD_DR_ID',
 ' from REHAB_PRESCRIPTORS prr, REHAB_PRESCRIPTIONS pr, REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES, REHAB_PRESCRIPTIONS_DETAILS, REHAB_DRUGS d',
 'where pr.pr_prr_id=prr.prr_id ',
@@ -822,7 +706,7 @@ wwv_flow_imp_page.create_jet_chart_series(
 '  and PR_ID = PRATR_PR_ID and PRATR_ID = PRD_PRATR_ID and PRD_DR_ID = DR_ID',
 '  and PR_PAT_ID=REHAB_CONTEXT_PKG.getPATIENT())',
 'select',
-unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\0442\043E: '' ||ACTUAL_DOSAGE||'' \043C\0433 \0432 ''|| to_char(CONSUMED,''Day YYYY-Mon-DD'') ct'),
+unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\0442\043E: '' ||ACTUAL_DOSAGE||'' \043C\0433 \0432 ''|| to_char(CONSUMED,''Day &APP_DTFMT_DATE.'') ct'),
 'from',
 ' dr_data1, ',
 ' dates,',
@@ -835,7 +719,7 @@ unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\04
 '    and du.dru_pat_id = REHAB_CONTEXT_PKG.getPATIENT() ',
 '    and du.dru_pr_id = d.pr_id',
 '    and du.DRU_DR_ID = PRD_DR_ID',
-'    and trunc(DRU_CONSUMED,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'    and trunc(DRU_CONSUMED,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 '    group by du.dru_pr_id, du.DRU_DR_ID, trunc(DRU_CONSUMED,''dd'')',
 '    ) duu',
 'where duu.CONSUMED(+)=dates.dd and dr_data1.pr_id = duu.dru_pr_id and dr_data1.PRD_DR_ID = DRU_DR_ID',
@@ -855,12 +739,12 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_name=>'Drug 2'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'with dates as (select trunc(to_date(:P601_START,''YYYY-MON-DD'') + level - 1,''DD'') dd',
+'with dates as (select trunc(to_date(:P601_START,''&APP_DTFMT_DATE.'') + level - 1,''DD'') dd',
 'from dual ',
-'connect by level <= to_date(:P601_END,''YYYY-MON-DD'') - to_date(:P601_START,''YYYY-MON-DD'')),',
+'connect by level <= to_date(:P601_END,''&APP_DTFMT_DATE.'') - to_date(:P601_START,''&APP_DTFMT_DATE.'')),',
 'dr_data1 as ',
 '(select unique ',
-'        d.DR_NAME||'' - ''||PRR_PRESCRIPTED_BY_SHORT||'' (''||to_char(PRR_PRESCRIPTED_WHEN,''YYYY-MON-DD'')||'')'' nm,',
+'        d.DR_NAME||'' - ''||PRR_PRESCRIPTED_BY_SHORT||'' (''||to_char(PRR_PRESCRIPTED_WHEN,''&APP_DTFMT_DATE.'')||'')'' nm,',
 '        pr.pr_id, PRD_DR_ID',
 ' from REHAB_PRESCRIPTORS prr, REHAB_PRESCRIPTIONS pr, REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES, REHAB_PRESCRIPTIONS_DETAILS, REHAB_DRUGS d',
 'where pr.pr_prr_id=prr.prr_id ',
@@ -868,7 +752,7 @@ wwv_flow_imp_page.create_jet_chart_series(
 '  and PR_ID = PRATR_PR_ID and PRATR_ID = PRD_PRATR_ID and PRD_DR_ID = DR_ID',
 '  and PR_PAT_ID=REHAB_CONTEXT_PKG.getPATIENT())',
 'select',
-unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\0442\043E: '' ||ACTUAL_DOSAGE||'' \043C\0433 \0432 ''|| to_char(CONSUMED,''Day YYYY-Mon-DD'') ct'),
+unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\0442\043E: '' ||ACTUAL_DOSAGE||'' \043C\0433 \0432 ''|| to_char(CONSUMED,''Day &APP_DTFMT_DATE.'') ct'),
 'from',
 ' dr_data1, ',
 ' dates,',
@@ -881,7 +765,7 @@ unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\04
 '    and du.dru_pat_id = REHAB_CONTEXT_PKG.getPATIENT() ',
 '    and du.dru_pr_id = d.pr_id',
 '    and du.DRU_DR_ID = PRD_DR_ID',
-'    and trunc(DRU_CONSUMED,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'    and trunc(DRU_CONSUMED,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 '    group by du.dru_pr_id, du.DRU_DR_ID, trunc(DRU_CONSUMED,''dd'')',
 '    ) duu',
 'where duu.CONSUMED(+)=dates.dd and dr_data1.pr_id = duu.dru_pr_id and dr_data1.PRD_DR_ID = DRU_DR_ID',
@@ -901,12 +785,12 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_name=>'Drug 3'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'with dates as (select trunc(to_date(:P601_START,''YYYY-MON-DD'') + level - 1,''DD'') dd',
+'with dates as (select trunc(to_date(:P601_START,''&APP_DTFMT_DATE.'') + level - 1,''DD'') dd',
 'from dual ',
-'connect by level <= to_date(:P601_END,''YYYY-MON-DD'') - to_date(:P601_START,''YYYY-MON-DD'')),',
+'connect by level <= to_date(:P601_END,''&APP_DTFMT_DATE.'') - to_date(:P601_START,''&APP_DTFMT_DATE.'')),',
 'dr_data1 as ',
 '(select unique ',
-'        d.DR_NAME||'' - ''||PRR_PRESCRIPTED_BY_SHORT||'' (''||to_char(PRR_PRESCRIPTED_WHEN,''YYYY-MON-DD'')||'')'' nm,',
+'        d.DR_NAME||'' - ''||PRR_PRESCRIPTED_BY_SHORT||'' (''||to_char(PRR_PRESCRIPTED_WHEN,''&APP_DTFMT_DATE.'')||'')'' nm,',
 '        pr.pr_id, PRD_DR_ID',
 ' from REHAB_PRESCRIPTORS prr, REHAB_PRESCRIPTIONS pr, REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES, REHAB_PRESCRIPTIONS_DETAILS, REHAB_DRUGS d',
 'where pr.pr_prr_id=prr.prr_id ',
@@ -914,7 +798,7 @@ wwv_flow_imp_page.create_jet_chart_series(
 '  and PR_ID = PRATR_PR_ID and PRATR_ID = PRD_PRATR_ID and PRD_DR_ID = DR_ID',
 '  and PR_PAT_ID=REHAB_CONTEXT_PKG.getPATIENT())',
 'select',
-unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\0442\043E: '' ||ACTUAL_DOSAGE||'' \043C\0433 \0432 ''|| to_char(CONSUMED,''Day YYYY-Mon-DD'') ct'),
+unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\0442\043E: '' ||ACTUAL_DOSAGE||'' \043C\0433 \0432 ''|| to_char(CONSUMED,''Day &APP_DTFMT_DATE.'') ct'),
 'from',
 ' dr_data1, ',
 ' dates,',
@@ -927,7 +811,7 @@ unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\04
 '    and du.dru_pat_id = REHAB_CONTEXT_PKG.getPATIENT() ',
 '    and du.dru_pr_id = d.pr_id',
 '    and du.DRU_DR_ID = PRD_DR_ID',
-'    and trunc(DRU_CONSUMED,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'    and trunc(DRU_CONSUMED,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 '    group by du.dru_pr_id, du.DRU_DR_ID, trunc(DRU_CONSUMED,''dd'')',
 '    ) duu',
 'where duu.CONSUMED(+)=dates.dd and dr_data1.pr_id = duu.dru_pr_id and dr_data1.PRD_DR_ID = DRU_DR_ID',
@@ -937,8 +821,7 @@ unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\04
 ,p_items_label_column_name=>'CONSUMED'
 ,p_items_short_desc_column_name=>'CT'
 ,p_assigned_to_y2=>'off'
-,p_items_label_rendered=>true
-,p_items_label_position=>'auto'
+,p_items_label_rendered=>false
 );
 wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(78129520069343384)
@@ -948,12 +831,12 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_name=>'Drug 4'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'with dates as (select trunc(to_date(:P601_START,''YYYY-MON-DD'') + level - 1,''DD'') dd',
+'with dates as (select trunc(to_date(:P601_START,''&APP_DTFMT_DATE.'') + level - 1,''DD'') dd',
 'from dual ',
-'connect by level <= to_date(:P601_END,''YYYY-MON-DD'') - to_date(:P601_START,''YYYY-MON-DD'')),',
+'connect by level <= to_date(:P601_END,''&APP_DTFMT_DATE.'') - to_date(:P601_START,''&APP_DTFMT_DATE.'')),',
 'dr_data1 as ',
 '(select unique ',
-'        d.DR_NAME||'' - ''||PRR_PRESCRIPTED_BY_SHORT||'' (''||to_char(PRR_PRESCRIPTED_WHEN,''YYYY-MON-DD'')||'')'' nm,',
+'        d.DR_NAME||'' - ''||PRR_PRESCRIPTED_BY_SHORT||'' (''||to_char(PRR_PRESCRIPTED_WHEN,''&APP_DTFMT_DATE.'')||'')'' nm,',
 '        pr.pr_id, PRD_DR_ID',
 ' from REHAB_PRESCRIPTORS prr, REHAB_PRESCRIPTIONS pr, REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES, REHAB_PRESCRIPTIONS_DETAILS, REHAB_DRUGS d',
 'where pr.pr_prr_id=prr.prr_id ',
@@ -961,7 +844,7 @@ wwv_flow_imp_page.create_jet_chart_series(
 '  and PR_ID = PRATR_PR_ID and PRATR_ID = PRD_PRATR_ID and PRD_DR_ID = DR_ID',
 '  and PR_PAT_ID=REHAB_CONTEXT_PKG.getPATIENT())',
 'select',
-unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\0442\043E: '' ||ACTUAL_DOSAGE||'' \043C\0433 \0432 ''|| to_char(CONSUMED,''Day YYYY-Mon-DD'') ct'),
+unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\0442\043E: '' ||ACTUAL_DOSAGE||'' \043C\0433 \0432 ''|| to_char(CONSUMED,''Day &APP_DTFMT_DATE.'') ct'),
 'from',
 ' dr_data1, ',
 ' dates,',
@@ -974,7 +857,7 @@ unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\04
 '    and du.dru_pat_id = REHAB_CONTEXT_PKG.getPATIENT() ',
 '    and du.dru_pr_id = d.pr_id',
 '    and du.DRU_DR_ID = PRD_DR_ID',
-'    and trunc(DRU_CONSUMED,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'    and trunc(DRU_CONSUMED,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 '    group by du.dru_pr_id, du.DRU_DR_ID, trunc(DRU_CONSUMED,''dd'')',
 '    ) duu',
 'where duu.CONSUMED(+)=dates.dd and dr_data1.pr_id = duu.dru_pr_id and dr_data1.PRD_DR_ID = DRU_DR_ID',
@@ -984,8 +867,7 @@ unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\04
 ,p_items_label_column_name=>'CONSUMED'
 ,p_items_short_desc_column_name=>'CT'
 ,p_assigned_to_y2=>'off'
-,p_items_label_rendered=>true
-,p_items_label_position=>'auto'
+,p_items_label_rendered=>false
 );
 wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(78130179390343385)
@@ -995,12 +877,12 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_name=>'Drug 5'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'with dates as (select trunc(to_date(:P601_START,''YYYY-MON-DD'') + level - 1,''DD'') dd',
+'with dates as (select trunc(to_date(:P601_START,''&APP_DTFMT_DATE.'') + level - 1,''DD'') dd',
 'from dual ',
-'connect by level <= to_date(:P601_END,''YYYY-MON-DD'') - to_date(:P601_START,''YYYY-MON-DD'')),',
+'connect by level <= to_date(:P601_END,''&APP_DTFMT_DATE.'') - to_date(:P601_START,''&APP_DTFMT_DATE.'')),',
 'dr_data1 as ',
 '(select unique ',
-'        d.DR_NAME||'' - ''||PRR_PRESCRIPTED_BY_SHORT||'' (''||to_char(PRR_PRESCRIPTED_WHEN,''YYYY-MON-DD'')||'')'' nm,',
+'        d.DR_NAME||'' - ''||PRR_PRESCRIPTED_BY_SHORT||'' (''||to_char(PRR_PRESCRIPTED_WHEN,''&APP_DTFMT_DATE.'')||'')'' nm,',
 '        pr.pr_id, PRD_DR_ID',
 ' from REHAB_PRESCRIPTORS prr, REHAB_PRESCRIPTIONS pr, REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES, REHAB_PRESCRIPTIONS_DETAILS, REHAB_DRUGS d',
 'where pr.pr_prr_id=prr.prr_id ',
@@ -1008,7 +890,7 @@ wwv_flow_imp_page.create_jet_chart_series(
 '  and PR_ID = PRATR_PR_ID and PRATR_ID = PRD_PRATR_ID and PRD_DR_ID = DR_ID',
 '  and PR_PAT_ID=REHAB_CONTEXT_PKG.getPATIENT())',
 'select',
-unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\0442\043E: '' ||ACTUAL_DOSAGE||'' \043C\0433 \0432 ''|| to_char(CONSUMED,''Day YYYY-Mon-DD'') ct'),
+unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\0442\043E: '' ||ACTUAL_DOSAGE||'' \043C\0433 \0432 ''|| to_char(CONSUMED,''Day &APP_DTFMT_DATE.'') ct'),
 'from',
 ' dr_data1, ',
 ' dates,',
@@ -1021,7 +903,7 @@ unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\04
 '    and du.dru_pat_id = REHAB_CONTEXT_PKG.getPATIENT() ',
 '    and du.dru_pr_id = d.pr_id',
 '    and du.DRU_DR_ID = PRD_DR_ID',
-'    and trunc(DRU_CONSUMED,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'    and trunc(DRU_CONSUMED,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 '    group by du.dru_pr_id, du.DRU_DR_ID, trunc(DRU_CONSUMED,''dd'')',
 '    ) duu',
 'where duu.CONSUMED(+)=dates.dd and dr_data1.pr_id = duu.dru_pr_id and dr_data1.PRD_DR_ID = DRU_DR_ID',
@@ -1031,8 +913,7 @@ unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\04
 ,p_items_label_column_name=>'CONSUMED'
 ,p_items_short_desc_column_name=>'CT'
 ,p_assigned_to_y2=>'off'
-,p_items_label_rendered=>true
-,p_items_label_position=>'auto'
+,p_items_label_rendered=>false
 );
 wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(78130793063343387)
@@ -1042,12 +923,12 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_name=>'Drug 6'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'with dates as (select trunc(to_date(:P601_START,''YYYY-MON-DD'') + level - 1,''DD'') dd',
+'with dates as (select trunc(to_date(:P601_START,''&APP_DTFMT_DATE.'') + level - 1,''DD'') dd',
 'from dual ',
-'connect by level <= to_date(:P601_END,''YYYY-MON-DD'') - to_date(:P601_START,''YYYY-MON-DD'')),',
+'connect by level <= to_date(:P601_END,''&APP_DTFMT_DATE.'') - to_date(:P601_START,''&APP_DTFMT_DATE.'')),',
 'dr_data1 as ',
 '(select unique ',
-'        d.DR_NAME||'' - ''||PRR_PRESCRIPTED_BY_SHORT||'' (''||to_char(PRR_PRESCRIPTED_WHEN,''YYYY-MON-DD'')||'')'' nm,',
+'        d.DR_NAME||'' - ''||PRR_PRESCRIPTED_BY_SHORT||'' (''||to_char(PRR_PRESCRIPTED_WHEN,''&APP_DTFMT_DATE.'')||'')'' nm,',
 '        pr.pr_id, PRD_DR_ID',
 ' from REHAB_PRESCRIPTORS prr, REHAB_PRESCRIPTIONS pr, REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES, REHAB_PRESCRIPTIONS_DETAILS, REHAB_DRUGS d',
 'where pr.pr_prr_id=prr.prr_id ',
@@ -1055,7 +936,7 @@ wwv_flow_imp_page.create_jet_chart_series(
 '  and PR_ID = PRATR_PR_ID and PRATR_ID = PRD_PRATR_ID and PRD_DR_ID = DR_ID',
 '  and PR_PAT_ID=REHAB_CONTEXT_PKG.getPATIENT())',
 'select',
-unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\0442\043E: '' ||ACTUAL_DOSAGE||'' \043C\0433 \0432 ''|| to_char(CONSUMED,''Day YYYY-Mon-DD'') ct'),
+unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\0442\043E: '' ||ACTUAL_DOSAGE||'' \043C\0433 \0432 ''|| to_char(CONSUMED,''Day &APP_DTFMT_DATE.'') ct'),
 'from',
 ' dr_data1, ',
 ' dates,',
@@ -1068,7 +949,7 @@ unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\04
 '    and du.dru_pat_id = REHAB_CONTEXT_PKG.getPATIENT() ',
 '    and du.dru_pr_id = d.pr_id',
 '    and du.DRU_DR_ID = PRD_DR_ID',
-'    and trunc(DRU_CONSUMED,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'    and trunc(DRU_CONSUMED,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 '    group by du.dru_pr_id, du.DRU_DR_ID, trunc(DRU_CONSUMED,''dd'')',
 '    ) duu',
 'where duu.CONSUMED(+)=dates.dd and dr_data1.pr_id = duu.dru_pr_id and dr_data1.PRD_DR_ID = DRU_DR_ID',
@@ -1078,8 +959,7 @@ unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\04
 ,p_items_label_column_name=>'CONSUMED'
 ,p_items_short_desc_column_name=>'CT'
 ,p_assigned_to_y2=>'off'
-,p_items_label_rendered=>true
-,p_items_label_position=>'auto'
+,p_items_label_rendered=>false
 );
 wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(78131377804343389)
@@ -1089,12 +969,12 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_name=>'Drug 7'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'with dates as (select trunc(to_date(:P601_START,''YYYY-MON-DD'') + level - 1,''DD'') dd',
+'with dates as (select trunc(to_date(:P601_START,''&APP_DTFMT_DATE.'') + level - 1,''DD'') dd',
 'from dual ',
-'connect by level <= to_date(:P601_END,''YYYY-MON-DD'') - to_date(:P601_START,''YYYY-MON-DD'')),',
+'connect by level <= to_date(:P601_END,''&APP_DTFMT_DATE.'') - to_date(:P601_START,''&APP_DTFMT_DATE.'')),',
 'dr_data1 as ',
 '(select unique ',
-'        d.DR_NAME||'' - ''||PRR_PRESCRIPTED_BY_SHORT||'' (''||to_char(PRR_PRESCRIPTED_WHEN,''YYYY-MON-DD'')||'')'' nm,',
+'        d.DR_NAME||'' - ''||PRR_PRESCRIPTED_BY_SHORT||'' (''||to_char(PRR_PRESCRIPTED_WHEN,''&APP_DTFMT_DATE.'')||'')'' nm,',
 '        pr.pr_id, PRD_DR_ID',
 ' from REHAB_PRESCRIPTORS prr, REHAB_PRESCRIPTIONS pr, REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES, REHAB_PRESCRIPTIONS_DETAILS, REHAB_DRUGS d',
 'where pr.pr_prr_id=prr.prr_id ',
@@ -1102,7 +982,7 @@ wwv_flow_imp_page.create_jet_chart_series(
 '  and PR_ID = PRATR_PR_ID and PRATR_ID = PRD_PRATR_ID and PRD_DR_ID = DR_ID',
 '  and PR_PAT_ID=REHAB_CONTEXT_PKG.getPATIENT())',
 'select',
-unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\0442\043E: '' ||ACTUAL_DOSAGE||'' \043C\0433 \0432 ''|| to_char(CONSUMED,''Day YYYY-Mon-DD'') ct'),
+unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\0442\043E: '' ||ACTUAL_DOSAGE||'' \043C\0433 \0432 ''|| to_char(CONSUMED,''Day &APP_DTFMT_DATE.'') ct'),
 'from',
 ' dr_data1, ',
 ' dates,',
@@ -1115,7 +995,7 @@ unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\04
 '    and du.dru_pat_id = REHAB_CONTEXT_PKG.getPATIENT() ',
 '    and du.dru_pr_id = d.pr_id',
 '    and du.DRU_DR_ID = PRD_DR_ID',
-'    and trunc(DRU_CONSUMED,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'    and trunc(DRU_CONSUMED,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 '    group by du.dru_pr_id, du.DRU_DR_ID, trunc(DRU_CONSUMED,''dd'')',
 '    ) duu',
 'where duu.CONSUMED(+)=dates.dd and dr_data1.pr_id = duu.dru_pr_id and dr_data1.PRD_DR_ID = DRU_DR_ID',
@@ -1125,8 +1005,7 @@ unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\04
 ,p_items_label_column_name=>'CONSUMED'
 ,p_items_short_desc_column_name=>'CT'
 ,p_assigned_to_y2=>'off'
-,p_items_label_rendered=>true
-,p_items_label_position=>'auto'
+,p_items_label_rendered=>false
 );
 wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(78131992109343391)
@@ -1136,12 +1015,12 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_name=>'Drug 8'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'with dates as (select trunc(to_date(:P601_START,''YYYY-MON-DD'') + level - 1,''DD'') dd',
+'with dates as (select trunc(to_date(:P601_START,''&APP_DTFMT_DATE.'') + level - 1,''DD'') dd',
 'from dual ',
-'connect by level <= to_date(:P601_END,''YYYY-MON-DD'') - to_date(:P601_START,''YYYY-MON-DD'')),',
+'connect by level <= to_date(:P601_END,''&APP_DTFMT_DATE.'') - to_date(:P601_START,''&APP_DTFMT_DATE.'')),',
 'dr_data1 as ',
 '(select unique ',
-'        d.DR_NAME||'' - ''||PRR_PRESCRIPTED_BY_SHORT||'' (''||to_char(PRR_PRESCRIPTED_WHEN,''YYYY-MON-DD'')||'')'' nm,',
+'        d.DR_NAME||'' - ''||PRR_PRESCRIPTED_BY_SHORT||'' (''||to_char(PRR_PRESCRIPTED_WHEN,''&APP_DTFMT_DATE.'')||'')'' nm,',
 '        pr.pr_id, PRD_DR_ID',
 ' from REHAB_PRESCRIPTORS prr, REHAB_PRESCRIPTIONS pr, REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES, REHAB_PRESCRIPTIONS_DETAILS, REHAB_DRUGS d',
 'where pr.pr_prr_id=prr.prr_id ',
@@ -1149,7 +1028,7 @@ wwv_flow_imp_page.create_jet_chart_series(
 '  and PR_ID = PRATR_PR_ID and PRATR_ID = PRD_PRATR_ID and PRD_DR_ID = DR_ID',
 '  and PR_PAT_ID=REHAB_CONTEXT_PKG.getPATIENT())',
 'select',
-unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\0442\043E: '' ||ACTUAL_DOSAGE||'' \043C\0433 \0432 ''|| to_char(CONSUMED,''Day YYYY-Mon-DD'') ct'),
+unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\0442\043E: '' ||ACTUAL_DOSAGE||'' \043C\0433 \0432 ''|| to_char(CONSUMED,''Day &APP_DTFMT_DATE.'') ct'),
 'from',
 ' dr_data1, ',
 ' dates,',
@@ -1162,7 +1041,7 @@ unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\04
 '    and du.dru_pat_id = REHAB_CONTEXT_PKG.getPATIENT() ',
 '    and du.dru_pr_id = d.pr_id',
 '    and du.DRU_DR_ID = PRD_DR_ID',
-'    and trunc(DRU_CONSUMED,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'    and trunc(DRU_CONSUMED,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 '    group by du.dru_pr_id, du.DRU_DR_ID, trunc(DRU_CONSUMED,''dd'')',
 '    ) duu',
 'where duu.CONSUMED(+)=dates.dd and dr_data1.pr_id = duu.dru_pr_id and dr_data1.PRD_DR_ID = DRU_DR_ID',
@@ -1172,8 +1051,7 @@ unistr('  nm, dates.dd CONSUMED, 1 ACTUAL_DOSAGE, ''\0421\043F\043E\0436\0438\04
 ,p_items_label_column_name=>'CONSUMED'
 ,p_items_short_desc_column_name=>'CT'
 ,p_assigned_to_y2=>'off'
-,p_items_label_rendered=>true
-,p_items_label_position=>'auto'
+,p_items_label_rendered=>false
 );
 wwv_flow_imp_page.create_jet_chart_axis(
  p_id=>wwv_flow_imp.id(78126588954343375)
@@ -1262,7 +1140,7 @@ unistr('select ''\0422\0438\0441\043A Dia \0441\0435\0440\0435\0434\043D\0456\04
 '       MT_PRESSURE_DIA',
 ' from REHAB_MEASUREMENTS',
 'where MT_PRESSURE_DIA is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
-'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 '--and pressure_lr=''R''',
 'order by MT_TAKEN'))
 ,p_series_type=>'boxPlot'
@@ -1292,7 +1170,7 @@ unistr('select ''\0422\0438\0441\043A Dia \043B\0456\0432\0430'' nm,'),
 ' from REHAB_MEASUREMENTS',
 'where MT_PRESSURE_DIA is not null and',
 'MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
-'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'and MT_PRESSURE_LR=''L''',
 'order by MT_TAKEN'))
 ,p_series_type=>'boxPlot'
@@ -1321,7 +1199,7 @@ unistr('select ''\0422\0438\0441\043A Dia \043F\0440\0430\0432\0430'' nm,'),
 '       MT_PRESSURE_DIA',
 ' from REHAB_MEASUREMENTS',
 'where MT_PRESSURE_DIA is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
-'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'and MT_PRESSURE_LR=''R''',
 'order by MT_TAKEN'))
 ,p_series_type=>'boxPlot'
@@ -1350,7 +1228,7 @@ unistr('select ''\041F\0443\043B\044C\0441'' nm,'),
 '       MT_PULSE',
 ' from REHAB_MEASUREMENTS',
 'where MT_PULSE is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
-'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'order by MT_TAKEN'))
 ,p_series_type=>'boxPlot'
 ,p_series_name_column_name=>'NM'
@@ -1378,7 +1256,7 @@ unistr('select ''\0422\0438\0441\043A SYS \0441\0435\0440\0435\0434\043D\0456\04
 '       MT_PRESSURE_SYS',
 ' from REHAB_MEASUREMENTS',
 'where MT_PRESSURE_SYS is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
-'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 '--and pressure_lr=''R''',
 'order by MT_TAKEN'))
 ,p_series_type=>'boxPlot'
@@ -1407,7 +1285,7 @@ unistr('select ''\0422\0438\0441\043A SYS \043B\0456\0432\0430'' nm,'),
 '       MT_PRESSURE_SYS',
 ' from REHAB_MEASUREMENTS',
 'where MT_PRESSURE_SYS is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
-'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'and MT_PRESSURE_LR=''L''',
 'order by MT_TAKEN'))
 ,p_series_type=>'boxPlot'
@@ -1436,7 +1314,7 @@ unistr('select ''\0422\0438\0441\043A SYS \043F\0440\0430\0432\0430'' nm,'),
 '       MT_PRESSURE_SYS',
 ' from REHAB_MEASUREMENTS',
 'where MT_PRESSURE_SYS is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
-'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'and MT_PRESSURE_LR=''R''',
 'order by MT_TAKEN'))
 ,p_series_type=>'boxPlot'
@@ -1560,96 +1438,6 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_time_axis_type=>'enabled'
 );
 wwv_flow_imp_page.create_jet_chart_series(
- p_id=>wwv_flow_imp.id(78115551305343344)
-,p_chart_id=>wwv_flow_imp.id(78113803738343340)
-,p_static_id=>'pulse-avg'
-,p_seq=>80
-,p_name=>'Pulse AVG'
-,p_data_source_type=>'SQL'
-,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-unistr('select ''\0421\0435\0440\0435\0434\043D\0456\0439 \043F\0443\043B\044C\0441'' nm,'),
-'       trunc(TR_START,''dd'') TR_START, ',
-'       avg(TR_PULSE_AVG) TR_PULSE_AVG',
-' from REHAB_TRAININGS',
-'where TR_PULSE_AVG is not null and TR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(TR_START,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
-'group by trunc(TR_START,''dd'')',
-'order by TR_START'))
-,p_series_name_column_name=>'NM'
-,p_items_value_column_name=>'TR_PULSE_AVG'
-,p_items_label_column_name=>'TR_START'
-,p_line_style=>'solid'
-,p_line_type=>'auto'
-,p_marker_rendered=>'on'
-,p_marker_shape=>'circle'
-,p_assigned_to_y2=>'off'
-,p_items_label_rendered=>false
-,p_required_patch=>wwv_flow_imp.id(16869691178504232)
-,p_display_when_cond_type=>'EXPRESSION'
-,p_display_when_condition=>':P601_TRAININGS like ''%PLSAVG%'''
-,p_display_when_condition2=>'PLSQL'
-);
-wwv_flow_imp_page.create_jet_chart_series(
- p_id=>wwv_flow_imp.id(78116172531343346)
-,p_chart_id=>wwv_flow_imp.id(78113803738343340)
-,p_static_id=>'pulse-max'
-,p_seq=>70
-,p_name=>'Pulse MAX'
-,p_data_source_type=>'SQL'
-,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-unistr('select ''\041C\0430\043A\0441\0438\043C\0430\043B\044C\043D\0438\0439 \043F\0443\043B\044C\0441'' nm,'),
-'       trunc(TR_START,''dd'') TR_START, ',
-'       avg(TR_PULSE_MAX) TR_PULSE_MAX',
-' from REHAB_TRAININGS',
-'where TR_PULSE_MAX is not null and TR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(TR_START,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
-'group by trunc(TR_START,''dd'')',
-'order by TR_START'))
-,p_series_name_column_name=>'NM'
-,p_items_value_column_name=>'TR_PULSE_MAX'
-,p_items_label_column_name=>'TR_START'
-,p_line_style=>'solid'
-,p_line_type=>'auto'
-,p_marker_rendered=>'on'
-,p_marker_shape=>'diamond'
-,p_assigned_to_y2=>'off'
-,p_items_label_rendered=>false
-,p_required_patch=>wwv_flow_imp.id(16869691178504232)
-,p_display_when_cond_type=>'EXPRESSION'
-,p_display_when_condition=>':P601_TRAININGS like ''%PLSMAX%'''
-,p_display_when_condition2=>'PLSQL'
-);
-wwv_flow_imp_page.create_jet_chart_series(
- p_id=>wwv_flow_imp.id(78116762230343348)
-,p_chart_id=>wwv_flow_imp.id(78113803738343340)
-,p_static_id=>'pulse-min'
-,p_seq=>60
-,p_name=>'Pulse MIN'
-,p_data_source_type=>'SQL'
-,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-unistr('select ''\041C\0456\043D\0456\043C\0430\043B\044C\043D\0438\0439 \043F\0443\043B\044C\0441'' nm,'),
-'       trunc(TR_START,''dd'') TR_START, ',
-'       avg(TR_PULSE_MIN) TR_PULSE_MIN',
-' from REHAB_TRAININGS',
-'where TR_PULSE_MIN is not null and TR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(TR_START,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
-'group by trunc(TR_START,''dd'')',
-'order by TR_START'))
-,p_series_name_column_name=>'NM'
-,p_items_value_column_name=>'TR_PULSE_MIN'
-,p_items_label_column_name=>'TR_START'
-,p_line_style=>'solid'
-,p_line_type=>'auto'
-,p_marker_rendered=>'on'
-,p_marker_shape=>'square'
-,p_assigned_to_y2=>'off'
-,p_items_label_rendered=>false
-,p_required_patch=>wwv_flow_imp.id(16869691178504232)
-,p_display_when_cond_type=>'EXPRESSION'
-,p_display_when_condition=>':P601_TRAININGS like ''%PLSMIN%'''
-,p_display_when_condition2=>'PLSQL'
-);
-wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(78117369138343350)
 ,p_chart_id=>wwv_flow_imp.id(78113803738343340)
 ,p_static_id=>'totsteps'
@@ -1660,10 +1448,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 unistr('select ''\041A\0440\043E\043A\0438 \0437\0430 \0434\043E\0431\0443'' nm,'),
 '       trunc(WL_TAKEN,''dd'') WL_TAKEN, ',
 '       sum(WL_STEPS) WL_STEPS,',
-unistr('       ''\041A\0440\043E\043A\0438 \0437\0430 \0434\043E\0431\0443: '' ||round(sum(WL_STEPS))||'' ''|| to_char(trunc(WL_TAKEN,''dd''),''Day YYYY-Mon-DD'') ct'),
+unistr('       ''\041A\0440\043E\043A\0438 \0437\0430 \0434\043E\0431\0443: '' ||round(sum(WL_STEPS))||'' ''|| to_char(trunc(WL_TAKEN,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
 ' from REHAB_WATCH_LOGS',
 'where WL_STEPS is not null and WL_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(WL_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(WL_TAKEN,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'group by trunc(WL_TAKEN,''dd'')',
 'order by WL_TAKEN'))
 ,p_series_name_column_name=>'NM'
@@ -1680,36 +1468,6 @@ unistr('       ''\041A\0440\043E\043A\0438 \0437\0430 \0434\043E\0431\0443: '' |
 ,p_display_when_condition2=>'PLSQL'
 );
 wwv_flow_imp_page.create_jet_chart_series(
- p_id=>wwv_flow_imp.id(78117944572343352)
-,p_chart_id=>wwv_flow_imp.id(78113803738343340)
-,p_static_id=>'training-distance'
-,p_seq=>50
-,p_name=>'Training Distance 1'
-,p_data_source_type=>'SQL'
-,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-unistr('select ''\0414\0438\0441\0442\0430\043D\0446\0456\044F \043F\043E \0434\0435\0432\0430\0439\0441\0443 1'' nm,'),
-'       trunc(TR_START,''dd'') TR_START, ',
-'       sum(TR_DISTANCE_LENGTH) TR_DISTANCE_LENGTH',
-' from REHAB_TRAININGS',
-'where TR_DISTANCE_LENGTH is not null and TR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(TR_START,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
-'group by trunc(TR_START,''dd'')',
-'order by TR_START'))
-,p_series_name_column_name=>'NM'
-,p_items_value_column_name=>'TR_DISTANCE_LENGTH'
-,p_items_label_column_name=>'TR_START'
-,p_line_style=>'solid'
-,p_line_type=>'auto'
-,p_marker_rendered=>'on'
-,p_marker_shape=>'plus'
-,p_assigned_to_y2=>'off'
-,p_items_label_rendered=>false
-,p_required_patch=>wwv_flow_imp.id(16869691178504232)
-,p_display_when_cond_type=>'EXPRESSION'
-,p_display_when_condition=>':P601_TRAININGS like ''%DIST1%'''
-,p_display_when_condition2=>'PLSQL'
-);
-wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(78118523584343353)
 ,p_chart_id=>wwv_flow_imp.id(78113803738343340)
 ,p_static_id=>'training-steps'
@@ -1720,10 +1478,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 unistr('select ''\0422\0440\0435\043D\0443\0432\0430\043B\044C\043D\0456 \043A\0440\043E\043A\0438'' nm,'),
 '       trunc(TR_START,''dd'') TR_START, ',
 '       sum(TR_STEPS) TR_STEPS,',
-unistr('       ''\0422\0440\0435\043D\0443\0432\0430\043B\044C\043D\0456 \043A\0440\043E\043A\0438: '' ||round(sum(TR_STEPS))||'' ''|| to_char(trunc(TR_START,''dd''),''Day YYYY-Mon-DD'') ct'),
+unistr('       ''\0422\0440\0435\043D\0443\0432\0430\043B\044C\043D\0456 \043A\0440\043E\043A\0438: '' ||round(sum(TR_STEPS))||'' ''|| to_char(trunc(TR_START,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
 ' from REHAB_TRAININGS',
 'where TR_STEPS is not null and TR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(TR_START,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(TR_START,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'group by trunc(TR_START,''dd'')',
 'order by TR_START'))
 ,p_series_name_column_name=>'NM'
@@ -1824,10 +1582,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 unistr('select ''\041A\0438\0441\0435\043D\044C'' nm,'),
 '       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
 '       avg(MT_OXIGENATION) MT_OXIGENATION,',
-unistr('       ''\041A\0438\0441\0435\043D\044C: '' ||round(avg(MT_OXIGENATION),3)||'' ''|| to_char(trunc(MT_TAKEN,''dd''),''Day YYYY-Mon-DD'') ct'),
+unistr('       ''\041A\0438\0441\0435\043D\044C: '' ||round(avg(MT_OXIGENATION),3)||'' ''|| to_char(trunc(MT_TAKEN,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
 ' from REHAB_MEASUREMENTS',
 'where MT_OXIGENATION is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'group by trunc(MT_TAKEN,''dd'')',
 'order by MT_TAKEN'))
 ,p_series_name_column_name=>'NM'
@@ -1853,10 +1611,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 unistr('select ''\0426\0443\043A\043E\0440'' nm,'),
 '       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
 '       avg(MT_SUGAR) MT_SUGAR,',
-unistr('       ''\0426\0443\043A\043E\0440: '' ||round(avg(MT_SUGAR),3)||'' ''|| to_char(trunc(MT_TAKEN,''dd''),''Day YYYY-Mon-DD'') ct'),
+unistr('       ''\0426\0443\043A\043E\0440: '' ||round(avg(MT_SUGAR),3)||'' ''|| to_char(trunc(MT_TAKEN,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
 ' from REHAB_MEASUREMENTS',
 'where MT_SUGAR is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'group by trunc(MT_TAKEN,''dd'')',
 'order by MT_TAKEN'))
 ,p_series_name_column_name=>'NM'
@@ -1883,10 +1641,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 unistr('select ''\0422\0435\043C\043F\0435\0440\0430\0442\0443\0440\0430'' nm,'),
 '       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
 '       avg(MT_TEMPERATURE) MT_TEMPERATURE,',
-unistr('       ''\0422\0435\043C\043F\0435\0440\0430\0442\0443\0440\0430: '' ||round(avg(MT_TEMPERATURE),3)||'' ''|| to_char(trunc(MT_TAKEN,''dd''),''Day YYYY-Mon-DD'') ct'),
+unistr('       ''\0422\0435\043C\043F\0435\0440\0430\0442\0443\0440\0430: '' ||round(avg(MT_TEMPERATURE),3)||'' ''|| to_char(trunc(MT_TAKEN,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
 ' from REHAB_MEASUREMENTS',
 'where MT_TEMPERATURE is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'group by trunc(MT_TAKEN,''dd'')',
 'order by MT_TAKEN'))
 ,p_series_name_column_name=>'NM'
@@ -1912,10 +1670,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 unistr('select ''\0414\0438\0441\0442\0430\043D\0446\0456\044F \043F\043E \0434\0435\0432\0430\0439\0441\0443 1, \043A\043C'' nm,'),
 '       trunc(TR_START,''dd'') TR_START, ',
 '       sum(TR_DISTANCE_LENGTH) TR_DISTANCE_LENGTH,',
-unistr('       ''\0414\0438\0441\0442\0430\043D\0446\0456\044F \043F\043E \0434\0435\0432\0430\0439\0441\0443 1, \043A\043C: '' ||round(sum(TR_DISTANCE_LENGTH),3)||'' ''|| to_char(trunc(TR_START,''dd''),''Day YYYY-Mon-DD'') ct'),
+unistr('       ''\0414\0438\0441\0442\0430\043D\0446\0456\044F \043F\043E \0434\0435\0432\0430\0439\0441\0443 1, \043A\043C: '' ||round(sum(TR_DISTANCE_LENGTH),3)||'' ''|| to_char(trunc(TR_START,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
 ' from REHAB_TRAININGS',
 'where TR_DISTANCE_LENGTH is not null and TR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(TR_START,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(TR_START,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'group by trunc(TR_START,''dd'')',
 'order by TR_START'))
 ,p_series_name_column_name=>'NM'
@@ -1942,10 +1700,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 unistr('select ''\0414\0438\0441\0442\0430\043D\0446\0456\044F \043F\043E \0434\0435\0432\0430\0439\0441\0443 2, \043A\043C'' nm,'),
 '       trunc(TR_START,''dd'') TR_START, ',
 '       sum(TR_DEV2_DISTANCE) TR_DEV2_DISTANCE,',
-unistr('       ''\0414\0438\0441\0442\0430\043D\0446\0456\044F \043F\043E \0434\0435\0432\0430\0439\0441\0443 2, \043A\043C: '' ||round(sum(TR_DEV2_DISTANCE),3)||'' ''|| to_char(trunc(TR_START,''dd''),''Day YYYY-Mon-DD'') ct'),
+unistr('       ''\0414\0438\0441\0442\0430\043D\0446\0456\044F \043F\043E \0434\0435\0432\0430\0439\0441\0443 2, \043A\043C: '' ||round(sum(TR_DEV2_DISTANCE),3)||'' ''|| to_char(trunc(TR_START,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
 ' from REHAB_TRAININGS',
 'where TR_DEV2_DISTANCE is not null and TR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(TR_START,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(TR_START,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'group by trunc(TR_START,''dd'')',
 'order by TR_START'))
 ,p_series_name_column_name=>'NM'
@@ -1972,10 +1730,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 unistr('select ''\0420\0435\0430\043B\044C\043D\0430 \0434\0438\0441\0442\0430\043D\0446\0456\044F, \043A\043C'' nm,'),
 '       trunc(TR_START,''dd'') TR_START, ',
 '       sum(TR_REAL_DISTANCE) TR_REAL_DISTANCE,',
-unistr('       ''\0420\0435\0430\043B\044C\043D\0430 \0434\0438\0441\0442\0430\043D\0446\0456\044F, \043A\043C: '' ||round(sum(TR_REAL_DISTANCE),3)||'' ''|| to_char(trunc(TR_START,''dd''),''Day YYYY-Mon-DD'') ct'),
+unistr('       ''\0420\0435\0430\043B\044C\043D\0430 \0434\0438\0441\0442\0430\043D\0446\0456\044F, \043A\043C: '' ||round(sum(TR_REAL_DISTANCE),3)||'' ''|| to_char(trunc(TR_START,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
 ' from REHAB_TRAININGS',
 'where TR_REAL_DISTANCE is not null and TR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(TR_START,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(TR_START,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'group by trunc(TR_START,''dd'')',
 'order by TR_START'))
 ,p_series_name_column_name=>'NM'
@@ -2002,10 +1760,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 unistr('select ''\0420\0435\0430\043B\044C\043D\0430 \0448\0432\0438\0434\043A\0456\0441\0442\044C, \043A\043C/\0433\043E\0434'' nm,'),
 '       trunc(TR_START,''dd'') TR_START, ',
 '       avg(TR_REAL_SPEED) TR_REAL_SPEED,',
-unistr('       ''\0420\0435\0430\043B\044C\043D\0430 \0448\0432\0438\0434\043A\0456\0441\0442\044C, \043A\043C/\0433\043E\0434: '' ||round(avg(TR_REAL_SPEED),3)||'' ''|| to_char(trunc(TR_START,''dd''),''Day YYYY-Mon-DD'') ct'),
+unistr('       ''\0420\0435\0430\043B\044C\043D\0430 \0448\0432\0438\0434\043A\0456\0441\0442\044C, \043A\043C/\0433\043E\0434: '' ||round(avg(TR_REAL_SPEED),3)||'' ''|| to_char(trunc(TR_START,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
 ' from REHAB_TRAININGS',
 'where TR_REAL_SPEED is not null and TR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(TR_START,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(TR_START,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'group by trunc(TR_START,''dd'')',
 'order by TR_START'))
 ,p_series_name_column_name=>'NM'
@@ -2032,10 +1790,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 unistr('select ''\0420\0435\0430\043B\044C\043D\0430 \0434\043E\0432\0436\0438\043D\0430 \043A\0440\043E\043A\0443, \043C'' nm,'),
 '       trunc(TR_START,''dd'') TR_START, ',
 '       avg(TR_REAL_STEP_LENGTH) TR_REAL_STEP_LENGTH,',
-unistr('       ''\0420\0435\0430\043B\044C\043D\0430 \0434\043E\0432\0436\0438\043D\0430 \043A\0440\043E\043A\0443, \043C: '' ||round(avg(TR_REAL_STEP_LENGTH),3)||'' ''|| to_char(trunc(TR_START,''dd''),''Day YYYY-Mon-DD'') ct'),
+unistr('       ''\0420\0435\0430\043B\044C\043D\0430 \0434\043E\0432\0436\0438\043D\0430 \043A\0440\043E\043A\0443, \043C: '' ||round(avg(TR_REAL_STEP_LENGTH),3)||'' ''|| to_char(trunc(TR_START,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
 ' from REHAB_TRAININGS',
 'where TR_REAL_STEP_LENGTH is not null and TR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(TR_START,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(TR_START,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'group by trunc(TR_START,''dd'')',
 'order by TR_START'))
 ,p_series_name_column_name=>'NM'
@@ -2062,10 +1820,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 unistr('select ''\0412\0430\0433\0430'' nm,'),
 '       trunc(MT_TAKEN,''dd'') MT_TAKEN, ',
 '       avg(MT_WEIGHT) MT_WEIGHT,',
-unistr('       ''\0412\0430\0433\0430: '' ||round(avg(MT_WEIGHT),3)||'' ''|| to_char(trunc(MT_TAKEN,''dd''),''Day YYYY-Mon-DD'') ct'),
+unistr('       ''\0412\0430\0433\0430: '' ||round(avg(MT_WEIGHT),3)||'' ''|| to_char(trunc(MT_TAKEN,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
 ' from REHAB_MEASUREMENTS',
 'where MT_WEIGHT is not null and MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
-'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''YYYY-MON-DD'') and to_date(:P601_END,''YYYY-MON-DD'')',
+'and trunc(MT_TAKEN,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
 'group by trunc(MT_TAKEN,''dd'')',
 'order by MT_TAKEN'))
 ,p_series_name_column_name=>'NM'
@@ -2255,7 +2013,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_sequence=>20
 ,p_item_plug_id=>wwv_flow_imp.id(323518396164394284)
 ,p_prompt=>unistr('\0417\0430\0432\0435\0440\0448\0435\043D\043D\044F \043F\0435\0440\0456\043E\0434\0443')
-,p_format_mask=>'YYYY-MON-DD'
+,p_format_mask=>'&APP_DTFMT_DATE.'
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_DATE_PICKER_APEX'
 ,p_cSize=>30
@@ -2320,7 +2078,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_sequence=>10
 ,p_item_plug_id=>wwv_flow_imp.id(323518396164394284)
 ,p_prompt=>unistr('\041F\043E\0447\0430\0442\043E\043A \043F\0435\0440\0456\043E\0434\0443')
-,p_format_mask=>'YYYY-MON-DD'
+,p_format_mask=>'&APP_DTFMT_DATE.'
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_DATE_PICKER_APEX'
 ,p_cSize=>30
