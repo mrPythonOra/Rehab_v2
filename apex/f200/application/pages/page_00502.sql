@@ -26,7 +26,8 @@ wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(77159903180443870)
 ,p_plug_name=>'Allergic'
 ,p_static_id=>'allergic'
-,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
+,p_title=>unistr('\0424\0430\043A\0442\0438')
+,p_region_template_options=>'#DEFAULT#:i-h480:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
 ,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'

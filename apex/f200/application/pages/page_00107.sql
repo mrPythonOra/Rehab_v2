@@ -13,7 +13,7 @@ wwv_flow_imp.component_begin (
 );
 wwv_flow_imp_page.create_page(
  p_id=>107
-,p_name=>'Working Substances'
+,p_name=>'Working Substance'
 ,p_alias=>'WSUBST'
 ,p_step_title=>unistr('\0414\0456\044E\0447\0430 \0440\0435\0447\043E\0432\0438\043D\0430')
 ,p_autocomplete_on_off=>'OFF'
@@ -140,13 +140,12 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_sequence=>40
 ,p_item_plug_id=>wwv_flow_imp.id(77230547103811977)
 ,p_item_source_plug_id=>wwv_flow_imp.id(77230547103811977)
-,p_prompt=>'Ws Descr'
+,p_prompt=>unistr('\041E\043F\0438\0441')
 ,p_source=>'WS_DESCR'
 ,p_display_as=>'NATIVE_TEXTAREA'
 ,p_cSize=>60
 ,p_cMaxlength=>4000
 ,p_cHeight=>4
-,p_label_alignment=>'RIGHT'
 ,p_field_template=>1610598304472262251
 ,p_item_template_options=>'#DEFAULT#'
 ,p_is_persistent=>'N'
@@ -178,13 +177,12 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_sequence=>30
 ,p_item_plug_id=>wwv_flow_imp.id(77230547103811977)
 ,p_item_source_plug_id=>wwv_flow_imp.id(77230547103811977)
-,p_prompt=>'Ws Name'
+,p_prompt=>unistr('\041D\0430\0437\0432\0430 \0440\0435\0447\043E\0432\0438\043D\0438')
 ,p_source=>'WS_NAME'
 ,p_display_as=>'NATIVE_TEXTAREA'
 ,p_cSize=>60
 ,p_cMaxlength=>512
 ,p_cHeight=>4
-,p_label_alignment=>'RIGHT'
 ,p_field_template=>1610598304472262251
 ,p_item_template_options=>'#DEFAULT#'
 ,p_is_persistent=>'N'
@@ -201,12 +199,11 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_sequence=>20
 ,p_item_plug_id=>wwv_flow_imp.id(77230547103811977)
 ,p_item_source_plug_id=>wwv_flow_imp.id(77230547103811977)
-,p_prompt=>'Ws Te Id'
+,p_prompt=>unistr('\041E\0440\0435\043D\0434\0430\0440')
 ,p_source=>'WS_TE_ID'
 ,p_display_as=>'NATIVE_SELECT_LIST'
 ,p_named_lov=>'REHAB_TENANTS.TE_NAME'
 ,p_lov_display_null=>'YES'
-,p_label_alignment=>'RIGHT'
 ,p_field_template=>1610598304472262251
 ,p_item_template_options=>'#DEFAULT#'
 ,p_is_persistent=>'N'

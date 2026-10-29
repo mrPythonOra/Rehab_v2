@@ -25,3 +25,9 @@ select * from user_errors order by 1,2,3,4,5;
 @../database/data/REHAB_CONSUME_TIME_RANGES_DATA_TABLE.sql
 
 commit;
+
+BEGIN
+  REHAB_LOGGING_PKG.setup_cleanup_log;
+END;
+/
+

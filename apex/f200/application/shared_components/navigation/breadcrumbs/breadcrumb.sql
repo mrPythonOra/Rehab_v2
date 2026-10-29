@@ -26,17 +26,17 @@ wwv_flow_imp_shared.create_menu_option(
 wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(77178666191444193)
 ,p_parent_id=>wwv_flow_imp.id(77177318248444188)
-,p_short_name=>'Allergic'
+,p_short_name=>unistr('\0424\0430\043A\0442')
 ,p_static_id=>'allergic'
-,p_link=>'f?p=&APP_ID.:502:&APP_SESSION.::&DEBUG.:::'
+,p_link=>'f?p=&APP_ID.:502:&SESSION.::&DEBUG.:::'
 ,p_page_id=>502
 );
 wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(77177318248444188)
 ,p_parent_id=>wwv_flow_imp.id(16870554490504254)
-,p_short_name=>'Allergics'
+,p_short_name=>unistr('\0410\043B\0435\0440\0433\0456\0457')
 ,p_static_id=>'allergics'
-,p_link=>'f?p=&APP_ID.:501:&APP_SESSION.::&DEBUG.:::'
+,p_link=>'f?p=&APP_ID.:501:&SESSION.::&DEBUG.:::'
 ,p_page_id=>501
 );
 wwv_flow_imp_shared.create_menu_option(
@@ -199,9 +199,9 @@ wwv_flow_imp_shared.create_menu_option(
 wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(77226105570797929)
 ,p_parent_id=>wwv_flow_imp.id(17057737346505548)
-,p_short_name=>'REHAB_LOG'
+,p_short_name=>unistr('\041F\0435\0440\0435\0433\043B\044F\0434 \043B\043E\0433\0443')
 ,p_static_id=>'rehab-log'
-,p_link=>'f?p=&APP_ID.:704:&APP_SESSION.::&DEBUG.:::'
+,p_link=>'f?p=&APP_ID.:704:&SESSION.::&DEBUG.:::'
 ,p_page_id=>704
 );
 wwv_flow_imp_shared.create_menu_option(

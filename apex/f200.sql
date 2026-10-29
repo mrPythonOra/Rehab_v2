@@ -33,15 +33,15 @@ prompt APPLICATION 200 - Rehabilitation 2.0
 -- Application Export:
 --   Application:     200
 --   Name:            Rehabilitation 2.0
---   Date and Time:   20:09 Wednesday October 28, 2026
+--   Date and Time:   15:41 Thursday October 29, 2026
 --   Exported By:     REHAB_V2
 --   Flashback:       0
 --   Export Type:     Application Export
 --     Pages:                     67
---       Items:                  276
+--       Items:                  278
 --       Computations:             2
 --       Validations:             26
---       Processes:              155
+--       Processes:              157
 --       Regions:                203
 --       Buttons:                177
 --       Dynamic Actions:         45
@@ -140,7 +140,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_06=>'YYYY-MM-DD HH24:MI:SS TZR'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>2461338150255
-,p_version_scn=>'50681401408663'
+,p_version_scn=>'50681573001595'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -725,7 +725,7 @@ wwv_flow_imp_shared.create_list(
  p_id=>wwv_flow_imp.id(16870838765504258)
 ,p_name=>'Navigation Menu'
 ,p_static_id=>'navigation-menu'
-,p_version_scn=>'SH256:sp-2NggYZsr7AEs8hDG-5GpCW536E26EVRIQ0_wG-24'
+,p_version_scn=>'SH256:XBbk4QVkiLgpeOQw0r-fllfeGAzisCQgYOeUT5gcO88'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(17056773995505539)
@@ -866,10 +866,10 @@ wwv_flow_imp_shared.create_list_item(
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(77225119930797921)
 ,p_list_item_display_sequence=>320
-,p_list_item_link_text=>'REHAB_LOG'
+,p_list_item_link_text=>unistr('\041F\0435\0440\0435\0433\043B\044F\0434 \043B\043E\0433\0443')
 ,p_static_id=>'rehab-log'
-,p_list_item_link_target=>'f?p=&APP_ID.:704:&APP_SESSION.::&DEBUG.:::'
-,p_list_item_icon=>'fa-list-alt'
+,p_list_item_link_target=>'f?p=&APP_ID.:704:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-accordion'
 ,p_parent_list_item_id=>wwv_flow_imp.id(17056773995505539)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'704'
@@ -29805,21 +29805,25 @@ wwv_flow_imp_shared.create_list_of_values(
 ,p_lov_name=>'REHAB_PRESCRIPTIONS'
 ,p_static_id=>'rehab-prescriptions'
 ,p_lov_query=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select to_char(PR_PLANNED_START,:APP_DTFMT_DATE) || '' - '' || ',
+'select case when PR_WS_ID is not null then (select WS_NAME from REHAB_WORKING_SUBSTANCE where WS_ID = PR_WS_ID)',
+'            when PR_DR_ID is not null then (select DR_NAME||''(''||DR_TYPE_SHORT||'')'' from REHAB_DRUGS where DR_ID = PR_DR_ID)',
+'            else null end || ''; '' ||',
+'       PRR_PRESCRIPTED_BY_SHORT || '' ('' ||to_char(PRR_PRESCRIPTED_WHEN, :APP_DTFMT_DATE)|| '') ''||',
+'       to_char(PR_PLANNED_START,:APP_DTFMT_DATE) || '' - '' || ',
 '       case when PR_PLANNED_END is not null ',
 '          then to_char(PR_PLANNED_END,:APP_DTFMT_DATE)',
 unistr('          else ''\0411\0435\0437 \043E\0431\043C\0435\0436\0435\043D\043D\044F \0434\0430\0442\0438'' '),
 '       end d,',
 '       PR_ID r',
-'from REHAB_PRESCRIPTIONS'))
+'from REHAB_PRESCRIPTIONS, REHAB_PRESCRIPTORS',
+'where PRR_ID = PR_PRR_ID and PR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
+'order by PR_PLANNED_START'))
 ,p_source_type=>'SQL'
 ,p_location=>'LOCAL'
 ,p_query_owner=>'ADMIN'
 ,p_return_column_name=>'R'
 ,p_display_column_name=>'D'
-,p_default_sort_column_name=>'D'
-,p_default_sort_direction=>'ASC'
-,p_version_scn=>'SH256:jsh56S2tWz5gfaxp04FFZHDRfjCWS7ZTN45v_VXXF4E'
+,p_version_scn=>'SH256:uEjWSjgcX0WvDu-xZ9EdAtk7oU3k7otiwasRguAEkeE'
 );
 end;
 /
@@ -30047,17 +30051,17 @@ wwv_flow_imp_shared.create_menu_option(
 wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(77178666191444193)
 ,p_parent_id=>wwv_flow_imp.id(77177318248444188)
-,p_short_name=>'Allergic'
+,p_short_name=>unistr('\0424\0430\043A\0442')
 ,p_static_id=>'allergic'
-,p_link=>'f?p=&APP_ID.:502:&APP_SESSION.::&DEBUG.:::'
+,p_link=>'f?p=&APP_ID.:502:&SESSION.::&DEBUG.:::'
 ,p_page_id=>502
 );
 wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(77177318248444188)
 ,p_parent_id=>wwv_flow_imp.id(16870554490504254)
-,p_short_name=>'Allergics'
+,p_short_name=>unistr('\0410\043B\0435\0440\0433\0456\0457')
 ,p_static_id=>'allergics'
-,p_link=>'f?p=&APP_ID.:501:&APP_SESSION.::&DEBUG.:::'
+,p_link=>'f?p=&APP_ID.:501:&SESSION.::&DEBUG.:::'
 ,p_page_id=>501
 );
 wwv_flow_imp_shared.create_menu_option(
@@ -30220,9 +30224,9 @@ wwv_flow_imp_shared.create_menu_option(
 wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(77226105570797929)
 ,p_parent_id=>wwv_flow_imp.id(17057737346505548)
-,p_short_name=>'REHAB_LOG'
+,p_short_name=>unistr('\041F\0435\0440\0435\0433\043B\044F\0434 \043B\043E\0433\0443')
 ,p_static_id=>'rehab-log'
-,p_link=>'f?p=&APP_ID.:704:&APP_SESSION.::&DEBUG.:::'
+,p_link=>'f?p=&APP_ID.:704:&SESSION.::&DEBUG.:::'
 ,p_page_id=>704
 );
 wwv_flow_imp_shared.create_menu_option(
@@ -34554,6 +34558,8 @@ wwv_flow_imp_page.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(17092736246142129)
 ,p_protection_level=>'C'
+,p_deep_linking=>'Y'
+,p_rejoin_existing_sessions=>'Y'
 ,p_page_component_map=>'23'
 );
 wwv_flow_imp_page.create_page_plug(
@@ -35973,7 +35979,7 @@ prompt --application/pages/page_00107
 begin
 wwv_flow_imp_page.create_page(
  p_id=>107
-,p_name=>'Working Substances'
+,p_name=>'Working Substance'
 ,p_alias=>'WSUBST'
 ,p_step_title=>unistr('\0414\0456\044E\0447\0430 \0440\0435\0447\043E\0432\0438\043D\0430')
 ,p_autocomplete_on_off=>'OFF'
@@ -36100,13 +36106,12 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_sequence=>40
 ,p_item_plug_id=>wwv_flow_imp.id(77230547103811977)
 ,p_item_source_plug_id=>wwv_flow_imp.id(77230547103811977)
-,p_prompt=>'Ws Descr'
+,p_prompt=>unistr('\041E\043F\0438\0441')
 ,p_source=>'WS_DESCR'
 ,p_display_as=>'NATIVE_TEXTAREA'
 ,p_cSize=>60
 ,p_cMaxlength=>4000
 ,p_cHeight=>4
-,p_label_alignment=>'RIGHT'
 ,p_field_template=>1610598304472262251
 ,p_item_template_options=>'#DEFAULT#'
 ,p_is_persistent=>'N'
@@ -36138,13 +36143,12 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_sequence=>30
 ,p_item_plug_id=>wwv_flow_imp.id(77230547103811977)
 ,p_item_source_plug_id=>wwv_flow_imp.id(77230547103811977)
-,p_prompt=>'Ws Name'
+,p_prompt=>unistr('\041D\0430\0437\0432\0430 \0440\0435\0447\043E\0432\0438\043D\0438')
 ,p_source=>'WS_NAME'
 ,p_display_as=>'NATIVE_TEXTAREA'
 ,p_cSize=>60
 ,p_cMaxlength=>512
 ,p_cHeight=>4
-,p_label_alignment=>'RIGHT'
 ,p_field_template=>1610598304472262251
 ,p_item_template_options=>'#DEFAULT#'
 ,p_is_persistent=>'N'
@@ -36161,12 +36165,11 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_sequence=>20
 ,p_item_plug_id=>wwv_flow_imp.id(77230547103811977)
 ,p_item_source_plug_id=>wwv_flow_imp.id(77230547103811977)
-,p_prompt=>'Ws Te Id'
+,p_prompt=>unistr('\041E\0440\0435\043D\0434\0430\0440')
 ,p_source=>'WS_TE_ID'
 ,p_display_as=>'NATIVE_SELECT_LIST'
 ,p_named_lov=>'REHAB_TENANTS.TE_NAME'
 ,p_lov_display_null=>'YES'
-,p_label_alignment=>'RIGHT'
 ,p_field_template=>1610598304472262251
 ,p_item_template_options=>'#DEFAULT#'
 ,p_is_persistent=>'N'
@@ -47812,9 +47815,10 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_db_column_name=>'PR_ID'
 ,p_display_order=>10
 ,p_column_identifier=>'A'
-,p_column_label=>'Pr Id'
+,p_column_label=>'ID'
 ,p_column_type=>'NUMBER'
-,p_display_text_as=>'HIDDEN_ESCAPE_SC'
+,p_heading_alignment=>'LEFT'
+,p_use_as_row_header=>'N'
 ,p_available_clientside=>'N'
 );
 wwv_flow_imp_page.create_worksheet_column(
@@ -47904,10 +47908,10 @@ wwv_flow_imp_page.create_worksheet_rpt(
 ,p_report_alias=>'primary'
 ,p_status=>'PUBLIC'
 ,p_is_default=>'Y'
-,p_report_columns=>'PR_ID:WS_NAME:PR_DR_ID:PR_PAT_ID:PR_PRR_ID:PR_PLANNED_START:PR_PLANNED_END:PR_NOTES'
+,p_report_columns=>'WS_NAME:PR_DR_ID:PR_PLANNED_START:PR_PLANNED_END:PR_NOTES'
 );
 wwv_flow_imp_page.create_worksheet_condition(
- p_id=>wwv_flow_imp.id(61194400888838908)
+ p_id=>wwv_flow_imp.id(79217883652868315)
 ,p_report_id=>wwv_flow_imp.id(61176410313683504)
 ,p_static_id=>'ir-condition'
 ,p_condition_type=>'HIGHLIGHT'
@@ -49091,6 +49095,23 @@ wwv_flow_imp_page.create_page_item(
 ,p_multi_value_separator=>':'
 );
 wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(78157224286597726)
+,p_name=>'P402_NOTIFY_DELAY'
+,p_item_sequence=>40
+,p_item_plug_id=>wwv_flow_imp.id(61095538974189522)
+,p_prompt=>unistr('\0417\0430\0442\0440\0438\043C\043A\0430 \043D\0430\0433\0430\0434\0443\0432\0430\043D\043D\044F (\043E\0447\0438\0441\0442\0438\0442\0438 \0449\043E\0431\0438 \0432\0456\0434\043C\0456\043D\0438\0442\0438)')
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_NUMBER_FIELD'
+,p_cSize=>30
+,p_field_template=>1610598304472262251
+,p_item_template_options=>'#DEFAULT#'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'max_value', '6000',
+  'min_value', '1',
+  'number_alignment', 'left',
+  'virtual_keyboard', 'decimal')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(61095375633189520)
 ,p_name=>'P402_PRATR_ACTUAL_END'
 ,p_source_data_type=>'TIMESTAMP_TZ'
@@ -49324,7 +49345,7 @@ wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(61096340581189530)
 ,p_name=>'P402_PRD_NOTES'
 ,p_source_data_type=>'VARCHAR2'
-,p_item_sequence=>10
+,p_item_sequence=>30
 ,p_item_plug_id=>wwv_flow_imp.id(61095538974189522)
 ,p_item_source_plug_id=>wwv_flow_imp.id(61095538974189522)
 ,p_prompt=>unistr('\041D\043E\0442\0430\0442\043A\0438')
@@ -49768,6 +49789,26 @@ wwv_flow_imp_page.create_page_item(
 ,p_is_persistent=>'N'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'value_protected', 'Y')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(78157347225597727)
+,p_name=>'P402_PR_TO_NOTIFY'
+,p_item_sequence=>50
+,p_item_plug_id=>wwv_flow_imp.id(61095538974189522)
+,p_prompt=>unistr('\0429\043E \043D\0430\0433\0430\0434\0430\0442\0438')
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_SELECT_ONE'
+,p_named_lov=>'REHAB_PRESCRIPTIONS'
+,p_cSize=>30
+,p_begin_on_new_line=>'N'
+,p_field_template=>1610598304472262251
+,p_item_template_options=>'#DEFAULT#'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'case_sensitive', 'N',
+  'fetch_on_search', 'N',
+  'infinite_scroll', 'Y',
+  'match_type', 'CONTAINS',
+  'min_chars', '0')).to_clob
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(56471311067627435)
@@ -51012,6 +51053,27 @@ wwv_flow_imp_page.create_page_process(
 ,p_internal_uid=>56518802064180130
 );
 wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(78157486655597728)
+,p_process_sequence=>120
+,p_process_point=>'BEFORE_HEADER'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'InitNotifications'
+,p_static_id=>'initnotifications'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'begin',
+'    select NP_TIME_DELAY, NP_PR_ID_TRG ',
+'      into :P402_NOTIFY_DELAY, :P402_PR_TO_NOTIFY',
+'      from REHAB_NOTIFICATION_DEFS, REHAB_NOTIFICATION_PARS',
+'     where NP_ND_ID = ND_ID',
+'       and NP_APP_USER = REHAB_CONTEXT_PKG.getAPEX_USER',
+'       and NP_PR_ID_EVENT = :P402_PR_ID_CURR;',
+'exception',
+'  when no_data_found then :P402_NOTIFY_DELAY:=null; :P402_PR_TO_NOTIFY:=null;',
+'end;'))
+,p_process_clob_language=>'PLSQL'
+,p_internal_uid=>78157486655597728
+);
+wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(58058418862597033)
 ,p_process_sequence=>130
 ,p_process_point=>'AFTER_SUBMIT'
@@ -51045,6 +51107,10 @@ wwv_flow_imp_page.create_page_process(
 'begin',
 '  REHAB_PRESCRIPTIONS_PKG.delete_PRESCRIPTION ( ',
 '    P_PR_ID => :P402_PR_ID_CURR) ; ',
+'  REHAB_NOTIFY_API_PKG.setup_notification_next_med (  ',
+'    P_NP_PR_ID_EVENT => :P402_PR_ID_CURR,',
+'    P_NP_PR_ID_TRG   => :P402_PR_TO_NOTIFY,',
+'    P_NP_TIME_DELAY  => null) ;  ',
 '  :P402_PR_ID := null; ',
 '  :P402_PR_ID_CURR := null;',
 '  :P402_PRATR_ID_CURR := null;',
@@ -51231,6 +51297,25 @@ wwv_flow_imp_page.create_page_process(
 ,p_process_when_button_id=>wwv_flow_imp.id(64503907678921028)
 ,p_process_success_message=>unistr('\041F\0435\0440\0456\043E\0434 \0447\0430\0441\0443 \0437\0431\0435\0440\0435\0436\0435\043D\043E')
 ,p_internal_uid=>61876924738921431
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(78157553144597729)
+,p_process_sequence=>230
+,p_process_point=>'AFTER_SUBMIT'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'ProcessNotification'
+,p_static_id=>'processnotification'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'begin',
+'  REHAB_NOTIFY_API_PKG.setup_notification_next_med (  ',
+'    P_NP_PR_ID_EVENT => :P402_PR_ID_CURR,',
+'    P_NP_PR_ID_TRG   => :P402_PR_TO_NOTIFY,',
+'    P_NP_TIME_DELAY  => :P402_NOTIFY_DELAY) ;  ',
+'end;'))
+,p_process_clob_language=>'PLSQL'
+,p_error_display_location=>'INLINE_IN_NOTIFICATION'
+,p_process_when_button_id=>wwv_flow_imp.id(65075811293556903)
+,p_internal_uid=>78157553144597729
 );
 wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(56470810473627430)
@@ -51981,6 +52066,7 @@ wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(77168319898444119)
 ,p_plug_name=>'Allergics'
 ,p_static_id=>'allergics'
+,p_title=>unistr('\0424\0430\043A\0442\0438')
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>20
@@ -51996,11 +52082,13 @@ wwv_flow_imp_page.create_page_plug(
 '       AT_DESCRIPTION',
 '  from REHAB_ALLERGIC_TRIGGERS'))
 ,p_plug_source_type=>'NATIVE_IG'
+,p_prn_content_disposition=>'ATTACHMENT'
 ,p_prn_units=>'INCHES'
 ,p_prn_paper_size=>'LETTER'
 ,p_prn_width=>11
 ,p_prn_height=>8.5
 ,p_prn_orientation=>'HORIZONTAL'
+,p_prn_page_header=>unistr('\0424\0430\043A\0442\0438')
 ,p_prn_page_header_font_color=>'#000000'
 ,p_prn_page_header_font_family=>'Helvetica'
 ,p_prn_page_header_font_weight=>'normal'
@@ -52394,7 +52482,8 @@ wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(77159903180443870)
 ,p_plug_name=>'Allergic'
 ,p_static_id=>'allergic'
-,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
+,p_title=>unistr('\0424\0430\043A\0442\0438')
+,p_region_template_options=>'#DEFAULT#:i-h480:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
 ,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
@@ -55517,8 +55606,8 @@ begin
 wwv_flow_imp_page.create_page(
  p_id=>704
 ,p_name=>'REHAB_LOG'
-,p_alias=>'REHAB-LOG'
-,p_step_title=>'REHAB_LOG'
+,p_alias=>'LOGVIEW'
+,p_step_title=>unistr('\041F\0435\0440\0435\0433\043B\044F\0434 \043B\043E\0433\0443 \0437\0430\0441\0442\043E\0441\0443\043D\043A\0443')
 ,p_autocomplete_on_off=>'OFF'
 ,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
@@ -55610,7 +55699,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_db_column_name=>'LOG_MESSAGE'
 ,p_display_order=>5
 ,p_column_identifier=>'E'
-,p_column_label=>'Log Message'
+,p_column_label=>unistr('\041F\043E\0432\0456\0434\043E\043C\043B\0435\043D\043D\044F')
 ,p_column_type=>'STRING'
 ,p_heading_alignment=>'LEFT'
 ,p_use_as_row_header=>'N'
@@ -55621,7 +55710,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_db_column_name=>'LOG_MODULE'
 ,p_display_order=>3
 ,p_column_identifier=>'C'
-,p_column_label=>'Log Module'
+,p_column_label=>unistr('\0414\0436\0435\0440\0435\043B\043E')
 ,p_column_type=>'STRING'
 ,p_heading_alignment=>'LEFT'
 ,p_use_as_row_header=>'N'
@@ -55632,7 +55721,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_db_column_name=>'LOG_MODULE_LINE'
 ,p_display_order=>4
 ,p_column_identifier=>'D'
-,p_column_label=>'Log Module Line'
+,p_column_label=>unistr('\0420\044F\0434\043E\043A')
 ,p_column_type=>'NUMBER'
 ,p_heading_alignment=>'RIGHT'
 ,p_column_alignment=>'RIGHT'
@@ -55645,7 +55734,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_db_column_name=>'LOG_TIMESTAMPT'
 ,p_display_order=>2
 ,p_column_identifier=>'B'
-,p_column_label=>'Log Timestampt'
+,p_column_label=>unistr('\0427\0430\0441 \0437\0430\043F\0438\0441\0443')
 ,p_column_type=>'DATE'
 ,p_heading_alignment=>'LEFT'
 ,p_tz_dependent=>'N'
@@ -55660,6 +55749,8 @@ wwv_flow_imp_page.create_worksheet_rpt(
 ,p_status=>'PUBLIC'
 ,p_is_default=>'Y'
 ,p_report_columns=>'LOG_ID:LOG_TIMESTAMPT:LOG_MODULE:LOG_MODULE_LINE:LOG_MESSAGE'
+,p_sort_column_1=>'LOG_TIMESTAMPT'
+,p_sort_direction_1=>'DESC'
 );
 end;
 /

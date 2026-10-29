@@ -186,6 +186,7 @@
         P_DRU_CONSUMED,
         nvl(P_DRU_ACTUAL_DOSAGE,(select PRD_DOSAGE from REHAB_PRESCRIPTIONS_DETAILS where PRD_ID = p_dru_prd_id))
         );
+    REHAB_NOTIFY_API_PKG.add_notification_next_med(P_DRU_PR_ID, P_DRU_CONSUMED);
   end;
 
   procedure modify_drug_use(p_dru_id REHAB_DRUG_USES.dru_id%type,

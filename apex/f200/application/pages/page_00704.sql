@@ -14,8 +14,8 @@ wwv_flow_imp.component_begin (
 wwv_flow_imp_page.create_page(
  p_id=>704
 ,p_name=>'REHAB_LOG'
-,p_alias=>'REHAB-LOG'
-,p_step_title=>'REHAB_LOG'
+,p_alias=>'LOGVIEW'
+,p_step_title=>unistr('\041F\0435\0440\0435\0433\043B\044F\0434 \043B\043E\0433\0443 \0437\0430\0441\0442\043E\0441\0443\043D\043A\0443')
 ,p_autocomplete_on_off=>'OFF'
 ,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
@@ -107,7 +107,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_db_column_name=>'LOG_MESSAGE'
 ,p_display_order=>5
 ,p_column_identifier=>'E'
-,p_column_label=>'Log Message'
+,p_column_label=>unistr('\041F\043E\0432\0456\0434\043E\043C\043B\0435\043D\043D\044F')
 ,p_column_type=>'STRING'
 ,p_heading_alignment=>'LEFT'
 ,p_use_as_row_header=>'N'
@@ -118,7 +118,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_db_column_name=>'LOG_MODULE'
 ,p_display_order=>3
 ,p_column_identifier=>'C'
-,p_column_label=>'Log Module'
+,p_column_label=>unistr('\0414\0436\0435\0440\0435\043B\043E')
 ,p_column_type=>'STRING'
 ,p_heading_alignment=>'LEFT'
 ,p_use_as_row_header=>'N'
@@ -129,7 +129,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_db_column_name=>'LOG_MODULE_LINE'
 ,p_display_order=>4
 ,p_column_identifier=>'D'
-,p_column_label=>'Log Module Line'
+,p_column_label=>unistr('\0420\044F\0434\043E\043A')
 ,p_column_type=>'NUMBER'
 ,p_heading_alignment=>'RIGHT'
 ,p_column_alignment=>'RIGHT'
@@ -142,7 +142,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_db_column_name=>'LOG_TIMESTAMPT'
 ,p_display_order=>2
 ,p_column_identifier=>'B'
-,p_column_label=>'Log Timestampt'
+,p_column_label=>unistr('\0427\0430\0441 \0437\0430\043F\0438\0441\0443')
 ,p_column_type=>'DATE'
 ,p_heading_alignment=>'LEFT'
 ,p_tz_dependent=>'N'
@@ -157,6 +157,8 @@ wwv_flow_imp_page.create_worksheet_rpt(
 ,p_status=>'PUBLIC'
 ,p_is_default=>'Y'
 ,p_report_columns=>'LOG_ID:LOG_TIMESTAMPT:LOG_MODULE:LOG_MODULE_LINE:LOG_MESSAGE'
+,p_sort_column_1=>'LOG_TIMESTAMPT'
+,p_sort_direction_1=>'DESC'
 );
 wwv_flow_imp.component_end;
 end;

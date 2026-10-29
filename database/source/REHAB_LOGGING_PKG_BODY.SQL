@@ -38,9 +38,9 @@
     pragma autonomous_transaction;
   begin
     INSERT INTO REHAB_LOG
-           (log_id,              LOG_TIMESTAMPT,                            LOG_MODULE, LOG_MODULE_LINE,
+           (log_id,              LOG_TIMESTAMPT,                            LOG_MODULE, LOG_MODULE_LINE, log_te_id,
             LOG_MESSAGE)
-    VALUES (SQ_REHAB_LOG.nextval,systimestamp at time zone SESSIONTIMEZONE, p_unit,     p_line,
+    VALUES (SQ_REHAB_LOG.nextval,systimestamp at time zone SESSIONTIMEZONE, p_unit,     p_line,         REHAB_CONTEXT_PKG.getTENANT(),
             prepmsg(p_msg, p1, p2, p3, p4, p5, p6, p7, p8));
     commit;
   END logmsg;
@@ -69,6 +69,41 @@
     commit;
     raise_application_error(-20101,'Error at unit: '||p_unit||'.'||p_line||': '||l_msg);
   END lognraise;
+
+  procedure cleanup_log
+  is
+  begin
+    for i in (select * from REHAB_CONFIGS where PAR_NAME = 'ADM_LOG_RETENTION_DAYS' order by PAR_TE_ID nulls last)
+    loop
+      if i.PAR_TE_ID is not null then
+        delete /*+ NO_PARALLEL */ from REHAB_LOG where LOG_TIMESTAMPT < sysdate - to_number(i.PAR_VALUE) and LOG_TE_ID = i.PAR_TE_ID;
+        logmsg($$PLSQL_UNIT, $$PLSQL_LINE,'Deleted %p rows for tenant id %p.',sql%rowcount, i.PAR_TE_ID);
+      else
+        delete /*+ NO_PARALLEL */ from REHAB_LOG where LOG_TIMESTAMPT < sysdate - to_number(i.PAR_VALUE) and LOG_TE_ID is null;
+        logmsg($$PLSQL_UNIT, $$PLSQL_LINE,'Deleted %p rows for empty tenant id.',sql%rowcount);
+        delete /*+ NO_PARALLEL */ from REHAB_LOG where LOG_TIMESTAMPT < sysdate - to_number(i.PAR_VALUE) and LOG_TE_ID not in (select PAR_TE_ID from REHAB_CONFIGS where PAR_NAME = 'ADM_LOG_RETENTION_DAYS' and PAR_TE_ID is not null);
+        logmsg($$PLSQL_UNIT, $$PLSQL_LINE,'Deleted %p rows for tenants not specifued its retention ploicy.',sql%rowcount);
+      end if;
+      commit;
+    end loop;
+  end;
+
+  procedure setup_cleanup_log
+  is
+  begin
+    DBMS_SCHEDULER.CREATE_JOB (
+        job_name        => 'REHAB_LOG_CLEANUP',
+        job_type        => 'PLSQL_BLOCK',
+        job_action      => 'BEGIN
+                               REHAB_LOGGING_PKG.cleanup_log;
+                            END;',
+        start_date      => trunc(SYSDATE) + 2/24,
+        repeat_interval => 'FREQ=DAILY; INTERVAL=1', -- Optional: runs daily
+        enabled         => TRUE,
+        comments        => 'Cleaning up REHAB APP logs'
+    );
+  end;
+
 END REHAB_LOGGING_PKG;
 /
 

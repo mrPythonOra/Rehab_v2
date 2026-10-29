@@ -37,6 +37,9 @@
                 p7 varchar2 default null,
                 p8 varchar2 default null);
 
+  procedure cleanup_log;
+  procedure setup_cleanup_log;
+
 END REHAB_LOGGING_PKG;
 /
 

@@ -26,6 +26,7 @@ wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(77168319898444119)
 ,p_plug_name=>'Allergics'
 ,p_static_id=>'allergics'
+,p_title=>unistr('\0424\0430\043A\0442\0438')
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>20
@@ -41,11 +42,13 @@ wwv_flow_imp_page.create_page_plug(
 '       AT_DESCRIPTION',
 '  from REHAB_ALLERGIC_TRIGGERS'))
 ,p_plug_source_type=>'NATIVE_IG'
+,p_prn_content_disposition=>'ATTACHMENT'
 ,p_prn_units=>'INCHES'
 ,p_prn_paper_size=>'LETTER'
 ,p_prn_width=>11
 ,p_prn_height=>8.5
 ,p_prn_orientation=>'HORIZONTAL'
+,p_prn_page_header=>unistr('\0424\0430\043A\0442\0438')
 ,p_prn_page_header_font_color=>'#000000'
 ,p_prn_page_header_font_family=>'Helvetica'
 ,p_prn_page_header_font_weight=>'normal'

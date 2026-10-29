@@ -1437,10 +1437,14 @@ CREATE SEQUENCE  SQ_rehab_allergic_triggers;
 --******************************************************************************
 create table REHAB_LOG (
 log_id number primary key,
+log_te_id number,
 log_timestampt timestamp with time zone default systimestamp,
 log_module varchar2(512),
 log_module_line number,
 log_message varchar2(4000));
+
+ALTER TABLE REHAB_LOG ADD CONSTRAINT FK_REHAB_LOG_TE FOREIGN KEY (log_te_id)
+	  REFERENCES REHAB_TENANTS (TE_ID) ENABLE;
 
 create sequence SQ_REHAB_LOG;
 --******************************************************************************

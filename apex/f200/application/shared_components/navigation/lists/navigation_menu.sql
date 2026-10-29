@@ -15,7 +15,7 @@ wwv_flow_imp_shared.create_list(
  p_id=>wwv_flow_imp.id(16870838765504258)
 ,p_name=>'Navigation Menu'
 ,p_static_id=>'navigation-menu'
-,p_version_scn=>'SH256:sp-2NggYZsr7AEs8hDG-5GpCW536E26EVRIQ0_wG-24'
+,p_version_scn=>'SH256:XBbk4QVkiLgpeOQw0r-fllfeGAzisCQgYOeUT5gcO88'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(17056773995505539)
@@ -156,10 +156,10 @@ wwv_flow_imp_shared.create_list_item(
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(77225119930797921)
 ,p_list_item_display_sequence=>320
-,p_list_item_link_text=>'REHAB_LOG'
+,p_list_item_link_text=>unistr('\041F\0435\0440\0435\0433\043B\044F\0434 \043B\043E\0433\0443')
 ,p_static_id=>'rehab-log'
-,p_list_item_link_target=>'f?p=&APP_ID.:704:&APP_SESSION.::&DEBUG.:::'
-,p_list_item_icon=>'fa-list-alt'
+,p_list_item_link_target=>'f?p=&APP_ID.:704:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-accordion'
 ,p_parent_list_item_id=>wwv_flow_imp.id(17056773995505539)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'704'

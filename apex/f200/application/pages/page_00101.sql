@@ -21,6 +21,8 @@ wwv_flow_imp_page.create_page(
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(17092736246142129)
 ,p_protection_level=>'C'
+,p_deep_linking=>'Y'
+,p_rejoin_existing_sessions=>'Y'
 ,p_page_component_map=>'23'
 );
 wwv_flow_imp_page.create_page_plug(
