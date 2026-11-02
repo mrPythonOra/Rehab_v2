@@ -5,7 +5,7 @@ begin
 --   Manifest End
 wwv_flow_imp.component_begin (
  p_version_yyyy_mm_dd=>'2026.03.30'
-,p_release=>'26.1.5'
+,p_release=>'26.1.6'
 ,p_default_workspace_id=>166651606440306663
 ,p_default_application_id=>200
 ,p_default_id_offset=>0
@@ -46,6 +46,14 @@ wwv_flow_imp_shared.create_menu_option(
 ,p_static_id=>'assemblymedications'
 ,p_link=>'f?p=&APP_ID.:105:&SESSION.::&DEBUG.:::'
 ,p_page_id=>105
+);
+wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(82702322590762305)
+,p_parent_id=>wwv_flow_imp.id(77204135082766952)
+,p_short_name=>unistr('\041F\0430\0440\0430\043C\0435\0442\0440')
+,p_static_id=>'configparam'
+,p_link=>'f?p=&APP_ID.:702:&SESSION.::&DEBUG.:::'
+,p_page_id=>702
 );
 wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(77092807063748283)
@@ -167,26 +175,26 @@ wwv_flow_imp_shared.create_menu_option(
 wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(77204135082766952)
 ,p_parent_id=>wwv_flow_imp.id(17057737346505548)
-,p_short_name=>'REHAB_CONFIGS'
+,p_short_name=>unistr('\041F\0430\0440\0430\043C\0435\0442\0440\0438')
 ,p_static_id=>'rehab-configs'
-,p_link=>'f?p=&APP_ID.:701:&APP_SESSION.::&DEBUG.:::'
+,p_link=>'f?p=&APP_ID.:701:&SESSION.::&DEBUG.:::'
 ,p_page_id=>701
 );
 wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(77210235982777145)
+ p_id=>wwv_flow_imp.id(82690335642701136)
 ,p_parent_id=>wwv_flow_imp.id(17057737346505548)
 ,p_short_name=>'REHAB_CONSUME_PATTERNS'
 ,p_static_id=>'rehab-consume-patterns'
-,p_link=>'f?p=&APP_ID.:702:&APP_SESSION.::&DEBUG.:::'
-,p_page_id=>702
+,p_link=>'f?p=&APP_ID.:709:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>709
 );
 wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(77215805368783084)
-,p_parent_id=>wwv_flow_imp.id(77210235982777145)
+ p_id=>wwv_flow_imp.id(82696870604723739)
+,p_parent_id=>wwv_flow_imp.id(17057737346505548)
 ,p_short_name=>'REHAB_CONSUME_TIME_RANGES'
 ,p_static_id=>'rehab-consume-time-ranges'
-,p_link=>'f?p=&APP_ID.:703:&APP_SESSION.::&DEBUG.:::'
-,p_page_id=>703
+,p_link=>'f?p=&APP_ID.:711:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>711
 );
 wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(77110449323814429)

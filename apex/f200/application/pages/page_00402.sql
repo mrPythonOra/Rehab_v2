@@ -5,7 +5,7 @@ begin
 --   Manifest End
 wwv_flow_imp.component_begin (
  p_version_yyyy_mm_dd=>'2026.03.30'
-,p_release=>'26.1.5'
+,p_release=>'26.1.6'
 ,p_default_workspace_id=>166651606440306663
 ,p_default_application_id=>200
 ,p_default_id_offset=>0
@@ -294,6 +294,38 @@ wwv_flow_imp_page.create_worksheet_condition(
 ,p_enabled=>'Y'
 ,p_highlight_sequence=>10
 ,p_row_font_color=>'#27ea00'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(78157705407597731)
+,p_plug_name=>'NotificationLowMed'
+,p_static_id=>'notificationlowmed'
+,p_title=>unistr('\041D\0430\0433\0430\0434\0430\0442\0438 \043F\0440\043E \043D\0435\0434\043E\0441\0442\0430\0442\043D\044C\044E \043A\0456\043B\044C\043A\0456\0441\0442\044C \043C\0435\0434\0438\043A\0430\043C\0435\043D\0442\0443')
+,p_parent_plug_id=>wwv_flow_imp.id(56470421749627426)
+,p_region_template_options=>'#DEFAULT#:t-Region--stacked:t-Region--scrollBody'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>20
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(78157611005597730)
+,p_plug_name=>'NotificationNextMed'
+,p_static_id=>'notificationnextmed'
+,p_title=>unistr('\041D\0430\0433\0430\0434\0430\0442\0438 \043F\0440\043E \043D\0430\0441\0442\0443\043F\043D\0438\0439 \043C\0435\0434\0438\043A\0430\043C\0435\043D\0442')
+,p_parent_plug_id=>wwv_flow_imp.id(56470421749627426)
+,p_region_template_options=>'#DEFAULT#:t-Region--stacked:t-Region--scrollBody'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(56494378122899829)
@@ -1465,10 +1497,27 @@ wwv_flow_imp_page.create_page_item(
 ,p_multi_value_separator=>':'
 );
 wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(78157859862597732)
+,p_name=>'P402_NOTIFY_DAYS_LOW_MED'
+,p_item_sequence=>10
+,p_item_plug_id=>wwv_flow_imp.id(78157705407597731)
+,p_prompt=>unistr('\0414\043D\0456\0432 \0434\043E \0432\0438\0447\0435\0440\043F\0443\0432\0430\043D\043D\044F (\043E\0447\0438\0441\0442\0438\0442\0438 \0449\043E\0431\0438 \0432\0456\0434\043C\0456\043D\0438\0442\0438)')
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_NUMBER_FIELD'
+,p_cSize=>30
+,p_field_template=>1610598304472262251
+,p_item_template_options=>'#DEFAULT#'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'max_value', '6000',
+  'min_value', '1',
+  'number_alignment', 'left',
+  'virtual_keyboard', 'decimal')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(78157224286597726)
-,p_name=>'P402_NOTIFY_DELAY'
-,p_item_sequence=>40
-,p_item_plug_id=>wwv_flow_imp.id(61095538974189522)
+,p_name=>'P402_NOTIFY_DELAY_NEXTMED'
+,p_item_sequence=>100
+,p_item_plug_id=>wwv_flow_imp.id(78157611005597730)
 ,p_prompt=>unistr('\0417\0430\0442\0440\0438\043C\043A\0430 \043D\0430\0433\0430\0434\0443\0432\0430\043D\043D\044F (\043E\0447\0438\0441\0442\0438\0442\0438 \0449\043E\0431\0438 \0432\0456\0434\043C\0456\043D\0438\0442\0438)')
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_NUMBER_FIELD'
@@ -2161,10 +2210,31 @@ wwv_flow_imp_page.create_page_item(
   'value_protected', 'Y')).to_clob
 );
 wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(78157909252597733)
+,p_name=>'P402_PR_TO_NOTIFY_LOW_MED'
+,p_item_sequence=>20
+,p_item_plug_id=>wwv_flow_imp.id(78157705407597731)
+,p_prompt=>unistr('\0429\043E \043D\0430\0433\0430\0434\0430\0442\0438')
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_SELECT_ONE'
+,p_named_lov=>'REHAB_PRESCRIPTIONS'
+,p_cSize=>30
+,p_begin_on_new_line=>'N'
+,p_field_template=>1610598304472262251
+,p_item_template_options=>'#DEFAULT#'
+,p_required_patch=>wwv_flow_imp.id(16869691178504232)
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'case_sensitive', 'N',
+  'fetch_on_search', 'N',
+  'infinite_scroll', 'Y',
+  'match_type', 'CONTAINS',
+  'min_chars', '0')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(78157347225597727)
-,p_name=>'P402_PR_TO_NOTIFY'
-,p_item_sequence=>50
-,p_item_plug_id=>wwv_flow_imp.id(61095538974189522)
+,p_name=>'P402_PR_TO_NOTIFY_NEXTMED'
+,p_item_sequence=>120
+,p_item_plug_id=>wwv_flow_imp.id(78157611005597730)
 ,p_prompt=>unistr('\0429\043E \043D\0430\0433\0430\0434\0430\0442\0438')
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_SELECT_ONE'
@@ -3427,21 +3497,44 @@ wwv_flow_imp_page.create_page_process(
 ,p_process_sequence=>120
 ,p_process_point=>'BEFORE_HEADER'
 ,p_process_type=>'NATIVE_PLSQL'
-,p_process_name=>'InitNotifications'
+,p_process_name=>'InitNotificationsNextMed'
 ,p_static_id=>'initnotifications'
 ,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'begin',
 '    select NP_TIME_DELAY, NP_PR_ID_TRG ',
-'      into :P402_NOTIFY_DELAY, :P402_PR_TO_NOTIFY',
+'      into :P402_NOTIFY_DELAY_NEXTMED, :P402_PR_TO_NOTIFY_NEXTMED',
 '      from REHAB_NOTIFICATION_DEFS, REHAB_NOTIFICATION_PARS',
 '     where NP_ND_ID = ND_ID',
 '       and NP_APP_USER = REHAB_CONTEXT_PKG.getAPEX_USER',
-'       and NP_PR_ID_EVENT = :P402_PR_ID_CURR;',
+'       and NP_PR_ID_EVENT = :P402_PR_ID_CURR',
+'       and np_nd_id = ''NEXTMEDNF'';',
 'exception',
-'  when no_data_found then :P402_NOTIFY_DELAY:=null; :P402_PR_TO_NOTIFY:=null;',
+'  when no_data_found then :P402_NOTIFY_DELAY_NEXTMED:=null; :P402_PR_TO_NOTIFY_NEXTMED:=null;',
 'end;'))
 ,p_process_clob_language=>'PLSQL'
 ,p_internal_uid=>78157486655597728
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(78158015049597734)
+,p_process_sequence=>130
+,p_process_point=>'BEFORE_HEADER'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'InitNotificationsLowMed'
+,p_static_id=>'initnotificationslowmed'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'begin',
+'    --:P402_PR_TO_NOTIFY_LOW_MED := :P402_PR_ID_CURR;',
+'    select NP_DR_DAYS_REMAIN',
+'      into :P402_NOTIFY_DAYS_LOW_MED',
+'      from REHAB_NOTIFICATION_PARS',
+'     where NP_APP_USER = REHAB_CONTEXT_PKG.getAPEX_USER',
+'       and np_nd_id = ''LOWMEDNF''',
+'       and NP_DR_PR_ID =  :P402_PR_ID_CURR;',
+'exception',
+'  when no_data_found then :P402_NOTIFY_DAYS_LOW_MED:=null; --:P402_PR_TO_NOTIFY_LOW_MED:=null;',
+'end;'))
+,p_process_clob_language=>'PLSQL'
+,p_internal_uid=>78158015049597734
 );
 wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(58058418862597033)
@@ -3679,12 +3772,15 @@ wwv_flow_imp_page.create_page_process(
 'begin',
 '  REHAB_NOTIFY_API_PKG.setup_notification_next_med (  ',
 '    P_NP_PR_ID_EVENT => :P402_PR_ID_CURR,',
-'    P_NP_PR_ID_TRG   => :P402_PR_TO_NOTIFY,',
-'    P_NP_TIME_DELAY  => :P402_NOTIFY_DELAY) ;  ',
+'    P_NP_PR_ID_TRG   => :P402_PR_TO_NOTIFY_NEXTMED,',
+'    P_NP_TIME_DELAY  => :P402_NOTIFY_DELAY_NEXTMED) ;  ',
+'  REHAB_NOTIFY_API_PKG.setup_notification_low_med (  ',
+'    p_NP_DR_PR_ID => :P402_PR_ID_CURR,',
+'    p_NP_DR_DAYS_REMAIN   => :P402_NOTIFY_DAYS_LOW_MED) ;  ',
 'end;'))
 ,p_process_clob_language=>'PLSQL'
 ,p_error_display_location=>'INLINE_IN_NOTIFICATION'
-,p_process_when_button_id=>wwv_flow_imp.id(65075811293556903)
+,p_process_when_button_id=>wwv_flow_imp.id(63858385787868150)
 ,p_internal_uid=>78157553144597729
 );
 wwv_flow_imp_page.create_page_process(

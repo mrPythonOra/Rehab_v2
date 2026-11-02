@@ -97,3 +97,75 @@ SELECT
 FROM
     REHAB_DRUG_STORAGES, REHAB_PATIENT2STORAGES
 where P2S_DS_ID = ds_id and P2S_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ;
+
+select * 
+  from 
+       V$REHAB_REMAINS;
+       
+select PR_ID, PR_WS_ID, PR_DR_ID, PR_PLANNED_START, PR_PLANNED_END, PRATR_ACTUAL_START, PRATR_ACTUAL_END, PRATR_ACTUAL_END - PRATR_ACTUAL_START dur, sum(PRD_DOSAGE) daily_dosage
+from REHAB_NOTIFICATION_PARS, REHAB_PRESCRIPTIONS, REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES, REHAB_PRESCRIPTIONS_DETAILS
+where NP_ND_ID = 'LOWMEDNF' and NP_APP_USER = 'YURI' and PR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()
+  and NP_DR_PR_ID = PR_ID
+  and PRATR_PR_ID = PR_ID
+  and PRD_PRATR_ID = PRATR_ID
+  and coalesce(PRATR_ACTUAL_END,PR_PLANNED_END,REHAB_CONTEXT_PKG.getGLOBAL_DATE())>=REHAB_CONTEXT_PKG.getGLOBAL_DATE()
+group by PR_ID, PR_WS_ID, PR_DR_ID, PR_PLANNED_START, PR_PLANNED_END, PRATR_ACTUAL_END, PRATR_ACTUAL_START
+order by PRATR_ACTUAL_START;
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW V$REHAB_REMAINS
+  AS 
+  select
+          stor.PAT_ID, stor.DR_ID,
+          DA_STORED_AMOUNT, DRU_CONSUMED,DRU_CONSUMED_BEFORE,DRU_CONSUMED_TODAY,
+          DA_STORED_AMOUNT - DRU_CONSUMED BALANCE, 
+          days_planned,PRD_DOSAGE_PLANNED,
+          daily_dose, 
+          (DA_STORED_AMOUNT - DRU_CONSUMED)/daily_dose days_remain,
+          (DA_STORED_AMOUNT - DRU_CONSUMED_BEFORE - daily_dose)/daily_dose days_remain_from_tomorrow,
+          DR_NAME,WS_ID,WS_NAME,
+          PRATR_ACTUAL_END, PR_PLANNED_START,PR_PLANNED_END,
+          trunc(REHAB_CONTEXT_PKG.getGLOBAL_DATE()+(DA_STORED_AMOUNT - DRU_CONSUMED_BEFORE - daily_dose)/daily_dose) end_date
+        from
+            (select P2S_PAT_ID PAT_ID, DA_DR_ID DR_ID,sum(DA_QUANTITY*DA_ENTIRY_WEIGHT) DA_STORED_AMOUNT, min(DA_CHECK_POINT_DT) DA_CHECK_POINT_DT 
+               from REHAB_DRUG_ACCOUNTINGS A, REHAB_PATIENT2STORAGES P2S 
+              where A.DA_DS_ID = P2S.P2S_DS_ID and P2S.P2S_IS_OWNER
+                and DA_CHECK_POINT_DT <= REHAB_CONTEXT_PKG.getGLOBAL_DATE()
+                and P2S_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() 
+              group by P2S_PAT_ID, DA_DR_ID) stor,
+            lateral
+            (select DRU_PAT_ID PAT_ID, DRU_DR_ID DR_ID,
+                    sum(DRU_ACTUAL_DOSAGE) FILTER (WHERE DRU_CONSUMED > stor.DA_CHECK_POINT_DT) DRU_CONSUMED,
+                    sum(DRU_ACTUAL_DOSAGE) FILTER (WHERE DRU_CONSUMED > stor.DA_CHECK_POINT_DT and DRU_CONSUMED < trunc(REHAB_CONTEXT_PKG.getGLOBAL_DATE())) DRU_CONSUMED_BEFORE,
+                    sum(DRU_ACTUAL_DOSAGE) FILTER (WHERE DRU_CONSUMED > stor.DA_CHECK_POINT_DT and trunc(DRU_CONSUMED) = trunc(REHAB_CONTEXT_PKG.getGLOBAL_DATE())) DRU_CONSUMED_TODAY
+               from REHAB_DRUG_USES c 
+              where stor.PAT_ID=c.DRU_PAT_ID and stor.DR_ID=c.DRU_DR_ID
+                and DRU_CONSUMED <= REHAB_CONTEXT_PKG.getGLOBAL_DATE()
+                and DRU_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() 
+              group by DRU_PAT_ID, DRU_DR_ID)(+) cons,
+             (select PR_PAT_ID PAT_ID, nvl(PR_DR_ID,PRD_DR_ID) DR_ID, max(days_planned) days_planned,
+                     sum(PRD_DOSAGE * days_planned ) PRD_DOSAGE_PLANNED,
+                     sum(PRD_DOSAGE) daily_dose,
+                     max(PRATR_ACTUAL_END) PRATR_ACTUAL_END,
+                     max(PR_PLANNED_END) PR_PLANNED_END,
+                     min(PR_PLANNED_START) PR_PLANNED_START
+                from (select * from REHAB_PRESCRIPTIONS 
+                       where (PR_PLANNED_START <= REHAB_CONTEXT_PKG.getGLOBAL_DATE() and nvl(PR_PLANNED_END,REHAB_CONTEXT_PKG.getGLOBAL_DATE())>=REHAB_CONTEXT_PKG.getGLOBAL_DATE()
+                          or PR_PLANNED_START >  REHAB_CONTEXT_PKG.getGLOBAL_DATE())
+                         and PR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()) PR,
+                     (select A.*,
+                             case when PRATR_ACTUAL_END is null then null 
+                                  else case when PRATR_ACTUAL_START <= REHAB_CONTEXT_PKG.getGLOBAL_DATE() and PRATR_ACTUAL_END >= REHAB_CONTEXT_PKG.getGLOBAL_DATE() 
+                                            then (PRATR_ACTUAL_END+0) - REHAB_CONTEXT_PKG.getGLOBAL_DATE()--+ 1
+                                            else (PRATR_ACTUAL_END+0) - (PRATR_ACTUAL_START+0)--+ 1
+                                       end
+                             end days_planned
+                        from REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES A
+                       where PRATR_ACTUAL_START <= REHAB_CONTEXT_PKG.getGLOBAL_DATE() and nvl(PRATR_ACTUAL_END,REHAB_CONTEXT_PKG.getGLOBAL_DATE()) >= REHAB_CONTEXT_PKG.getGLOBAL_DATE()
+                          or PRATR_ACTUAL_START >  REHAB_CONTEXT_PKG.getGLOBAL_DATE())
+                        PRATR,
+                     REHAB_PRESCRIPTIONS_DETAILS PRD
+                where PR.PR_ID=PRATR_PR_ID and PRATR.PRATR_ID=PRD.PRD_PRATR_ID
+                group by PR_PAT_ID, nvl(PR_DR_ID,PRD_DR_ID)) planned,
+             REHAB_DRUGS d, REHAB_WORKING_SUBSTANCE w
+        where stor.PAT_ID=cons.PAT_ID(+) and stor.DR_ID=cons.DR_ID(+) and stor.DR_ID=d.DR_ID
+          and stor.PAT_ID=planned.PAT_ID and stor.DR_ID=planned.DR_ID and d.DR_WS_ID = w.WS_ID(+);
+

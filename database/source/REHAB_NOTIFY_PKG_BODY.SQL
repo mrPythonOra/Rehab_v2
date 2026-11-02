@@ -15,7 +15,7 @@
             p_security_group_id => l_workspace_id
         );
 
-        for i in (select * from REHAB_NOTIFICATION_QUEUE where NQ_STATUS = 'INQUEUE' and NQ_SEND_DT  - NUMTODSINTERVAL(2, 'MINUTE') < systimestamp
+        for i in (select * from REHAB_NOTIFICATION_QUEUE where NQ_STATUS = 'INQUEUE' and NQ_SEND_DT - NUMTODSINTERVAL(2, 'MINUTE') < systimestamp
                  )
         loop
             -- 3. Now you can safely call your APEX PWA or utility functions
@@ -30,6 +30,11 @@
             update REHAB_NOTIFICATION_QUEUE set NQ_STATUS = 'ISSENT', NQ_SENT = systimestamp at time zone SESSIONTIMEZONE where NQ_ID = i.NQ_ID;
         end loop;
         COMMIT;
+        if to_char(sysdate,'HH24MI') like '010%' then
+          delete from REHAB_NOTIFICATION_QUEUE where NQ_STATUS = 'ISSENT' and NQ_SEND_DT + NUMTODSINTERVAL(3, 'DAY') < systimestamp;
+          REHAB_LOGGING_PKG.logmsg($$PLSQL_UNIT, $$PLSQL_LINE,'Cleaned up "%p" rows.',sql%rowcount);
+          commit;
+        end if;
     END send_queue;
 
     procedure setup_queue_processing

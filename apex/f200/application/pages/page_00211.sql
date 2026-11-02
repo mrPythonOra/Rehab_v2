@@ -5,7 +5,7 @@ begin
 --   Manifest End
 wwv_flow_imp.component_begin (
  p_version_yyyy_mm_dd=>'2026.03.30'
-,p_release=>'26.1.5'
+,p_release=>'26.1.6'
 ,p_default_workspace_id=>166651606440306663
 ,p_default_application_id=>200
 ,p_default_id_offset=>0
@@ -106,7 +106,7 @@ wwv_flow_imp_page.create_jet_chart_series(
 '     trunc(tr_start, ''dd'') tr_start,',
 '     sum(tr_steps) tr_steps,',
 unistr('    ''\041A\0440\043E\043A\0438'' series_name,'),
-unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(sum(tr_steps)) || '' \043A\0440\043E\043A\0456\0432'' ct'),
+unistr('    to_char(trunc(tr_start, ''dd''),''&APP_DTFMT_DATE. Day '') || round(sum(tr_steps)) || '' \043A\0440\043E\043A\0456\0432'' ct'),
 'FROM',
 '    rehab_trainings',
 'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -557,7 +557,7 @@ wwv_flow_imp_page.create_jet_chart_series(
 '     trunc(tr_start, ''dd'') tr_start,',
 '     sum(tr_distance_length) tr_distance_length,',
 unistr('    ''\041F\043E \0433\0430\0434\0436\0435\0442\0443 1, \043A\043C'' series_name,'),
-unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(sum(tr_distance_length),3) || '' \043A\043C'' ct'),
+unistr('    to_char(trunc(tr_start, ''dd''),''&APP_DTFMT_DATE. Day '') || round(sum(tr_distance_length),3) || '' \043A\043C'' ct'),
 'FROM',
 '    rehab_trainings',
 'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -615,7 +615,7 @@ wwv_flow_imp_page.create_jet_chart_series(
 '     trunc(tr_start, ''dd'') tr_start,',
 '     sum(tr_dev2_distance) tr_dev2_distance,',
 unistr('    ''\041F\043E \0433\0430\0434\0436\0435\0442\0443 2, \043A\043C'' series_name,'),
-unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(sum(tr_dev2_distance),3) || '' \043A\043C'' ct'),
+unistr('    to_char(trunc(tr_start, ''dd''),''&APP_DTFMT_DATE. Day '') || round(sum(tr_dev2_distance),3) || '' \043A\043C'' ct'),
 'FROM',
 '    rehab_trainings',
 'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -645,7 +645,7 @@ wwv_flow_imp_page.create_jet_chart_series(
 '     trunc(tr_start, ''dd'') tr_start,',
 '    sum(tr_real_distance) tr_real_distance,',
 unistr('    ''\0420\0435\0430\043B\044C\043D\0430, \043A\043C'' series_name,'),
-unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(sum(tr_real_distance),3) || '' \043A\043C'' ct'),
+unistr('    to_char(trunc(tr_start, ''dd''),''&APP_DTFMT_DATE. Day '') || round(sum(tr_real_distance),3) || '' \043A\043C'' ct'),
 'FROM',
 '    rehab_trainings',
 'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -747,7 +747,7 @@ wwv_flow_imp_page.create_jet_chart_series(
 '     trunc(tr_start, ''dd'') tr_start,',
 '    avg(tr_real_speed) tr_real_speed,',
 unistr('    ''\0428\0432\0438\0434\043A\0456\0441\0442\044C, \043A\043C/\0433\043E\0434'' series_name,'),
-unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(avg(tr_real_speed),3) || '' \043A\043C/\0433\043E\0434'' ct'),
+unistr('    to_char(trunc(tr_start, ''dd''),''&APP_DTFMT_DATE. Day '') || round(avg(tr_real_speed),3) || '' \043A\043C/\0433\043E\0434'' ct'),
 'FROM',
 '    rehab_trainings',
 'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -777,7 +777,7 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    trunc(tr_start, ''dd'') tr_start,',
 '    avg(tr_real_step_length) real_step_length,',
 unistr('    ''\0414\043E\0432\0436\0438\043D\0430 \043A\0440\043E\043A\0443, \043C'' series_name,'),
-unistr('    to_char(trunc(tr_start, ''dd''),''YYYY-MM-DD Day'') || round(avg(tr_real_step_length),3) || '' \043C'' ct'),
+unistr('    to_char(trunc(tr_start, ''dd''),''&APP_DTFMT_DATE. Day '') || round(avg(tr_real_step_length),3) || '' \043C'' ct'),
 'FROM',
 '    rehab_trainings',
 'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -894,7 +894,7 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    trunc(tr_start, ''IW'') tr_start,',
 '    round(avg(tr_distance_length*0.8944/( (tr_end+0) -  (tr_start+0))/24),3) calc_speed,',
 unistr('    ''\041E\0431\0447\0438\0441\043B\0435\043D\0430, \043A\043C/\0433\043E\0434'' series_name,'),
-unistr('    to_char(trunc(tr_start, ''IW''),''YYYY-MM-DD "\0422\0438\0436\0434\0435\043D\044C" IW'') || '' '' || round(avg(tr_distance_length*0.8944/( (tr_end+0) -  (tr_start+0))/24),3) || '' \043A\043C/\0433\043E\0434'' ct'),
+unistr('    to_char(trunc(tr_start, ''IW''),''&APP_DTFMT_DATE. "\0422\0438\0436\0434\0435\043D\044C" IW'') || '' '' || round(avg(tr_distance_length*0.8944/( (tr_end+0) -  (tr_start+0))/24),3) || '' \043A\043C/\0433\043E\0434'' ct'),
 'FROM',
 '    rehab_trainings',
 'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
@@ -904,7 +904,7 @@ unistr('    to_char(trunc(tr_start, ''IW''),''YYYY-MM-DD "\0422\0438\0436\0434\0
 '    trunc(tr_start, ''IW'') tr_start,',
 '    avg(tr_REAL_SPEED) calc_speed,',
 unistr('    ''\0420\0435\0430\043B\044C\043D\0430, \043A\043C/\0433\043E\0434'' series_name,'),
-unistr('    to_char(trunc(tr_start, ''IW''),''YYYY-MM-DD "\0422\0438\0436\0434\0435\043D\044C" IW'') || '' '' || round(avg(tr_distance_length*0.8944/( (tr_end+0) -  (tr_start+0))/24),3) || '' \043A\043C/\0433\043E\0434'' ct'),
+unistr('    to_char(trunc(tr_start, ''IW''),''&APP_DTFMT_DATE. "\0422\0438\0436\0434\0435\043D\044C" IW'') || '' '' || round(avg(tr_distance_length*0.8944/( (tr_end+0) -  (tr_start+0))/24),3) || '' \043A\043C/\0433\043E\0434'' ct'),
 'FROM',
 '    rehab_trainings',
 'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT() and tr_REAL_SPEED is not null',

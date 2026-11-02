@@ -117,19 +117,20 @@ np_app_user varchar2(128),
 np_PR_ID_EVENT number, -- notify to consume next med
 np_PR_ID_TRG number,
 np_CPTR_ID number, --notify when a window starts
-np_dr_id number, -- notify when low remains
+np_dr_pr_id number, -- notify when low remains
 np_dr_days_remain number
 );
-
+alter table rehab_notification_pars rename column np_dr_id to np_dr_pr_id;
 ALTER TABLE rehab_notification_pars ADD CONSTRAINT PK_rehab_notification_pars PRIMARY KEY (np_id)
   USING INDEX;
   
 ALTER TABLE rehab_notification_pars ADD CONSTRAINT FK_rehab_notification_pars_nd FOREIGN KEY (np_nd_id)
 	  REFERENCES rehab_notification_defs (nd_id) ENABLE;
-      
-create unique index IX_rehab_notification_pars_NEXTMED on rehab_notification_pars(np_nd_id, np_app_user, np_PR_ID_EVENT, np_PR_ID_TRG);
-create unique index IX_rehab_notification_pars_WIN on rehab_notification_pars(np_nd_id, np_app_user, np_CPTR_ID);
-create unique index IX_rehab_notification_pars_DRUG on rehab_notification_pars(np_nd_id, np_app_user, np_dr_id);
+drop index IX_rehab_notification_pars_DRUG;
+create unique index IX_rehab_notification_pars_p on rehab_notification_pars(np_nd_id, np_app_user, np_PR_ID_EVENT, np_CPTR_ID, np_dr_id);
+--create unique index IX_rehab_notification_pars_NEXTMED on rehab_notification_pars(np_nd_id, np_app_user, np_PR_ID_EVENT);
+--create unique index IX_rehab_notification_pars_WIN on rehab_notification_pars(np_nd_id, np_app_user, np_CPTR_ID);
+--create unique index IX_rehab_notification_pars_DRUG on rehab_notification_pars(np_nd_id, np_app_user, np_dr_id);
 create sequence sq_rehab_notification_pars;
 
 drop table rehab_notification_queue;
@@ -167,6 +168,20 @@ INSERT INTO rehab_notification_defs (
            'Час приймати наступний медикамент!',
            'Час приймати %p.',
            '/r/reabilitation/rehab-v2-0/medtoconsume' );
+set define off
+INSERT INTO rehab_notification_defs (
+    nd_id,
+    nd_name,
+    nd_description,
+    nd_title,
+    nd_body,
+    nd_target_url
+) VALUES ( 'LOWMEDNF',
+           'Медикамент скоро закінчиться',
+           'Нагадування при необхідність поповнити запаси медикаменту',
+           'Час докупити медикамент!',
+           'Час докупити %p.',
+           '.r/reabilitation/rehab-v2-0/inventory' );           
 --r/rehab-v2-0/medtoconsume           
 INSERT INTO rehab_notification_pars (
     np_id,
@@ -176,7 +191,7 @@ INSERT INTO rehab_notification_pars (
     np_pr_id_event,
     np_pr_id_trg,
     np_cptr_id,
-    np_dr_id,
+    np_dr_pr_id,
     np_dr_days_remain
 ) VALUES ( sq_rehab_notification_pars.nextval,
            'NEXTMEDNF',
@@ -273,4 +288,21 @@ BEGIN
   REHAB_NOTIFY_PKG.setup_queue_processing  ;  
 END;
 /
+DECLARE
+  P_NP_PR_ID_EVENT NUMBER;
+  P_NP_PR_ID_TRG NUMBER;
+  P_NP_TIME_DELAY NUMBER;
+    
+BEGIN
+  P_NP_PR_ID_EVENT := NULL;
+  P_NP_PR_ID_TRG := NULL;
+  P_NP_TIME_DELAY := NULL;
+
+  REHAB_NOTIFY_API_PKG.setup_notification_next_med (  
+    P_NP_PR_ID_EVENT => P_NP_PR_ID_EVENT,
+    P_NP_PR_ID_TRG => P_NP_PR_ID_TRG,
+    P_NP_TIME_DELAY => P_NP_TIME_DELAY) ;  
+END;
+/
+select * from user_scheduler_job_run_details order by 1 desc;
 

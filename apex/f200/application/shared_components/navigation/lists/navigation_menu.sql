@@ -5,7 +5,7 @@ begin
 --   Manifest End
 wwv_flow_imp.component_begin (
  p_version_yyyy_mm_dd=>'2026.03.30'
-,p_release=>'26.1.5'
+,p_release=>'26.1.6'
 ,p_default_workspace_id=>166651606440306663
 ,p_default_application_id=>200
 ,p_default_id_offset=>0
@@ -15,7 +15,7 @@ wwv_flow_imp_shared.create_list(
  p_id=>wwv_flow_imp.id(16870838765504258)
 ,p_name=>'Navigation Menu'
 ,p_static_id=>'navigation-menu'
-,p_version_scn=>'SH256:XBbk4QVkiLgpeOQw0r-fllfeGAzisCQgYOeUT5gcO88'
+,p_version_scn=>'SH256:4kcUZhIfPyoQwUvGn6Lpo1xuGu7XtRx0xOu5GleVWj4'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(17056773995505539)
@@ -134,24 +134,35 @@ wwv_flow_imp_shared.create_list_item(
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(77203133461766942)
 ,p_list_item_display_sequence=>300
-,p_list_item_link_text=>'REHAB_CONFIGS'
+,p_list_item_link_text=>unistr('\041F\0430\0440\0430\043C\0435\0442\0440\0438')
 ,p_static_id=>'rehab-configs'
-,p_list_item_link_target=>'f?p=&APP_ID.:701:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_link_target=>'f?p=&APP_ID.:701:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-ai-sparkle-generate-list'
 ,p_parent_list_item_id=>wwv_flow_imp.id(17056773995505539)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'701'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(77209224516777139)
-,p_list_item_display_sequence=>310
+ p_id=>wwv_flow_imp.id(82689344747701114)
+,p_list_item_display_sequence=>370
 ,p_list_item_link_text=>'REHAB_CONSUME_PATTERNS'
 ,p_static_id=>'rehab-consume-patterns'
-,p_list_item_link_target=>'f?p=&APP_ID.:702:&APP_SESSION.::&DEBUG.:::'
+,p_list_item_link_target=>'f?p=&APP_ID.:709:&APP_SESSION.::&DEBUG.:::'
 ,p_list_item_icon=>'fa-clock-o'
 ,p_parent_list_item_id=>wwv_flow_imp.id(17056773995505539)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'702'
+,p_list_item_current_for_pages=>'709'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(82695817024723733)
+,p_list_item_display_sequence=>380
+,p_list_item_link_text=>'REHAB_CONSUME_TIME_RANGES'
+,p_static_id=>'rehab-consume-time-ranges'
+,p_list_item_link_target=>'f?p=&APP_ID.:711:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-timeline-arrow'
+,p_parent_list_item_id=>wwv_flow_imp.id(17056773995505539)
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'711'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(77225119930797921)

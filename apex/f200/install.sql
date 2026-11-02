@@ -62,6 +62,7 @@ prompt --install
 @@application/shared_components/user_interface/lovs/rehab_working_substance_ws_name_1.sql
 @@application/shared_components/user_interface/lovs/timeframe_4_weeks.sql
 @@application/shared_components/user_interface/lovs/view_as_report_chart.sql
+@@application/shared_components/user_interface/lovs/y_n_values.sql
 @@application/pages/page_groups.sql
 @@application/shared_components/navigation/breadcrumbs/breadcrumb.sql
 @@application/shared_components/navigation/breadcrumbentry.sql
@@ -113,12 +114,13 @@ prompt --install
 @@application/pages/page_00601.sql
 @@application/pages/page_00701.sql
 @@application/pages/page_00702.sql
-@@application/pages/page_00703.sql
 @@application/pages/page_00704.sql
 @@application/pages/page_00705.sql
 @@application/pages/page_00706.sql
 @@application/pages/page_00707.sql
 @@application/pages/page_00708.sql
+@@application/pages/page_00709.sql
+@@application/pages/page_00711.sql
 @@application/pages/page_09999.sql
 @@application/pages/page_10000.sql
 @@application/pages/page_10010.sql

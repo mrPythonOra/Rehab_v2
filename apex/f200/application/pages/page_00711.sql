@@ -1,18 +1,18 @@
-prompt --application/pages/page_00703
+prompt --application/pages/page_00711
 begin
 --   Manifest
---     PAGE: 00703
+--     PAGE: 00711
 --   Manifest End
 wwv_flow_imp.component_begin (
  p_version_yyyy_mm_dd=>'2026.03.30'
-,p_release=>'26.1.5'
+,p_release=>'26.1.6'
 ,p_default_workspace_id=>166651606440306663
 ,p_default_application_id=>200
 ,p_default_id_offset=>0
 ,p_default_owner=>'REHAB_V2'
 );
 wwv_flow_imp_page.create_page(
- p_id=>703
+ p_id=>711
 ,p_name=>'REHAB_CONSUME_TIME_RANGES'
 ,p_alias=>'REHAB-CONSUME-TIME-RANGES'
 ,p_step_title=>'REHAB_CONSUME_TIME_RANGES'
@@ -23,7 +23,7 @@ wwv_flow_imp_page.create_page(
 ,p_page_component_map=>'18'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(77215213590783081)
+ p_id=>wwv_flow_imp.id(82696253223723737)
 ,p_plug_name=>'Breadcrumb'
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
@@ -37,7 +37,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_menu_template_id=>4073839682315169711
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(77216015309783248)
+ p_id=>wwv_flow_imp.id(82697057176723913)
 ,p_plug_name=>'REHAB_CONSUME_TIME_RANGES'
 ,p_static_id=>'rehab-consume-time-ranges'
 ,p_region_template_options=>'#DEFAULT#:t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc'
@@ -79,7 +79,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_ai_enabled=>false
 );
 wwv_flow_imp_page.create_worksheet(
- p_id=>wwv_flow_imp.id(77216183679783248)
+ p_id=>wwv_flow_imp.id(82697157430723913)
 ,p_max_row_count_message=>'The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.'
 ,p_no_data_found_message=>'No data found.'
 ,p_pagination_type=>'ROWS_X_TO_Y'
@@ -90,10 +90,10 @@ wwv_flow_imp_page.create_worksheet(
 ,p_show_notify=>'Y'
 ,p_download_formats=>'CSV:HTML:XLSX:PDF'
 ,p_enable_mail_download=>'Y'
-,p_internal_uid=>77216183679783248
+,p_internal_uid=>82697157430723913
 );
 wwv_flow_imp_page.create_worksheet_column(
- p_id=>wwv_flow_imp.id(77217684147783407)
+ p_id=>wwv_flow_imp.id(82698716022724069)
 ,p_db_column_name=>'CPTR_CP_ID'
 ,p_display_order=>2
 ,p_column_identifier=>'B'
@@ -107,7 +107,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_available_clientside=>'N'
 );
 wwv_flow_imp_page.create_worksheet_column(
- p_id=>wwv_flow_imp.id(77218841368783418)
+ p_id=>wwv_flow_imp.id(82699996498724075)
 ,p_db_column_name=>'CPTR_END_TIME_STR'
 ,p_display_order=>5
 ,p_column_identifier=>'E'
@@ -118,7 +118,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_available_clientside=>'N'
 );
 wwv_flow_imp_page.create_worksheet_column(
- p_id=>wwv_flow_imp.id(77217324316783404)
+ p_id=>wwv_flow_imp.id(82698302626724066)
 ,p_db_column_name=>'CPTR_ID'
 ,p_display_order=>0
 ,p_is_primary_key=>'Y'
@@ -128,7 +128,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_display_text_as=>'HIDDEN_ESCAPE_SC'
 );
 wwv_flow_imp_page.create_worksheet_column(
- p_id=>wwv_flow_imp.id(77218050528783410)
+ p_id=>wwv_flow_imp.id(82699161319724071)
 ,p_db_column_name=>'CPTR_NAME'
 ,p_display_order=>3
 ,p_column_identifier=>'C'
@@ -139,7 +139,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_available_clientside=>'N'
 );
 wwv_flow_imp_page.create_worksheet_column(
- p_id=>wwv_flow_imp.id(77218465486783413)
+ p_id=>wwv_flow_imp.id(82699545867724073)
 ,p_db_column_name=>'CPTR_START_TIME_STR'
 ,p_display_order=>4
 ,p_column_identifier=>'D'
@@ -148,6 +148,15 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_heading_alignment=>'LEFT'
 ,p_use_as_row_header=>'N'
 ,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_rpt(
+ p_id=>wwv_flow_imp.id(82700896404736797)
+,p_application_user=>'APXWS_DEFAULT'
+,p_report_seq=>10
+,p_report_alias=>'primary'
+,p_status=>'PUBLIC'
+,p_is_default=>'Y'
+,p_report_columns=>'CPTR_ID:CPTR_CP_ID:CPTR_NAME:CPTR_START_TIME_STR:CPTR_END_TIME_STR'
 );
 wwv_flow_imp.component_end;
 end;

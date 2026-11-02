@@ -5,7 +5,7 @@ begin
 --   Manifest End
 wwv_flow_imp.component_begin (
  p_version_yyyy_mm_dd=>'2026.03.30'
-,p_release=>'26.1.5'
+,p_release=>'26.1.6'
 ,p_default_workspace_id=>166651606440306663
 ,p_default_application_id=>200
 ,p_default_id_offset=>0
@@ -395,7 +395,7 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    to_char(trunc(mt_taken, ''dd''),''YYYY-MM-DD'') mt_taken,',
 '    round(avg(mt_pressure_sys)) mt_pressure,',
 unistr('    ''\0422\0438\0441\043A SYS'' series_name,'),
-'    to_char(trunc(mt_taken, ''dd''),''YYYY-MM-DD Day'') || '' '' ||  round(avg(mt_pressure_sys)) || ''/'' || round(avg(mt_pressure_dia)) ct,',
+'    to_char(trunc(mt_taken, ''dd''),''&APP_DTFMT_DATE. Day '') || round(avg(mt_pressure_sys)) || ''/'' || round(avg(mt_pressure_dia)) ct,',
 '    ''custom column'' cc',
 '  FROM',
 '    rehab_measurements',
@@ -407,7 +407,7 @@ unistr('    ''\0422\0438\0441\043A SYS'' series_name,'),
 '    to_char(trunc(mt_taken, ''dd''),''YYYY-MM-DD'') mt_taken,',
 '    round(avg(mt_pressure_dia)) mt_pressure,',
 unistr('    ''\0422\0438\0441\043A DIA'' series_name,'),
-'    to_char(trunc(mt_taken, ''dd''),''YYYY-MM-DD Day'') || '' '' || round(avg(mt_pressure_sys)) || ''/'' || round(avg(mt_pressure_dia)) ct,',
+'    to_char(trunc(mt_taken, ''dd''),''&APP_DTFMT_DATE. Day '') || round(avg(mt_pressure_sys)) || ''/'' || round(avg(mt_pressure_dia)) ct,',
 '    ''custom column'' cc',
 '  FROM',
 '    rehab_measurements',
@@ -546,21 +546,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'SELECT',
-'    -- mt_id,',
-'    -- mt_pat_id,',
 '    trunc(mt_taken, ''dd'') mt_taken,',
-unistr('    -- decode(mt_pressure_lr, ''L'', ''\041B\0456\0432\0430'', ''R'', ''\041F\0440\0430\0432\0430'') mt_pressure_lr,'),
-'    --avg(mt_pressure_sys) mt_pressure_sys,',
-'    --avg(mt_pressure_dia) mt_pressure_dia,',
-'    --min(mt_pulse) mt_pulse_min,',
-'   --max(mt_pulse) mt_pulse_max,',
-'    -- mt_temperature,',
-'    -- mt_sugar,',
-'    -- mt_oxigenation,',
 '    avg(mt_weight) mt_weight,',
-'    -- mt_descr',
 unistr('    ''\0412\0430\0433\0430'' series_name,'),
-unistr('    to_char(trunc(mt_taken, ''dd''),''YYYY-MM-DD Day'') || round(avg(mt_weight),2) || '' \043A\0433'' ct'),
+unistr('    to_char(trunc(mt_taken, ''dd''),''&APP_DTFMT_DATE. Day '') || round(avg(mt_weight),2) || '' \043A\0433'' ct'),
 '  FROM',
 '    rehab_measurements',
 ' where MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',
@@ -715,22 +704,10 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'SELECT',
-'    -- mt_id,',
-'    -- mt_pat_id,',
 '    to_char(trunc(mt_taken, ''dd''),''YYYY-MM-DD'') mt_taken,',
-unistr('    -- decode(mt_pressure_lr, ''L'', ''\041B\0456\0432\0430'', ''R'', ''\041F\0440\0430\0432\0430'') mt_pressure_lr,'),
-'    --avg(mt_pressure_sys) mt_pressure_sys,',
-'    --avg(mt_pressure_dia) mt_pressure_dia,',
-'    -- min(mt_pulse) mt_pulse_min,',
-'    -- max(mt_pulse) mt_pulse_max,',
 '    avg(mt_pulse) mt_pulse_avg,',
-'    -- mt_temperature,',
-'    -- mt_sugar,',
-'    -- mt_oxigenation,',
-'    -- mt_weight,',
-'    -- mt_descr',
 unistr('    ''\041F\0443\043B\044C\0441'' series_name,'),
-unistr('    to_char(trunc(mt_taken, ''dd''),''YYYY-MM-DD Day'') || round(avg(mt_pulse)) || '' \0443\0434\0430\0440\0456\0432/\0445\0432'' ct'),
+unistr('    to_char(trunc(mt_taken, ''dd''),''&APP_DTFMT_DATE. Day '') || round(avg(mt_pulse)) || '' \0443\0434\0430\0440\0456\0432/\0445\0432'' ct'),
 '  FROM',
 '    rehab_measurements',
 ' where MT_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() ',

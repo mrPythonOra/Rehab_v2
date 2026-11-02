@@ -9,7 +9,7 @@
     begin
       if p_NP_TIME_DELAY is null then
         delete from REHAB_NOTIFICATION_PARS where NP_ND_ID = 'NEXTMEDNF' and NP_APP_USER = REHAB_CONTEXT_PKG.getAPEX_USER and NP_PR_ID_EVENT = p_NP_PR_ID_EVENT;
-        REHAB_LOGGING_PKG.logmsg($$PLSQL_UNIT, $$PLSQL_LINE,'Deleting notification setup "%p" for user "%p".',p_NP_PR_ID_EVENT,REHAB_CONTEXT_PKG.getAPEX_USER);
+        REHAB_LOGGING_PKG.logmsg($$PLSQL_UNIT, $$PLSQL_LINE,'Deleting notification setup NEXTMEDNF for PR: "%p", for user "%p", rows: %p.',p_NP_PR_ID_EVENT,REHAB_CONTEXT_PKG.getAPEX_USER, sql%rowcount);
       else
         merge into REHAB_NOTIFICATION_PARS trg
         using (select 'NEXTMEDNF' NP_ND_ID, REHAB_CONTEXT_PKG.getAPEX_USER NP_APP_USER, p_NP_PR_ID_EVENT NP_PR_ID_EVENT, p_NP_PR_ID_TRG NP_PR_ID_TRG, p_NP_TIME_DELAY NP_TIME_DELAY from dual) src
@@ -23,7 +23,7 @@
             trg.np_pr_id_event,
             trg.np_pr_id_trg,
             trg.np_cptr_id,
-            trg.np_dr_id,
+            trg.NP_DR_PR_ID,
             trg.np_dr_days_remain)
         VALUES (
             sq_rehab_notification_pars.nextval,
@@ -35,7 +35,7 @@
             null,
             null,
             null );
-        REHAB_LOGGING_PKG.logmsg($$PLSQL_UNIT, $$PLSQL_LINE,'Modifying notification setup "%p" for user "%p".',p_NP_PR_ID_EVENT,REHAB_CONTEXT_PKG.getAPEX_USER);
+        REHAB_LOGGING_PKG.logmsg($$PLSQL_UNIT, $$PLSQL_LINE,'Modifying notification setup NEXTMEDNF for PR: "%p", for user "%p", rows: %p.',p_NP_PR_ID_EVENT,REHAB_CONTEXT_PKG.getAPEX_USER, sql%rowcount);
       end if;
     end;
 
@@ -46,7 +46,8 @@
         for i in (select * from REHAB_NOTIFICATION_DEFS, REHAB_NOTIFICATION_PARS
                    where NP_ND_ID = ND_ID
                      and NP_APP_USER = REHAB_CONTEXT_PKG.getAPEX_USER
-                     and NP_PR_ID_EVENT = p_pr_id)
+                     and NP_PR_ID_EVENT = p_pr_id
+                     and np_nd_id = 'NEXTMEDNF')
         loop
           select DR_NAME || ' ('||DR_TYPE_SHORT ||')' into l_drug_name
           from V$REHAB_CONSUME_DATA
@@ -57,9 +58,46 @@
           VALUES ( sq_rehab_notification_queue.nextval, i.np_nd_id, P_DRU_CONSUMED at time zone SESSIONTIMEZONE + NUMTODSINTERVAL(i.NP_TIME_DELAY, 'MINUTE'),
                                                 i.ND_TITLE,REHAB_LOGGING_PKG.prepmsg(i.ND_BODY,l_drug_name),i.ND_TARGET_URL,
                                                 REHAB_CONTEXT_PKG.getAPEX_USER);
-          REHAB_LOGGING_PKG.logmsg($$PLSQL_UNIT, $$PLSQL_LINE,'Notification "%p" for user "%p" is added.',i.ND_TITLE,REHAB_CONTEXT_PKG.getAPEX_USER);
+          REHAB_LOGGING_PKG.logmsg($$PLSQL_UNIT, $$PLSQL_LINE,'Notification NEXTMEDNF for PR: "%p", user "%p" is added.',i.ND_TITLE,REHAB_CONTEXT_PKG.getAPEX_USER);
         end loop;
     END add_notification_next_med;
+
+  procedure setup_notification_low_med (p_NP_DR_PR_ID REHAB_NOTIFICATION_PARS.NP_DR_PR_ID%type,
+                                        p_NP_DR_DAYS_REMAIN REHAB_NOTIFICATION_PARS.NP_DR_DAYS_REMAIN%type)
+    is
+    begin
+      if p_NP_DR_DAYS_REMAIN is null then
+        delete from REHAB_NOTIFICATION_PARS where NP_ND_ID = 'LOWMEDNF' and NP_APP_USER = REHAB_CONTEXT_PKG.getAPEX_USER and NP_DR_PR_ID = p_NP_DR_PR_ID;
+        REHAB_LOGGING_PKG.logmsg($$PLSQL_UNIT, $$PLSQL_LINE,'Deleting notification setup: LOWMEDNF for PR: %p, user: "%p", rows: %p.',p_NP_DR_PR_ID,REHAB_CONTEXT_PKG.getAPEX_USER, sql%rowcount);
+      else
+        merge into REHAB_NOTIFICATION_PARS trg
+        using (select 'LOWMEDNF' NP_ND_ID, REHAB_CONTEXT_PKG.getAPEX_USER NP_APP_USER, p_NP_DR_PR_ID NP_DR_PR_ID, p_NP_DR_DAYS_REMAIN NP_DR_DAYS_REMAIN from dual) src
+        on (src.NP_ND_ID = trg.NP_ND_ID and src.NP_APP_USER=trg.NP_APP_USER and trg.NP_DR_PR_ID = src.NP_DR_PR_ID)
+        when matched then update set trg.NP_DR_DAYS_REMAIN = src.NP_DR_DAYS_REMAIN
+        when not matched then insert (
+            trg.np_id,
+            trg.np_nd_id,
+            trg.np_time_delay,
+            trg.np_app_user,
+            trg.np_pr_id_event,
+            trg.np_pr_id_trg,
+            trg.np_cptr_id,
+            trg.np_dr_pr_id,
+            trg.np_dr_days_remain)
+        VALUES (
+            sq_rehab_notification_pars.nextval,
+            src.NP_ND_ID,
+            null,
+            src.NP_APP_USER,
+            null,
+            null,
+            null,
+            src.NP_DR_PR_ID,
+            src.NP_DR_DAYS_REMAIN );
+        REHAB_LOGGING_PKG.logmsg($$PLSQL_UNIT, $$PLSQL_LINE,'Modifying notification setup: LOWMEDNF for PR: "%p", user "%p", rows: %p.',p_NP_DR_PR_ID,REHAB_CONTEXT_PKG.getAPEX_USER, sql%rowcount);
+      end if;
+null;
+    end;
 
 END REHAB_NOTIFY_API_PKG;
 /
