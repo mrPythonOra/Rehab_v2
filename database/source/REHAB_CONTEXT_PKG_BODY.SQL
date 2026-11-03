@@ -109,12 +109,20 @@
        attribute => gAPEX_USER,
        value     => p_apex_user);
 
-    if p_apex_user = vCurrentApexUser or l_curr_is_superuser then
+    if p_apex_user = vCurrentApexUser then
         DBMS_SESSION.SET_CONTEXT (
            namespace => gNameSpace,
            attribute => gMODE,
            value     => 'RW');
     end if;
+
+    if l_curr_is_superuser then
+        DBMS_SESSION.SET_CONTEXT (
+           namespace => gNameSpace,
+           attribute => gMODE,
+           value     => 'ADM');
+    end if;
+
     if p_apex_user != vCurrentApexUser and not l_curr_is_superuser and l_curr_tenant=l_tenant and l_curr_is_tenantadm then
         DBMS_SESSION.SET_CONTEXT (
            namespace => gNameSpace,
@@ -170,8 +178,9 @@
   function getMODE      return varchar2 is begin return SYS_CONTEXT(gNameSpace, gMODE); end;
 
 
-  function AccessLevelRW     return boolean is begin return nvl(getMODE,'~') = 'RW'; end;
-  function AccessLevelRO     return boolean is begin return nvl(getMODE,'~') in ('RW', 'RO'); end;
+  function AccessLevelADM    return boolean is begin return nvl(getMODE,'~') = 'ADM'; end;
+  function AccessLevelRW     return boolean is begin return nvl(getMODE,'~') in ('RW', 'ADM'); end;
+  function AccessLevelRO     return boolean is begin return nvl(getMODE,'~') in ('RW', 'ADM', 'RO'); end;
 
 begin
    set_current_user(v('APP_USER'));

@@ -391,7 +391,7 @@ wwv_flow_imp_page.create_ig_report_column(
 ,p_view_id=>wwv_flow_imp.id(77169229036444138)
 ,p_display_seq=>8
 ,p_column_id=>wwv_flow_imp.id(77067484107873136)
-,p_is_visible=>true
+,p_is_visible=>false
 ,p_is_frozen=>false
 );
 wwv_flow_imp_page.create_page_plug(

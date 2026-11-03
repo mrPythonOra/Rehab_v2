@@ -74,7 +74,16 @@ where TP_TE_ID = REHAB_CONTEXT_PKG.getTENANT() and REHAB_CONTEXT_PKG.getPATIENT(
 union
 select * from V$REHAB_TIME_PERIODS o
 where TP_TE_ID is null and TP_PAT_ID is null and REHAB_CONTEXT_PKG.getTENANT() is not null and REHAB_CONTEXT_PKG.getPATIENT() is not null 
-  and not exists (select 1 from V$REHAB_TIME_PERIODS i where (TP_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() or TP_TE_ID = REHAB_CONTEXT_PKG.getTENANT()) and i.TP_ID = o.TP_ID);
+  and not exists (select 1 from V$REHAB_TIME_PERIODS i where (TP_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() or TP_TE_ID = REHAB_CONTEXT_PKG.getTENANT() and PAR_PAT_ID is null) and i.TP_ID = o.TP_ID);
+
+
+
+begin
+    REHAB_CONTEXT_PKG.set_current_user('OLYAPTAH');
+    REHAB_CONTEXT_PKG.set_specific_context('OLYAPTAH');
+    REHAB_CONTEXT_PKG.set_current_date(sysdate);
+end;
+/
 
 CREATE OR REPLACE FORCE EDITIONABLE VIEW V$REHAB_CONFIGS_AVAILABLE
 as
@@ -87,7 +96,7 @@ where PAR_TE_ID = REHAB_CONTEXT_PKG.getTENANT() and REHAB_CONTEXT_PKG.getPATIENT
 union
 select * from REHAB_CONFIGS o
 where PAR_TE_ID is null and PAR_PAT_ID is null and REHAB_CONTEXT_PKG.getTENANT() is not null and REHAB_CONTEXT_PKG.getPATIENT() is not null 
-  and not exists (select 1 from REHAB_CONFIGS i where (PAR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() or PAR_TE_ID = REHAB_CONTEXT_PKG.getTENANT()) and o.PAR_NAME = i.PAR_NAME);
+  and not exists (select 1 from REHAB_CONFIGS i where (PAR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() or PAR_TE_ID = REHAB_CONTEXT_PKG.getTENANT() and PAR_PAT_ID is null) and o.PAR_NAME = i.PAR_NAME);
 
 
 select TP_ID from V$REHAB_TIME_PERIODS_AVAILABLE where systimestamp between TP_START_TIME_DT_CURR and TP_END_TIME_DT_CURR;
@@ -101,7 +110,7 @@ select * from REHAB_CONSUME_PATTERNS o
 union
 select * from REHAB_CONSUME_PATTERNS o
  where CP_TE_ID is null and CP_PAT_ID is null and REHAB_CONTEXT_PKG.getTENANT() is not null and REHAB_CONTEXT_PKG.getPATIENT() is not null 
-   and not exists (select 1 from REHAB_CONSUME_PATTERNS i where (CP_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() or CP_TE_ID = REHAB_CONTEXT_PKG.getTENANT()) and i.CP_ID = o.CP_ID)
+   and not exists (select 1 from REHAB_CONSUME_PATTERNS i where (CP_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() or CP_TE_ID = REHAB_CONTEXT_PKG.getTENANT() and PAR_PAT_ID is null) and i.CP_ID = o.CP_ID)
 ;
 CREATE OR REPLACE FORCE EDITIONABLE VIEW V$REHAB_CONSUME_TIME_RANGES 
 AS 

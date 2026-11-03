@@ -19,6 +19,7 @@ prompt --install
 @@application/shared_components/files/icons_app_icon_256_rounded_png.sql
 @@application/shared_components/files/icons_app_icon_32_png.sql
 @@application/shared_components/files/icons_app_icon_512_png.sql
+@@application/shared_components/security/authorizations/accessmodeadm.sql
 @@application/shared_components/security/authorizations/accessmoderw.sql
 @@application/shared_components/security/authorizations/administration_rights.sql
 @@application/shared_components/security/authorizations/contribution_rights.sql

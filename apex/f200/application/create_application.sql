@@ -44,7 +44,7 @@ wwv_imp_workspace.create_flow(
 ,p_deep_linking=>'Y'
 ,p_vpd=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'begin',
-'    REHAB_CONTEXT_PKG.set_specific_context(:P0_SUDO);',
+'    REHAB_CONTEXT_PKG.set_specific_context(nvl(:P0_SUDO,v(''APP_USER'')));',
 'end;'))
 ,p_vpd_teardown_code=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'begin',
@@ -70,7 +70,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_06=>'YYYY-MM-DD HH24:MI:SS TZR'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>2461338150255
-,p_version_scn=>'50682431108809'
+,p_version_scn=>'50682628266915'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'

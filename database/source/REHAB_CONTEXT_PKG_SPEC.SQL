@@ -17,6 +17,7 @@
   function getGLOBAL_DATE_TRUNC return date;
   function getGLOBAL_DATE_TSTZ return timestamp with time zone;
 
+  function AccessLevelADM    return boolean;
   function AccessLevelRW     return boolean;
   function AccessLevelRO     return boolean;
 
