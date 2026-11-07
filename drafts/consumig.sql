@@ -84,6 +84,12 @@ begin
     REHAB_CONTEXT_PKG.set_current_date(sysdate);
 end;
 /
+begin
+    REHAB_CONTEXT_PKG.set_current_user('YURI');
+    REHAB_CONTEXT_PKG.set_specific_context('YURI');
+    REHAB_CONTEXT_PKG.set_current_date(sysdate);
+end;
+/
 
 CREATE OR REPLACE FORCE EDITIONABLE VIEW V$REHAB_CONFIGS_AVAILABLE
 as
@@ -100,18 +106,20 @@ where PAR_TE_ID is null and PAR_PAT_ID is null and REHAB_CONTEXT_PKG.getTENANT()
 
 
 select TP_ID from V$REHAB_TIME_PERIODS_AVAILABLE where systimestamp between TP_START_TIME_DT_CURR and TP_END_TIME_DT_CURR;
-
+select * from V$REHAB_CONSUME_PATTERNS_AVAILABLE;
 create or replace view V$REHAB_CONSUME_PATTERNS_AVAILABLE as
 select * from REHAB_CONSUME_PATTERNS where CP_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()
 union
 select * from REHAB_CONSUME_PATTERNS o
  where CP_TE_ID = REHAB_CONTEXT_PKG.getTENANT() and REHAB_CONTEXT_PKG.getPATIENT() is not null and CP_PAT_ID is null 
-   and not exists (select 1 from REHAB_CONSUME_PATTERNS i where CP_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() and i.CP_ID = o.CP_ID)
+   and not exists (select 1 from REHAB_CONSUME_PATTERNS i where CP_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() and decode(i.CP_PRNT_ID, o.CP_PRNT_ID, 1, 0) = 1)
 union
 select * from REHAB_CONSUME_PATTERNS o
  where CP_TE_ID is null and CP_PAT_ID is null and REHAB_CONTEXT_PKG.getTENANT() is not null and REHAB_CONTEXT_PKG.getPATIENT() is not null 
-   and not exists (select 1 from REHAB_CONSUME_PATTERNS i where (CP_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() or CP_TE_ID = REHAB_CONTEXT_PKG.getTENANT() and PAR_PAT_ID is null) and i.CP_ID = o.CP_ID)
+   and not exists (select 1 from REHAB_CONSUME_PATTERNS i 
+                    where (CP_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() or CP_TE_ID = REHAB_CONTEXT_PKG.getTENANT() and CP_PAT_ID is null) and decode(i.CP_PRNT_ID, o.CP_ID, 1, 0) = 1)
 ;
+
 CREATE OR REPLACE FORCE EDITIONABLE VIEW V$REHAB_CONSUME_TIME_RANGES 
 AS 
 select  x.*,

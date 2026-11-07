@@ -15,7 +15,7 @@ wwv_flow_imp_page.create_page(
  p_id=>601
 ,p_name=>'Charts'
 ,p_alias=>'CHARTS1'
-,p_step_title=>'Charts'
+,p_step_title=>unistr('\0414\0456\0430\0433\0440\0430\043C\0438')
 ,p_autocomplete_on_off=>'OFF'
 ,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
@@ -1880,7 +1880,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'del'
 ,p_show_as_disabled=>false
 ,p_button_action=>'SUBMIT'
-,p_button_template_options=>'#DEFAULT#:t-Button--large:t-Button--gapTop'
+,p_button_template_options=>'#DEFAULT#:t-Button--large:t-Button--stretch:t-Button--gapTop'
 ,p_button_template_id=>2350584059425431644
 ,p_button_image_alt=>unistr('\0412\0438\0434\0430\043B\0438\0442\0438')
 ,p_icon_css_classes=>'fa-trash-o'
@@ -1896,7 +1896,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'save'
 ,p_show_as_disabled=>false
 ,p_button_action=>'SUBMIT'
-,p_button_template_options=>'#DEFAULT#:t-Button--large:t-Button--gapTop'
+,p_button_template_options=>'#DEFAULT#:t-Button--large:t-Button--stretch:t-Button--gapTop'
 ,p_button_template_id=>2350584059425431644
 ,p_button_image_alt=>unistr('\0417\0431\0435\0440\0456\0433\0442\0438')
 ,p_icon_css_classes=>'fa-file-check'
@@ -2100,16 +2100,16 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_plug_id=>wwv_flow_imp.id(323518396164394284)
 ,p_prompt=>unistr('\0417\0431\0435\0440\0435\0436\0435\043D\0438\0439 \0437\0432\0456\0442')
 ,p_source_type=>'ALWAYS_NULL'
-,p_display_as=>'NATIVE_SELECT_ONE'
+,p_display_as=>'NATIVE_SELECT_LIST'
 ,p_named_lov=>'APP_STATE_STORAGE_LIST'
+,p_lov_display_null=>'YES'
+,p_cHeight=>1
 ,p_field_template=>1610598304472262251
 ,p_item_template_options=>'#DEFAULT#'
+,p_lov_display_extra=>'NO'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'case_sensitive', 'N',
-  'fetch_on_search', 'N',
-  'infinite_scroll', 'Y',
-  'match_type', 'CONTAINS',
-  'min_chars', '0')).to_clob
+  'execute_validations', 'Y',
+  'page_action_on_selection', 'SUBMIT')).to_clob
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(327171772976296816)
@@ -2147,6 +2147,7 @@ wwv_flow_imp_page.create_page_process(
 ,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'begin',
 '  REHAB_APPSTATE.delete_storage(:P601_STORAGE);',
+'  :P601_STORAGE := null;',
 'end;'))
 ,p_process_clob_language=>'PLSQL'
 ,p_error_display_location=>'INLINE_IN_NOTIFICATION'

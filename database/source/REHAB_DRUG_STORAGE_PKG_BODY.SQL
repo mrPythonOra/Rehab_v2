@@ -65,16 +65,19 @@
       DA_PR_ID = P_PR_ID,
       DA_PRATR_ID = P_PRATR_ID
     where DA_ID = P_DA_ID;
+    --INSERT INTO rehab_drug_acc2prr ( da2prr_da_id,  da2prr_pratr_id) VALUES ( P_DA_ID, P_PRATR_ID);
   end;
 
   procedure remove_assign_pr(P_DA_ID REHAB_DRUG_ACCOUNTINGS.DA_ID%type)
   is
+    L_PRATR_ID REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES.PRATR_ID%type;
   begin
     update REHAB_DRUG_ACCOUNTINGS set
       DA_PRR_ID = null,
       DA_PR_ID = null,
       DA_PRATR_ID = null
-    where DA_ID = P_DA_ID;
+    where DA_ID = P_DA_ID returning old DA_PRATR_ID into L_PRATR_ID;
+    --delete from rehab_drug_acc2prr where da2prr_da_id = P_DA_ID and da2prr_pratr_id = L_PRATR_ID;
   end;
 END REHAB_DRUG_STORAGE_PKG;
 /

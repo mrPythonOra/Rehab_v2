@@ -213,7 +213,8 @@ wwv_flow_imp_page.create_page_plug(
 '    tr_real_distance,',
 '    tr_real_step_length,',
 '    tr_real_speed,',
-'    tr_dev2_distance',
+'    tr_dev2_distance,',
+'    tr_additonal_weight',
 'FROM',
 '    rehab_trainings',
 'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT();'))
@@ -262,6 +263,18 @@ wwv_flow_imp_page.create_worksheet(
 ,p_download_formats=>'CSV:HTML:XLSX:PDF'
 ,p_enable_mail_download=>'Y'
 ,p_internal_uid=>51855125522079130
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(82677023976848029)
+,p_db_column_name=>'TR_ADDITONAL_WEIGHT'
+,p_display_order=>180
+,p_column_identifier=>'U'
+,p_column_label=>unistr('\0414\043E\0434\0430\0442\043A\043E\0432\0430 \0432\0430\0433\0430')
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
 );
 wwv_flow_imp_page.create_worksheet_column(
  p_id=>wwv_flow_imp.id(51856298768079141)
@@ -704,7 +717,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
 ,p_plug_template=>4073835273271169698
-,p_plug_display_sequence=>50
+,p_plug_display_sequence=>60
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -851,7 +864,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
 ,p_plug_template=>4073835273271169698
-,p_plug_display_sequence=>60
+,p_plug_display_sequence=>70
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -1051,6 +1064,222 @@ wwv_flow_imp_page.create_jet_chart_axis(
 ,p_format_scaling=>'auto'
 ,p_scaling=>'linear'
 ,p_baseline_scaling=>'min'
+,p_position=>'auto'
+,p_major_tick_rendered=>'on'
+,p_minor_tick_rendered=>'auto'
+,p_tick_label_rendered=>'on'
+,p_split_dual_y=>'auto'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(86066034024822908)
+,p_plug_name=>'SmallChart5'
+,p_static_id=>'smallchart5'
+,p_title=>unistr('\0417 \0432\0430\0433\043E\044E')
+,p_parent_plug_id=>wwv_flow_imp.id(54685120764388101)
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>80
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source_type=>'NATIVE_JET_CHART'
+);
+wwv_flow_imp_page.create_jet_chart(
+ p_id=>wwv_flow_imp.id(86066154210822909)
+,p_region_id=>wwv_flow_imp.id(86066034024822908)
+,p_chart_type=>'line'
+,p_height=>'300'
+,p_animation_on_display=>'auto'
+,p_animation_on_data_change=>'auto'
+,p_orientation=>'vertical'
+,p_data_cursor=>'auto'
+,p_data_cursor_behavior=>'auto'
+,p_hide_and_show_behavior=>'withRescale'
+,p_hover_behavior=>'dim'
+,p_stack=>'off'
+,p_connect_nulls=>'Y'
+,p_sorting=>'label-asc'
+,p_fill_multi_series_gaps=>true
+,p_zoom_and_scroll=>'off'
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_legend_rendered=>'on'
+,p_legend_position=>'top'
+,p_time_axis_type=>'enabled'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(86066223729822910)
+,p_chart_id=>wwv_flow_imp.id(86066154210822909)
+,p_static_id=>'disnatce'
+,p_seq=>10
+,p_name=>'Weight'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'SELECT',
+'     trunc(tr_start, ''dd'') tr_start,',
+'     avg(tr_additonal_weight) tr_additonal_weight,',
+unistr('    ''\0414\043E\0434\0430\0442\043A\043E\0432\0430 \0432\0430\0433\0430, \043A\0433'' series_name,'),
+unistr('    to_char(trunc(tr_start, ''dd''),''&APP_DTFMT_DATE. Day '') || round(avg(tr_additonal_weight),3) || '' \043A\0433'' ct'),
+'FROM',
+'    rehab_trainings',
+'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
+'  and trunc(TR_START) between REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par(''DBAGG_TRAI'') - 1 and REHAB_CONTEXT_PKG.getGLOBAL_DATE()',
+'group by trunc(tr_start, ''dd'')',
+'order by tr_start'))
+,p_series_name_column_name=>'SERIES_NAME'
+,p_items_value_column_name=>'TR_ADDITONAL_WEIGHT'
+,p_items_label_column_name=>'TR_START'
+,p_items_short_desc_column_name=>'CT'
+,p_line_style=>'solid'
+,p_line_type=>'curved'
+,p_marker_rendered=>'auto'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(86066583014822913)
+,p_chart_id=>wwv_flow_imp.id(86066154210822909)
+,p_static_id=>'disnatce-trg'
+,p_seq=>40
+,p_name=>'Disnatce_TRG'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'SELECT',
+'     trunc(tr_start, ''dd'') tr_start,',
+'    to_number(REHAB_CONFIG_PKG.get_config_par(''DBTRG_TRAINDIST'')) distance_trg,',
+unistr('    ''\041C\0435\0442\0430'' series_name'),
+'FROM',
+'    rehab_trainings',
+'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
+'  and trunc(TR_START) between REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par(''DBAGG_TRAI'') - 1 and REHAB_CONTEXT_PKG.getGLOBAL_DATE()',
+'group by trunc(tr_start, ''dd'')',
+'order by tr_start'))
+,p_series_name_column_name=>'SERIES_NAME'
+,p_items_value_column_name=>'DISTANCE_TRG'
+,p_items_label_column_name=>'TR_START'
+,p_line_style=>'dotted'
+,p_line_type=>'curved'
+,p_marker_rendered=>'auto'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+,p_required_patch=>wwv_flow_imp.id(16869691178504232)
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(86066385566822911)
+,p_chart_id=>wwv_flow_imp.id(86066154210822909)
+,p_static_id=>'disnatce2'
+,p_seq=>20
+,p_name=>'Pulse'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'SELECT',
+'     trunc(tr_start, ''dd'') tr_start,',
+'     avg(TR_PULSE_MIN) TR_PULSE_MIN,',
+unistr('    ''\041F\0443\043B\044C\0441 \043C\0456\043D\0456\043C\0430\043B\044C\043D\0438\0439'' series_name,'),
+unistr('    to_char(trunc(tr_start, ''dd''),''&APP_DTFMT_DATE. Day '') || round(sum(TR_PULSE_MIN),3) || '' \0443\0434\0430\0440\0456\0432/\0445\0432'' ct'),
+'FROM',
+'    rehab_trainings',
+'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
+'  and trunc(TR_START) between REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par(''DBAGG_TRAI'') - 1 and REHAB_CONTEXT_PKG.getGLOBAL_DATE()',
+'group by trunc(tr_start, ''dd'')',
+'union all',
+'SELECT',
+'     trunc(tr_start, ''dd'') tr_start,',
+'     avg(TR_PULSE_MAX) TR_PULSE_MAX,',
+unistr('    ''\041F\0443\043B\044C\0441 \043C\0430\043A\0441\0438\043C\0430\043B\044C\043D\0438\0439'' series_name,'),
+unistr('    to_char(trunc(tr_start, ''dd''),''&APP_DTFMT_DATE. Day '') || round(sum(TR_PULSE_MAX),3) || '' \0443\0434\0430\0440\0456\0432/\0445\0432'' ct'),
+'FROM',
+'    rehab_trainings',
+'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
+'  and trunc(TR_START) between REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par(''DBAGG_TRAI'') - 1 and REHAB_CONTEXT_PKG.getGLOBAL_DATE()',
+'group by trunc(tr_start, ''dd'')',
+'order by tr_start'))
+,p_series_name_column_name=>'SERIES_NAME'
+,p_items_value_column_name=>'TR_PULSE_MIN'
+,p_items_label_column_name=>'TR_START'
+,p_items_short_desc_column_name=>'CT'
+,p_line_style=>'solid'
+,p_line_type=>'curved'
+,p_marker_rendered=>'auto'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'on'
+,p_items_label_rendered=>false
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(86066414339822912)
+,p_chart_id=>wwv_flow_imp.id(86066154210822909)
+,p_static_id=>'disnatcereal'
+,p_seq=>30
+,p_name=>'DisnatceReal'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'SELECT',
+'     trunc(tr_start, ''dd'') tr_start,',
+'    sum(tr_real_distance) tr_real_distance,',
+unistr('    ''\0420\0435\0430\043B\044C\043D\0430, \043A\043C'' series_name,'),
+unistr('    to_char(trunc(tr_start, ''dd''),''&APP_DTFMT_DATE. Day '') || round(sum(tr_real_distance),3) || '' \043A\043C'' ct'),
+'FROM',
+'    rehab_trainings',
+'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
+'  and trunc(TR_START) between REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par(''DBAGG_TRAI'') - 1 and REHAB_CONTEXT_PKG.getGLOBAL_DATE()',
+'group by trunc(tr_start, ''dd'')',
+'order by tr_start'))
+,p_series_name_column_name=>'SERIES_NAME'
+,p_items_value_column_name=>'TR_REAL_DISTANCE'
+,p_items_label_column_name=>'TR_START'
+,p_items_short_desc_column_name=>'CT'
+,p_line_style=>'solid'
+,p_line_type=>'curved'
+,p_marker_rendered=>'auto'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(86066619710822914)
+,p_chart_id=>wwv_flow_imp.id(86066154210822909)
+,p_static_id=>'x'
+,p_axis=>'x'
+,p_is_rendered=>'on'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_major_tick_rendered=>'on'
+,p_minor_tick_rendered=>'auto'
+,p_tick_label_rendered=>'on'
+,p_tick_label_rotation=>'auto'
+,p_tick_label_position=>'outside'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(86066751069822915)
+,p_chart_id=>wwv_flow_imp.id(86066154210822909)
+,p_static_id=>'y'
+,p_axis=>'y'
+,p_is_rendered=>'on'
+,p_format_type=>'decimal'
+,p_decimal_places=>3
+,p_format_scaling=>'none'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'min'
+,p_position=>'auto'
+,p_major_tick_rendered=>'on'
+,p_minor_tick_rendered=>'auto'
+,p_tick_label_rendered=>'on'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(86066887810822916)
+,p_chart_id=>wwv_flow_imp.id(86066154210822909)
+,p_static_id=>'y2'
+,p_axis=>'y2'
+,p_is_rendered=>'on'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
 ,p_position=>'auto'
 ,p_major_tick_rendered=>'on'
 ,p_minor_tick_rendered=>'auto'

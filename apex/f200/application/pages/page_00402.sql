@@ -348,6 +348,562 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_source_type=>'NATIVE_FORM'
 );
 wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(82675583667848014)
+,p_plug_name=>'Remains'
+,p_static_id=>'remains'
+,p_title=>unistr('\0417\0430\043F\0430\0441\0438')
+,p_parent_plug_id=>wwv_flow_imp.id(56470562677627427)
+,p_region_template_options=>'#DEFAULT#:t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc'
+,p_plug_template=>2102002977963900996
+,p_plug_display_sequence=>30
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select DS_NAME,',
+'     PRR_PRESCRIPTED_BY_SHORT, PRR_PRESCRIPTED_WHEN,',
+'     PR_PLANNED_START, PR_PLANNED_END, PRATR_ACTUAL_START, PRATR_ACTUAL_END,',
+'     DA_QUANTITY, DA_ENTIRY_WEIGHT, WS_NAME, DR_NAME',
+'from REHAB_DRUG_STORAGES, REHAB_DRUG_ACCOUNTINGS,',
+'     REHAB_DRUG_ACC2PRR, REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES, REHAB_PRESCRIPTIONS, REHAB_PRESCRIPTORS,',
+'     REHAB_DRUGS, REHAB_WORKING_SUBSTANCE',
+'where DS_ID = DA_DS_ID and DA_ID = DA2PRR_DA_ID and DA_DR_ID = DR_ID',
+'  and DA2PRR_PRATR_ID = PRATR_ID and PRATR_PR_ID = PR_ID and PR_PRR_ID = PRR_ID and PR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
+'  and PRR_ID = :P402_PRR_ID_CURR',
+'  and PR_WS_ID = WS_ID(+)'))
+,p_plug_source_type=>'NATIVE_IR'
+,p_prn_content_disposition=>'ATTACHMENT'
+,p_prn_units=>'MILLIMETERS'
+,p_prn_paper_size=>'A4'
+,p_prn_width=>297
+,p_prn_height=>210
+,p_prn_orientation=>'HORIZONTAL'
+,p_prn_page_header=>unistr('\0417\0430\043F\0430\0441\0438')
+,p_prn_page_header_font_color=>'#000000'
+,p_prn_page_header_font_family=>'Helvetica'
+,p_prn_page_header_font_weight=>'normal'
+,p_prn_page_header_font_size=>'12'
+,p_prn_page_footer_font_color=>'#000000'
+,p_prn_page_footer_font_family=>'Helvetica'
+,p_prn_page_footer_font_weight=>'normal'
+,p_prn_page_footer_font_size=>'12'
+,p_prn_header_bg_color=>'#EEEEEE'
+,p_prn_header_font_color=>'#000000'
+,p_prn_header_font_family=>'Helvetica'
+,p_prn_header_font_weight=>'bold'
+,p_prn_header_font_size=>'10'
+,p_prn_body_bg_color=>'#FFFFFF'
+,p_prn_body_font_color=>'#000000'
+,p_prn_body_font_family=>'Helvetica'
+,p_prn_body_font_weight=>'normal'
+,p_prn_body_font_size=>'10'
+,p_prn_border_width=>2
+,p_prn_page_header_alignment=>'CENTER'
+,p_prn_page_footer_alignment=>'CENTER'
+,p_prn_border_color=>'#666666'
+,p_required_patch=>wwv_flow_imp.id(16869691178504232)
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_worksheet(
+ p_id=>wwv_flow_imp.id(82675664022848015)
+,p_pagination_type=>'ROWS_X_TO_Y'
+,p_pagination_display_pos=>'BOTTOM_RIGHT'
+,p_report_list_mode=>'TABS'
+,p_lazy_loading=>false
+,p_show_detail_link=>'N'
+,p_show_notify=>'Y'
+,p_download_formats=>'CSV:HTML:XLSX:PDF'
+,p_enable_mail_download=>'Y'
+,p_internal_uid=>82675664022848015
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(82676537389848024)
+,p_db_column_name=>'DA_ENTIRY_WEIGHT'
+,p_display_order=>90
+,p_column_identifier=>'I'
+,p_column_label=>'Da Entiry Weight'
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(82676443470848023)
+,p_db_column_name=>'DA_QUANTITY'
+,p_display_order=>80
+,p_column_identifier=>'H'
+,p_column_label=>'Da Quantity'
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(82676733307848026)
+,p_db_column_name=>'DR_NAME'
+,p_display_order=>110
+,p_column_identifier=>'K'
+,p_column_label=>'Dr Name'
+,p_column_type=>'STRING'
+,p_heading_alignment=>'LEFT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(82675781594848016)
+,p_db_column_name=>'DS_NAME'
+,p_display_order=>10
+,p_column_identifier=>'A'
+,p_column_label=>'Ds Name'
+,p_column_type=>'STRING'
+,p_heading_alignment=>'LEFT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(82676300893848022)
+,p_db_column_name=>'PRATR_ACTUAL_END'
+,p_display_order=>70
+,p_column_identifier=>'G'
+,p_column_label=>'Pratr Actual End'
+,p_column_type=>'DATE'
+,p_heading_alignment=>'LEFT'
+,p_tz_dependent=>'N'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(82676270559848021)
+,p_db_column_name=>'PRATR_ACTUAL_START'
+,p_display_order=>60
+,p_column_identifier=>'F'
+,p_column_label=>'Pratr Actual Start'
+,p_column_type=>'DATE'
+,p_heading_alignment=>'LEFT'
+,p_tz_dependent=>'N'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(82675823118848017)
+,p_db_column_name=>'PRR_PRESCRIPTED_BY_SHORT'
+,p_display_order=>20
+,p_column_identifier=>'B'
+,p_column_label=>'Prr Prescripted By Short'
+,p_column_type=>'STRING'
+,p_heading_alignment=>'LEFT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(82675960331848018)
+,p_db_column_name=>'PRR_PRESCRIPTED_WHEN'
+,p_display_order=>30
+,p_column_identifier=>'C'
+,p_column_label=>'Prr Prescripted When'
+,p_column_type=>'DATE'
+,p_heading_alignment=>'LEFT'
+,p_tz_dependent=>'N'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(82676168230848020)
+,p_db_column_name=>'PR_PLANNED_END'
+,p_display_order=>50
+,p_column_identifier=>'E'
+,p_column_label=>'Pr Planned End'
+,p_column_type=>'DATE'
+,p_heading_alignment=>'LEFT'
+,p_tz_dependent=>'N'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(82676025593848019)
+,p_db_column_name=>'PR_PLANNED_START'
+,p_display_order=>40
+,p_column_identifier=>'D'
+,p_column_label=>'Pr Planned Start'
+,p_column_type=>'DATE'
+,p_heading_alignment=>'LEFT'
+,p_tz_dependent=>'N'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(82676643558848025)
+,p_db_column_name=>'WS_NAME'
+,p_display_order=>100
+,p_column_identifier=>'J'
+,p_column_label=>'Ws Name'
+,p_column_type=>'STRING'
+,p_heading_alignment=>'LEFT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_rpt(
+ p_id=>wwv_flow_imp.id(83275225451340314)
+,p_application_user=>'APXWS_DEFAULT'
+,p_report_seq=>10
+,p_report_alias=>'primary'
+,p_status=>'PUBLIC'
+,p_is_default=>'Y'
+,p_report_columns=>'DS_NAME:PRR_PRESCRIPTED_BY_SHORT:PRR_PRESCRIPTED_WHEN:PR_PLANNED_START:PR_PLANNED_END:PRATR_ACTUAL_START:PRATR_ACTUAL_END:DA_QUANTITY:DA_ENTIRY_WEIGHT:WS_NAME:DR_NAME'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(82677554664848034)
+,p_plug_name=>'ReservationGrid'
+,p_static_id=>'reservationgrid'
+,p_parent_plug_id=>wwv_flow_imp.id(82677473243848033)
+,p_region_template_options=>'#DEFAULT#:t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc'
+,p_plug_template=>2102002977963900996
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select *',
+'from rehab_drug_reservation, REHAB_DRUG_ACCOUNTINGS ',
+'where DARES_DA_ID = DA_ID',
+'  and DARES_PR_ID = :P402_PR_ID_CURR and DARES_PRATR_ID = :P402_PRATR_ID_CURR and DARES_PRD_ID = :P402_PRD_ID_CURR;'))
+,p_plug_source_type=>'NATIVE_IR'
+,p_prn_content_disposition=>'ATTACHMENT'
+,p_prn_units=>'MILLIMETERS'
+,p_prn_paper_size=>'A4'
+,p_prn_width=>297
+,p_prn_height=>210
+,p_prn_orientation=>'HORIZONTAL'
+,p_prn_page_header_font_color=>'#000000'
+,p_prn_page_header_font_family=>'Helvetica'
+,p_prn_page_header_font_weight=>'normal'
+,p_prn_page_header_font_size=>'12'
+,p_prn_page_footer_font_color=>'#000000'
+,p_prn_page_footer_font_family=>'Helvetica'
+,p_prn_page_footer_font_weight=>'normal'
+,p_prn_page_footer_font_size=>'12'
+,p_prn_header_bg_color=>'#EEEEEE'
+,p_prn_header_font_color=>'#000000'
+,p_prn_header_font_family=>'Helvetica'
+,p_prn_header_font_weight=>'bold'
+,p_prn_header_font_size=>'10'
+,p_prn_body_bg_color=>'#FFFFFF'
+,p_prn_body_font_color=>'#000000'
+,p_prn_body_font_family=>'Helvetica'
+,p_prn_body_font_weight=>'normal'
+,p_prn_body_font_size=>'10'
+,p_prn_border_width=>2
+,p_prn_page_header_alignment=>'CENTER'
+,p_prn_page_footer_alignment=>'CENTER'
+,p_prn_border_color=>'#666666'
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_worksheet(
+ p_id=>wwv_flow_imp.id(82677678891848035)
+,p_pagination_type=>'ROWS_X_TO_Y'
+,p_pagination_display_pos=>'BOTTOM_RIGHT'
+,p_report_list_mode=>'TABS'
+,p_lazy_loading=>false
+,p_show_detail_link=>'N'
+,p_show_notify=>'Y'
+,p_download_formats=>'CSV:HTML:XLSX:PDF'
+,p_enable_mail_download=>'Y'
+,p_internal_uid=>82677678891848035
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(82677801954848037)
+,p_db_column_name=>'DARES_DA_ID'
+,p_display_order=>20
+,p_column_identifier=>'B'
+,p_column_label=>'Dares Da Id'
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(82677772256848036)
+,p_db_column_name=>'DARES_ID'
+,p_display_order=>10
+,p_column_identifier=>'A'
+,p_column_label=>'Dares Id'
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(82678074344848039)
+,p_db_column_name=>'DARES_PRATR_ID'
+,p_display_order=>40
+,p_column_identifier=>'D'
+,p_column_label=>'Dares Pratr Id'
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(86065955095822907)
+,p_db_column_name=>'DARES_PRD_ID'
+,p_display_order=>220
+,p_column_identifier=>'V'
+,p_column_label=>'Dares Prd Id'
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(86065809671822906)
+,p_db_column_name=>'DARES_PRR_ID'
+,p_display_order=>210
+,p_column_identifier=>'U'
+,p_column_label=>'Dares Prr Id'
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(82677927503848038)
+,p_db_column_name=>'DARES_PR_ID'
+,p_display_order=>30
+,p_column_identifier=>'C'
+,p_column_label=>'Dares Pr Id'
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(82678255966848041)
+,p_db_column_name=>'DARES_RESERVATION_TS'
+,p_display_order=>60
+,p_column_identifier=>'F'
+,p_column_label=>'Dares Reservation Ts'
+,p_column_type=>'DATE'
+,p_heading_alignment=>'LEFT'
+,p_tz_dependent=>'N'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(82678198505848040)
+,p_db_column_name=>'DARES_RESERVED_AMOUNT'
+,p_display_order=>50
+,p_column_identifier=>'E'
+,p_column_label=>'Dares Reserved Amount'
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(86065768309822905)
+,p_db_column_name=>'DA_BEST_BEFORE'
+,p_display_order=>200
+,p_column_identifier=>'T'
+,p_column_label=>'Da Best Before'
+,p_column_type=>'DATE'
+,p_heading_alignment=>'LEFT'
+,p_tz_dependent=>'N'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(86065630667822904)
+,p_db_column_name=>'DA_CHECK_POINT_DT'
+,p_display_order=>190
+,p_column_identifier=>'S'
+,p_column_label=>'Da Check Point Dt'
+,p_column_type=>'DATE'
+,p_heading_alignment=>'LEFT'
+,p_tz_dependent=>'N'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(86065432686822902)
+,p_db_column_name=>'DA_COST'
+,p_display_order=>170
+,p_column_identifier=>'Q'
+,p_column_label=>'Da Cost'
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(82678548699848044)
+,p_db_column_name=>'DA_DR_ID'
+,p_display_order=>90
+,p_column_identifier=>'I'
+,p_column_label=>'Da Dr Id'
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(82678416044848043)
+,p_db_column_name=>'DA_DS_ID'
+,p_display_order=>80
+,p_column_identifier=>'H'
+,p_column_label=>'Da Ds Id'
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(86065352752822901)
+,p_db_column_name=>'DA_ENTIRY_WEIGHT'
+,p_display_order=>160
+,p_column_identifier=>'P'
+,p_column_label=>'Da Entiry Weight'
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(82678341492848042)
+,p_db_column_name=>'DA_ID'
+,p_display_order=>70
+,p_column_identifier=>'G'
+,p_column_label=>'Da Id'
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(82679042490848049)
+,p_db_column_name=>'DA_ORDER_TYPE'
+,p_display_order=>140
+,p_column_identifier=>'N'
+,p_column_label=>'Da Order Type'
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(82678940168848048)
+,p_db_column_name=>'DA_PRATR_ID'
+,p_display_order=>130
+,p_column_identifier=>'M'
+,p_column_label=>'Da Pratr Id'
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(82678662006848045)
+,p_db_column_name=>'DA_PRR_ID'
+,p_display_order=>100
+,p_column_identifier=>'J'
+,p_column_label=>'Da Prr Id'
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(82678743989848046)
+,p_db_column_name=>'DA_PR_ID'
+,p_display_order=>110
+,p_column_identifier=>'K'
+,p_column_label=>'Da Pr Id'
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(86065572682822903)
+,p_db_column_name=>'DA_PURCHASED'
+,p_display_order=>180
+,p_column_identifier=>'R'
+,p_column_label=>'Da Purchased'
+,p_column_type=>'DATE'
+,p_heading_alignment=>'LEFT'
+,p_tz_dependent=>'N'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(82679130307848050)
+,p_db_column_name=>'DA_QUANTITY'
+,p_display_order=>150
+,p_column_identifier=>'O'
+,p_column_label=>'Da Quantity'
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(82678821392848047)
+,p_db_column_name=>'DA_WS_ID'
+,p_display_order=>120
+,p_column_identifier=>'L'
+,p_column_label=>'Da Ws Id'
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+);
+wwv_flow_imp_page.create_worksheet_rpt(
+ p_id=>wwv_flow_imp.id(86084139972824999)
+,p_application_user=>'APXWS_DEFAULT'
+,p_report_seq=>10
+,p_report_alias=>'primary'
+,p_status=>'PUBLIC'
+,p_is_default=>'Y'
+,p_report_columns=>'DARES_ID:DARES_DA_ID:DARES_PR_ID:DARES_PRATR_ID:DARES_RESERVED_AMOUNT:DARES_RESERVATION_TS:DA_ID:DA_DS_ID:DA_DR_ID:DA_PRR_ID:DA_PR_ID:DA_WS_ID:DA_PRATR_ID:DA_ORDER_TYPE:DA_QUANTITY:DA_ENTIRY_WEIGHT:DA_COST:DA_PURCHASED:DA_CHECK_POINT_DT:DA_BEST_BEFOR'
+||'E'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(82677473243848033)
+,p_plug_name=>'Reservations'
+,p_static_id=>'reservations'
+,p_title=>unistr('\0420\0435\0437\0435\0440\0432\0443\0432\0430\043D\043D\044F')
+,p_parent_plug_id=>wwv_flow_imp.id(61096464024189531)
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>30
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_required_patch=>wwv_flow_imp.id(16869691178504232)
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(61094799122189514)
 ,p_plug_name=>'TimeRange'
 ,p_static_id=>'timerange'
@@ -397,7 +953,10 @@ wwv_flow_imp_page.create_page_plug(
 '       CPTR_START_TIME_STR, ',
 '       CPTR_END_TIME_STR,',
 '       decode(PRATR_ID,:P402_PRATR_ID_CURR,decode(PRD_ID,:P402_PRD_ID_CURR,1,0),0) CURR_ROW,',
-'       CP_NAME',
+'       CP_NAME--,',
+'    --    (select listagg(to_char(DA_CHECK_POINT_DT,''&APP_DTFMT_DATE.''),''; '')within group (order by DA_CHECK_POINT_DT) ',
+'    --       from REHAB_DRUG_ACC2PRR, REHAB_DRUG_ACCOUNTINGS',
+'    --      where PRATR_ID = DA2PRR_PRATR_ID and DA2PRR_DA_ID = DA_ID) DA_CHECK_POINT_DT',
 '  from REHAB_PRESCRIPTIONS,',
 '       REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES, ',
 '       REHAB_PRESCRIPTIONS_DETAILS, ',
@@ -459,7 +1018,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_db_column_name=>'CPTR_END_TIME_STR'
 ,p_display_order=>120
 ,p_column_identifier=>'L'
-,p_column_label=>unistr('\0417\0430\0432\0435\0440\0448\0435\043D\043D\044F')
+,p_column_label=>unistr('\0417\0430\0432\0435\0440\0448\0435\043D\043D\044F \0432\0456\043A\043D\0430')
 ,p_column_type=>'STRING'
 ,p_heading_alignment=>'LEFT'
 ,p_use_as_row_header=>'N'
@@ -481,7 +1040,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_db_column_name=>'CPTR_START_TIME_STR'
 ,p_display_order=>110
 ,p_column_identifier=>'K'
-,p_column_label=>unistr('\041F\043E\0447\0430\0442\043E\043A')
+,p_column_label=>unistr('\041F\043E\0447\0430\0442\043E\043A \0432\0456\043A\043D\0430')
 ,p_column_type=>'STRING'
 ,p_heading_alignment=>'LEFT'
 ,p_use_as_row_header=>'N'
@@ -651,7 +1210,7 @@ wwv_flow_imp_page.create_worksheet_rpt(
 ,p_break_enabled_on=>'PRATR_ACTUAL_START:PRATR_ACTUAL_END'
 );
 wwv_flow_imp_page.create_worksheet_condition(
- p_id=>wwv_flow_imp.id(65072626549538882)
+ p_id=>wwv_flow_imp.id(83277712118450639)
 ,p_report_id=>wwv_flow_imp.id(61143541411438880)
 ,p_static_id=>'ir-condition'
 ,p_condition_type=>'HIGHLIGHT'

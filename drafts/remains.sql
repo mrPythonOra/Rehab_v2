@@ -102,7 +102,7 @@ select *
   from 
        V$REHAB_REMAINS;
        
-select DA_TOTAL_AMOUNT_IN, PR_ID, PR_PRR_ID, PRATR_ID, PR_WS_ID, PR_DR_ID, PR_PLANNED_START, PR_PLANNED_END, PRATR_ACTUAL_START, PRATR_ACTUAL_END, PRATR_ACTUAL_END - PRATR_ACTUAL_START dur, sum(PRD_DOSAGE) daily_dosage
+select DA_TOTAL_AMOUNT_IN, PR_ID, PR_PRR_ID, PRATR_ID, PR_WS_ID, PR_DR_ID, PRD_DR_ID, PR_PLANNED_START, PR_PLANNED_END, PRATR_ACTUAL_START, PRATR_ACTUAL_END, PRATR_ACTUAL_END - PRATR_ACTUAL_START dur, sum(PRD_DOSAGE) daily_dosage
 from REHAB_NOTIFICATION_PARS, REHAB_PRESCRIPTIONS, REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES, REHAB_PRESCRIPTIONS_DETAILS,
      (select DA_PR_ID, DA_PRR_ID, DA_PRATR_ID, sum(DA_QUANTITY * DA_ENTIRY_WEIGHT) DA_TOTAL_AMOUNT_IN from REHAB_DRUG_ACCOUNTINGS group by DA_PR_ID, DA_PRR_ID, DA_PRATR_ID) DA
 where NP_ND_ID = 'LOWMEDNF' and NP_APP_USER = 'YURI' and PR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()
@@ -111,8 +111,82 @@ where NP_ND_ID = 'LOWMEDNF' and NP_APP_USER = 'YURI' and PR_PAT_ID = REHAB_CONTE
   and PRD_PRATR_ID = PRATR_ID
   and coalesce(PRATR_ACTUAL_END,PR_PLANNED_END,REHAB_CONTEXT_PKG.getGLOBAL_DATE())>=REHAB_CONTEXT_PKG.getGLOBAL_DATE()
   and DA_PR_ID(+) = PR_ID and DA_PRR_ID(+) = PR_PRR_ID and DA_PRATR_ID(+) = PRATR_ID
-group by PR_ID, PR_PRR_ID, PRATR_ID, PR_WS_ID, PR_DR_ID, PR_PLANNED_START, PR_PLANNED_END, PRATR_ACTUAL_END, PRATR_ACTUAL_START, DA_TOTAL_AMOUNT_IN
+group by PR_ID, PR_PRR_ID, PRATR_ID, PR_WS_ID, PR_DR_ID, PRD_DR_ID, PR_PLANNED_START, PR_PLANNED_END, PRATR_ACTUAL_END, PRATR_ACTUAL_START, DA_TOTAL_AMOUNT_IN
 order by PRATR_ACTUAL_START;
+
+
+select * from rehab_drug_acc2prr where 11011 = DA2PRR_PRATR_ID;
+drop table REHAB_DRUG_ACC2PRR purge;
+select * from REHAB_DRUG_ACC2PRR;
+create table rehab_drug_acc2prr (
+DA2PRR_DA_ID number,
+DA2PRR_PRATR_ID number);
+alter table rehab_drug_acc2prr add constraint PK_rehab_drug_acc2prr primary key (DA2PRR_DA_ID, DA2PRR_PRATR_ID);
+
+insert into rehab_drug_acc2prr(DA2PRR_DA_ID, DA2PRR_PRATR_ID)
+select DA_ID, DA_PRATR_ID from REHAB_DRUG_ACCOUNTINGS where DA_PRATR_ID is not null;
+insert into rehab_drug_acc2prr(DA2PRR_DA_ID, DA2PRR_PRATR_ID) values(261,11011);
+insert into rehab_drug_acc2prr(DA2PRR_DA_ID, DA2PRR_PRATR_ID) values(302,11122);
+insert into rehab_drug_acc2prr(DA2PRR_DA_ID, DA2PRR_PRATR_ID) values(302,11123);
+delete from rehab_drug_acc2prr where DA2PRR_PRATR_ID in (11122, 11123);
+
+--------------------------------------------------------------------------------
+drop table rehab_drug_reservation;
+drop sequence sq_rehab_drug_reservation;
+create table rehab_drug_reservation (
+DARES_ID number,
+DARES_DA_ID number,
+DARES_PRR_ID number,
+DARES_PR_ID number,
+DARES_PRATR_ID number,
+DARES_PRD_ID number,
+DARES_RESERVED_AMOUNT number,
+DARES_RESERVATION_TS timestamp with time zone);
+
+alter table rehab_drug_reservation add constraint PK_rehab_drug_reservation primary key (DARES_ID);
+
+ALTER TABLE rehab_drug_reservation ADD CONSTRAINT UK_rehab_drug_reservation UNIQUE (DARES_DA_ID, DARES_PRD_ID) USING INDEX;
+CREATE INDEX IDX_rehab_drug_reservation_pratr ON rehab_drug_reservation (DARES_PRD_ID);
+
+ALTER TABLE rehab_drug_reservation ADD CONSTRAINT FK_REHAB_drug_reservation_PRR FOREIGN KEY (DARES_PRR_ID)
+	  REFERENCES REHAB_PRESCRIPTORS (PRR_ID) ENABLE;
+      
+ALTER TABLE rehab_drug_reservation ADD CONSTRAINT FK_REHAB_drug_reservation_PR FOREIGN KEY (DARES_PR_ID)
+	  REFERENCES REHAB_PRESCRIPTIONS (PR_ID) ENABLE;
+
+ALTER TABLE rehab_drug_reservation ADD CONSTRAINT FK_REHAB_drug_reservation_PRATR FOREIGN KEY (DARES_PRATR_ID)
+	  REFERENCES REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES (PRATR_ID) ENABLE;
+
+ALTER TABLE rehab_drug_reservation ADD CONSTRAINT FK_REHAB_drug_reservation_PRD FOREIGN KEY (DARES_PRD_ID)
+	  REFERENCES REHAB_PRESCRIPTIONS_DETAILS (PRD_ID) ENABLE;
+      
+create sequence sq_rehab_drug_reservation;
+--------------------------------------------------------------------------------
+insert into rehab_drug_reservation 
+      (dares_id, 
+       DARES_DA_ID, DARES_PRR_ID, DARES_PR_ID, DARES_PRATR_ID, DARES_PRD_ID, DARES_RESERVED_AMOUNT, DARES_RESERVATION_TS)
+select sq_rehab_drug_reservation.nextval,
+       DA_ID,             PRR_ID,       PR_ID,       PRATR_ID,       PRD_ID, DA_AMOUNT, DA_CHECK_POINT_DT
+from (select
+       DA_ID, PR_PRR_ID PRR_ID, DR_ID, PRD_ID, PRATR_PR_ID PR_ID, PRATR_ID, DR_NAME, DA_QUANTITY, DA_ENTIRY_WEIGHT, DA_QUANTITY*DA_ENTIRY_WEIGHT DA_AMOUNT,DA_CHECK_POINT_DT,
+       PRATR_ACTUAL_START, PRATR_ACTUAL_END, PRD_DOSAGE, DA_QUANTITY*DA_ENTIRY_WEIGHT/PRD_DOSAGE days_covered
+from rehab_drug_acc2prr, REHAB_DRUG_ACCOUNTINGS, REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES, REHAB_DRUGS, REHAB_PRESCRIPTIONS, REHAB_PRESCRIPTIONS_DETAILS
+     --lateral(select sum(PRD_DOSAGE) PRD_DOSAGE from REHAB_PRESCRIPTIONS_DETAILS where PRD_PRATR_ID = PRATR_ID)
+where DA2PRR_DA_ID = DA_ID and DA2PRR_PRATR_ID = PRATR_ID and DA_DR_ID = DR_ID and PRATR_PR_ID = PR_ID and PRD_PRATR_ID = PRATR_ID);
+order by 2,1;
+--------------------------------------------------------------------------------
+select r.*,
+       PRATR_ACTUAL_END,
+       x.*,
+       sum(DARES_RESERVED_AMOUNT) over(partition by DARES_PR_ID) RESERVED_AMOUNT_TOT
+       --case when DRU_CONSUMED
+from rehab_drug_reservation r, REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES,
+lateral(select sum(DRU_ACTUAL_DOSAGE) DRU_ACTUAL_DOSAGE, min(DR_NAME) DR_NAME,  max(DRU_CONSUMED) DRU_CONSUMED from REHAB_DRUG_USES, REHAB_DRUGS where DRU_PR_ID = DARES_PR_ID and DRU_DR_ID = DR_ID) x
+where DARES_PRATR_ID = PRATR_ID
+order by 3,2, PRATR_ACTUAL_END
+;
+select *
+from rehab_drug_reservation, REHAB_DRUG_ACCOUNTINGS where DARES_DA_ID = DA_ID;
 
   CREATE OR REPLACE FORCE EDITIONABLE VIEW V$REHAB_REMAINS
   AS 
@@ -172,3 +246,20 @@ order by PRATR_ACTUAL_START;
         where stor.PAT_ID=cons.PAT_ID(+) and stor.DR_ID=cons.DR_ID(+) and stor.DR_ID=d.DR_ID
           and stor.PAT_ID=planned.PAT_ID and stor.DR_ID=planned.DR_ID and d.DR_WS_ID = w.WS_ID(+);
 
+begin
+    REHAB_CONTEXT_PKG.set_current_user('YURI');
+    REHAB_CONTEXT_PKG.set_specific_context('YURI');
+    REHAB_CONTEXT_PKG.set_current_date(sysdate);
+end;
+/
+
+with accessible_storages as (
+  select ds_id, DS_NAME, DS_DESCRIPTION
+    from REHAB_DRUG_STORAGES, REHAB_PATIENT2STORAGES
+    where P2S_DS_ID = DS_ID and P2S_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() and DS_TE_ID = REHAB_CONTEXT_PKG.getTENANT()
+),
+accessible_meds as (
+  select
+    from REHAB_DRUG_ACCOUNTINGS, accessible_storages
+   where DA_DS_ID = ds_id
+)
