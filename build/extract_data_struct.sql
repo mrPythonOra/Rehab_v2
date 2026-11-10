@@ -51,7 +51,7 @@ order by table_name,index_name;
 --views
 SELECT DBMS_METADATA.get_ddl ('VIEW', view_name, user) txt
 FROM   user_views
-where view_name like 'V$REHAB%'
+where view_name like 'V$REHAB%' or view_name like 'V$RB%'
 order by view_name;
 
 --sequence

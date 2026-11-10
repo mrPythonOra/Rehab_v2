@@ -17,7 +17,7 @@
       select
         count(1),
         count(1) filter (where PR_PLANNED_END is null and PR_PLANNED_START < REHAB_CONTEXT_PKG.getGLOBAL_DATE()),
-        count(1) filter (where PR_PLANNED_END > REHAB_CONTEXT_PKG.getGLOBAL_DATE() and PR_PLANNED_START < REHAB_CONTEXT_PKG.getGLOBAL_DATE()),
+        count(1) filter (where PR_PLANNED_END >= REHAB_CONTEXT_PKG.getGLOBAL_DATE() and PR_PLANNED_START < REHAB_CONTEXT_PKG.getGLOBAL_DATE()),
         count(1) filter (where PR_PLANNED_END < REHAB_CONTEXT_PKG.getGLOBAL_DATE()),
         count(1) filter (where PR_PLANNED_START > REHAB_CONTEXT_PKG.getGLOBAL_DATE())
       into

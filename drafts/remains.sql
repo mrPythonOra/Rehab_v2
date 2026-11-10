@@ -237,7 +237,8 @@ from rehab_drug_reservation, REHAB_DRUG_ACCOUNTINGS where DARES_DA_ID = DA_ID;
                              end days_planned
                         from REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES A
                        where PRATR_ACTUAL_START <= REHAB_CONTEXT_PKG.getGLOBAL_DATE() and nvl(PRATR_ACTUAL_END,REHAB_CONTEXT_PKG.getGLOBAL_DATE()) >= REHAB_CONTEXT_PKG.getGLOBAL_DATE()
-                          or PRATR_ACTUAL_START >  REHAB_CONTEXT_PKG.getGLOBAL_DATE())
+                          or PRATR_ACTUAL_START >  REHAB_CONTEXT_PKG.getGLOBAL_DATE()
+                          )
                         PRATR,
                      REHAB_PRESCRIPTIONS_DETAILS PRD
                 where PR.PR_ID=PRATR_PR_ID and PRATR.PRATR_ID=PRD.PRD_PRATR_ID
@@ -245,7 +246,7 @@ from rehab_drug_reservation, REHAB_DRUG_ACCOUNTINGS where DARES_DA_ID = DA_ID;
              REHAB_DRUGS d, REHAB_WORKING_SUBSTANCE w
         where stor.PAT_ID=cons.PAT_ID(+) and stor.DR_ID=cons.DR_ID(+) and stor.DR_ID=d.DR_ID
           and stor.PAT_ID=planned.PAT_ID and stor.DR_ID=planned.DR_ID and d.DR_WS_ID = w.WS_ID(+);
-
+select * from V$REHAB_REMAINS;
 begin
     REHAB_CONTEXT_PKG.set_current_user('YURI');
     REHAB_CONTEXT_PKG.set_specific_context('YURI');
@@ -253,13 +254,70 @@ begin
 end;
 /
 
-with accessible_storages as (
+create or replace view v$rb_accessible_storages as
   select ds_id, DS_NAME, DS_DESCRIPTION
     from REHAB_DRUG_STORAGES, REHAB_PATIENT2STORAGES
     where P2S_DS_ID = DS_ID and P2S_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() and DS_TE_ID = REHAB_CONTEXT_PKG.getTENANT()
-),
-accessible_meds as (
-  select
-    from REHAB_DRUG_ACCOUNTINGS, accessible_storages
-   where DA_DS_ID = ds_id
+;
+create or replace view v$rb_accessible_meds as
+  select REHAB_DRUG_ACCOUNTINGS.*
+    from REHAB_DRUG_ACCOUNTINGS
+   where DA_DS_ID in (select ds_id from v$rb_accessible_storages)
+     and DA_CHECK_POINT_DT <= REHAB_CONTEXT_PKG.getGLOBAL_DATE()
+;
+create or replace view v$rb_accessible_meds_totals as
+  select DA_DR_ID, sum(DA_QUANTITY*DA_ENTIRY_WEIGHT) remained_amount
+    from v$rb_accessible_meds
+   group by DA_DR_ID
+;
+create or replace view v$rb_consumed_meds as
+  select REHAB_DRUG_USES.*, PRD_PRATR_ID PRATR_ID
+    from REHAB_DRUG_USES, REHAB_PRESCRIPTIONS_DETAILS
+   where DRU_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()
+     and DRU_CONSUMED <= REHAB_CONTEXT_PKG.getGLOBAL_DATE()
+     and DRU_CONSUMED >= (select min(DA_CHECK_POINT_DT) from v$rb_accessible_meds where DA_DR_ID = DRU_DR_ID)
+     and DRU_PRD_ID = PRD_ID
+;
+create or replace view v$rb_consumed_totals as 
+  select DRU_DR_ID, DRU_WS_ID, DRU_PR_ID, PRATR_ID,
+          sum(DRU_ACTUAL_DOSAGE) DRU_CONSUMED,
+          sum(DRU_ACTUAL_DOSAGE) FILTER (WHERE DRU_CONSUMED < trunc(REHAB_CONTEXT_PKG.getGLOBAL_DATE())) DRU_CONSUMED_BEFORE,
+          sum(DRU_ACTUAL_DOSAGE) FILTER (WHERE trunc(DRU_CONSUMED) = trunc(REHAB_CONTEXT_PKG.getGLOBAL_DATE())) DRU_CONSUMED_TODAY
+     from v$rb_consumed_meds c 
+    group by DRU_DR_ID, DRU_WS_ID, DRU_PR_ID, PRATR_ID
+;
+create or replace view v$rb_balance as
+  select c.*, a.*, remained_amount - DRU_CONSUMED balance_total, remained_amount - DRU_CONSUMED_BEFORE balance_before_today
+    from v$rb_accessible_meds_totals a, v$rb_consumed_totals c
+   where a.DA_DR_ID = c.DRU_DR_ID
+;
+create or replace view v$rb_plans as
+  select PR_ID, PR_PRR_ID, PR_WS_ID, PR_DR_ID, PRD_DR_ID, PRATR_ID, PR_PLANNED_START, PR_PLANNED_END, PRATR_ACTUAL_START, PRATR_ACTUAL_END, sum(PRD_DOSAGE) Daily_DOSAGE
+    from REHAB_PRESCRIPTIONS, REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES, REHAB_PRESCRIPTIONS_DETAILS
+   where PR_ID = PRATR_PR_ID and PRATR_ID = PRD_PRATR_ID
+     and PR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()
+     and (PR_PLANNED_END is null or trunc(PR_PLANNED_END) >= REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC())
+     and (PRATR_ACTUAL_END is null or trunc(PRATR_ACTUAL_END) >= REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC())
+   group by PR_ID, PR_PRR_ID, PR_WS_ID, PR_DR_ID, PRD_DR_ID, PRATR_ID, PR_PLANNED_START, PR_PLANNED_END, PRATR_ACTUAL_START, PRATR_ACTUAL_END
+;
+create or replace view v$rb_plans_ext as
+with plans_int as (
+  select plans.*,
+         REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ()+NUMTODSINTERVAL(1, 'SECOND') tomorrow_tstz,
+          case when REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ()+NUMTODSINTERVAL(1, 'SECOND') between PRATR_ACTUAL_START and PRATR_ACTUAL_END then REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ()+NUMTODSINTERVAL(1, 'SECOND') 
+               when REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ()+NUMTODSINTERVAL(1, 'SECOND') < PRATR_ACTUAL_START then PRATR_ACTUAL_START else null end start_tstz   
+    from v$rb_plans plans
 )
+select *, 
+  EXTRACT(DAY FROM (PRATR_ACTUAL_END - start_tstz))+1 days_from_start,
+  (EXTRACT(DAY FROM (PRATR_ACTUAL_END - start_tstz))+1) * Daily_DOSAGE planned_from_tomorrow 
+from plans_int 
+;
+--select * from consumed_meds where dru_dr_id=261 order by DRU_CONSUMED desc;
+--select c.* from consumed_totals c order by PAT_ID, DR_ID, PR_ID
+--select * from balance order by DRU_DR_ID
+select *
+from v$rb_plans_ext order by PR_WS_ID, PR_DR_ID, PRD_DR_ID
+;
+
+select * from v$rb_balance order by 3;

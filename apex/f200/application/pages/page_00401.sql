@@ -526,7 +526,7 @@ wwv_flow_imp_page.create_worksheet_rpt(
 ,p_sort_direction_1=>'DESC'
 );
 wwv_flow_imp_page.create_worksheet_condition(
- p_id=>wwv_flow_imp.id(63883755240482616)
+ p_id=>wwv_flow_imp.id(93457525571439730)
 ,p_report_id=>wwv_flow_imp.id(180330338774896074)
 ,p_static_id=>'ir-condition'
 ,p_condition_type=>'HIGHLIGHT'
@@ -541,16 +541,16 @@ wwv_flow_imp_page.create_worksheet_condition(
 ,p_row_font_color=>'#4cff00'
 );
 wwv_flow_imp_page.create_worksheet_condition(
- p_id=>wwv_flow_imp.id(63883393520482614)
+ p_id=>wwv_flow_imp.id(93457102380439728)
 ,p_report_id=>wwv_flow_imp.id(180330338774896074)
 ,p_static_id=>'ir-condition-2'
 ,p_condition_type=>'FILTER'
 ,p_allow_delete=>'Y'
 ,p_column_name=>'STATUS'
-,p_operator=>'='
-,p_expr=>unistr('\0410\043A\0442\0438\0432\043D\0435')
-,p_condition_sql=>'"STATUS" = #APXWS_EXPR#'
-,p_condition_display=>unistr('#APXWS_COL_NAME# = ''\0410\043A\0442\0438\0432\043D\0435''  ')
+,p_operator=>'in'
+,p_expr=>unistr('\0410\043A\0442\0438\0432\043D\0435, \041D\043E\0432\0435, \0429\0435 \043D\0435 \043F\043E\0447\0430\043B\043E\0441\044F')
+,p_condition_sql=>'"STATUS" in (#APXWS_EXPR_VAL1#, #APXWS_EXPR_VAL2#, #APXWS_EXPR_VAL3#)'
+,p_condition_display=>unistr('#APXWS_COL_NAME# #APXWS_OP_NAME# ''\0410\043A\0442\0438\0432\043D\0435, \041D\043E\0432\0435, \0429\0435 \043D\0435 \043F\043E\0447\0430\043B\043E\0441\044F''  ')
 ,p_enabled=>'Y'
 );
 wwv_flow_imp_page.create_page_button(

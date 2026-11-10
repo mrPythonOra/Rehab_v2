@@ -910,7 +910,7 @@ unistr('    ''\041E\0431\0447\0438\0441\043B\0435\043D\0430, \043A\043C/\0433\04
 unistr('    to_char(trunc(tr_start, ''IW''),''&APP_DTFMT_DATE. "\0422\0438\0436\0434\0435\043D\044C" IW'') || '' '' || round(avg(tr_distance_length*0.8944/( (tr_end+0) -  (tr_start+0))/24),3) || '' \043A\043C/\0433\043E\0434'' ct'),
 'FROM',
 '    rehab_trainings',
-'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
+'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT() and tr_REAL_SPEED is null',
 'group by trunc(tr_start, ''IW'')',
 'union all',
 'SELECT',
@@ -993,7 +993,7 @@ unistr('    ''\0422\0440\0435\043D\0434\043E\0432\0430 \043E\0431\0447\0438\0441
 '            to_number(to_char(trunc(tr_start, ''IW''),''IW'')) case_id,',
 '            tr_distance_length*0.8944/( (tr_end+0) -  (tr_start+0))/24 calc_speed',
 '       from rehab_trainings',
-'      where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT())',
+'      where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT() and tr_REAL_SPEED is null)',
 'group by tr_start, case_id)',
 'union all',
 'SELECT',
@@ -1075,6 +1075,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'SmallChart5'
 ,p_static_id=>'smallchart5'
 ,p_title=>unistr('\0417 \0432\0430\0433\043E\044E')
+,p_region_name=>'SmallChart5'
 ,p_parent_plug_id=>wwv_flow_imp.id(54685120764388101)
 ,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
@@ -1125,7 +1126,7 @@ unistr('    ''\0414\043E\0434\0430\0442\043A\043E\0432\0430 \0432\0430\0433\0430
 unistr('    to_char(trunc(tr_start, ''dd''),''&APP_DTFMT_DATE. Day '') || round(avg(tr_additonal_weight),3) || '' \043A\0433'' ct'),
 'FROM',
 '    rehab_trainings',
-'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
+'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT() --and tr_additonal_weight is not null',
 '  and trunc(TR_START) between REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par(''DBAGG_TRAI'') - 1 and REHAB_CONTEXT_PKG.getGLOBAL_DATE()',
 'group by trunc(tr_start, ''dd'')',
 'order by tr_start'))
@@ -1144,7 +1145,7 @@ wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(86066583014822913)
 ,p_chart_id=>wwv_flow_imp.id(86066154210822909)
 ,p_static_id=>'disnatce-trg'
-,p_seq=>40
+,p_seq=>50
 ,p_name=>'Disnatce_TRG'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
@@ -1221,7 +1222,7 @@ wwv_flow_imp_page.create_jet_chart_series(
 'SELECT',
 '     trunc(tr_start, ''dd'') tr_start,',
 '    sum(tr_real_distance) tr_real_distance,',
-unistr('    ''\0420\0435\0430\043B\044C\043D\0430, \043A\043C'' series_name,'),
+unistr('    ''\0414\0438\0441\0442\0430\043D\0446\0456\044F, \043A\043C'' series_name,'),
 unistr('    to_char(trunc(tr_start, ''dd''),''&APP_DTFMT_DATE. Day '') || round(sum(tr_real_distance),3) || '' \043A\043C'' ct'),
 'FROM',
 '    rehab_trainings',
@@ -1231,6 +1232,36 @@ unistr('    to_char(trunc(tr_start, ''dd''),''&APP_DTFMT_DATE. Day '') || round(
 'order by tr_start'))
 ,p_series_name_column_name=>'SERIES_NAME'
 ,p_items_value_column_name=>'TR_REAL_DISTANCE'
+,p_items_label_column_name=>'TR_START'
+,p_items_short_desc_column_name=>'CT'
+,p_line_style=>'solid'
+,p_line_type=>'curved'
+,p_marker_rendered=>'auto'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(86066962353822917)
+,p_chart_id=>wwv_flow_imp.id(86066154210822909)
+,p_static_id=>'speedreal'
+,p_seq=>40
+,p_name=>'SpeedReal'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'SELECT',
+'     trunc(tr_start, ''dd'') tr_start,',
+'    avg(tr_REAL_SPEED) tr_REAL_SPEED,',
+unistr('    ''\0428\0432\0438\0434\043A\0456\0441\0442\044C, \043A\043C/\0433\043E\0434'' series_name,'),
+unistr('    to_char(trunc(tr_start, ''dd''),''&APP_DTFMT_DATE. Day '') || round(avg(tr_REAL_SPEED),3) || '' \043A\043C/\0433\043E\0434'' ct'),
+'FROM',
+'    rehab_trainings',
+'where tr_pat_id = REHAB_CONTEXT_PKG.getPATIENT()',
+'  and trunc(TR_START) between REHAB_CONTEXT_PKG.getGLOBAL_DATE() - REHAB_CONFIG_PKG.get_config_par(''DBAGG_TRAI'') - 1 and REHAB_CONTEXT_PKG.getGLOBAL_DATE()',
+'group by trunc(tr_start, ''dd'')',
+'order by tr_start'))
+,p_series_name_column_name=>'SERIES_NAME'
+,p_items_value_column_name=>'TR_REAL_SPEED'
 ,p_items_label_column_name=>'TR_START'
 ,p_items_short_desc_column_name=>'CT'
 ,p_line_style=>'solid'
@@ -1262,10 +1293,10 @@ wwv_flow_imp_page.create_jet_chart_axis(
 ,p_axis=>'y'
 ,p_is_rendered=>'on'
 ,p_format_type=>'decimal'
-,p_decimal_places=>3
+,p_decimal_places=>2
 ,p_format_scaling=>'none'
 ,p_scaling=>'linear'
-,p_baseline_scaling=>'min'
+,p_baseline_scaling=>'zero'
 ,p_position=>'auto'
 ,p_major_tick_rendered=>'on'
 ,p_minor_tick_rendered=>'auto'
@@ -1279,7 +1310,7 @@ wwv_flow_imp_page.create_jet_chart_axis(
 ,p_is_rendered=>'on'
 ,p_format_scaling=>'auto'
 ,p_scaling=>'linear'
-,p_baseline_scaling=>'zero'
+,p_baseline_scaling=>'min'
 ,p_position=>'auto'
 ,p_major_tick_rendered=>'on'
 ,p_minor_tick_rendered=>'auto'
@@ -1307,7 +1338,7 @@ wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(74066335253385820)
 ,p_button_sequence=>20
 ,p_button_plug_id=>wwv_flow_imp.id(54685120764388101)
-,p_button_name=>'HideLabels4'
+,p_button_name=>'HideLabels'
 ,p_static_id=>'hidelabels4'
 ,p_show_as_disabled=>false
 ,p_button_action=>'DEFINED_BY_DA'
@@ -1322,7 +1353,7 @@ wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(74065987706385816)
 ,p_button_sequence=>10
 ,p_button_plug_id=>wwv_flow_imp.id(54685120764388101)
-,p_button_name=>'ShowLabels4'
+,p_button_name=>'ShowLabels'
 ,p_static_id=>'new'
 ,p_show_as_disabled=>false
 ,p_button_action=>'DEFINED_BY_DA'
@@ -1435,6 +1466,29 @@ wwv_flow_imp_page.create_page_da_action(
     '',
     '// Invoke the refresh method to update the DOM',
     'apex.region("SmallChart4").widget().ojChart(''refresh'');')))).to_clob
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(86067117488822919)
+,p_event_id=>wwv_flow_imp.id(74066464018385821)
+,p_event_result=>'TRUE'
+,p_action_sequence=>50
+,p_execute_on_page_init=>'N'
+,p_static_id=>'native-javascript-code_1_1_1_1'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
+    '// Retrieve the series array from the chart - using the ''option'' API',
+    'var series = apex.region("SmallChart5").call( "option", "series" );',
+    '',
+    '// Set the labelPosition property for the series items',
+    'for ( i = 0; i < series.length; i++ ) {',
+    '    for ( j = 0; j < series[ i ].items.length; j++ ) {',
+    '        series[ i ].items[ j ].labelPosition = "none";    ',
+    '    }',
+    '}',
+    '',
+    '// Invoke the refresh method to update the DOM',
+    'apex.region("SmallChart5").widget().ojChart(''refresh'');')))).to_clob
 );
 wwv_flow_imp_page.create_page_da_event(
  p_id=>wwv_flow_imp.id(74066177553385818)
@@ -1562,6 +1616,41 @@ wwv_flow_imp_page.create_page_da_action(
     '',
     '// Invoke the refresh method to update the DOM',
     'apex.region("SmallChart4").widget().ojChart(''refresh'');')))).to_clob
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(86067022170822918)
+,p_event_id=>wwv_flow_imp.id(74066177553385818)
+,p_event_result=>'TRUE'
+,p_action_sequence=>50
+,p_execute_on_page_init=>'N'
+,p_static_id=>'native-javascript-code_1_1_1_1'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
+    'var $chart = apex.region("SmallChart5").widget();',
+    '',
+    '// 1. Retrieve the series array',
+    'var series = $chart.ojChart( "option", "series" );',
+    '',
+    '// 2. Find and modify only that specific series',
+    'for (var i = 0; i < series.length; i++) {',
+    unistr('    if ((series[i].name === "\0414\043E\0434\0430\0442\043A\043E\0432\0430 \0432\0430\0433\0430, \043A\0433")||'),
+    unistr('        (series[i].name === "\041F\0443\043B\044C\0441 \043C\0456\043D\0456\043C\0430\043B\044C\043D\0438\0439")||'),
+    unistr('        (series[i].name === "\041F\0443\043B\044C\0441 \043C\0430\043A\0441\0438\043C\0430\043B\044C\043D\0438\0439")||'),
+    unistr('        (series[i].name === "\0414\0438\0441\0442\0430\043D\0446\0456\044F, \043A\043C")||'),
+    unistr('        (series[i].name === "\0428\0432\0438\0434\043A\0456\0441\0442\044C, \043A\043C/\0433\043E\0434")'),
+    '        ) ',
+    '        {',
+    '        for (var j = 0; j < series[i].items.length; j++) {',
+    '            series[i].items[j].labelPosition = "aboveMarker";',
+    '            series[i].items[j].label = series[i].items[j].value;',
+    '        }',
+    '        //break; // Exit loop once found',
+    '    }',
+    '}',
+    '',
+    '// Invoke the refresh method to update the DOM',
+    'apex.region("SmallChart5").widget().ojChart(''refresh'');')))).to_clob
 );
 wwv_flow_imp.component_end;
 end;
