@@ -260,7 +260,7 @@ create or replace view v$rb_accessible_storages as
     where P2S_DS_ID = DS_ID and P2S_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT() and DS_TE_ID = REHAB_CONTEXT_PKG.getTENANT()
 ;
 create or replace view v$rb_accessible_meds as
-  select REHAB_DRUG_ACCOUNTINGS.*
+  select da_id, DA_DS_ID, DA_DR_ID, /*DA_PRR_ID, DA_PR_ID, DA_PRATR_ID,*/ DA_WS_ID, DA_ORDER_TYPE, DA_QUANTITY, DA_ENTIRY_WEIGHT, DA_COST, DA_PURCHASED, DA_CHECK_POINT_DT, DA_BEST_BEFORE
     from REHAB_DRUG_ACCOUNTINGS
    where DA_DS_ID in (select ds_id from v$rb_accessible_storages)
      and DA_CHECK_POINT_DT <= REHAB_CONTEXT_PKG.getGLOBAL_DATE()
@@ -270,26 +270,28 @@ create or replace view v$rb_accessible_meds_totals as
     from v$rb_accessible_meds
    group by DA_DR_ID
 ;
+alter table REHAB_DRUG_USES add dru_PRATR_ID number;
+update REHAB_DRUG_USES set dru_PRATR_ID = (select PRD_PRATR_ID from REHAB_PRESCRIPTIONS_DETAILS where DRU_PRD_ID = PRD_ID);
 create or replace view v$rb_consumed_meds as
-  select REHAB_DRUG_USES.*, PRD_PRATR_ID PRATR_ID
-    from REHAB_DRUG_USES, REHAB_PRESCRIPTIONS_DETAILS
+  select REHAB_DRUG_USES.*
+    from REHAB_DRUG_USES
    where DRU_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()
      and DRU_CONSUMED <= REHAB_CONTEXT_PKG.getGLOBAL_DATE()
      and DRU_CONSUMED >= (select min(DA_CHECK_POINT_DT) from v$rb_accessible_meds where DA_DR_ID = DRU_DR_ID)
-     and DRU_PRD_ID = PRD_ID
 ;
 create or replace view v$rb_consumed_totals as 
-  select DRU_DR_ID, DRU_WS_ID, DRU_PR_ID, PRATR_ID,
+  select DRU_DR_ID, DRU_WS_ID,-- DRU_PR_ID, DRU_PRATR_ID,
           sum(DRU_ACTUAL_DOSAGE) DRU_CONSUMED,
           sum(DRU_ACTUAL_DOSAGE) FILTER (WHERE DRU_CONSUMED < trunc(REHAB_CONTEXT_PKG.getGLOBAL_DATE())) DRU_CONSUMED_BEFORE,
           sum(DRU_ACTUAL_DOSAGE) FILTER (WHERE trunc(DRU_CONSUMED) = trunc(REHAB_CONTEXT_PKG.getGLOBAL_DATE())) DRU_CONSUMED_TODAY
      from v$rb_consumed_meds c 
-    group by DRU_DR_ID, DRU_WS_ID, DRU_PR_ID, PRATR_ID
+    group by DRU_DR_ID, DRU_WS_ID--, DRU_PR_ID, DRU_PRATR_ID
 ;
 create or replace view v$rb_balance as
-  select c.*, a.*, remained_amount - DRU_CONSUMED balance_total, remained_amount - DRU_CONSUMED_BEFORE balance_before_today
-    from v$rb_accessible_meds_totals a, v$rb_consumed_totals c
-   where a.DA_DR_ID = c.DRU_DR_ID
+with a as (select /* materialize */ * from v$rb_accessible_meds_totals)
+  select /*+ leading(a) use_hash(c)*/ c.*, a.*, remained_amount - DRU_CONSUMED balance_total, remained_amount - DRU_CONSUMED_BEFORE balance_before_today
+    from  a, v$rb_consumed_totals c
+   where a.DA_DR_ID = c.DRU_DR_ID(+)
 ;
 create or replace view v$rb_plans as
   select PR_ID, PR_PRR_ID, PR_WS_ID, PR_DR_ID, PRD_DR_ID, PRATR_ID, PR_PLANNED_START, PR_PLANNED_END, PRATR_ACTUAL_START, PRATR_ACTUAL_END, sum(PRD_DOSAGE) Daily_DOSAGE
@@ -320,4 +322,33 @@ select *
 from v$rb_plans_ext order by PR_WS_ID, PR_DR_ID, PRD_DR_ID
 ;
 
-select * from v$rb_balance order by 3;
+select                 PRD_ID, d.DR_NAME, PRD_DOSAGE, CPTR_START_TIME_STR, CPTR_END_TIME_STR, DR_WHEN2CONSUME, PRD_NOTES, d.DRU_CONSUMED, DRU_ACTUAL_DOSAGE, DR_USE_CASE, DR_TYPE_SHORT, 
+                       PR_NOTES, PRATR_NOTES, d.PR_PLANNED_END, d.PRATR_ACTUAL_END,
+                       DRU_ID, d.PRD_DR_ID, d.PR_PRR_ID, d.PR_ID, d.PRATR_ID, PRD_CPTR_ID,  DR_ITEM_IMAGE1,
+                       r.BALANCE, b.BALANCE_TOTAL BALANCE1,
+                       r.DAYS_PLANNED, DAYS_FROM_START DAYS_PLANNED1, 
+                       r.DAYS_REMAIN, 
+                       r.DA_STORED_AMOUNT, b.REMAINED_AMOUNT DA_STORED_AMOUNT1, 
+                       r.end_date
+                from V$REHAB_CONSUME_DATA d, V$REHAB_TIME_PERIODS tp, V$REHAB_REMAINS r, v$rb_plans_ext pe, 
+                     (select DA_DR_ID, sum(DRU_CONSUMED) DRU_CONSUMED, sum(BALANCE_TOTAL) BALANCE_TOTAL, max(REMAINED_AMOUNT) REMAINED_AMOUNT from V$RB_BALANCE group by DA_DR_ID) b
+               where tp.TP_ID = 2 --p_tp_id 
+                 and pe.PR_PRR_ID = d.PR_PRR_ID and pe.PR_ID = d.PR_ID and pe.PRATR_ID = d.PRATR_ID and pe.PRD_DR_ID = d.PRD_DR_ID
+                 and d.PRD_DR_ID = b.DA_DR_ID(+)
+                 and (CPTR_START_TIME_DT_GDT >= TP_START_TIME_DT_GDT and CPTR_START_TIME_DT_GDT < TP_END_TIME_DT_GDT or 
+                      CPTR_END_TIME_DT_GDT   >= TP_START_TIME_DT_GDT and CPTR_END_TIME_DT_GDT   < TP_END_TIME_DT_GDT)
+                 and d.PRD_DR_ID = r.DR_ID(+);
+
+--explain plan for
+select /*+ gather_plan_statistics qb_name(q6) noparallel*/ * from v$rb_balance order by 1,4;
+@geteplan
+drop table rehab_rb_balance_cache;
+drop view rehab_v$rb_balance_cache;
+create table rehab_rb_balance_cache as
+select REHAB_CONTEXT_PKG.getTENANT() tenant, REHAB_CONTEXT_PKG.getPATIENT() patient, REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ() global_date_ts, systimestamp created_ts, x.* from v$rb_balance x;
+
+create index ix_rehab_rb_balance_cache_cntx on rehab_rb_balance_cache(tenant, patient, global_date_ts);
+create or replace view rehab_v$rb_balance_cache as
+select * from rehab_rb_balance_cache
+where tenant = REHAB_CONTEXT_PKG.getTENANT() and patient = REHAB_CONTEXT_PKG.getPATIENT() and global_date_ts = REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ();
+select * from rehab_v$rb_balance_cache;

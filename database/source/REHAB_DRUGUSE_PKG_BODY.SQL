@@ -6,48 +6,41 @@
     l_img blob;
     l_img2 blob;
   BEGIN
---    select DR_ITEM_IMAGE1 into l_img
---    from REHAB_DRUGS where DR_ID = 21;
---    pipe row (rehab_druguse_dashboard_rec(
---       1,           --     id           number,
---       'Main',      --     mainlabel    VARCHAR2(4000),
---       'SubLabel',  --     sublabel     varchar2(4000),
---       'Data1',     --     data1        VARCHAR2(4000),
---       'Data2',     --     data2        VARCHAR2(4000),
---       'bagecol',   --bagecol      VARCHAR2(4000),
---       'bagelabel', --bagelabel    VARCHAR2(4000),
---       1,           -- app_page     number,
---       21,           -- dr_id        number,
---       0,           -- pr_id        number,
---       0,           -- prr_id       number,
---       0,           -- cptr_id      number,
---       l_img        -- drug_img     blob
---    ));
---
---    select DR_ITEM_IMAGE1 into l_img
---    from REHAB_DRUGS where DR_ID = 61;
---    pipe row (rehab_druguse_dashboard_rec(
---       2,           --     id           number,
---       'Main1',      --     mainlabel    VARCHAR2(4000),
---       'SubLabel1',  --     sublabel     varchar2(4000),
---       'Data11',     --     data1        VARCHAR2(4000),
---       'Data21',     --     data2        VARCHAR2(4000),
---       '',   --bagecol      VARCHAR2(4000),
---       '', --bagelabel    VARCHAR2(4000),
---       1,           -- app_page     number,
---       61,           -- dr_id        number,
---       0,           -- pr_id        number,
---       0,           -- prr_id       number,
---       0,           -- cptr_id      number,
---       l_img        -- drug_img     blob
---    ));
-
-    for i in (select d.*, r.BALANCE, r.DAYS_PLANNED, r.DAYS_REMAIN, r.DA_STORED_AMOUNT, r.end_date
-                from V$REHAB_CONSUME_DATA d, V$REHAB_TIME_PERIODS tp, V$REHAB_REMAINS r
+    for i in (
+--              select ----d.*, r.BALANCE, r.DAYS_PLANNED, r.DAYS_REMAIN, r.DA_STORED_AMOUNT, r.end_date
+--                       PRD_ID, d.DR_NAME, PRD_DOSAGE, CPTR_START_TIME_STR, CPTR_END_TIME_STR, DR_WHEN2CONSUME, PRD_NOTES, d.DRU_CONSUMED, DRU_ACTUAL_DOSAGE, DR_USE_CASE, DR_TYPE_SHORT,
+--                       PR_NOTES, PRATR_NOTES, d.PR_PLANNED_END, d.PRATR_ACTUAL_END,
+--                       DRU_ID, PRD_DR_ID, PR_PRR_ID, PR_ID,   PRATR_ID, PRD_CPTR_ID,  DR_ITEM_IMAGE1,
+--                       r.BALANCE, r.DAYS_PLANNED, r.DAYS_REMAIN, r.DA_STORED_AMOUNT, r.end_date
+--                from V$REHAB_CONSUME_DATA d, V$REHAB_TIME_PERIODS tp, V$REHAB_REMAINS r
+--               where tp.TP_ID = p_tp_id
+--                 and (CPTR_START_TIME_DT_GDT >= TP_START_TIME_DT_GDT and CPTR_START_TIME_DT_GDT < TP_END_TIME_DT_GDT or
+--                      CPTR_END_TIME_DT_GDT   >= TP_START_TIME_DT_GDT and CPTR_END_TIME_DT_GDT   < TP_END_TIME_DT_GDT)
+--                 and d.PRD_DR_ID = r.DR_ID(+)
+--               order by --case when p_sortbyconsumed then decode(d.DRU_CONSUMED,null,-1e6,PRD_SORT_ORDER) else PRD_SORT_ORDER end nulls last
+--                        case when p_sortbyconsumed then d.DRU_CONSUMED else systimestamp end nulls first,PRD_SORT_ORDER
+                select PRD_ID, d.DR_NAME, PRD_DOSAGE, CPTR_START_TIME_STR, CPTR_END_TIME_STR, DR_WHEN2CONSUME, PRD_NOTES, d.DRU_CONSUMED, DRU_ACTUAL_DOSAGE, DR_USE_CASE, DR_TYPE_SHORT,
+                       PR_NOTES, PRATR_NOTES, d.PR_PLANNED_END, d.PRATR_ACTUAL_END,
+                       DRU_ID, d.PRD_DR_ID, d.PR_PRR_ID, d.PR_ID, d.PRATR_ID, PRD_CPTR_ID,  DR_ITEM_IMAGE1,
+                       --r.BALANCE BALANCE0,
+                       b.BALANCE_TOTAL BALANCE,
+                       --r.DAYS_PLANNED DAYS_PLANNED0,
+                       pe.DAYS_FROM_START DAYS_PLANNED,
+                       --r.DAYS_REMAIN DAYS_REMAIN0,
+                       (b.BALANCE_BEFORE_TODAY-pe.DAILY_DOSAGE)/pe.DAILY_DOSAGE DAYS_REMAIN,
+                       --r.DA_STORED_AMOUNT DA_STORED_AMOUNT0,
+                       b.REMAINED_AMOUNT DA_STORED_AMOUNT,
+                       --r.end_date end_date0,
+                       REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC() + (b.BALANCE_BEFORE_TODAY-pe.DAILY_DOSAGE)/pe.DAILY_DOSAGE end_date
+                from V$REHAB_CONSUME_DATA d, V$REHAB_TIME_PERIODS tp, --V$REHAB_REMAINS r,
+                     v$rb_plans_ext pe,
+                     (select DA_DR_ID, sum(BALANCE_BEFORE_TODAY) BALANCE_BEFORE_TODAY, sum(BALANCE_TOTAL) BALANCE_TOTAL, max(REMAINED_AMOUNT) REMAINED_AMOUNT from V$RB_BALANCE group by DA_DR_ID) b
                where tp.TP_ID = p_tp_id
+                 and pe.PR_PRR_ID = d.PR_PRR_ID and pe.PR_ID = d.PR_ID and pe.PRATR_ID = d.PRATR_ID and pe.PRD_DR_ID = d.PRD_DR_ID
+                 and d.PRD_DR_ID = b.DA_DR_ID(+)
                  and (CPTR_START_TIME_DT_GDT >= TP_START_TIME_DT_GDT and CPTR_START_TIME_DT_GDT < TP_END_TIME_DT_GDT or
                       CPTR_END_TIME_DT_GDT   >= TP_START_TIME_DT_GDT and CPTR_END_TIME_DT_GDT   < TP_END_TIME_DT_GDT)
-                 and d.PRD_DR_ID = r.DR_ID(+)
+                 --and d.PRD_DR_ID = r.DR_ID(+)
                order by --case when p_sortbyconsumed then decode(d.DRU_CONSUMED,null,-1e6,PRD_SORT_ORDER) else PRD_SORT_ORDER end nulls last
                         case when p_sortbyconsumed then d.DRU_CONSUMED else systimestamp end nulls first,PRD_SORT_ORDER
                )
@@ -56,15 +49,6 @@
            id        => i.PRD_ID,           --     id           number,
            mainlabel => i.DR_NAME,      --     mainlabel    VARCHAR2(4000),
            sublabel  => '<b>'||UNISTR('\2710')||'</b> '||i.PRD_DOSAGE|| ' мг ' ||i.CPTR_START_TIME_STR||'-'||i.CPTR_END_TIME_STR||' '||i.DR_WHEN2CONSUME||
-                        --'<br>'||round(i.DAYS_PLANNED,1)||'; '||i.DAYS_REMAIN||'; '||REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT')||'; '||
---                        case when i.DA_STORED_AMOUNT is not null then
---                        '<br>Залишок на: '||case when i.DAYS_PLANNED is null
---                                     then '<span style="color: '||case when i.DAYS_REMAIN >= to_number(REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT')) then 'lime' else 'yellow' end||';"> '
---                                     else '<span style="color: '||case when i.DAYS_REMAIN >= i.DAYS_PLANNED then 'lime' else 'yellow' end||';"> '
---                                     end ||i.DAYS_REMAIN||' дні(в)</span> до '||to_char(i.end_date, 'YYYY-Mon-DD')||'. Заплановано'||case when i.DAYS_PLANNED is null then ': без обмеження дати' else ' до: ' || to_char(i.PR_PLANNED_END, 'YYYY-Mon-DD') --||
---                                     --'<br>В наявності до '||to_char(i.end_date, 'YYYY-Mon-DD')
---                                     end
---                        else '<br>Інформація по залишкам відсутня' end ||
                         nvl2(i.PRD_NOTES,'<br>'||i.PRD_NOTES,null),  --     sublabel     varchar2(4000),
            data1     => nvl2(i.DRU_CONSUMED,REHAB_UI_REPORTS_PKG.clr('lime','Спожито '||UNISTR('\D83C\DF23'))||to_char(i.DRU_CONSUMED at time zone SESSIONTIMEZONE,'YYYY-Mon-DD HH24:MI')||
                                             REHAB_UI_REPORTS_PKG.clr(case when i.DRU_ACTUAL_DOSAGE = i.PRD_DOSAGE then 'lime' else 'yellow' end,' '||i.DRU_ACTUAL_DOSAGE||' мг'),--||
@@ -82,14 +66,7 @@
                                      end, round(i.DAYS_REMAIN)||' дні(в)')||' до '||to_char(i.end_date, 'YYYY-Mon-DD')||
                                      '. Заплановано'||case when i.PR_PLANNED_END is null then ': без обмеження дати' else ' до: ' || to_char(i.PR_PLANNED_END, 'YYYY-Mon-DD') end ||
                                      case when i.PRATR_ACTUAL_END is not null and (i.PR_PLANNED_END is null or trunc(i.PR_PLANNED_END)<>trunc(i.PRATR_ACTUAL_END)) then '. Період до: ' || to_char(i.PRATR_ACTUAL_END, 'YYYY-Mon-DD') else null end
---                                case when i.DAYS_PLANNED is null
---                                     then '<span style="color: '||case when i.DAYS_REMAIN >= to_number(REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT')) then 'lime' else 'yellow' end||';"> '
---                                     else '<span style="color: '||case when i.DAYS_REMAIN >= i.DAYS_PLANNED then 'lime' else 'yellow' end||';"> '
---                                     end ||round(i.DAYS_REMAIN)||' дні(в)</span> до '||to_char(i.end_date, 'YYYY-Mon-DD')||'. Заплановано'||case when i.DAYS_PLANNED is null then ': без обмеження дати' else ' до: ' || to_char(i.PR_PLANNED_END, 'YYYY-Mon-DD') --||
---                                     --'<br>В наявності до '||to_char(i.end_date, 'YYYY-Mon-DD')
---                                     end
-                        else '<br>Інформація по залишкам відсутня' end
-           ,     --     data2        VARCHAR2(4000),
+                        else '<br>Інформація по залишкам відсутня' end,     --     data2        VARCHAR2(4000),
            bagecol   => '',   --bagecol      VARCHAR2(4000),
            bagelabel => '', --bagelabel    VARCHAR2(4000),
            app_page  => null,           -- app_page     number,
@@ -111,12 +88,35 @@
     l_img blob;
     l_img2 blob;
   BEGIN
-    for i in (select d.*, r.BALANCE, r.DAYS_PLANNED, r.DAYS_REMAIN, r.DA_STORED_AMOUNT, r.end_date
-                from V$REHAB_CONSUME_DATA d, V$REHAB_TIME_PERIODS tp, V$REHAB_REMAINS r
+    for i in (
+--              select d.*, r.BALANCE, r.DAYS_PLANNED, r.DAYS_REMAIN, r.DA_STORED_AMOUNT, r.end_date
+--                from V$REHAB_CONSUME_DATA d, V$REHAB_TIME_PERIODS tp, V$REHAB_REMAINS r
+--               where tp.TP_ID = p_tp_id
+--                 and (CPTR_START_TIME_DT_GDT >= TP_START_TIME_DT_GDT and CPTR_START_TIME_DT_GDT < TP_END_TIME_DT_GDT or
+--                      CPTR_END_TIME_DT_GDT   >= TP_START_TIME_DT_GDT and CPTR_END_TIME_DT_GDT   < TP_END_TIME_DT_GDT)
+--                 and d.PRD_DR_ID = r.DR_ID(+)
+                select PRD_ID, d.DR_NAME, PRD_DOSAGE, CPTR_START_TIME_STR, CPTR_END_TIME_STR, DR_WHEN2CONSUME, PRD_NOTES, d.DRU_CONSUMED, DRU_ACTUAL_DOSAGE, DR_USE_CASE, DR_TYPE_SHORT,
+                       PR_NOTES, PRATR_NOTES, d.PR_PLANNED_END, d.PRATR_ACTUAL_END,
+                       DRU_ID, d.PRD_DR_ID, d.PR_PRR_ID, d.PR_ID, d.PRATR_ID, PRD_CPTR_ID,  DR_ITEM_IMAGE1,
+                       --r.BALANCE BALANCE0,
+                       b.BALANCE_TOTAL BALANCE,
+                       --r.DAYS_PLANNED DAYS_PLANNED0,
+                       pe.DAYS_FROM_START DAYS_PLANNED,
+                       --r.DAYS_REMAIN DAYS_REMAIN0,
+                       (b.BALANCE_BEFORE_TODAY-pe.DAILY_DOSAGE)/pe.DAILY_DOSAGE DAYS_REMAIN,
+                       --r.DA_STORED_AMOUNT DA_STORED_AMOUNT0,
+                       b.REMAINED_AMOUNT DA_STORED_AMOUNT,
+                       --r.end_date end_date0,
+                       REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC() + (b.BALANCE_BEFORE_TODAY-pe.DAILY_DOSAGE)/pe.DAILY_DOSAGE end_date
+                from V$REHAB_CONSUME_DATA d, V$REHAB_TIME_PERIODS tp, --V$REHAB_REMAINS r,
+                     v$rb_plans_ext pe,
+                     (select DA_DR_ID, sum(BALANCE_BEFORE_TODAY) BALANCE_BEFORE_TODAY, sum(BALANCE_TOTAL) BALANCE_TOTAL, max(REMAINED_AMOUNT) REMAINED_AMOUNT from V$RB_BALANCE group by DA_DR_ID) b
                where tp.TP_ID = p_tp_id
+                 and pe.PR_PRR_ID = d.PR_PRR_ID and pe.PR_ID = d.PR_ID and pe.PRATR_ID = d.PRATR_ID and pe.PRD_DR_ID = d.PRD_DR_ID
+                 and d.PRD_DR_ID = b.DA_DR_ID(+)
                  and (CPTR_START_TIME_DT_GDT >= TP_START_TIME_DT_GDT and CPTR_START_TIME_DT_GDT < TP_END_TIME_DT_GDT or
                       CPTR_END_TIME_DT_GDT   >= TP_START_TIME_DT_GDT and CPTR_END_TIME_DT_GDT   < TP_END_TIME_DT_GDT)
-                 and d.PRD_DR_ID = r.DR_ID(+)
+                 --and d.PRD_DR_ID = r.DR_ID(+)
                order by PRD_SORT_ORDER
                )
     loop
@@ -128,10 +128,6 @@
            data1     => case when i.PRATR_ACTUAL_END is null or trunc(i.PRATR_ACTUAL_END)>trunc(systimestamp at time zone SESSIONTIMEZONE)+p_days_ahead
                                then 'Набирати на '||p_days_ahead||' днів'
                                else 'Період завершується раніше: '||to_char(i.PRATR_ACTUAL_END, 'YYYY-Mon-DD Day') end,
---                         nvl2(i.DRU_CONSUMED,REHAB_UI_REPORTS_PKG.clr('lime',UNISTR('\D83C\DF23'))||to_char(i.DRU_CONSUMED at time zone SESSIONTIMEZONE,'YYYY-Mon-DD HH24:MI')||
---                                            REHAB_UI_REPORTS_PKG.clr(case when i.DRU_ACTUAL_DOSAGE = i.PRD_DOSAGE then 'lime' else 'yellow' end,' '||i.DRU_ACTUAL_DOSAGE||' мг'),--||
---                                            --UNISTR('\D83D\DDD2')||' "'||i.CPTR_NAME||'; '||i.CPTR_START_TIME_STR||'-'||i.CPTR_END_TIME_STR||'"',
---                                            REHAB_UI_REPORTS_PKG.clr('yellow',UNISTR('\D83C\DF27')||' Не прийнято')),     --     data1        VARCHAR2(4000),
            data2     => REHAB_UI_REPORTS_PKG.clr('lime',UNISTR('\2762'))||' '||
                          nvl(i.DR_USE_CASE,i.DR_TYPE_SHORT)||
                          nvl2(i.PR_NOTES,'<br>'||REHAB_UI_REPORTS_PKG.clr('lime',UNISTR('\D83D\DD8E'))||' '||i.PR_NOTES,null)||
@@ -144,8 +140,7 @@
                                      end, round(i.DAYS_REMAIN)||' дні(в)')||' до '||to_char(i.end_date, 'YYYY-Mon-DD')||
                                      '. Заплановано'||case when i.PR_PLANNED_END is null then ': без обмеження дати' else ' до: ' || to_char(i.PR_PLANNED_END, 'YYYY-Mon-DD') end ||
                                      case when i.PRATR_ACTUAL_END is not null and (i.PR_PLANNED_END is null or trunc(i.PR_PLANNED_END)<>trunc(i.PRATR_ACTUAL_END)) then '. Період до: ' || to_char(i.PRATR_ACTUAL_END, 'YYYY-Mon-DD') else null end
-                        else '<br>Інформація по залишкам відсутня' end
-           ,     --     data2        VARCHAR2(4000),
+                        else '<br>Інформація по залишкам відсутня' end,     --     data2        VARCHAR2(4000),
            bagecol   => '',   --bagecol      VARCHAR2(4000),
            bagelabel => '', --bagelabel    VARCHAR2(4000),
            app_page  => null,           -- app_page     number,
@@ -172,14 +167,14 @@
   begin
     INSERT INTO rehab_drug_uses
        (  dru_id,
-          dru_prd_id,  dru_pr_id,
+          dru_prd_id,  dru_pr_id, dru_PRATR_ID,
           dru_pat_id,
           dru_cptr_id,  dru_dr_id,
           dru_ws_id,
           dru_consumed,dru_actual_dosage)
     VALUES
        (SQ_REHAB_DRUG_USES.nextval,
-        p_dru_prd_id,P_DRU_PR_ID,
+        p_dru_prd_id,P_DRU_PR_ID, (select PRD_PRATR_ID from REHAB_PRESCRIPTIONS_DETAILS where PRD_ID = p_dru_prd_id),
         REHAB_CONTEXT_PKG.getPATIENT(),
         P_DRU_CPTR_ID,P_DRU_DR_ID,
         (select DR_WS_ID from REHAB_DRUGS where DR_ID = p_dru_dr_id),
@@ -257,6 +252,13 @@
       l_min := l_id.next(l_min);
     end loop;
   end;
+--  procedure refresh_cahce_rehab_rb_balance_cache
+--  is
+--  begin
+--    select max(created_ts)
+--      from rehab_v$rb_balance_cache
+--  end;
+
 END REHAB_DRUGUSE_PKG;
 /
 

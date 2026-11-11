@@ -25,6 +25,8 @@
 
   procedure sort_drugs_in_window(p_tp_id REHAB_TIME_PERIODS.TP_ID%type, p_prd_id REHAB_PRESCRIPTIONS_DETAILS.PRD_ID%type, p_dir varchar2);
 
+  --procedure refresh_cahce_rehab_rb_balance_cache;
+
 END REHAB_DRUGUSE_PKG;
 /
 
