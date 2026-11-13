@@ -266,33 +266,37 @@ create or replace view v$rb_accessible_meds as
      and DA_CHECK_POINT_DT <= REHAB_CONTEXT_PKG.getGLOBAL_DATE()
 ;
 create or replace view v$rb_accessible_meds_totals as
-  select DA_DR_ID, sum(DA_QUANTITY*DA_ENTIRY_WEIGHT) remained_amount
+  select DA_DR_ID, DA_WS_ID, sum(DA_QUANTITY*DA_ENTIRY_WEIGHT) remained_amount
     from v$rb_accessible_meds
-   group by DA_DR_ID
+   group by DA_DR_ID, DA_WS_ID
 ;
 alter table REHAB_DRUG_USES add dru_PRATR_ID number;
 update REHAB_DRUG_USES set dru_PRATR_ID = (select PRD_PRATR_ID from REHAB_PRESCRIPTIONS_DETAILS where DRU_PRD_ID = PRD_ID);
 create or replace view v$rb_consumed_meds as
-  select REHAB_DRUG_USES.*
-    from REHAB_DRUG_USES
+  select REHAB_DRUG_USES.*, min_DA_CHECK_POINT_DT consumed_since_dt
+    from REHAB_DRUG_USES, lateral(select min(DA_CHECK_POINT_DT) min_DA_CHECK_POINT_DT from v$rb_accessible_meds where DA_DR_ID = DRU_DR_ID)
    where DRU_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()
      and DRU_CONSUMED <= REHAB_CONTEXT_PKG.getGLOBAL_DATE()
-     and DRU_CONSUMED >= (select min(DA_CHECK_POINT_DT) from v$rb_accessible_meds where DA_DR_ID = DRU_DR_ID)
+     --and DRU_CONSUMED >= min_DA_CHECK_POINT_DT
 ;
 create or replace view v$rb_consumed_totals as 
   select DRU_DR_ID, DRU_WS_ID,-- DRU_PR_ID, DRU_PRATR_ID,
-          sum(DRU_ACTUAL_DOSAGE) DRU_CONSUMED,
-          sum(DRU_ACTUAL_DOSAGE) FILTER (WHERE DRU_CONSUMED < trunc(REHAB_CONTEXT_PKG.getGLOBAL_DATE())) DRU_CONSUMED_BEFORE,
-          sum(DRU_ACTUAL_DOSAGE) FILTER (WHERE trunc(DRU_CONSUMED) = trunc(REHAB_CONTEXT_PKG.getGLOBAL_DATE())) DRU_CONSUMED_TODAY
+          max(DRU_CONSUMED) FILTER (WHERE DRU_CONSUMED >= consumed_since_dt) MAX_DRU_CONSUMED_DATE,
+          min(consumed_since_dt) consumed_since_dt,
+          sum(DRU_ACTUAL_DOSAGE) FILTER (WHERE DRU_CONSUMED >= consumed_since_dt) DRU_CONSUMED_AMOUNT,
+          sum(DRU_ACTUAL_DOSAGE) FILTER (WHERE DRU_CONSUMED >= consumed_since_dt and DRU_CONSUMED < trunc(REHAB_CONTEXT_PKG.getGLOBAL_DATE())) DRU_CONSUMED_BEFORE,
+          sum(DRU_ACTUAL_DOSAGE) FILTER (WHERE DRU_CONSUMED >= consumed_since_dt and trunc(DRU_CONSUMED) = trunc(REHAB_CONTEXT_PKG.getGLOBAL_DATE())) DRU_CONSUMED_TODAY
      from v$rb_consumed_meds c 
     group by DRU_DR_ID, DRU_WS_ID--, DRU_PR_ID, DRU_PRATR_ID
 ;
+select * from v$rb_consumed_totals where DRU_DR_ID = 44;
 create or replace view v$rb_balance as
 with a as (select /* materialize */ * from v$rb_accessible_meds_totals)
-  select /*+ leading(a) use_hash(c)*/ c.*, a.*, remained_amount - DRU_CONSUMED balance_total, remained_amount - DRU_CONSUMED_BEFORE balance_before_today
+  select /*+ leading(a) use_hash(c)*/ c.*, a.*, remained_amount - nvl(DRU_CONSUMED_AMOUNT,0) balance_total, remained_amount - nvl(DRU_CONSUMED_BEFORE,0) balance_before_today
     from  a, v$rb_consumed_totals c
    where a.DA_DR_ID = c.DRU_DR_ID(+)
 ;
+select * from v$rb_balance where DA_DR_ID = 44;
 create or replace view v$rb_plans as
   select PR_ID, PR_PRR_ID, PR_WS_ID, PR_DR_ID, PRD_DR_ID, PRATR_ID, PR_PLANNED_START, PR_PLANNED_END, PRATR_ACTUAL_START, PRATR_ACTUAL_END, sum(PRD_DOSAGE) Daily_DOSAGE
     from REHAB_PRESCRIPTIONS, REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES, REHAB_PRESCRIPTIONS_DETAILS
@@ -305,33 +309,31 @@ create or replace view v$rb_plans as
 create or replace view v$rb_plans_ext as
 with plans_int as (
   select plans.*,
-         REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ()+NUMTODSINTERVAL(1, 'SECOND') tomorrow_tstz,
+         REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ()+NUMTODSINTERVAL(1, 'SECOND') tomorrow_date_tstz,
           case when REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ()+NUMTODSINTERVAL(1, 'SECOND') between PRATR_ACTUAL_START and PRATR_ACTUAL_END then REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ()+NUMTODSINTERVAL(1, 'SECOND') 
-               when REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ()+NUMTODSINTERVAL(1, 'SECOND') < PRATR_ACTUAL_START then PRATR_ACTUAL_START else null end start_tstz   
+               when REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ()+NUMTODSINTERVAL(1, 'SECOND') < PRATR_ACTUAL_START then PRATR_ACTUAL_START else null end start_date_tstz   
     from v$rb_plans plans
 )
 select *, 
-  EXTRACT(DAY FROM (PRATR_ACTUAL_END - start_tstz))+1 days_from_start,
-  (EXTRACT(DAY FROM (PRATR_ACTUAL_END - start_tstz))+1) * Daily_DOSAGE planned_from_tomorrow 
+  EXTRACT(DAY FROM (PRATR_ACTUAL_END - start_date_tstz))+1 days_from_start_date_to_end,
+  (EXTRACT(DAY FROM (PRATR_ACTUAL_END - start_date_tstz))+1) * Daily_DOSAGE planned_amount_from_tomorrow 
 from plans_int 
 ;
 --select * from consumed_meds where dru_dr_id=261 order by DRU_CONSUMED desc;
 --select c.* from consumed_totals c order by PAT_ID, DR_ID, PR_ID
 --select * from balance order by DRU_DR_ID
-select *
-from v$rb_plans_ext order by PR_WS_ID, PR_DR_ID, PRD_DR_ID
-;
+
 
 select                 PRD_ID, d.DR_NAME, PRD_DOSAGE, CPTR_START_TIME_STR, CPTR_END_TIME_STR, DR_WHEN2CONSUME, PRD_NOTES, d.DRU_CONSUMED, DRU_ACTUAL_DOSAGE, DR_USE_CASE, DR_TYPE_SHORT, 
                        PR_NOTES, PRATR_NOTES, d.PR_PLANNED_END, d.PRATR_ACTUAL_END,
                        DRU_ID, d.PRD_DR_ID, d.PR_PRR_ID, d.PR_ID, d.PRATR_ID, PRD_CPTR_ID,  DR_ITEM_IMAGE1,
                        r.BALANCE, b.BALANCE_TOTAL BALANCE1,
-                       r.DAYS_PLANNED, DAYS_FROM_START DAYS_PLANNED1, 
+                       r.DAYS_PLANNED, DAYS_FROM_START_DATE_TO_END DAYS_PLANNED1, 
                        r.DAYS_REMAIN, 
                        r.DA_STORED_AMOUNT, b.REMAINED_AMOUNT DA_STORED_AMOUNT1, 
                        r.end_date
                 from V$REHAB_CONSUME_DATA d, V$REHAB_TIME_PERIODS tp, V$REHAB_REMAINS r, v$rb_plans_ext pe, 
-                     (select DA_DR_ID, sum(DRU_CONSUMED) DRU_CONSUMED, sum(BALANCE_TOTAL) BALANCE_TOTAL, max(REMAINED_AMOUNT) REMAINED_AMOUNT from V$RB_BALANCE group by DA_DR_ID) b
+                     (select DA_DR_ID, sum(DRU_CONSUMED_AMOUNT) DRU_CONSUMED_AMOUNT, sum(BALANCE_TOTAL) BALANCE_TOTAL, max(REMAINED_AMOUNT) REMAINED_AMOUNT from V$RB_BALANCE group by DA_DR_ID) b
                where tp.TP_ID = 2 --p_tp_id 
                  and pe.PR_PRR_ID = d.PR_PRR_ID and pe.PR_ID = d.PR_ID and pe.PRATR_ID = d.PRATR_ID and pe.PRD_DR_ID = d.PRD_DR_ID
                  and d.PRD_DR_ID = b.DA_DR_ID(+)
@@ -340,7 +342,119 @@ select                 PRD_ID, d.DR_NAME, PRD_DOSAGE, CPTR_START_TIME_STR, CPTR_
                  and d.PRD_DR_ID = r.DR_ID(+);
 
 --explain plan for
+
+
+
+begin
+    REHAB_CONTEXT_PKG.set_current_user('YURI');
+    REHAB_CONTEXT_PKG.set_specific_context('YURI');
+    REHAB_CONTEXT_PKG.set_current_date(sysdate);
+end;
+/
+
 select /*+ gather_plan_statistics qb_name(q6) noparallel*/ * from v$rb_balance order by 1,4;
+select * from v$rb_plans_ext order by PR_WS_ID, PR_DR_ID, PRD_DR_ID;
+        select REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ() a,
+               BALANCE_BEFORE_TODAY - DAILY_DOSAGE*future_consumed balance_from_tomorrow,
+               (BALANCE_BEFORE_TODAY - DAILY_DOSAGE*future_consumed)/DAILY_DOSAGE days_remain_from_tomorrow,
+               *
+        from (
+                select DR_NAME, DR_TYPE_SHORT, PR_WS_ID, BALANCE_BEFORE_TODAY, DRU_CONSUMED_TODAY, DAILY_DOSAGE, PLANNED_AMOUNT_FROM_TOMORROW, 
+                       DAYS_FROM_START_DATE_TO_END, MAX_DRU_CONSUMED_DATE, PRATR_ACTUAL_START, PRATR_ACTUAL_END, PR_PLANNED_END,
+                       EXTRACT(DAY FROM (REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC()- trunc(MAX_DRU_CONSUMED_DATE))) days_since,
+                       case when EXTRACT(DAY FROM (REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC()- trunc(MAX_DRU_CONSUMED_DATE))) > 1 then EXTRACT(DAY FROM (REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC()- trunc(MAX_DRU_CONSUMED_DATE))) else 0 end future_consumed
+                  from v$rb_balance b, V$RB_PLANS_EXT p, REHAB_DRUGS d
+                where b.da_dr_id = prd_dr_id and prd_dr_id = d.dr_id
+                  and (PRATR_ACTUAL_START <= REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() and (PRATR_ACTUAL_END is null or PRATR_ACTUAL_END >= REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ())
+                       or
+                       PRATR_ACTUAL_START between REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() and REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() + NUMTODSINTERVAL(to_number(REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT')), 'DAY')
+                      )
+        ) order by PR_WS_ID nulls first, DR_NAME, PRATR_ACTUAL_START;
+set serveroutput on
+declare
+  l_remain number;
+  l_days number;
+  l_amount number;
+  l_daily_doze number;
+  l_days_remain number;
+  l_end_date timestamp with time zone;
+  --l_max_date timestamp with time zone := REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ() + NUMTODSINTERVAL(1, 'YEAR');
+begin
+    for b in (select *
+                     --case when EXTRACT(DAY FROM (REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC()- trunc(MAX_DRU_CONSUMED_DATE))) > 1 then EXTRACT(DAY FROM (REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC()- trunc(MAX_DRU_CONSUMED_DATE))) else 0 end future_consumed
+                from V$RB_BALANCE b, REHAB_DRUGS d where b.DA_DR_ID = d.DR_ID order by DA_WS_ID nulls first, DA_DR_ID)
+    loop
+      l_remain := b.BALANCE_BEFORE_TODAY; -- b.DAILY_DOSAGE*(case when EXTRACT(DAY FROM (REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC()- trunc(b.MAX_DRU_CONSUMED_DATE))) > 1 then EXTRACT(DAY FROM (REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC()- trunc(b.MAX_DRU_CONSUMED_DATE))) else 0 end);
+      l_end_date := null; l_days_remain := null;
+      
+      dbms_output.put_line(b.DR_NAME||': l_remain(init): '||l_remain||'; DA_DR_ID: '||b.DA_DR_ID||'; MAX_DRU_CONSUMED_DATE: '||to_char(b.MAX_DRU_CONSUMED_DATE,'YYYY-MM-DD HH24:MI TZH')||'; CONSUMED_SINCE_DT: '||to_char(b.CONSUMED_SINCE_DT,'YYYY-MM-DD HH24:MI TZH'));
+
+      for p in (select *,
+                       row_number() over(partition by PRD_DR_ID order by PRATR_ACTUAL_START desc) rn
+                  from V$REHAB_CONSUME_PLANS_ALL where PRD_DR_ID = b.DA_DR_ID order by PRATR_ACTUAL_START)
+      loop
+          rehub_get_planned_consumption(p.PRATR_ID, p.PRD_DR_ID, b.MAX_DRU_CONSUMED_DATE, b.CONSUMED_SINCE_DT, to_number(REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT')),l_days, l_amount, l_daily_doze);
+          l_remain := l_remain - l_amount;
+          if l_remain < 0 and l_end_date is null then
+            if p.PRATR_ACTUAL_END > REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() + NUMTODSINTERVAL(to_number(REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT')), 'DAY')
+            then
+                l_days_remain := to_number(REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT')) - abs(l_remain/l_daily_doze);
+                --l_end_date := REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() + (NUMTODSINTERVAL(to_number(REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT')), 'DAY') - NUMTODSINTERVAL(abs(l_remain/l_daily_doze), 'DAY'));
+                l_end_date := REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() + NUMTODSINTERVAL(l_days_remain, 'DAY');
+            else
+                l_end_date := nvl(p.PRATR_ACTUAL_END, REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() + NUMTODSINTERVAL(to_number(REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT')), 'DAY')) - NUMTODSINTERVAL(abs(l_remain/l_daily_doze), 'DAY');
+                l_days_remain := EXTRACT(DAY FROM ( l_end_date - REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() ));
+            end if;
+          end if;
+          dbms_output.put_line(p.rn||') l_remain: '||l_remain||'; l_amount: '||l_amount||'; l_days: '||l_days||'; l_daily_doze: '||l_daily_doze||'; PRATR_ACTUAL_START: '||to_char(p.PRATR_ACTUAL_START,'YYYY-MM-DD HH24:MI TZH')||'; PRATR_ACTUAL_END: '||to_char(p.PRATR_ACTUAL_END,'YYYY-MM-DD HH24:MI TZH')||'; l_end_date: '||to_char(l_end_date,'YYYY-MM-DD HH24:MI TZH')||'; l_days_remain: '||l_days_remain);
+      end loop;
+    end loop;
+end;
+/
+
+create or replace procedure rehub_get_planned_consumption(P_PRATR_ID REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES.PRATR_ID%TYPE,
+                                                         P_PRD_DR_ID REHAB_PRESCRIPTIONS_DETAILS.PRD_DR_ID%TYPE,
+                                                         P_MAX_DRU_CONSUMED_DATE timestamp with time zone,
+                                                         P_CONSUMED_SINCE_DT timestamp with time zone,
+                                                         P_DAYS_AHEAD number,
+                                                         p_days out number,
+                                                         p_amount out number,
+                                                         p_daily_doze out number)
+is
+  l_alert_ts timestamp with time zone;
+  L_MAX_DRU_CONSUMED_DATE timestamp with time zone;
+begin
+  p_days := 0;
+  p_amount := 0;
+  p_daily_doze := 0;
+  
+  l_alert_ts := REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() + NUMTODSINTERVAL(P_DAYS_AHEAD, 'DAY');
+
+  --dbms_output.put_line('P_PRATR_ID: '||P_PRATR_ID||'; P_PRD_DR_ID: '||P_PRD_DR_ID||'; l_alert_ts: '||to_char(l_alert_ts,'YYYY-MM-DD HH24:MI TZH'));
+  for i in (select PRD_DR_ID, sum(PRD_DOSAGE) PRD_DOSAGE, PRATR_ACTUAL_START, nvl(PRATR_ACTUAL_END, REHAB_CONTEXT_PKG.getGLOBAL_MAX_DATE_TSTZ) PRATR_ACTUAL_END
+              from REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES, REHAB_PRESCRIPTIONS_DETAILS
+             where PRD_PRATR_ID = PRATR_ID and PRATR_ID = P_PRATR_ID and PRD_DR_ID = P_PRD_DR_ID
+             group by PRD_DR_ID, PRATR_ACTUAL_START, nvl(PRATR_ACTUAL_END, REHAB_CONTEXT_PKG.getGLOBAL_MAX_DATE_TSTZ))
+  loop
+    if P_MAX_DRU_CONSUMED_DATE is null then
+      L_MAX_DRU_CONSUMED_DATE := greatest(P_CONSUMED_SINCE_DT,i.PRATR_ACTUAL_START);
+    else
+      L_MAX_DRU_CONSUMED_DATE := P_MAX_DRU_CONSUMED_DATE;
+    end if;  
+    if not(l_alert_ts < i.PRATR_ACTUAL_START or L_MAX_DRU_CONSUMED_DATE > i.PRATR_ACTUAL_END) 
+       and L_MAX_DRU_CONSUMED_DATE < l_alert_ts
+       and L_MAX_DRU_CONSUMED_DATE < i.PRATR_ACTUAL_END
+    then
+      p_days := EXTRACT(DAY FROM (least(i.PRATR_ACTUAL_END, l_alert_ts) - greatest(i.PRATR_ACTUAL_START,L_MAX_DRU_CONSUMED_DATE)));
+      p_amount := p_amount + p_days * i.PRD_DOSAGE;
+      p_daily_doze := i.PRD_DOSAGE;
+      --dbms_output.put_line('l_days: '||l_days||'; l_amount: '||l_amount);
+    end if;
+  end loop;
+end;
+/
+select rehub_get_planned_consumption(PRATR_ID,28,systimestAMP,100) a,REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() + NUMTODSINTERVAL(100, 'DAY') b, * from REHAB_PRESCRIPTIONS_ACTIVITY_TIME_RANGES;
+select REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ() +  + NUMTOYMINTERVAL(1, 'YEAR');
 @geteplan
 drop table rehab_rb_balance_cache;
 drop view rehab_v$rb_balance_cache;

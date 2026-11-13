@@ -1576,7 +1576,7 @@ wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(78155813115597712)
 ,p_chart_id=>wwv_flow_imp.id(77068721404873149)
 ,p_static_id=>'oxigenation'
-,p_seq=>110
+,p_seq=>120
 ,p_name=>'Oxigenation'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
@@ -1605,7 +1605,7 @@ wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(78155788087597711)
 ,p_chart_id=>wwv_flow_imp.id(77068721404873149)
 ,p_static_id=>'sugar'
-,p_seq=>100
+,p_seq=>110
 ,p_name=>'Sugar'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
@@ -1635,7 +1635,7 @@ wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(78155663165597710)
 ,p_chart_id=>wwv_flow_imp.id(77068721404873149)
 ,p_static_id=>'temperature'
-,p_seq=>90
+,p_seq=>100
 ,p_name=>'Temperature'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
@@ -1658,6 +1658,36 @@ unistr('       ''\0422\0435\043C\043F\0435\0440\0430\0442\0443\0440\0430: '' ||r
 ,p_items_label_rendered=>false
 ,p_display_when_cond_type=>'EXPRESSION'
 ,p_display_when_condition=>':P601_TRAININGS like ''%TEMP%'''
+,p_display_when_condition2=>'PLSQL'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(86067987868822927)
+,p_chart_id=>wwv_flow_imp.id(77068721404873149)
+,p_static_id=>'training-additional-weight'
+,p_seq=>80
+,p_name=>'Training Additional Weight'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+unistr('select ''\0414\043E\0434\0430\0442\043A\043E\0432\0430 \0432\0430\0433\0430, \043A\0433'' nm,'),
+'       trunc(TR_START,''dd'') TR_START, ',
+'       avg(TR_ADDITONAL_WEIGHT) TR_ADDITONAL_WEIGHT,',
+unistr('       ''\0414\043E\0434\0430\0442\043A\043E\0432\0430 \0432\0430\0433\0430: '' ||round(avg(TR_ADDITONAL_WEIGHT))||'' \043A\0433. ''|| to_char(trunc(TR_START,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
+' from REHAB_TRAININGS',
+'where TR_ADDITONAL_WEIGHT is not null and TR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
+'and trunc(TR_START,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
+'group by trunc(TR_START,''dd'')',
+'order by TR_START'))
+,p_series_name_column_name=>'NM'
+,p_items_value_column_name=>'TR_ADDITONAL_WEIGHT'
+,p_items_label_column_name=>'TR_START'
+,p_items_short_desc_column_name=>'CT'
+,p_line_style=>'solid'
+,p_line_type=>'curved'
+,p_marker_rendered=>'off'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+,p_display_when_cond_type=>'EXPRESSION'
+,p_display_when_condition=>':P601_TRAININGS like ''%AWEI%'''
 ,p_display_when_condition2=>'PLSQL'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -1814,7 +1844,7 @@ wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(78155584490597709)
 ,p_chart_id=>wwv_flow_imp.id(77068721404873149)
 ,p_static_id=>'weight'
-,p_seq=>80
+,p_seq=>90
 ,p_name=>'Weight'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
@@ -1837,7 +1867,7 @@ unistr('       ''\0412\0430\0433\0430: '' ||round(avg(MT_WEIGHT),3)||'' ''|| to_
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
 ,p_display_when_cond_type=>'EXPRESSION'
-,p_display_when_condition=>':P601_TRAININGS like ''%WEI%'''
+,p_display_when_condition=>':P601_TRAININGS like ''%BWEI%'''
 ,p_display_when_condition2=>'PLSQL'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -2120,7 +2150,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_prompt=>unistr('\0421\0435\0440\0435\0434\043D\0456 \0437\043D\0430\0447\0435\043D\043D\044F (\0434\0440\043E\0431\0456)')
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_SELECT_MANY'
-,p_lov=>unistr('STATIC2:\041A\0440\043E\043A\0438 \0437\0430 \0434\043E\0431\0443;TOTST,\0422\0440\0435\043D\0443\0432\0430\043B\044C\043D\0456 \043A\0440\043E\0438;TRST,\0414\0438\0441\0442\0430\043D\0446\0456\044F \043F\043E \0434\0435\0432\0430\0439\0441\0443 1;DIST1,\0414\0438\0441\0442\0430\043D\0446\0456\044F \043F\043E \0434\0435\0432\0430\0439\0441\0443 2;DIST2,\0420\0435\0430\043B\044C\043D\0430 \0434\0438\0441\0442\0430\043D\0446\0456\044F;RDIST,\0420\0435\0430\043B\044C\043D\0430 \0448\0432\0438\0434\043A\0456\0441\0442\044C;RSPE,\0414\043E\0432\0436\0438\043D\0430 \043A\0440\043E\043A\0443;STLE,\0412\0430\0433\0430;WEI,\0422\0435\043C\043F\0435\0440\0430\0442\0443\0440\0430;TEMP,\0426\0443\043A\043E\0440;SUG,\041A\0438\0441\0435\043D\044C;OXI')
+,p_lov=>unistr('STATIC2:\041A\0440\043E\043A\0438 \0437\0430 \0434\043E\0431\0443;TOTST,\0422\0440\0435\043D\0443\0432\0430\043B\044C\043D\0456 \043A\0440\043E\0438;TRST,\0414\0438\0441\0442\0430\043D\0446\0456\044F \043F\043E \0434\0435\0432\0430\0439\0441\0443 1;DIST1,\0414\0438\0441\0442\0430\043D\0446\0456\044F \043F\043E \0434\0435\0432\0430\0439\0441\0443 2;DIST2,\0420\0435\0430\043B\044C\043D\0430 \0434\0438\0441\0442\0430\043D\0446\0456\044F;RDIST,\0420\0435\0430\043B\044C\043D\0430 \0448\0432\0438\0434\043A\0456\0441\0442\044C;RSPE,\0414\043E\0432\0436\0438\043D\0430 \043A\0440\043E\043A\0443;STLE,\0414\043E\0434\0430\0442\043A\043E\0432\0430 \0432\0430\0433\0430;AWEI,\0412\0430\0433\0430;BWEI,\0422\0435\043C\043F\0435\0440\0430\0442\0443\0440\0430;TEMP,\0426\0443\043A\043E\0440;SUG,\041A\0438\0441\0435\043D\044C;OXI')
 ,p_cSize=>30
 ,p_display_when=>':P601_CHARTS2SHOW like ''%TRA%'''
 ,p_display_when2=>'PLSQL'

@@ -60,7 +60,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(118124816923888979)
 ,p_region_template_options=>'#DEFAULT#:t-CardsRegion--hideHeader js-addHiddenHeadingRoleDesc'
 ,p_plug_template=>2074200852440250129
-,p_plug_display_sequence=>40
+,p_plug_display_sequence=>50
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
 ,p_plug_source=>'select da.* from table(REHAB_DRUGUSE_PKG.druguse_assembly_ref(:P105_TIME_PERIOD_ID, :P105_DAYS_AHEAD)) da'
@@ -137,6 +137,26 @@ wwv_flow_imp_page.create_page_item(
   'trim_spaces', 'BOTH')).to_clob
 );
 wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(86067731769822925)
+,p_name=>'P105_END_DATE'
+,p_item_sequence=>40
+,p_item_plug_id=>wwv_flow_imp.id(118124816923888979)
+,p_item_default=>'7'
+,p_prompt=>unistr('\0417\0430\0432\0435\0440\0448\0435\043D\043D\044F \043F\0435\0440\0456\043E\0434\0443')
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_TEXT_FIELD'
+,p_cSize=>30
+,p_begin_on_new_line=>'N'
+,p_read_only_when_type=>'ALWAYS'
+,p_field_template=>1610598484065263269
+,p_item_template_options=>'#DEFAULT#'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'disabled', 'N',
+  'submit_when_enter_pressed', 'N',
+  'subtype', 'TEXT',
+  'trim_spaces', 'BOTH')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(118126521985889036)
 ,p_name=>'P105_TIME_PERIOD_ID'
 ,p_item_sequence=>20
@@ -166,6 +186,7 @@ wwv_flow_imp_page.create_page_process(
 '        select min(TP_ID) into :P105_TIME_PERIOD_ID',
 '        from V$REHAB_TIME_PERIODS_AVAILABLE where systimestamp at time zone SESSIONTIMEZONE between TP_START_TIME_DT_CURR and TP_END_TIME_DT_CURR;',
 '    end if;',
+'    :P105_END_DATE := to_char(REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() + NUMTODSINTERVAL(:P105_DAYS_AHEAD, ''DAY''),''Day YYYY-Mon-DD HH24:MI:SS TZR'');',
 'end;'))
 ,p_process_clob_language=>'PLSQL'
 ,p_internal_uid=>75523012817989303

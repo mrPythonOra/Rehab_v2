@@ -25,14 +25,14 @@
                        --r.BALANCE BALANCE0,
                        b.BALANCE_TOTAL BALANCE,
                        --r.DAYS_PLANNED DAYS_PLANNED0,
-                       pe.DAYS_FROM_START DAYS_PLANNED,
+                       pe.DAYS_FROM_START_DATE_TO_END DAYS_PLANNED,
                        --r.DAYS_REMAIN DAYS_REMAIN0,
                        (b.BALANCE_BEFORE_TODAY-pe.DAILY_DOSAGE)/pe.DAILY_DOSAGE DAYS_REMAIN,
                        --r.DA_STORED_AMOUNT DA_STORED_AMOUNT0,
                        b.REMAINED_AMOUNT DA_STORED_AMOUNT,
                        --r.end_date end_date0,
-                       REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC() + (b.BALANCE_BEFORE_TODAY-pe.DAILY_DOSAGE)/pe.DAILY_DOSAGE end_date
-                from V$REHAB_CONSUME_DATA d, V$REHAB_TIME_PERIODS tp, --V$REHAB_REMAINS r,
+                       REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC() + NUMTODSINTERVAL((b.BALANCE_BEFORE_TODAY-pe.DAILY_DOSAGE)/pe.DAILY_DOSAGE, 'DAY') end_date
+                from V$REHAB_CONSUME_DATA d, V$REHAB_TIME_PERIODS_AVAILABLE tp, --V$REHAB_REMAINS r,
                      v$rb_plans_ext pe,
                      (select DA_DR_ID, sum(BALANCE_BEFORE_TODAY) BALANCE_BEFORE_TODAY, sum(BALANCE_TOTAL) BALANCE_TOTAL, max(REMAINED_AMOUNT) REMAINED_AMOUNT from V$RB_BALANCE group by DA_DR_ID) b
                where tp.TP_ID = p_tp_id
@@ -95,20 +95,20 @@
 --                 and (CPTR_START_TIME_DT_GDT >= TP_START_TIME_DT_GDT and CPTR_START_TIME_DT_GDT < TP_END_TIME_DT_GDT or
 --                      CPTR_END_TIME_DT_GDT   >= TP_START_TIME_DT_GDT and CPTR_END_TIME_DT_GDT   < TP_END_TIME_DT_GDT)
 --                 and d.PRD_DR_ID = r.DR_ID(+)
-                select PRD_ID, d.DR_NAME, PRD_DOSAGE, CPTR_START_TIME_STR, CPTR_END_TIME_STR, DR_WHEN2CONSUME, PRD_NOTES, d.DRU_CONSUMED, DRU_ACTUAL_DOSAGE, DR_USE_CASE, DR_TYPE_SHORT,
-                       PR_NOTES, PRATR_NOTES, d.PR_PLANNED_END, d.PRATR_ACTUAL_END,
-                       DRU_ID, d.PRD_DR_ID, d.PR_PRR_ID, d.PR_ID, d.PRATR_ID, PRD_CPTR_ID,  DR_ITEM_IMAGE1,
+                select PRD_ID, d.DR_NAME, PRD_DOSAGE, CPTR_START_TIME_STR, CPTR_END_TIME_STR, DR_WHEN2CONSUME, PRD_NOTES, DR_USE_CASE, DR_TYPE_SHORT,
+                       PR_NOTES, PRATR_NOTES, d.PR_PLANNED_END, d.PRATR_ACTUAL_END,d.PRATR_ACTUAL_START,
+                       d.PRD_DR_ID, d.PR_PRR_ID, d.PR_ID, d.PRATR_ID, PRD_CPTR_ID,  DR_ITEM_IMAGE1,
                        --r.BALANCE BALANCE0,
                        b.BALANCE_TOTAL BALANCE,
                        --r.DAYS_PLANNED DAYS_PLANNED0,
-                       pe.DAYS_FROM_START DAYS_PLANNED,
+                       pe.DAYS_FROM_START_DATE_TO_END DAYS_PLANNED,
                        --r.DAYS_REMAIN DAYS_REMAIN0,
                        (b.BALANCE_BEFORE_TODAY-pe.DAILY_DOSAGE)/pe.DAILY_DOSAGE DAYS_REMAIN,
                        --r.DA_STORED_AMOUNT DA_STORED_AMOUNT0,
                        b.REMAINED_AMOUNT DA_STORED_AMOUNT,
                        --r.end_date end_date0,
                        REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC() + (b.BALANCE_BEFORE_TODAY-pe.DAILY_DOSAGE)/pe.DAILY_DOSAGE end_date
-                from V$REHAB_CONSUME_DATA d, V$REHAB_TIME_PERIODS tp, --V$REHAB_REMAINS r,
+                from V$REHAB_CONSUME_PLANS_ALL d, V$REHAB_TIME_PERIODS_AVAILABLE tp, --V$REHAB_REMAINS r,
                      v$rb_plans_ext pe,
                      (select DA_DR_ID, sum(BALANCE_BEFORE_TODAY) BALANCE_BEFORE_TODAY, sum(BALANCE_TOTAL) BALANCE_TOTAL, max(REMAINED_AMOUNT) REMAINED_AMOUNT from V$RB_BALANCE group by DA_DR_ID) b
                where tp.TP_ID = p_tp_id
@@ -117,6 +117,9 @@
                  and (CPTR_START_TIME_DT_GDT >= TP_START_TIME_DT_GDT and CPTR_START_TIME_DT_GDT < TP_END_TIME_DT_GDT or
                       CPTR_END_TIME_DT_GDT   >= TP_START_TIME_DT_GDT and CPTR_END_TIME_DT_GDT   < TP_END_TIME_DT_GDT)
                  --and d.PRD_DR_ID = r.DR_ID(+)
+                 and ((d.PRATR_ACTUAL_START <= REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() and (d.PRATR_ACTUAL_END is null or d.PRATR_ACTUAL_END >= REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ()))
+                     or
+                     d.PRATR_ACTUAL_START between REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() and REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() + NUMTODSINTERVAL(p_days_ahead, 'DAY'))
                order by PRD_SORT_ORDER
                )
     loop
@@ -125,9 +128,16 @@
            mainlabel => i.DR_NAME,      --     mainlabel    VARCHAR2(4000),
            sublabel  => '<b>'||UNISTR('\2710')||'</b> '||i.PRD_DOSAGE|| ' мг ' ||i.CPTR_START_TIME_STR||'-'||i.CPTR_END_TIME_STR||' '||i.DR_WHEN2CONSUME||
                         nvl2(i.PRD_NOTES,'<br>'||i.PRD_NOTES,null),  --     sublabel     varchar2(4000),
-           data1     => case when i.PRATR_ACTUAL_END is null or trunc(i.PRATR_ACTUAL_END)>trunc(systimestamp at time zone SESSIONTIMEZONE)+p_days_ahead
-                               then 'Набирати на '||p_days_ahead||' днів'
-                               else 'Період завершується раніше: '||to_char(i.PRATR_ACTUAL_END, 'YYYY-Mon-DD Day') end,
+           data1     => case when i.PRATR_ACTUAL_START <= REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() and (i.PRATR_ACTUAL_END is null or i.PRATR_ACTUAL_END >= REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() + NUMTODSINTERVAL(p_days_ahead, 'DAY'))
+                               then 'Набирати на '||p_days_ahead||' дні(в)'
+                             when i.PRATR_ACTUAL_START <= REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() and i.PRATR_ACTUAL_END < REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() + NUMTODSINTERVAL(p_days_ahead, 'DAY')
+                               then 'Набирати на '||(EXTRACT(DAY FROM (i.PRATR_ACTUAL_END - REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ()))+1)||' дні(в), період завершується раніше: '||to_char(i.PRATR_ACTUAL_END, 'YYYY-Mon-DD Day')
+                             when i.PRATR_ACTUAL_START > REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() and i.PRATR_ACTUAL_END < REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() + NUMTODSINTERVAL(p_days_ahead, 'DAY')
+                               then 'Набирати на '||(EXTRACT(DAY FROM (i.PRATR_ACTUAL_END - i.PRATR_ACTUAL_START))+1)||' дні(в), період з ' || to_char(i.PRATR_ACTUAL_START, 'YYYY-Mon-DD Day') || ' по ' ||to_char(i.PRATR_ACTUAL_END, 'YYYY-Mon-DD Day')
+                             when i.PRATR_ACTUAL_START > REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() and (i.PRATR_ACTUAL_END is null or i.PRATR_ACTUAL_END >= REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() + NUMTODSINTERVAL(p_days_ahead, 'DAY'))
+                               then 'Набирати на '||(EXTRACT(DAY FROM (REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() + NUMTODSINTERVAL(p_days_ahead, 'DAY') - i.PRATR_ACTUAL_START)))||' дні(в), період почнеться пізніше з ' || to_char(i.PRATR_ACTUAL_START, 'YYYY-Mon-DD Day')
+                             else 'Помилка обчислення періоду'
+                        end,
            data2     => REHAB_UI_REPORTS_PKG.clr('lime',UNISTR('\2762'))||' '||
                          nvl(i.DR_USE_CASE,i.DR_TYPE_SHORT)||
                          nvl2(i.PR_NOTES,'<br>'||REHAB_UI_REPORTS_PKG.clr('lime',UNISTR('\D83D\DD8E'))||' '||i.PR_NOTES,null)||
@@ -144,7 +154,7 @@
            bagecol   => '',   --bagecol      VARCHAR2(4000),
            bagelabel => '', --bagelabel    VARCHAR2(4000),
            app_page  => null,           -- app_page     number,
-           dru_id    => i.DRU_ID,
+           dru_id    => i.PRD_DR_ID,
            dr_id     => i.PRD_DR_ID,           -- dr_id        number,
            prr_id    => i.PR_PRR_ID,
            pr_id     => i.PR_ID,           -- pr_id        number,

@@ -33,12 +33,12 @@ prompt APPLICATION 200 - Rehabilitation 2.0
 -- Application Export:
 --   Application:     200
 --   Name:            Rehabilitation 2.0
---   Date and Time:   16:01 Wednesday November 11, 2026
+--   Date and Time:   14:38 Friday November 13, 2026
 --   Exported By:     REHAB_V2
 --   Flashback:       0
 --   Export Type:     Application Export
 --     Pages:                     68
---       Items:                  294
+--       Items:                  295
 --       Computations:             2
 --       Validations:             26
 --       Processes:              172
@@ -140,7 +140,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_06=>'YYYY-MM-DD HH24:MI:SS TZR'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>2461338150255
-,p_version_scn=>'51128271917570'
+,p_version_scn=>'51151777361705'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -725,7 +725,7 @@ wwv_flow_imp_shared.create_list(
  p_id=>wwv_flow_imp.id(16870838765504258)
 ,p_name=>'Navigation Menu'
 ,p_static_id=>'navigation-menu'
-,p_version_scn=>'SH256:pLTVqTrXh5sN_BGasNeQqntPIrnpCugsUAzdUWKyIEg'
+,p_version_scn=>'SH256:Fy4pVNEgRVwjJ4ulFLrTroyHuITK7GTa-F2LjpmyO5U'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(17056773995505539)
@@ -761,7 +761,7 @@ wwv_flow_imp_shared.create_list_item(
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(77091857949748211)
 ,p_list_item_display_sequence=>280
-,p_list_item_link_text=>unistr('\041C\0435\0434\0438\043A\0430\043C\0435\043D\0442')
+,p_list_item_link_text=>unistr('\041C\0435\0434\0438\043A\0430\043C\0435\043D\0442\0438')
 ,p_static_id=>'drugs'
 ,p_list_item_link_target=>'f?p=&APP_ID.:120:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-medication-pill'
@@ -35772,7 +35772,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(118124816923888979)
 ,p_region_template_options=>'#DEFAULT#:t-CardsRegion--hideHeader js-addHiddenHeadingRoleDesc'
 ,p_plug_template=>2074200852440250129
-,p_plug_display_sequence=>40
+,p_plug_display_sequence=>50
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
 ,p_plug_source=>'select da.* from table(REHAB_DRUGUSE_PKG.druguse_assembly_ref(:P105_TIME_PERIOD_ID, :P105_DAYS_AHEAD)) da'
@@ -35849,6 +35849,26 @@ wwv_flow_imp_page.create_page_item(
   'trim_spaces', 'BOTH')).to_clob
 );
 wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(86067731769822925)
+,p_name=>'P105_END_DATE'
+,p_item_sequence=>40
+,p_item_plug_id=>wwv_flow_imp.id(118124816923888979)
+,p_item_default=>'7'
+,p_prompt=>unistr('\0417\0430\0432\0435\0440\0448\0435\043D\043D\044F \043F\0435\0440\0456\043E\0434\0443')
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_TEXT_FIELD'
+,p_cSize=>30
+,p_begin_on_new_line=>'N'
+,p_read_only_when_type=>'ALWAYS'
+,p_field_template=>1610598484065263269
+,p_item_template_options=>'#DEFAULT#'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'disabled', 'N',
+  'submit_when_enter_pressed', 'N',
+  'subtype', 'TEXT',
+  'trim_spaces', 'BOTH')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(118126521985889036)
 ,p_name=>'P105_TIME_PERIOD_ID'
 ,p_item_sequence=>20
@@ -35878,6 +35898,7 @@ wwv_flow_imp_page.create_page_process(
 '        select min(TP_ID) into :P105_TIME_PERIOD_ID',
 '        from V$REHAB_TIME_PERIODS_AVAILABLE where systimestamp at time zone SESSIONTIMEZONE between TP_START_TIME_DT_CURR and TP_END_TIME_DT_CURR;',
 '    end if;',
+'    :P105_END_DATE := to_char(REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() + NUMTODSINTERVAL(:P105_DAYS_AHEAD, ''DAY''),''Day YYYY-Mon-DD HH24:MI:SS TZR'');',
 'end;'))
 ,p_process_clob_language=>'PLSQL'
 ,p_internal_uid=>75523012817989303
@@ -49981,17 +50002,10 @@ wwv_flow_imp_page.create_page_item(
 ,p_name=>'P402_DETAILS_SPECIFIED'
 ,p_item_sequence=>100
 ,p_item_plug_id=>wwv_flow_imp.id(56470421749627426)
-,p_prompt=>'Details Specified'
 ,p_source_type=>'ALWAYS_NULL'
-,p_display_as=>'NATIVE_TEXT_FIELD'
-,p_cSize=>30
-,p_field_template=>1610598304472262251
-,p_item_template_options=>'#DEFAULT#'
+,p_display_as=>'NATIVE_HIDDEN'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'disabled', 'N',
-  'submit_when_enter_pressed', 'N',
-  'subtype', 'TEXT',
-  'trim_spaces', 'BOTH')).to_clob
+  'value_protected', 'N')).to_clob
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(56470676335627428)
@@ -55822,7 +55836,7 @@ wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(78155813115597712)
 ,p_chart_id=>wwv_flow_imp.id(77068721404873149)
 ,p_static_id=>'oxigenation'
-,p_seq=>110
+,p_seq=>120
 ,p_name=>'Oxigenation'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
@@ -55851,7 +55865,7 @@ wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(78155788087597711)
 ,p_chart_id=>wwv_flow_imp.id(77068721404873149)
 ,p_static_id=>'sugar'
-,p_seq=>100
+,p_seq=>110
 ,p_name=>'Sugar'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
@@ -55881,7 +55895,7 @@ wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(78155663165597710)
 ,p_chart_id=>wwv_flow_imp.id(77068721404873149)
 ,p_static_id=>'temperature'
-,p_seq=>90
+,p_seq=>100
 ,p_name=>'Temperature'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
@@ -55904,6 +55918,36 @@ unistr('       ''\0422\0435\043C\043F\0435\0440\0430\0442\0443\0440\0430: '' ||r
 ,p_items_label_rendered=>false
 ,p_display_when_cond_type=>'EXPRESSION'
 ,p_display_when_condition=>':P601_TRAININGS like ''%TEMP%'''
+,p_display_when_condition2=>'PLSQL'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(86067987868822927)
+,p_chart_id=>wwv_flow_imp.id(77068721404873149)
+,p_static_id=>'training-additional-weight'
+,p_seq=>80
+,p_name=>'Training Additional Weight'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+unistr('select ''\0414\043E\0434\0430\0442\043A\043E\0432\0430 \0432\0430\0433\0430, \043A\0433'' nm,'),
+'       trunc(TR_START,''dd'') TR_START, ',
+'       avg(TR_ADDITONAL_WEIGHT) TR_ADDITONAL_WEIGHT,',
+unistr('       ''\0414\043E\0434\0430\0442\043A\043E\0432\0430 \0432\0430\0433\0430: '' ||round(avg(TR_ADDITONAL_WEIGHT))||'' \043A\0433. ''|| to_char(trunc(TR_START,''dd''),''Day &APP_DTFMT_DATE.'') ct'),
+' from REHAB_TRAININGS',
+'where TR_ADDITONAL_WEIGHT is not null and TR_PAT_ID = REHAB_CONTEXT_PKG.getPATIENT()',
+'and trunc(TR_START,''dd'') between to_date(:P601_START,''&APP_DTFMT_DATE.'') and to_date(:P601_END,''&APP_DTFMT_DATE.'')',
+'group by trunc(TR_START,''dd'')',
+'order by TR_START'))
+,p_series_name_column_name=>'NM'
+,p_items_value_column_name=>'TR_ADDITONAL_WEIGHT'
+,p_items_label_column_name=>'TR_START'
+,p_items_short_desc_column_name=>'CT'
+,p_line_style=>'solid'
+,p_line_type=>'curved'
+,p_marker_rendered=>'off'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+,p_display_when_cond_type=>'EXPRESSION'
+,p_display_when_condition=>':P601_TRAININGS like ''%AWEI%'''
 ,p_display_when_condition2=>'PLSQL'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -56060,7 +56104,7 @@ wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(78155584490597709)
 ,p_chart_id=>wwv_flow_imp.id(77068721404873149)
 ,p_static_id=>'weight'
-,p_seq=>80
+,p_seq=>90
 ,p_name=>'Weight'
 ,p_data_source_type=>'SQL'
 ,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
@@ -56083,7 +56127,7 @@ unistr('       ''\0412\0430\0433\0430: '' ||round(avg(MT_WEIGHT),3)||'' ''|| to_
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
 ,p_display_when_cond_type=>'EXPRESSION'
-,p_display_when_condition=>':P601_TRAININGS like ''%WEI%'''
+,p_display_when_condition=>':P601_TRAININGS like ''%BWEI%'''
 ,p_display_when_condition2=>'PLSQL'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -56366,7 +56410,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_prompt=>unistr('\0421\0435\0440\0435\0434\043D\0456 \0437\043D\0430\0447\0435\043D\043D\044F (\0434\0440\043E\0431\0456)')
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_SELECT_MANY'
-,p_lov=>unistr('STATIC2:\041A\0440\043E\043A\0438 \0437\0430 \0434\043E\0431\0443;TOTST,\0422\0440\0435\043D\0443\0432\0430\043B\044C\043D\0456 \043A\0440\043E\0438;TRST,\0414\0438\0441\0442\0430\043D\0446\0456\044F \043F\043E \0434\0435\0432\0430\0439\0441\0443 1;DIST1,\0414\0438\0441\0442\0430\043D\0446\0456\044F \043F\043E \0434\0435\0432\0430\0439\0441\0443 2;DIST2,\0420\0435\0430\043B\044C\043D\0430 \0434\0438\0441\0442\0430\043D\0446\0456\044F;RDIST,\0420\0435\0430\043B\044C\043D\0430 \0448\0432\0438\0434\043A\0456\0441\0442\044C;RSPE,\0414\043E\0432\0436\0438\043D\0430 \043A\0440\043E\043A\0443;STLE,\0412\0430\0433\0430;WEI,\0422\0435\043C\043F\0435\0440\0430\0442\0443\0440\0430;TEMP,\0426\0443\043A\043E\0440;SUG,\041A\0438\0441\0435\043D\044C;OXI')
+,p_lov=>unistr('STATIC2:\041A\0440\043E\043A\0438 \0437\0430 \0434\043E\0431\0443;TOTST,\0422\0440\0435\043D\0443\0432\0430\043B\044C\043D\0456 \043A\0440\043E\0438;TRST,\0414\0438\0441\0442\0430\043D\0446\0456\044F \043F\043E \0434\0435\0432\0430\0439\0441\0443 1;DIST1,\0414\0438\0441\0442\0430\043D\0446\0456\044F \043F\043E \0434\0435\0432\0430\0439\0441\0443 2;DIST2,\0420\0435\0430\043B\044C\043D\0430 \0434\0438\0441\0442\0430\043D\0446\0456\044F;RDIST,\0420\0435\0430\043B\044C\043D\0430 \0448\0432\0438\0434\043A\0456\0441\0442\044C;RSPE,\0414\043E\0432\0436\0438\043D\0430 \043A\0440\043E\043A\0443;STLE,\0414\043E\0434\0430\0442\043A\043E\0432\0430 \0432\0430\0433\0430;AWEI,\0412\0430\0433\0430;BWEI,\0422\0435\043C\043F\0435\0440\0430\0442\0443\0440\0430;TEMP,\0426\0443\043A\043E\0440;SUG,\041A\0438\0441\0435\043D\044C;OXI')
 ,p_cSize=>30
 ,p_display_when=>':P601_CHARTS2SHOW like ''%TRA%'''
 ,p_display_when2=>'PLSQL'

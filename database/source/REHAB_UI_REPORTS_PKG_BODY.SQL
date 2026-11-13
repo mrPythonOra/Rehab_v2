@@ -216,12 +216,12 @@
     from (
     select
            count(*) FILTER (WHERE trunc(TR_START)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_cnt,
-           sum(TR_DISTANCE_LENGTH) FILTER (WHERE TR_DISTANCE_LENGTH is not null and trunc(TR_START)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_dist,
+           sum(coalesce(TR_REAL_DISTANCE,TR_DEV2_DISTANCE,TR_DISTANCE_LENGTH)) FILTER (WHERE coalesce(TR_REAL_DISTANCE,TR_DEV2_DISTANCE,TR_DISTANCE_LENGTH) is not null and trunc(TR_START)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_dist,
            sum(TR_STEPS)           FILTER (WHERE TR_STEPS is not null           and trunc(TR_START)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_steps,
            avg(TR_PULSE_AVG)       FILTER (WHERE TR_PULSE_AVG is not null       and trunc(TR_START)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_avg,
            avg(TR_PULSE_MIN)       FILTER (WHERE TR_PULSE_MIN is not null       and trunc(TR_START)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_min,
            avg(TR_PULSE_MAX)       FILTER (WHERE TR_PULSE_MAX is not null       and trunc(TR_START)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) c_max,
-           sum(TR_DISTANCE_LENGTH) FILTER (WHERE TR_DISTANCE_LENGTH is not null and trunc(TR_START)<REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) p_dist,
+           sum(coalesce(TR_REAL_DISTANCE,TR_DEV2_DISTANCE,TR_DISTANCE_LENGTH)) FILTER (WHERE coalesce(TR_REAL_DISTANCE,TR_DEV2_DISTANCE,TR_DISTANCE_LENGTH) is not null and trunc(TR_START)<REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) p_dist,
            sum(TR_STEPS)           FILTER (WHERE TR_STEPS is not null           and trunc(TR_START)<REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) p_steps,
            avg(TR_PULSE_AVG)       FILTER (WHERE TR_PULSE_AVG is not null       and trunc(TR_START)<REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) p_avg,
            avg(TR_PULSE_MIN)       FILTER (WHERE TR_PULSE_MIN is not null       and trunc(TR_START)<REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) p_min,
@@ -329,15 +329,98 @@
                             app_page  => 221));
     --**************************************************************************
     l_msg := null; l_badge := null;
-    for i in (
-          select * from V$REHAB_REMAINS
-          where DAYS_REMAIN < to_number(REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT'))
-                and (DAYS_PLANNED is null or DAYS_REMAIN < DAYS_PLANNED)
-        order by days_remain desc
-    )
+--    for i in (
+--          select *
+--            from V$REHAB_REMAINS
+--           where DAYS_REMAIN < to_number(REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT'))
+--             and (DAYS_PLANNED is null or DAYS_REMAIN < DAYS_PLANNED)
+--           order by days_remain desc
+--    )
+--    loop
+--      l_msg := l_msg || nvl2(l_msg,'<br>',null) || '<b>' || i.DR_NAME || '</b> запасів на ' || round(i.days_remain) || ' дні(в).<br> Заплановано: '||round(i.DAYS_PLANNED)||' дні(в) до '||to_char(i.PR_PLANNED_END,'YYYY-Mon-DD');
+--    end loop;
+--    for i in (
+--        select
+--               BALANCE_BEFORE_TODAY - DAILY_DOSAGE*future_consumed balance_from_tomorrow,
+--               (BALANCE_BEFORE_TODAY - DAILY_DOSAGE*future_consumed)/DAILY_DOSAGE days_remain_from_tomorrow,
+--               *
+--        from (
+--                select DR_NAME, DR_TYPE_SHORT, PR_WS_ID, BALANCE_BEFORE_TODAY, DRU_CONSUMED_TODAY, DAILY_DOSAGE, PLANNED_AMOUNT_FROM_TOMORROW,
+--                       DAYS_FROM_START_DATE_TO_END, MAX_DRU_CONSUMED_DATE, PRATR_ACTUAL_START, PRATR_ACTUAL_END, PR_PLANNED_END,
+--                       EXTRACT(DAY FROM (REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC()- trunc(MAX_DRU_CONSUMED_DATE))) days_since,
+--                       case when EXTRACT(DAY FROM (REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC()- trunc(MAX_DRU_CONSUMED_DATE))) > 1 then EXTRACT(DAY FROM (REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC()- trunc(MAX_DRU_CONSUMED_DATE))) else 0 end future_consumed
+--                  from v$rb_balance b, V$RB_PLANS_EXT p, REHAB_DRUGS d
+--                where b.da_dr_id = prd_dr_id and prd_dr_id = d.dr_id
+--                  and (PRATR_ACTUAL_START <= REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() and (PRATR_ACTUAL_END is null or PRATR_ACTUAL_END >= REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ())
+--                       or
+--                       PRATR_ACTUAL_START between REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() and REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() + NUMTODSINTERVAL(to_number(REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT')), 'DAY')
+--                      )
+--        ) order by PR_WS_ID nulls first, DR_NAME
+--    )
+--    loop
+--      if i.PR_WS_ID is null then
+--          if i.PR_PLANNED_END is not null and i.PRATR_ACTUAL_END is not null and i.PRATR_ACTUAL_END = i.PR_PLANNED_END and i.days_remain_from_tomorrow < i.DAYS_FROM_START_DATE_TO_END and i.days_remain_from_tomorrow < to_number(REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT'))
+--          then
+--            l_msg := l_msg || nvl2(l_msg,'<br>',null) || '<b>' || i.DR_NAME || '</b> запасів із завтра на ' || i.days_remain_from_tomorrow || ' дні(в).<br> Заплановано: '||round(i.DAYS_FROM_START_DATE_TO_END)||' дні(в) до '||to_char(i.PRATR_ACTUAL_END,'YYYY-Mon-DD');
+--          elsif i.PR_PLANNED_END is null and i.PRATR_ACTUAL_END is null and i.days_remain_from_tomorrow < to_number(REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT'))
+--          then
+--            l_msg := l_msg || nvl2(l_msg,'<br>',null) || '<b>' || i.DR_NAME || '</b> запасів із завтра на ' || i.days_remain_from_tomorrow || ' дні(в).<br> Заплановано: довготерміново.';
+--          elsif i.PR_PLANNED_END is null and i.PRATR_ACTUAL_END is not null or i.PR_PLANNED_END is not null and i.PRATR_ACTUAL_END is not null and i.PRATR_ACTUAL_END < i.PR_PLANNED_END
+--          then
+--            l_msg := l_msg || nvl2(l_msg,'<br>',null) || '<b> TBD' || i.DR_NAME || '</b> запасів із завтра на ' || i.days_remain_from_tomorrow || ' дні(в).<br> Заплановано: довготерміново. '|| to_char(i.PRATR_ACTUAL_START,'YYYY-Mon-DD') || ' ' || to_char(i.PRATR_ACTUAL_END,'YYYY-Mon-DD');
+--          end if;
+--      end if;
+--    end loop;
+
+declare
+  l_remain number;
+  l_days number;
+  l_amount number;
+  l_daily_doze number;
+  l_days_remain number;
+  l_end_date timestamp with time zone;
+  l_alert_date timestamp with time zone := REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() + NUMTODSINTERVAL(to_number(REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT')), 'DAY');
+begin
+    for b in (select *
+                from V$RB_BALANCE b, REHAB_DRUGS d where b.DA_DR_ID = d.DR_ID order by DA_WS_ID nulls first, DA_DR_ID)
     loop
-      l_msg := l_msg || nvl2(l_msg,'<br>',null) || '<b>' || i.DR_NAME || '</b> запасів на ' || i.days_remain || ' дні(в).<br> Заплановано: '||round(i.DAYS_PLANNED)||' дні(в) до '||to_char(i.PR_PLANNED_END,'YYYY-Mon-DD');
+      l_remain := b.BALANCE_BEFORE_TODAY; -- b.DAILY_DOSAGE*(case when EXTRACT(DAY FROM (REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC()- trunc(b.MAX_DRU_CONSUMED_DATE))) > 1 then EXTRACT(DAY FROM (REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC()- trunc(b.MAX_DRU_CONSUMED_DATE))) else 0 end);
+      l_end_date := null; l_days_remain := null;
+
+      for p in (select *,
+                       row_number() over(partition by PRD_DR_ID order by PRATR_ACTUAL_START desc) rn
+                  from V$REHAB_CONSUME_PLANS_ALL where PRD_DR_ID = b.DA_DR_ID order by PRATR_ACTUAL_START)
+      loop
+          rehub_get_planned_consumption(p.PRATR_ID, p.PRD_DR_ID, b.MAX_DRU_CONSUMED_DATE, b.CONSUMED_SINCE_DT, to_number(REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT')),l_days, l_amount, l_daily_doze);
+          l_remain := l_remain - l_amount;
+          if l_remain < 0 and l_end_date is null then
+            if p.PRATR_ACTUAL_END > l_alert_date
+            then
+                l_days_remain := to_number(REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT')) - abs(l_remain/l_daily_doze);
+                --l_end_date := REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() + (NUMTODSINTERVAL(to_number(REHAB_CONFIG_PKG.get_config_par('DBREM_DAYS2ALERT')), 'DAY') - NUMTODSINTERVAL(abs(l_remain/l_daily_doze), 'DAY'));
+                l_end_date := REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() + NUMTODSINTERVAL(l_days_remain, 'DAY');
+            else
+                l_end_date := nvl(p.PRATR_ACTUAL_END, l_alert_date) - NUMTODSINTERVAL(abs(l_remain/l_daily_doze), 'DAY');
+                l_days_remain := EXTRACT(DAY FROM ( l_end_date - REHAB_CONTEXT_PKG.getGLOBAL_DATE_TSTZ_TRUNC() ));
+            end if;
+          end if;
+          if p.rn = 1 and l_remain < 0 then
+              l_msg := l_msg || nvl2(l_msg,'<br>',null) || '<b>' || b.DR_NAME || '</b> запасів із завтра на ' || l_days_remain || ' дні(в) до '||to_char(l_end_date,'YYYY-Mon-DD') || '.';
+              if p.PR_PLANNED_END is not null and p.PRATR_ACTUAL_END is not null and p.PRATR_ACTUAL_END = p.PR_PLANNED_END
+              then
+                l_msg := l_msg || ' Заплановано: до '||to_char(p.PRATR_ACTUAL_END,'YYYY-Mon-DD');
+              elsif p.PR_PLANNED_END is null and p.PRATR_ACTUAL_END is null
+              then
+                l_msg := l_msg || ' Заплановано: довготерміново.';
+              elsif p.PR_PLANNED_END is null and p.PRATR_ACTUAL_END is not null or p.PR_PLANNED_END is not null and p.PRATR_ACTUAL_END is not null and p.PRATR_ACTUAL_END < p.PR_PLANNED_END
+              then
+                l_msg := l_msg || ' Заплановано: довготерміново. Поточні плани з '|| to_char(p.PRATR_ACTUAL_START,'YYYY-Mon-DD') || ' по ' || to_char(p.PRATR_ACTUAL_END,'YYYY-Mon-DD');
+              end if;
+              exit;
+          end if;
+      end loop;
     end loop;
+end;
     --**************************************************************************
     l_msg := rtrim(l_msg,'<br>');
     pipe row (rehab_dashboard_rec

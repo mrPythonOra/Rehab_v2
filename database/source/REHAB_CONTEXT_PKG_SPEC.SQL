@@ -16,6 +16,8 @@
   function getGLOBAL_DATE return date;
   function getGLOBAL_DATE_TRUNC return date;
   function getGLOBAL_DATE_TSTZ return timestamp with time zone;
+  function getGLOBAL_DATE_TSTZ_TRUNC return timestamp with time zone;
+  function getGLOBAL_MAX_DATE_TSTZ return timestamp with time zone;
 
   function AccessLevelADM    return boolean;
   function AccessLevelRW     return boolean;

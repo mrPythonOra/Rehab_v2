@@ -15,7 +15,7 @@ wwv_flow_imp_shared.create_list(
  p_id=>wwv_flow_imp.id(16870838765504258)
 ,p_name=>'Navigation Menu'
 ,p_static_id=>'navigation-menu'
-,p_version_scn=>'SH256:pLTVqTrXh5sN_BGasNeQqntPIrnpCugsUAzdUWKyIEg'
+,p_version_scn=>'SH256:Fy4pVNEgRVwjJ4ulFLrTroyHuITK7GTa-F2LjpmyO5U'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(17056773995505539)
@@ -51,7 +51,7 @@ wwv_flow_imp_shared.create_list_item(
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(77091857949748211)
 ,p_list_item_display_sequence=>280
-,p_list_item_link_text=>unistr('\041C\0435\0434\0438\043A\0430\043C\0435\043D\0442')
+,p_list_item_link_text=>unistr('\041C\0435\0434\0438\043A\0430\043C\0435\043D\0442\0438')
 ,p_static_id=>'drugs'
 ,p_list_item_link_target=>'f?p=&APP_ID.:120:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-medication-pill'
