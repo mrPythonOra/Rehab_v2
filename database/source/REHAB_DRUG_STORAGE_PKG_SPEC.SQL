@@ -12,7 +12,8 @@
                                    p_result_msg out varchar2);
   procedure move_drug_to_storage  (p_DA_ID          REHAB_DRUG_ACCOUNTINGS.DA_ID%TYPE,
                                    p_ds_id_trg      REHAB_DRUG_ACCOUNTINGS.DA_DS_ID%TYPE,
-                                   p_move_quantity  number);
+                                   p_move_quantity  number,
+                                   p_all_moved out  boolean);
 
   procedure assign_pr(P_DA_ID REHAB_DRUG_ACCOUNTINGS.DA_ID%type,
                       P_PRR_ID REHAB_PRESCRIPTORS.PRR_ID%type,

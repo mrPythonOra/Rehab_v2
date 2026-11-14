@@ -24,9 +24,11 @@
 
   procedure move_drug_to_storage  (p_DA_ID          REHAB_DRUG_ACCOUNTINGS.DA_ID%TYPE,
                                    p_ds_id_trg      REHAB_DRUG_ACCOUNTINGS.DA_DS_ID%TYPE,
-                                   p_move_quantity  number) AS
+                                   p_move_quantity  number,
+                                   p_all_moved out  boolean) AS
     l_available_quantity_mg number;
   BEGIN
+    p_all_moved := false;
     validate_quantity(p_DA_ID, p_move_quantity, l_available_quantity_mg);
     if l_available_quantity_mg >= p_move_quantity then
       for i in (select * from REHAB_DRUG_ACCOUNTINGS where DA_ID = p_DA_ID) loop
@@ -42,6 +44,7 @@
         if l_available_quantity_mg = p_move_quantity then
             delete from rehab_drug_accountings
              where DA_ID = p_DA_ID;
+            p_all_moved := true;
         else
             update rehab_drug_accountings set
               da_quantity = da_quantity - round(p_move_quantity/i.da_entiry_weight,3),

@@ -33,12 +33,12 @@ prompt APPLICATION 200 - Rehabilitation 2.0
 -- Application Export:
 --   Application:     200
 --   Name:            Rehabilitation 2.0
---   Date and Time:   14:38 Friday November 13, 2026
+--   Date and Time:   17:17 Saturday November 14, 2026
 --   Exported By:     REHAB_V2
 --   Flashback:       0
 --   Export Type:     Application Export
 --     Pages:                     68
---       Items:                  295
+--       Items:                  296
 --       Computations:             2
 --       Validations:             26
 --       Processes:              172
@@ -140,7 +140,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_06=>'YYYY-MM-DD HH24:MI:SS TZR'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>2461338150255
-,p_version_scn=>'51151777361705'
+,p_version_scn=>'51162182980261'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -46189,6 +46189,28 @@ wwv_flow_imp_page.create_page_branch(
 ,p_branch_when_button_id=>wwv_flow_imp.id(76268437284405535)
 ,p_branch_sequence=>40
 );
+wwv_flow_imp_page.create_page_branch(
+ p_id=>wwv_flow_imp.id(86068149505822929)
+,p_branch_name=>'302'
+,p_branch_action=>'f?p=&APP_ID.:302:&SESSION.::&DEBUG.:::&success_msg=#SUCCESS_MSG#'
+,p_branch_point=>'AFTER_PROCESSING'
+,p_branch_type=>'REDIRECT_URL'
+,p_branch_when_button_id=>wwv_flow_imp.id(75525020886989323)
+,p_branch_sequence=>50
+,p_branch_condition_type=>'VAL_OF_ITEM_IN_COND_EQ_COND2'
+,p_branch_condition=>'P304_ALL_MOVED'
+,p_branch_condition_text=>'Y'
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(86068038954822928)
+,p_name=>'P304_ALL_MOVED'
+,p_item_sequence=>40
+,p_item_plug_id=>wwv_flow_imp.id(75524031473989313)
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'N')).to_clob
+);
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(73053654533651215)
 ,p_name=>'P304_DA_BEST_BEFORE'
@@ -47085,11 +47107,15 @@ wwv_flow_imp_page.create_page_process(
 ,p_process_name=>'MoveDrug'
 ,p_static_id=>'movedrug'
 ,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'declare',
+'  l_all_moved boolean;',
 'begin',
 '  REHAB_DRUG_STORAGE_PKG.move_drug_to_storage (  ',
 '    P_DA_ID => :P304_DA_ID,',
 '    P_DS_ID_TRG => :P304_TARGET_STORAGE,',
-'    P_MOVE_QUANTITY => :P304_MOVE_QUANTITY) ; ',
+'    P_MOVE_QUANTITY => :P304_MOVE_QUANTITY,',
+'    p_all_moved => l_all_moved) ; ',
+'  :P304_ALL_MOVED := case when l_all_moved then ''Y'' else ''N'' end;',
 'end;'))
 ,p_process_clob_language=>'PLSQL'
 ,p_error_display_location=>'INLINE_IN_NOTIFICATION'

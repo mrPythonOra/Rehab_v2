@@ -34,6 +34,11 @@ begin
        and L_MAX_DRU_CONSUMED_DATE < i.PRATR_ACTUAL_END
     then
       p_days := EXTRACT(DAY FROM (least(i.PRATR_ACTUAL_END, l_alert_ts) - greatest(i.PRATR_ACTUAL_START,L_MAX_DRU_CONSUMED_DATE)));
+      if trunc(L_MAX_DRU_CONSUMED_DATE)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()
+         --trunc(L_MAX_DRU_CONSUMED_DATE)=REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()-NUMTODSINTERVAL(1, 'DAY')
+      then
+        p_days := p_days + 1;
+      end if;
       p_amount := p_amount + p_days * i.PRD_DOSAGE;
       p_daily_doze := i.PRD_DOSAGE;
       --dbms_output.put_line('l_days: '||l_days||'; l_amount: '||l_amount);

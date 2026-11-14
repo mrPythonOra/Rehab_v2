@@ -284,18 +284,20 @@ create or replace view v$rb_consumed_totals as
           max(DRU_CONSUMED) FILTER (WHERE DRU_CONSUMED >= consumed_since_dt) MAX_DRU_CONSUMED_DATE,
           min(consumed_since_dt) consumed_since_dt,
           sum(DRU_ACTUAL_DOSAGE) FILTER (WHERE DRU_CONSUMED >= consumed_since_dt) DRU_CONSUMED_AMOUNT,
-          sum(DRU_ACTUAL_DOSAGE) FILTER (WHERE DRU_CONSUMED >= consumed_since_dt and DRU_CONSUMED < trunc(REHAB_CONTEXT_PKG.getGLOBAL_DATE())) DRU_CONSUMED_BEFORE,
-          sum(DRU_ACTUAL_DOSAGE) FILTER (WHERE DRU_CONSUMED >= consumed_since_dt and trunc(DRU_CONSUMED) = trunc(REHAB_CONTEXT_PKG.getGLOBAL_DATE())) DRU_CONSUMED_TODAY
+          sum(DRU_ACTUAL_DOSAGE) FILTER (WHERE DRU_CONSUMED >= consumed_since_dt and DRU_CONSUMED < REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) DRU_CONSUMED_BEFORE,
+          sum(DRU_ACTUAL_DOSAGE) FILTER (WHERE DRU_CONSUMED >= consumed_since_dt and trunc(DRU_CONSUMED) = REHAB_CONTEXT_PKG.getGLOBAL_DATE_TRUNC()) DRU_CONSUMED_TODAY
      from v$rb_consumed_meds c 
     group by DRU_DR_ID, DRU_WS_ID--, DRU_PR_ID, DRU_PRATR_ID
 ;
 select * from v$rb_consumed_totals where DRU_DR_ID = 44;
+
 create or replace view v$rb_balance as
 with a as (select /* materialize */ * from v$rb_accessible_meds_totals)
   select /*+ leading(a) use_hash(c)*/ c.*, a.*, remained_amount - nvl(DRU_CONSUMED_AMOUNT,0) balance_total, remained_amount - nvl(DRU_CONSUMED_BEFORE,0) balance_before_today
     from  a, v$rb_consumed_totals c
    where a.DA_DR_ID = c.DRU_DR_ID(+)
 ;
+
 select * from v$rb_balance where DA_DR_ID = 44;
 create or replace view v$rb_plans as
   select PR_ID, PR_PRR_ID, PR_WS_ID, PR_DR_ID, PRD_DR_ID, PRATR_ID, PR_PLANNED_START, PR_PLANNED_END, PRATR_ACTUAL_START, PRATR_ACTUAL_END, sum(PRD_DOSAGE) Daily_DOSAGE
@@ -348,7 +350,7 @@ select                 PRD_ID, d.DR_NAME, PRD_DOSAGE, CPTR_START_TIME_STR, CPTR_
 begin
     REHAB_CONTEXT_PKG.set_current_user('YURI');
     REHAB_CONTEXT_PKG.set_specific_context('YURI');
-    REHAB_CONTEXT_PKG.set_current_date(sysdate);
+    REHAB_CONTEXT_PKG.set_current_date(sysdate+1);
 end;
 /
 
